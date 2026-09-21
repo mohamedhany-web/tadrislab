@@ -70,6 +70,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Aliases for expandable Brief V3 morphs (does not enforce — legacy class names still work)
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+            'user' => \App\Models\User::class,
+            'institution' => \App\Models\Institution::class,
+            'order' => \App\Models\Order::class,
+            'learning_path' => \App\Models\LearningPath::class,
+            'consultation_service' => \App\Models\ConsultationService::class,
+            'package' => \App\Models\Package::class,
+            'teacher_tool' => \App\Models\TeacherTool::class,
+            'institution_program' => \App\Models\InstitutionProgram::class,
+            'inquiry' => \App\Models\Inquiry::class,
+            'consultation_request' => \App\Models\ConsultationRequest::class,
+        ]);
         /*
          | مهم: وسيط throttle الافتراضي (مثل throttle:90,1) يستخدم نفس مفتاح العداد لكل المسارات
          | للمستخدم المسجّل (معرّف المستخدم فقط). طلبات poll الإشعارات كل 5 ثوانٍ تملأ ذلك العداد
@@ -246,6 +259,21 @@ class AppServiceProvider extends ServiceProvider
             [\App\Listeners\SecurityEventListener::class, 'handleLogout']
         );
 
+        // TADRIS LAB Notification Layer (Brief V3) — WhatsApp + Email
+        \Illuminate\Support\Facades\Event::listen(
+            [
+                \App\Events\PaymentSuccessful::class,
+                \App\Events\PaymentFailed::class,
+                \App\Events\BookingConfirmed::class,
+                \App\Events\BookingReminder::class,
+                \App\Events\OrderStatusChanged::class,
+                \App\Events\AccessSubscriptionActivated::class,
+                \App\Events\NewInquiry::class,
+                \App\Events\InstitutionProgramStatusChanged::class,
+            ],
+            \App\Listeners\SendPlatformNotification::class
+        );
+
         Gate::before(function ($user, $ability) {
             if (method_exists($user, 'hasPermission')) {
                 return $user->hasPermission($ability) ? true : null;
@@ -275,13 +303,6 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        View::composer('components.unified-navbar', function ($view) {
-            $view->with([
-                'navbarLogoUrl' => AdminPanelBranding::logoPublicUrl(),
-                'navbarBrandTagline' => PublicFooterSettings::payload()['brand_tagline'],
-            ]);
-        });
-
         View::composer('errors.*', function ($view) {
             $view->with([
                 'errorHomeUrl' => ErrorPageContext::homeUrl(),
@@ -301,6 +322,10 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::directive('appdatetime', function ($expression) {
             return "<?php echo \\App\\Support\\AppTimezone::labelHtml($expression, \\App\\Support\\AppTimezone::forUser(auth()->user()), app()->getLocale()); ?>";
+        });
+
+        Blade::if('module', function (string ...$keys) {
+            return \App\Support\PlatformModules::anyEnabled(...$keys);
         });
     }
 }

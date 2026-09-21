@@ -21,7 +21,7 @@
             <p class="mt-1 max-w-2xl text-sm text-muted">إدارة برامج الإحالات ورصيد الحصص للمدعوين</p>
         </div>
         <a href="{{ route('admin.referral-programs.create') }}"
-           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
             <i class="fas fa-plus text-xs"></i>
             برنامج جديد
         </a>
@@ -185,7 +185,7 @@
             <p class="mt-4 text-lg font-semibold text-ink">لا توجد برامج إحالات</p>
             <p class="mt-1 text-sm text-muted">ابدأ بإنشاء برنامج إحالات جديد</p>
             <a href="{{ route('admin.referral-programs.create') }}"
-               class="btn-press mt-6 inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press mt-6 inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-plus text-xs"></i>
                 إنشاء برنامج جديد
             </a>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', __('instructor.tc_show_title') . ' · ' . $cohort->title)
 @section('page_title', __('instructor.tc_show_title'))

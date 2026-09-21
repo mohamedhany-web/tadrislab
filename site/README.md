@@ -1,13 +1,13 @@
-﻿# Glottical — تصميمات HTML ثابتة (أكاديمية Atheer)
+﻿# TADRIS LAB — تصميمات HTML ثابتة (أكاديمية Atheer)
 
 صفحات عامة مطابقة للمنصة الحالية. لا تحتاج npm.
 
-**المصدر المتزامن:** `designs/glottical-public/`  
-أعد التوليد: `php designs/glottical-public/_generate.php`
+**المصدر المتزامن:** `designs/tadrislab-public/`  
+أعد التوليد: `php designs/tadrislab-public/_generate.php`
 
 ## التشغيل (XAMPP)
 
-القاعدة: `http://localhost/glottical/site/`
+القاعدة: `http://localhost/tadrislab/site/`
 
 | الصفحة | الملف |
 |--------|------|

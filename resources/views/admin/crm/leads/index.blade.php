@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'العملاء المحتملون - Glottical')
+@section('title', 'العملاء المحتملون - TADRIS LAB')
 @section('page_title', 'العملاء المحتملون')
 
 @section('content')
@@ -25,18 +25,18 @@
 
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">المبيعات · CRM · العملاء المحتملون</p>
-            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">العملاء المحتملون</h2>
-            <p class="mt-1 text-sm text-muted">ابحث وصِفِّ حسب الحالة ثم افتح تفاصيل كل عميل</p>
+            <p class="text-xs font-medium text-muted">CRM المؤسسات والمعلمين · العملاء المحتملون</p>
+            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">فرص المدارس والمعلمين</h2>
+            <p class="mt-1 text-sm text-muted">ابحث وصِفِّ حسب الحالة — مدارس، مؤسسات، ومعلمون فرديون لباقات وبرامج تدريس لاب</p>
         </div>
         <div class="admin-hero-actions flex flex-wrap gap-2">
             <a href="{{ route('admin.crm.leads.create') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white">
                 <i class="fas fa-plus text-xs"></i>
-                إضافة عميل
+                إضافة فرصة
             </a>
             <a href="{{ route('admin.crm.pipeline') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink-soft transition hover:border-accent/30 hover:text-accent">
                 <i class="fas fa-columns text-xs"></i>
-                Pipeline
+                مسار البيع
             </a>
             <a href="{{ route('admin.crm.dashboard') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink-soft">
                 <i class="fas fa-chart-pie text-xs"></i>

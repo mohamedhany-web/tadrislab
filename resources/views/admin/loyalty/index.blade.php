@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 
 @section('title', 'برامج الولاء - ' . config('app.name'))
 @section('page_title', 'برامج الولاء')
@@ -19,7 +19,7 @@
             <p class="mt-1 max-w-2xl text-sm text-muted">إدارة برامج نقاط الولاء</p>
         </div>
         <button type="button" onclick="document.getElementById('createProgramModal').classList.remove('hidden')"
-                class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
             <i class="fas fa-plus text-xs"></i>
             إضافة برنامج جديد
         </button>
@@ -151,7 +151,7 @@
                         إلغاء
                     </button>
                     <button type="submit"
-                            class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                            class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-save text-xs"></i>
                         حفظ
                     </button>

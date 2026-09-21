@@ -171,7 +171,8 @@ class OneToOneAvailabilityService
         int $instructorId,
         Carbon $startsAt,
         int $durationMinutes,
-        ?int $excludeSessionId = null
+        ?int $excludeSessionId = null,
+        ?int $excludeConsultationId = null
     ): bool {
         $endsAt = $startsAt->copy()->addMinutes($durationMinutes);
 
@@ -179,7 +180,7 @@ class OneToOneAvailabilityService
             return false;
         }
 
-        if (self::hasConflict($instructorId, $startsAt, $endsAt, $excludeSessionId)) {
+        if (self::hasConflict($instructorId, $startsAt, $endsAt, $excludeSessionId, $excludeConsultationId)) {
             return false;
         }
 
@@ -211,7 +212,8 @@ class OneToOneAvailabilityService
         int $instructorId,
         Carbon $startsAt,
         Carbon $endsAt,
-        ?int $excludeSessionId = null
+        ?int $excludeSessionId = null,
+        ?int $excludeConsultationId = null
     ): bool {
         $sessionQuery = OneToOneSession::query()
             ->where('instructor_id', $instructorId)
@@ -231,13 +233,20 @@ class OneToOneAvailabilityService
         }
 
         if (Schema::hasTable('consultation_requests')) {
-            $consultations = ConsultationRequest::query()
+            $consultationsQuery = ConsultationRequest::query()
                 ->where('instructor_id', $instructorId)
-                ->where('status', ConsultationRequest::STATUS_SCHEDULED)
-                ->whereNotNull('scheduled_at')
-                ->get();
+                ->whereIn('status', [
+                    ConsultationRequest::STATUS_SCHEDULED,
+                    ConsultationRequest::STATUS_CONFIRMED,
+                    ConsultationRequest::STATUS_RESCHEDULED,
+                ])
+                ->whereNotNull('scheduled_at');
 
-            foreach ($consultations as $consultation) {
+            if ($excludeConsultationId) {
+                $consultationsQuery->where('id', '!=', $excludeConsultationId);
+            }
+
+            foreach ($consultationsQuery->get() as $consultation) {
                 $existingStart = $consultation->scheduled_at;
                 $existingEnd = $existingStart->copy()->addMinutes((int) ($consultation->duration_minutes ?? 60));
                 if ($startsAt->lt($existingEnd) && $endsAt->gt($existingStart)) {

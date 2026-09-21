@@ -159,7 +159,7 @@
             </div>
 
             <div class="mt-6 flex flex-wrap gap-2 border-t border-line pt-5">
-                <button type="submit" class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-5 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-5 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-save text-xs"></i>
                     إنشاء الواجب
                 </button>

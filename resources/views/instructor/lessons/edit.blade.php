@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', __('instructor.lessons_edit_title') . ': ' . $lesson->title)
 @section('page_title', __('instructor.lessons_edit_title'))

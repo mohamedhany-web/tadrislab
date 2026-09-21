@@ -1,7 +1,7 @@
 @php
     $locale = app()->getLocale();
     $isRtl = $locale === 'ar';
-    $brand = config('app.name', 'Glottical');
+    $brand = config('app.name', 'TADRIS LAB');
     $name = $profile->user->name ?? __('public.instructor_fallback');
     $headline = $profile->headline_clean ?: __('public.instructor_fallback');
     $bioClean = $profile->bio_clean;
@@ -143,7 +143,7 @@
                     <i class="fas fa-book-open"></i> {{ (int) ($course->lessons_count ?? 0) }} {{ $isRtl ? 'درس' : 'lessons' }}
                   </span>
                   @if(!empty($course->price))
-                    <span class="gl-tp-private__price">{{ number_format((float) $course->price) }} {{ $isRtl ? '$' : 'USD' }}</span>
+                    <span class="gl-tp-private__price">{{ format_money($course->price, null, 0) }}</span>
                   @endif
                 </a>
               @endforeach

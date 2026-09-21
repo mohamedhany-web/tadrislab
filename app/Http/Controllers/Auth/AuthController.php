@@ -244,20 +244,13 @@ class AuthController extends Controller
 
                 return redirect()->intended(route('employee.dashboard'));
             }
-            
-            if ($user->role === 'super_admin' || $user->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
-            }
-            
-            if ($user->isInstructor()) {
-                if (! $user->canAccessInstructorPanel()) {
-                    return redirect()->route('public.tutor.apply.profile');
-                }
 
-                return redirect()->intended(route('dashboard'));
+            $home = \App\Support\TadrisRoles::homeRouteName($user);
+            if ($home === 'public.tutor.apply.profile') {
+                return redirect()->route($home);
             }
-            
-            return redirect()->intended(route('dashboard'));
+
+            return redirect()->intended(route($home));
             
         } catch (\Illuminate\Database\QueryException $e) {
             \Log::error('خطأ في قاعدة البيانات أثناء تسجيل الدخول', [
@@ -353,7 +346,7 @@ class AuthController extends Controller
             'phone' => $fullPhone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'student', // فقط طالب
+            'role' => 'student', // runtime: individual teacher (TadrisRoles::INDIVIDUAL_USER)
             'is_active' => true,
             'timezone' => $timezone,
         ]);
@@ -397,13 +390,8 @@ class AuthController extends Controller
 
         // بعد إنشاء الحساب نوجّه مباشرة للداشبورد (بدون استخدام intended لتجنب التوجيه لرابط API أو صفحة قديمة)
         session()->forget('url.intended');
-        if ($user->isEmployee()) {
-            return redirect()->route('employee.dashboard');
-        }
-        if ($user->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        }
-        return redirect()->route('dashboard');
+
+        return \App\Support\TadrisRoles::homeRedirect($user);
     }
 
     public function logout(Request $request)

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'تفاصيل الرسالة - Glottical')
+@section('title', 'تفاصيل الرسالة - TADRIS LAB')
 @section('header', 'تفاصيل الرسالة')
 
 @section('content')
@@ -14,7 +14,7 @@
                     {{ __('تفاصيل الرسالة') }}
                 </h1>
                 <p class="text-gray-600">
-                    {{ __('عرض تفاصيل الرسالة المرسلة عبر منصة Glottical (بريد إلكتروني / قنوات أخرى)') }}
+                    {{ __('عرض تفاصيل الرسالة المرسلة عبر منصة تدريس لاب (بريد إلكتروني / قنوات أخرى)') }}
                 </p>
             </div>
             <a href="{{ route('admin.messages.index') }}" 
@@ -57,7 +57,7 @@
                             <div class="flex-1">
                                 <div class="flex items-center justify-between mb-2">
                                     <div class="text-sm font-bold text-primary-700">
-                                        {{ __('منصة Glottical') }}
+                                        {{ __('منصة تدريس لاب') }}
                                     </div>
                                     @if($message->status === 'sent')
                                         <div class="text-green-600 text-lg">
@@ -129,7 +129,7 @@
                             </div>
                             <div class="text-sm text-gray-600 flex items-center gap-2">
                                 <i class="fas fa-user-tag text-sky-600"></i>
-                                <span>{{ $message->user->role === 'student' ? __('admin.student_role_label') : __('ولي أمر') }}</span>
+                                <span>{{ __('admin.student_role_label') }}</span>
                             </div>
                         </div>
                     </div>

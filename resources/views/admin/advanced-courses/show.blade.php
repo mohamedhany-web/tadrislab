@@ -29,7 +29,7 @@
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('admin.advanced-courses.edit', $advancedCourse) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-edit text-xs"></i>
                 تعديل البرنامج
             </a>
@@ -79,7 +79,7 @@
                                 <span class="text-muted line-through">{{ number_format($advancedCourse->listPriceAmount(), 0) }}</span>
                                 <span class="mx-1 text-muted">←</span>
                             @endif
-                            {{ number_format($advancedCourse->effectivePurchasePrice(), 0) }} USD · {{ $advancedCourse->duration_hours ?? 0 }} س
+                            {{ number_format($advancedCourse->effectivePurchasePrice(), 0) }} {{ platform_currency() }} · {{ $advancedCourse->duration_hours ?? 0 }} س
                         </p>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                 <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                     <h4 class="text-sm font-semibold text-ink">دروس البرنامج</h4>
                     <a href="{{ route('admin.courses.lessons.create', $advancedCourse) }}"
-                       class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                       class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-plus text-xs"></i>
                         إضافة درس
                     </a>
@@ -237,7 +237,7 @@
                         <h3 class="mt-4 text-base font-semibold text-ink">لا توجد دروس</h3>
                         <p class="mt-1 text-sm text-muted">ابدأ بإضافة الدروس لهذا البرنامج</p>
                         <a href="{{ route('admin.courses.lessons.create', $advancedCourse) }}"
-                           class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                           class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                             <i class="fas fa-plus text-xs"></i>
                             إضافة أول درس
                         </a>
@@ -250,7 +250,7 @@
                 <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                     <h4 class="text-sm font-semibold text-ink">الطلاب المسجّلون</h4>
                     <a href="{{ route('admin.advanced-courses.students', $advancedCourse) }}"
-                       class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                       class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-user-plus text-xs"></i>
                         إضافة طالب
                     </a>
@@ -323,7 +323,7 @@
                         <h3 class="mt-4 text-base font-semibold text-ink">لا يوجد طلاب</h3>
                         <p class="mt-1 text-sm text-muted">لم يتم تسجيل أي طالب في هذا البرنامج بعد</p>
                         <a href="{{ route('admin.advanced-courses.students', $advancedCourse) }}"
-                           class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                           class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                             <i class="fas fa-user-plus text-xs"></i> إضافة طالب
                         </a>
                     </div>
@@ -335,7 +335,7 @@
                 <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                     <h4 class="text-sm font-semibold text-ink">طلبات التسجيل</h4>
                     <a href="{{ route('admin.orders.index') }}?course_id={{ $advancedCourse->id }}"
-                       class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                       class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-external-link-alt text-xs"></i>
                         عرض جميع الطلبات
                     </a>
@@ -391,7 +391,7 @@
                         <h5 class="text-sm font-semibold text-ink">حالة البرنامج</h5>
                         <p class="mt-1 text-xs text-muted">تفعيل أو إيقاف البرنامج للطلاب</p>
                         <button type="button" onclick="toggleCourseStatus({{ $advancedCourse->id }})"
-                                class="btn-press mt-4 inline-flex h-11 w-full items-center justify-center rounded-xl px-4 text-sm font-medium text-white {{ $advancedCourse->is_active ? 'bg-rose-600 hover:bg-rose-700' : 'bg-accent hover:bg-[#0d4f4a]' }}">
+                                class="btn-press mt-4 inline-flex h-11 w-full items-center justify-center rounded-xl px-4 text-sm font-medium text-white {{ $advancedCourse->is_active ? 'bg-rose-600 hover:bg-rose-700' : 'bg-accent hover:bg-[#184888]' }}">
                             {{ $advancedCourse->is_active ? 'إيقاف البرنامج' : 'تفعيل البرنامج' }}
                         </button>
                     </div>
@@ -400,7 +400,7 @@
                         <h5 class="text-sm font-semibold text-ink">ترشيح البرنامج</h5>
                         <p class="mt-1 text-xs text-muted">عرض البرنامج في القائمة المرشّحة</p>
                         <button type="button" onclick="toggleCourseFeatured({{ $advancedCourse->id }})"
-                                class="btn-press mt-4 inline-flex h-11 w-full items-center justify-center rounded-xl px-4 text-sm font-medium {{ $advancedCourse->is_featured ? 'border border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100' : 'bg-accent text-white hover:bg-[#0d4f4a]' }}">
+                                class="btn-press mt-4 inline-flex h-11 w-full items-center justify-center rounded-xl px-4 text-sm font-medium {{ $advancedCourse->is_featured ? 'border border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100' : 'bg-accent text-white hover:bg-[#184888]' }}">
                             {{ $advancedCourse->is_featured ? 'إلغاء الترشيح' : 'ترشيح البرنامج' }}
                         </button>
                     </div>
@@ -422,7 +422,7 @@
                         <h5 class="text-sm font-semibold text-ink">الإحصائيات</h5>
                         <p class="mt-1 text-xs text-muted">عرض إحصائيات مفصّلة للبرنامج</p>
                         <a href="{{ route('admin.advanced-courses.statistics', $advancedCourse) }}"
-                           class="btn-press mt-4 inline-flex h-11 w-full items-center justify-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                           class="btn-press mt-4 inline-flex h-11 w-full items-center justify-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                             عرض الإحصائيات
                         </a>
                     </div>

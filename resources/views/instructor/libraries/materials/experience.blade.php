@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $material->title ?: $material->file_name)
 @section('page_title', $material->title ?: $material->file_name)

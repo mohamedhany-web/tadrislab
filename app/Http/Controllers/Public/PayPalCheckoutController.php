@@ -38,10 +38,10 @@ class PayPalCheckoutController extends Controller
         $request->validate([
             'coupon_code' => 'nullable|string|max:64',
             'wallet_credit' => 'nullable|numeric|min:0',
-            'currency' => 'nullable|in:EGP,USD,EUR,GBP,egp,usd,eur,gbp',
+            'currency' => 'nullable|string|in:'.implode(',', platform_currencies()),
         ]);
 
-        $pricingCurrency = 'USD';
+        $pricingCurrency = platform_currency();
 
         $pricing = CourseCheckoutPricingService::resolve(
             Auth::user(),
@@ -150,7 +150,10 @@ class PayPalCheckoutController extends Controller
         abort_unless((int) $order->user_id === (int) Auth::id(), 403);
         abort_unless($order->status === Order::STATUS_PENDING && $order->payment_method === 'online', 404);
 
+        $order->loadMissing(['course', 'servicePackage', 'package', 'learningPath']);
         $title = $order->course->title
+            ?? $order->package?->name
+            ?? $order->learningPath?->title()
             ?? $order->servicePackage->name
             ?? data_get($order->custom_package_data, 'name')
             ?? 'طلب #'.$order->id;
@@ -206,6 +209,14 @@ class PayPalCheckoutController extends Controller
         $order = $token !== ''
             ? Order::query()->where('paypal_order_id', $token)->first()
             : null;
+
+        if ($order) {
+            try {
+                event(new \App\Events\PaymentFailed($order->loadMissing('user'), 'تم إلغاء الدفع من PayPal.'));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
 
         $url = $order ? $this->retryUrl($order) : route('orders.index');
 
@@ -318,8 +329,20 @@ class PayPalCheckoutController extends Controller
 
     private function successUrl(Order $order): string
     {
+        if ($order->isConsultationOrder()) {
+            $consultation = \App\Services\ConsultationOrderFulfillmentService::resolveConsultation($order);
+            if ($consultation) {
+                return route('consultations.show', $consultation);
+            }
+        }
         if ($order->advanced_course_id) {
             return route('public.course.show', $order->advanced_course_id);
+        }
+        if ($order->learning_path_id && $order->learningPath) {
+            return route('student.learning-paths.show', $order->learningPath->slug);
+        }
+        if ($order->package_id || $order->order_type === Order::TYPE_PACKAGE) {
+            return route('student.learning-paths.index');
         }
         if (in_array($order->order_type, [Order::TYPE_SERVICE_PACKAGE, Order::TYPE_CUSTOM_SERVICE_PACKAGE], true)) {
             return route('student.service-entitlements.index');
@@ -330,6 +353,24 @@ class PayPalCheckoutController extends Controller
 
     private function retryUrl(Order $order): string
     {
+        if ($order->isConsultationOrder()) {
+            $slug = data_get($order->custom_package_data, 'consultation_service_slug');
+            if (filled($slug)) {
+                return route('public.consultations.book.service', $slug);
+            }
+            $consultation = \App\Services\ConsultationOrderFulfillmentService::resolveConsultation($order);
+            if ($consultation?->service?->slug) {
+                return route('public.consultations.book.service', $consultation->service->slug);
+            }
+
+            return route('orders.show', $order);
+        }
+        if ($order->package_id && $order->package) {
+            return route('public.packages.checkout', $order->package->slug);
+        }
+        if ($order->learning_path_id && $order->learningPath) {
+            return route('public.learning-paths.checkout', $order->learningPath->slug);
+        }
         if ($order->advanced_course_id) {
             return route('public.course.checkout', $order->advanced_course_id);
         }

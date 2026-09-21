@@ -77,7 +77,7 @@ class StudentLiveAdminBroadcastIsolationTest extends TestCase
     {
         $admin = User::factory()->create([
             'role' => 'super_admin',
-            'name' => 'مدير منصة glottical',
+            'name' => 'مدير منصة tadrislab',
             'is_active' => true,
             'password' => Hash::make('secret'),
         ]);
@@ -93,8 +93,8 @@ class StudentLiveAdminBroadcastIsolationTest extends TestCase
             'password' => Hash::make('secret'),
         ]);
         $server = LiveServer::create([
-            'name' => 'Glottical LiveKit',
-            'domain' => 'live.glottical.com',
+            'name' => 'TADRIS LAB LiveKit',
+            'domain' => 'live.tadrislab.com',
             'provider' => 'livekit',
             'status' => 'active',
         ]);
@@ -129,7 +129,7 @@ class StudentLiveAdminBroadcastIsolationTest extends TestCase
         $index = $this->actingAs($student)->get(route('student.live-sessions.index'));
         $index->assertOk();
         $index->assertDontSee('بث إداري', false);
-        $index->assertDontSee('مدير منصة glottical', false);
+        $index->assertDontSee('مدير منصة tadrislab', false);
         $index->assertSee('جلسة كورس مفتوحة', false);
         $index->assertSee('معلم الكورس', false);
 

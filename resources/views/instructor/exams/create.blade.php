@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', __('instructor.create_exam_new') . ' - ' . config('app.name'))
 @section('page_title', __('instructor.create_exam_new'))

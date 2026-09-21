@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'إنشاء سنة مدرسة - Glottical')
+@section('title', 'إنشاء سنة مدرسة - TADRIS LAB')
 @section('page_title', 'إنشاء سنة مدرسة')
 
 @section('content')

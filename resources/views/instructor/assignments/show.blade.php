@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $assignment->title . ' - ' . config('app.name'))
 @section('page_title', $assignment->title)

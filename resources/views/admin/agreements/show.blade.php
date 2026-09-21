@@ -39,7 +39,7 @@
         </div>
         <div class="flex flex-wrap gap-2">
             <a href="{{ route('admin.agreements.edit', $agreement) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-pen text-xs"></i>
                 تعديل
             </a>
@@ -192,7 +192,7 @@
                 </div>
                 <div class="space-y-3 p-4 sm:p-5">
                     <a href="{{ route('admin.agreements.edit', $agreement) }}"
-                       class="btn-press flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                       class="btn-press flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-pen text-xs"></i>
                         تعديل الاتفاقية
                     </a>

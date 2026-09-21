@@ -550,8 +550,8 @@ class AccountingReportsController extends Controller
 
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
-            ->setCreator('Glottical')
-            ->setTitle('التقارير المالية - Glottical')
+            ->setCreator('TADRIS LAB')
+            ->setTitle('التقارير المالية - TADRIS LAB')
             ->setSubject('تقارير محاسبية شاملة');
 
         $headerStyle = [
@@ -596,7 +596,7 @@ class AccountingReportsController extends Controller
             if ($type === 'payment_gateway') $this->addPaymentGatewaySheet($spreadsheet, 1, $startDate, $endDate, $headerStyle, $headerFont, $border);
         }
 
-        $filename = 'التقارير_المالية_Glottical_' . $startDate->format('Y-m-d') . '_' . $endDate->format('Y-m-d') . '.xlsx';
+        $filename = 'التقارير_المالية_TADRIS LAB_' . $startDate->format('Y-m-d') . '_' . $endDate->format('Y-m-d') . '.xlsx';
         $asciiFilename = 'accounting_reports_' . $startDate->format('Y-m-d') . '_' . $endDate->format('Y-m-d') . '.xlsx';
         $disposition = "attachment; filename=\"{$asciiFilename}\"; filename*=UTF-8''" . rawurlencode($filename);
 
@@ -612,7 +612,7 @@ class AccountingReportsController extends Controller
 
     private function writeSummarySheet($sheet, $stats, $startDate, $endDate, $headerStyle, $headerFont, $border)
     {
-        $sheet->setCellValue('A1', 'تقارير مالية شاملة - Glottical');
+        $sheet->setCellValue('A1', 'تقارير مالية شاملة - TADRIS LAB');
         $sheet->mergeCells('A1:D1');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
         $sheet->setCellValue('A2', 'الفترة: من ' . $startDate->format('Y-m-d') . ' إلى ' . $endDate->format('Y-m-d'));

@@ -47,17 +47,14 @@ class LiveSessionController extends Controller
 
     public function create()
     {
-        $courses = AdvancedCourse::whereHas('enrollments', function ($q) {
-            $q->where('user_id', auth()->id());
-        })
-            ->orWhere('instructor_id', auth()->id())
-            ->select('id', 'title')
-            ->orderBy('title')
-            ->get();
-
-        if ($courses->isEmpty()) {
-            $courses = AdvancedCourse::select('id', 'title')->orderBy('title')->get();
-        }
+        $courseIds = auth()->user()->teachingAdvancedCourseIds();
+        $courses = $courseIds->isEmpty()
+            ? collect()
+            : AdvancedCourse::query()
+                ->whereIn('id', $courseIds)
+                ->select('id', 'title')
+                ->orderBy('title')
+                ->get();
 
         return view('instructor.live-sessions.create', compact('courses'));
     }
@@ -77,6 +74,11 @@ class LiveSessionController extends Controller
         ]);
         $validated = AppTimezone::shiftRequestDateTime($request, $validated, 'scheduled_at', mustBeFuture: true);
         unset($validated['timezone']);
+
+        if (! empty($validated['course_id'])) {
+            $allowed = auth()->user()->teachingAdvancedCourseIds();
+            abort_unless($allowed->contains((int) $validated['course_id']), 403, 'الكورس غير مُسند لك.');
+        }
 
         $validated['instructor_id'] = auth()->id();
         $validated['is_recorded'] = true;

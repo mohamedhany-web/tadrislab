@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'مدربو الأكاديمية - Glottical')
+@section('title', 'مدربو الأكاديمية - TADRIS LAB')
 @section('page_title', 'مدربو الأكاديمية')
 
 @section('content')

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'app_name' => 'Glottical',
+    'app_name' => 'تدريس لاب',
     'save' => 'حفظ',
     'cancel' => 'إلغاء',
     'edit' => 'تعديل',

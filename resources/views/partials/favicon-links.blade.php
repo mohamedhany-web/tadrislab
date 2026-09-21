@@ -1,16 +1,13 @@
-{{-- أيقونة التبويب ونتائج البحث: نفس شعار لوحة التحكم من إعدادات النظام عند رفعه --}}
+{{-- أيقونة التبويب: شعار لوحة التحكم إن وُجد، وإلا لوجو تدريس لاب الرسمي --}}
 @php
     $brandIcon = \App\Services\AdminPanelBranding::logoPublicUrl();
+    $fallbackIcon = asset('img/lasles/logo-mark.png');
+    $icon = $brandIcon ?: $fallbackIcon;
 @endphp
-@if($brandIcon)
-    <link rel="icon" href="{{ $brandIcon }}" sizes="any">
-    <link rel="shortcut icon" href="{{ $brandIcon }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ $brandIcon }}">
-    <link rel="icon" href="{{ $brandIcon }}" sizes="32x32">
-    <link rel="icon" href="{{ $brandIcon }}" sizes="16x16">
-@else
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('logo-removebg-preview.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('logo-removebg-preview.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('logo-removebg-preview.png') }}">
-@endif
+<link rel="icon" href="{{ $icon }}" sizes="any">
+<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+<link rel="icon" type="image/png" sizes="192x192" href="{{ asset('android-chrome-192x192.png') }}">
+<link rel="icon" type="image/png" sizes="512x512" href="{{ asset('android-chrome-512x512.png') }}">

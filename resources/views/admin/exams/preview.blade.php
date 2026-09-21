@@ -33,7 +33,7 @@
                 امتحانات البرنامج
             </a>
             <a href="{{ route('admin.exams.questions.manage', $exam) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-cog text-xs"></i>
                 إدارة الأسئلة
             </a>
@@ -198,7 +198,7 @@
                 </div>
                 <h3 class="mt-4 text-lg font-semibold text-ink">لا توجد أسئلة في الامتحان</h3>
                 <p class="mt-1 text-sm text-muted">أضف أسئلة من صفحة إدارة الأسئلة ثم عاين الامتحان مرة أخرى.</p>
-                <a href="{{ route('admin.exams.questions.manage', $exam) }}" class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <a href="{{ route('admin.exams.questions.manage', $exam) }}" class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-plus text-xs"></i>
                     إدارة الأسئلة
                 </a>

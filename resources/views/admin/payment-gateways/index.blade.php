@@ -121,7 +121,7 @@
                     <code class="rounded bg-surface px-1 text-[11px]" dir="ltr">FAWATERAK_VENDOR_KEY</code>
                     و
                     <code class="rounded bg-surface px-1 text-[11px]" dir="ltr">FAWATERAK_PROVIDER_KEY</code>.
-                    سجّل نطاق الـ IFrame بصيغة HTTPS بدون شرطة مائلة في النهاية (مثل <span dir="ltr">https://glottical.com</span>).
+                    سجّل نطاق الـ IFrame بصيغة HTTPS بدون شرطة مائلة في النهاية (مثل <span dir="ltr">https://tadrislab.com</span>).
                 </div>
 
                 <div class="border-t border-line pt-4">
@@ -190,7 +190,14 @@
                     <div>
                         <label class="{{ $label }}" for="paypal_currency">عملة PayPal الافتراضية</label>
                         <select name="paypal_currency" id="paypal_currency" class="{{ $input }}">
-                            @foreach(['USD' => 'USD — دولار', 'EUR' => 'EUR — يورو', 'GBP' => 'GBP — إسترليني'] as $code => $labelText)
+                            @foreach([
+                                'QAR' => 'QAR — ريال قطري',
+                                'USD' => 'USD — دولار',
+                                'SAR' => 'SAR — ريال سعودي',
+                                'EGP' => 'EGP — جنيه',
+                                'EUR' => 'EUR — يورو',
+                                'GBP' => 'GBP — إسترليني',
+                            ] as $code => $labelText)
                                 <option value="{{ $code }}" @selected(old('paypal_currency', $paypalCurrency) === $code)>{{ $labelText }}</option>
                             @endforeach
                         </select>
@@ -280,7 +287,14 @@
                     <div>
                         <label class="{{ $label }}" for="kashier_currency">العملة</label>
                         <select name="kashier_currency" id="kashier_currency" class="{{ $input }}">
-                            @foreach(['USD' => 'USD — دولار', 'EUR' => 'EUR — يورو', 'GBP' => 'GBP — إسترليني'] as $code => $labelText)
+                            @foreach([
+                                'QAR' => 'QAR — ريال قطري',
+                                'USD' => 'USD — دولار',
+                                'SAR' => 'SAR — ريال سعودي',
+                                'EGP' => 'EGP — جنيه',
+                                'EUR' => 'EUR — يورو',
+                                'GBP' => 'GBP — إسترليني',
+                            ] as $code => $labelText)
                                 <option value="{{ $code }}" @selected(old('kashier_currency', $kashierCurrency) === $code)>{{ $labelText }}</option>
                             @endforeach
                         </select>

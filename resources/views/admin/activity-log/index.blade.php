@@ -150,7 +150,7 @@
                 <input id="date_to" type="date" name="date_to" value="{{ request('date_to') }}" class="{{ $fieldClass }}">
             </div>
             <div class="flex flex-wrap gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-5 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-5 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-search text-xs"></i>
                     <span>بحث</span>
                 </button>

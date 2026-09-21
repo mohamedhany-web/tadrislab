@@ -52,7 +52,7 @@
                 </select>
             </div>
             <div class="flex items-end gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-search text-xs"></i> بحث
                 </button>
                 @if(request()->anyFilled(['lecture_id', 'status']))

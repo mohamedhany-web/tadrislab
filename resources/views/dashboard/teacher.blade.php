@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', 'لوحة تحكم المدرس')
 @section('header', 'لوحة تحكم المدرس')

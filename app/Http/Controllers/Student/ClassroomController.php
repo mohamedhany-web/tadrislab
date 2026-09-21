@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Models\ClassroomMeeting;
 use App\Models\ClassroomMeetingReport;
+use App\Models\ConsultationRequest;
 use App\Models\IntegrationSetting;
 use App\Models\OneToOneSession;
 use App\Models\TutoringGroupBooking;
@@ -105,7 +106,7 @@ class ClassroomController extends Controller
     }
 
     /**
-     * Glottical Whiteboard — صفحة لوحة كاملة منفصلة (خارج غرفة الاجتماع).
+     * TADRIS LAB Whiteboard — صفحة لوحة كاملة منفصلة (خارج غرفة الاجتماع).
      */
     public function whiteboardStandalone()
     {
@@ -136,7 +137,7 @@ class ClassroomController extends Controller
         ]);
 
         $code = ClassroomMeeting::generateCode();
-        $roomName = 'Glottical-'.$code;
+        $roomName = 'TADRIS LAB-'.$code;
         $startNow = (string) ($data['start_now'] ?? '1') === '1';
 
         $meeting = ClassroomMeeting::create([
@@ -164,7 +165,7 @@ class ClassroomController extends Controller
     {
         $limits = $this->classroomLimits();
         $request->merge([
-            'title' => $request->input('title') ?: 'غرفة Glottical - '.now()->format('H:i'),
+            'title' => $request->input('title') ?: 'غرفة TADRIS LAB - '.now()->format('H:i'),
             'max_participants' => (string) $limits['classroom_max_participants'],
             'planned_duration_minutes' => (string) $limits['classroom_default_duration_minutes'],
             'start_now' => '1',
@@ -776,6 +777,7 @@ class ClassroomController extends Controller
 
         $completedTutoring = $this->completeLinkedTutoringBookingIfNeeded($meeting);
         $this->completeLinkedOneToOneIfNeeded($meeting);
+        $completedConsultation = $this->completeLinkedConsultationIfNeeded($meeting);
 
         if (request()->routeIs('instructor.*')) {
             if ($meeting->tutoring_group_booking_id) {
@@ -788,7 +790,9 @@ class ClassroomController extends Controller
 
             if ($meeting->consultation_request_id) {
                 return redirect()->route('instructor.consultations.show', $meeting->consultation_request_id)
-                    ->with('success', 'تم إنهاء جلسة الاستشارة.');
+                    ->with('success', $completedConsultation
+                        ? 'تم إنهاء جلسة الاستشارة وتسجيلها كمكتملة.'
+                        : 'تم إنهاء جلسة الاستشارة.');
             }
 
             $oneToOneId = $meeting->one_to_one_session_id
@@ -873,6 +877,10 @@ class ClassroomController extends Controller
      */
     private function completeLinkedOneToOneIfNeeded(ClassroomMeeting $meeting): bool
     {
+        if (! Schema::hasTable('one_to_one_sessions')) {
+            return false;
+        }
+
         $sessionId = $meeting->one_to_one_session_id;
         if (! $sessionId) {
             $sessionId = OneToOneSession::query()
@@ -903,6 +911,44 @@ class ClassroomController extends Controller
             Log::error('One-to-one auto-complete failed: '.$e->getMessage(), [
                 'meeting_id' => $meeting->id,
                 'session_id' => $session->id,
+            ]);
+
+            return false;
+        }
+    }
+
+    /**
+     * عند إنهاء غرفة استشارة مؤكدة: علّم الحجز مكتملًا (بدون خصم إضافي — الجلسة خُصمت عند الحجز إن وُجدت باقة).
+     */
+    private function completeLinkedConsultationIfNeeded(ClassroomMeeting $meeting): bool
+    {
+        if (! Schema::hasTable('consultation_requests')) {
+            return false;
+        }
+
+        $consultationId = $meeting->consultation_request_id;
+        if (! $consultationId) {
+            $consultationId = ConsultationRequest::query()
+                ->where('classroom_meeting_id', $meeting->id)
+                ->value('id');
+        }
+        if (! $consultationId || ! $meeting->started_at) {
+            return false;
+        }
+
+        $consultation = ConsultationRequest::query()->find($consultationId);
+        if (! $consultation || ! $consultation->isActiveBooking()) {
+            return false;
+        }
+
+        try {
+            $consultation->update(['status' => ConsultationRequest::STATUS_COMPLETED]);
+
+            return true;
+        } catch (\Throwable $e) {
+            Log::error('Consultation auto-complete failed: '.$e->getMessage(), [
+                'meeting_id' => $meeting->id,
+                'consultation_id' => $consultation->id,
             ]);
 
             return false;

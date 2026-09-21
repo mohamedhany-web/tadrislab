@@ -72,7 +72,7 @@
                     <i class="fas fa-users text-xs"></i>
                     إحصائيات المستخدمين
                 </a>
-                <a href="{{ route('admin.statistics.courses') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <a href="{{ route('admin.statistics.courses') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-code text-xs"></i>
                     إحصائيات الكورسات
                 </a>
@@ -180,7 +180,7 @@
                     </div>
                     @if ($activityLogRoute)
                         <div class="mt-5 border-t border-line pt-5 text-center">
-                            <a href="{{ $activityLogRoute }}" class="btn-press inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-[#0d4f4a]">
+                            <a href="{{ $activityLogRoute }}" class="btn-press inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-[#184888]">
                                 <i class="fas fa-list"></i>
                                 استعرض كامل السجل
                                 <i class="fas fa-arrow-left text-xs"></i>

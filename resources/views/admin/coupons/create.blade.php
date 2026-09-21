@@ -248,7 +248,7 @@
         </article>
 
         <div class="flex flex-wrap gap-3">
-            <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+            <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-save text-xs"></i> حفظ الكوبون
             </button>
             <a href="{{ route('admin.coupons.index') }}" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl border border-line bg-surface px-6 text-sm font-medium text-ink transition hover:bg-accent-soft hover:text-accent">إلغاء</a>

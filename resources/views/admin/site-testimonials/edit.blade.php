@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'تعديل رأي - Glottical')
+@section('title', 'تعديل رأي - TADRIS LAB')
 @section('page_title', 'تعديل رأي')
 
 @section('content')

@@ -125,19 +125,19 @@
 
         <div class="border-t border-line px-4 py-4 sm:px-5 sm:py-5">
             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                <button onclick="clearCache('config')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button onclick="clearCache('config')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-trash"></i>
                     مسح كاش الإعدادات
                 </button>
-                <button onclick="clearCache('route')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button onclick="clearCache('route')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-trash"></i>
                     مسح كاش المسارات
                 </button>
-                <button onclick="clearCache('view')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button onclick="clearCache('view')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-trash"></i>
                     مسح كاش العروض
                 </button>
-                <button onclick="clearCache('application')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button onclick="clearCache('application')" class="btn-press inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-trash"></i>
                     مسح كاش التطبيق
                 </button>
@@ -168,7 +168,7 @@
                 <p class="mb-4 text-sm text-muted">
                     حذف الملفات المؤقتة القديمة لتحرير مساحة القرص
                 </p>
-                <button onclick="clearTempFiles()" class="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button onclick="clearTempFiles()" class="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-broom"></i>
                     تنظيف الملفات المؤقتة
                 </button>
@@ -184,7 +184,7 @@
                 <p class="mb-4 text-sm text-muted">
                     تحسين الجداول وتحسين الأداء
                 </p>
-                <button onclick="optimizeDatabase()" class="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button onclick="optimizeDatabase()" class="btn-press inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-tools"></i>
                     تحسين قاعدة البيانات
                 </button>

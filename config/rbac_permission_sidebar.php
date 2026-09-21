@@ -201,9 +201,9 @@ return [
             'route_patterns' => ['admin.faq.*'],
         ],
         'manage.contact-messages' => [
-            'route' => 'admin.contact-messages.index',
-            'icon' => 'fas fa-envelope-open-text',
-            'route_patterns' => ['admin.contact-messages.*'],
+            'route' => 'admin.inquiries.index',
+            'icon' => 'fas fa-comments',
+            'route_patterns' => ['admin.inquiries.*', 'admin.contact-messages.*'],
         ],
         'manage.free-trial-bookings' => [
             'route' => 'admin.free-trial-bookings.index',

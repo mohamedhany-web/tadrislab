@@ -1,34 +1,40 @@
 @extends('layouts.admin')
 
-@section('title', 'الباقات والأسعار - ' . config('app.name'))
-@section('page_title', 'الباقات والأسعار')
+@section('title', __('admin.packages') . ' - ' . config('app.name'))
+@section('page_title', __('admin.packages'))
 
 @section('content')
 @php
-    $activeTab = request('tab', 'packages');
+    $showLegacyCatalogTabs = $showLegacyCatalogTabs ?? false;
+    $activeTab = $activeTab ?? request('tab', 'packages');
+    if (! $showLegacyCatalogTabs) {
+        $activeTab = 'packages';
+    }
     $fieldClass = 'h-11 w-full rounded-xl border border-line bg-surface px-4 text-sm text-ink transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20';
     $labelClass = 'mb-1.5 block text-xs font-medium text-muted';
 @endphp
 <div class="space-y-5" x-data="{ activeTab: '{{ $activeTab }}' }">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">التجارة · تسعير Glottical</p>
-            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">الباقات والأسعار</h2>
-            <p class="mt-1 max-w-2xl text-sm text-muted">مركز موحّد لباقات البرامج المسجّلة، أسعار البرامج، وباقات الحصص المباشرة وفق مواصفات المنصة (USD + حساب تلقائي).</p>
+            <p class="text-xs font-medium text-muted">{{ __('admin.pricing_packages') }}</p>
+            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ __('admin.pricing_packages') }}</h2>
+            <p class="mt-1 max-w-2xl text-sm text-muted">باقات الوصول للمعلمين والمدارس (مجانية / فردية / متقدمة / مدارس ومؤسسات / مخصصة) — العملة الافتراضية QAR، وتظهر في صفحة /pricing.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('admin.packages.create') }}"
                x-show="activeTab === 'packages'"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-plus text-xs"></i>
-                باقة برامج جديدة
+                باقة جديدة
             </a>
+            @if($showLegacyCatalogTabs)
             <a href="{{ route('admin.tutoring-groups.index', 'individual') }}"
                x-show="activeTab === 'tutoring'"
                class="btn-press inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink transition hover:bg-accent-soft hover:text-accent">
                 <i class="fas fa-users text-xs"></i>
                 مجموعات الحصص
             </a>
+            @endif
         </div>
     </section>
 
@@ -43,12 +49,13 @@
         </div>
     @endif
 
+    @if($showLegacyCatalogTabs)
     <nav class="flex flex-wrap gap-2 rounded-2xl border border-line bg-surface p-2 shadow-soft">
         <button type="button" @click="activeTab = 'packages'"
                 :class="activeTab === 'packages' ? 'bg-accent text-white' : 'text-ink-soft hover:bg-accent-soft hover:text-accent'"
                 class="btn-press inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-medium transition">
             <i class="fas fa-box text-xs"></i>
-            باقات البرامج ({{ $packageStats['total'] ?? 0 }})
+            باقات تدريس لاب ({{ $packageStats['total'] ?? 0 }})
         </button>
         <button type="button" @click="activeTab = 'courses'"
                 :class="activeTab === 'courses' ? 'bg-accent text-white' : 'text-ink-soft hover:bg-accent-soft hover:text-accent'"
@@ -63,6 +70,7 @@
             باقات الحصص ({{ $tutoringStats['total'] ?? 0 }})
         </button>
     </nav>
+    @endif
 
     {{-- ===== باقات البرامج المسجّلة ===== --}}
     <div x-show="activeTab === 'packages'" x-cloak class="space-y-5">
@@ -106,20 +114,20 @@
                     </select>
                 </div>
                 <div>
-                    <label class="{{ $labelClass }}" for="track">المسار</label>
-                    <select name="track" id="track" class="{{ $fieldClass }}">
-                        <option value="">كل المسارات</option>
+                    <label class="{{ $labelClass }}" for="package_type">نوع الباقة</label>
+                    <select name="package_type" id="package_type" class="{{ $fieldClass }}">
+                        <option value="">كل الأنواع</option>
                         @foreach(\App\Models\Package::trackLabels() as $key => $label)
-                            <option value="{{ $key }}" @selected(request('track') === $key)>{{ $label }}</option>
+                            <option value="{{ $key }}" @selected(request('package_type') === $key || request('track') === $key)>{{ $label }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
             <div class="mt-3 flex flex-wrap gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-filter text-xs"></i> تطبيق
                 </button>
-                @if(request()->hasAny(['search', 'status', 'track']))
+                @if(request()->hasAny(['search', 'status', 'track', 'package_type']))
                     <a href="{{ route('admin.packages.index', ['tab' => 'packages']) }}" class="inline-flex h-11 items-center rounded-xl border border-line px-4 text-sm text-muted hover:bg-accent-soft hover:text-accent">إعادة تعيين</a>
                 @endif
             </div>
@@ -132,9 +140,9 @@
                         <thead>
                             <tr class="border-b border-line text-right text-xs font-medium text-muted">
                                 <th class="px-4 py-3">الباقة</th>
-                                <th class="px-4 py-3">المسار</th>
-                                <th class="px-4 py-3">البرامج</th>
-                                <th class="px-4 py-3">السعر (USD)</th>
+                                <th class="px-4 py-3">النوع</th>
+                                <th class="px-4 py-3">مسارات</th>
+                                <th class="px-4 py-3">السعر</th>
                                 <th class="px-4 py-3">الحالة</th>
                                 <th class="px-4 py-3">إجراءات</th>
                             </tr>
@@ -158,7 +166,7 @@
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-muted">{{ $package->trackLabel() ?? '—' }}</td>
-                                    <td class="px-4 py-3 tabular-nums text-ink">{{ $package->courses_count ?? 0 }}</td>
+                                    <td class="px-4 py-3 tabular-nums text-ink">{{ $package->learning_paths_count ?? $package->learningPaths->count() }}</td>
                                     <td class="px-4 py-3">
                                         <div class="font-semibold tabular-nums text-ink">{{ $package->formattedPrice(2) }}</div>
                                         @if($package->formattedOriginalPrice(2))
@@ -208,6 +216,7 @@
         @endif
     </div>
 
+    @if($showLegacyCatalogTabs)
     {{-- ===== أسعار البرامج ===== --}}
     <div x-show="activeTab === 'courses'" x-cloak class="space-y-5">
         <section class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -229,7 +238,7 @@
             <article class="rounded-2xl border border-line bg-surface p-4 shadow-soft">
                 <div class="inline-flex size-9 items-center justify-center rounded-xl bg-[#f2f5f4] text-accent"><i class="fas fa-chart-line text-sm"></i></div>
                 <p class="mt-3 text-xs font-medium text-muted">إجمالي قيمة الأسعار</p>
-                <p class="mt-1 text-2xl font-semibold tabular-nums text-ink">{{ number_format($courseStats['total_revenue'] ?? 0, 0) }} <span class="text-sm font-medium text-muted">USD</span></p>
+                <p class="mt-1 text-2xl font-semibold tabular-nums text-ink">{{ number_format($courseStats['total_revenue'] ?? 0, 0) }} <span class="text-sm font-medium text-muted">{{ platform_currency() }}</span></p>
             </article>
         </section>
 
@@ -291,7 +300,7 @@
                 </div>
             </div>
             <div class="mt-3 flex flex-wrap gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">تطبيق</button>
+                <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">تطبيق</button>
                 @if(request()->hasAny(['course_search', 'course_status', 'course_level', 'course_language', 'course_category', 'course_active']))
                     <a href="{{ route('admin.packages.index', ['tab' => 'courses']) }}" class="inline-flex h-11 items-center rounded-xl border border-line px-4 text-sm text-muted">إعادة تعيين</a>
                 @endif
@@ -355,7 +364,7 @@
                                 @if($course->is_free || (float) $course->price == 0)
                                     <span class="font-medium text-emerald-700">مجاني</span>
                                 @else
-                                    <span class="font-semibold tabular-nums text-ink">{{ number_format((float) $course->price, 2) }} USD</span>
+                                    <span class="font-semibold tabular-nums text-ink">{{ number_format((float) $course->price, 2) }} {{ platform_currency() }}</span>
                                 @endif
                             </div>
 
@@ -391,11 +400,13 @@
             </article>
         @endif
     </div>
+    @endif
 
+    @if($showLegacyCatalogTabs)
     {{-- ===== باقات الحصص المباشرة ===== --}}
     <div x-show="activeTab === 'tutoring'" x-cloak class="space-y-5">
         <div class="rounded-2xl border border-accent/20 bg-accent-soft/40 px-4 py-4 text-sm text-ink shadow-soft">
-            <p class="font-semibold text-ink">حساب الباقة تلقائيًا (مواصفات Glottical)</p>
+            <p class="font-semibold text-ink">حساب الباقة تلقائيًا (مواصفات TADRIS LAB)</p>
             <p class="mt-1 text-muted">السعر الأصلي = سعر الساعة × حصص/شهر × عدد الأشهر. يمكن خفض السعر النهائي لمنح خصم على طبقات الاشتراك.</p>
             <div class="mt-3 flex flex-wrap items-center gap-2 text-xs font-medium">
                 <span class="rounded-xl border border-line bg-surface px-3 py-1.5">سعر الساعة 10$</span>
@@ -500,7 +511,7 @@
                                     </td>
                                     <td class="px-4 py-3 tabular-nums">{{ $tp->duration_months }}</td>
                                     <td class="px-4 py-3 tabular-nums">{{ $tp->sessions_per_month }}</td>
-                                    <td class="px-4 py-3 tabular-nums">{{ number_format((float) $tp->hourly_rate, 2) }} {{ $tp->currency ?: 'USD' }}</td>
+                                    <td class="px-4 py-3 tabular-nums">{{ number_format((float) $tp->hourly_rate, 2) }} {{ $tp->currency ?: platform_currency() }}</td>
                                     <td class="px-4 py-3">
                                         <div class="tabular-nums text-muted line-through text-xs">{{ number_format((float) ($tp->original_price ?? 0), 0) }}</div>
                                         <div class="font-semibold tabular-nums text-ink">{{ $tp->formattedPrice() }}</div>
@@ -538,5 +549,6 @@
             </article>
         @endif
     </div>
+    @endif
 </div>
 @endsection

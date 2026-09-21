@@ -204,7 +204,7 @@ class ServicePackage extends Model
 
     public function currencyCode(): string
     {
-        return $this->currency ?: 'USD';
+        return $this->currency ?: platform_currency();
     }
 
     public function formattedPrice(): string
@@ -213,11 +213,7 @@ class ServicePackage extends Model
             return app()->getLocale() === 'ar' ? 'مجاناً' : 'Free';
         }
 
-        if ($this->currencyCode() === 'USD') {
-            return '$'.number_format((float) $this->price, 2).' USD';
-        }
-
-        return number_format((float) $this->price, 2).' '.$this->currencyCode();
+        return format_money($this->price, $this->currencyCode());
     }
 
     public function formattedOriginalPrice(): ?string
@@ -226,11 +222,7 @@ class ServicePackage extends Model
             return null;
         }
 
-        if ($this->currencyCode() === 'USD') {
-            return '$'.number_format((float) $this->original_price, 2).' USD';
-        }
-
-        return number_format((float) $this->original_price, 2).' '.$this->currencyCode();
+        return format_money($this->original_price, $this->currencyCode());
     }
 
     public function savingsAmount(): float
@@ -285,11 +277,7 @@ class ServicePackage extends Model
             return app()->getLocale() === 'ar' ? 'مجاناً' : 'Free';
         }
 
-        if ($this->currencyCode() === 'USD') {
-            return '$'.number_format($this->pricePerUnit(), 2).' USD';
-        }
-
-        return number_format($this->pricePerUnit(), 2).' '.$this->currencyCode();
+        return format_money($this->pricePerUnit(), $this->currencyCode());
     }
 
     /**

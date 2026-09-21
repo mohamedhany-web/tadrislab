@@ -1,4 +1,4 @@
-﻿@php
+@php
     $appLocale = app()->getLocale();
     $appRtl = $appLocale === 'ar';
 @endphp
@@ -25,9 +25,9 @@
                 extend: {
                     colors: {
                         navy: { 50:'#f0f4ff',100:'#dbe4ff',200:'#bac8ff',300:'#91a7ff',400:'#748ffc',500:'#5c7cfa',600:'#4c6ef5',700:'#4263eb',800:'#3b5bdb',900:'#364fc7',950:'#0c1222' },
-                        brand: { 50:'#FFF8E6',100:'#FFE9A8',200:'#FFD866',300:'#F5B800',400:'#E5AB00',500:'#F5B800',600:'#C99400',700:'#0B3D91',800:'#072A66',900:'#051E4A' },
-                        mx: { navy:'#0B3D91', indigo:'#072A66', orange:'#F5B800', rose:'#EEF3FB', gold:'#F5B800', soft:'#F4F7FC' },
-                        acad: { blue:'#0B3D91', dark:'#072A66', gold:'#F5B800', canvas:'#F4F7FC', ink:'#0B1220' },
+                        brand: { 50:'#F7F1E8',100:'#F0E4D4',200:'#E8D4B8',300:'#A88050',400:'#B8956A',500:'#A88050',600:'#A88050',700:'#1E4E8C',800:'#184888',900:'#152A4A' },
+                        mx: { navy:'#1E4E8C', indigo:'#184888', orange:'#A88050', rose:'#E8EEF6', gold:'#A88050', soft:'#F7F8FB' },
+                        acad: { blue:'#1E4E8C', dark:'#184888', gold:'#A88050', canvas:'#F7F8FB', ink:'#152A4A' },
                         surface: { 50:'#fafbfc', 100:'#f4f5f7', 200:'#e8eaed', 300:'#dadce0' }
                     }
                 }
@@ -56,7 +56,7 @@
             <style id="instructor-panel-inline">{!! $ipCssInline !!}</style>
         @endif
         {{-- روابط احتياطية إن وُجد المسار العام --}}
-        <link rel="stylesheet" href="{{ url('/__glottical/instructor-panel.css') }}?v={{ $ipCssVer }}">
+        <link rel="stylesheet" href="{{ url('/__tadrislab/instructor-panel.css') }}?v={{ $ipCssVer }}">
         <link rel="stylesheet" href="{{ versioned_asset($ipCssRel) }}">
         <link rel="stylesheet" href="{{ asset($ipCssRel) }}?v={{ $ipCssVer }}">
     @endif
@@ -93,9 +93,9 @@
         html.light { color-scheme: light; }
         html.dark { color-scheme: dark; }
         html:has(body.ip-body) { scroll-behavior: auto; height: 100dvh; max-height: 100dvh; overflow: hidden !important; }
-        body { background: #F4F7FC; overflow-x: hidden; }
+        body { background: #F7F8FB; overflow-x: hidden; }
         body.ip-body { overflow: hidden !important; height: 100dvh; max-height: 100dvh; margin: 0; }
-        .dark body { background: #0B1220; }
+        .dark body { background: #152A4A; }
         body.ip-body,
         body.ip-body .ip-shell,
         body.ip-body .ip-shell button,
@@ -113,7 +113,7 @@
         .app-sidebar {
             width: 272px;
             background: #fff;
-            border-left: 1px solid #E8EEF8;
+            border-left: 1px solid #E8EEF6;
         }
         .dark .app-sidebar {
             background: #111827;
@@ -138,8 +138,8 @@
             color: #4b5563; transition: all .15s;
             border: 1px solid transparent;
         }
-        .s-nav:hover { background: #F4F7FC; color: #0B1220; }
-        .s-nav.active { background: #EEF3FB; color: #072A66; border-color: #D6E2F5; }
+        .s-nav:hover { background: #F7F8FB; color: #152A4A; }
+        .s-nav.active { background: #E8EEF6; color: #184888; border-color: #D4DEED; }
         .dark .s-nav { color: #9ca3af; }
         .dark .s-nav:hover { background: #1f2937; color: #e5e7eb; }
         .dark .s-nav.active { background: #172554; color: #93c5fd; border-color: #1e3a5f; }
@@ -153,7 +153,7 @@
         /* ── Header ── */
         .app-header {
             height: 60px; background: rgba(255,255,255,0.92);
-            border-bottom: 1px solid #E8EEF8;
+            border-bottom: 1px solid #E8EEF6;
             backdrop-filter: blur(12px);
         }
         .dark .app-header {
@@ -164,42 +164,42 @@
         .h-btn {
             width: 38px; height: 38px; border-radius: 11px;
             display: inline-flex; align-items: center; justify-content: center;
-            color: #5B6577; border: 1px solid #E8EEF8;
+            color: #5B6577; border: 1px solid #E8EEF6;
             transition: all .15s; background: #fff;
         }
-        .h-btn:hover { background: #F4F7FC; color: #0B3D91; border-color: #D6E2F5; }
+        .h-btn:hover { background: #F7F8FB; color: #1E4E8C; border-color: #D4DEED; }
         .dark .h-btn { color: #9ca3af; border-color: #374151; background: transparent; }
         .dark .h-btn:hover { background: #1f2937; color: #e5e7eb; border-color: #4b5563; }
 
         /* Search input */
         .search-box {
-            background: #F4F7FC; border: 1px solid #E8EEF8;
+            background: #F7F8FB; border: 1px solid #E8EEF6;
             border-radius: 12px; padding: 8px 14px;
             transition: all .2s;
         }
-        .search-box:focus-within { background: #fff; border-color: #0B3D91; box-shadow: 0 0 0 3px rgba(11,61,145,.12); }
+        .search-box:focus-within { background: #fff; border-color: #1E4E8C; box-shadow: 0 0 0 3px rgba(30,78,140,.12); }
         .dark .search-box { background: #1f2937; border-color: #374151; }
         .dark .search-box:focus-within { background: #111827; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
         .dark .search-box input { color: #e5e7eb; }
 
         /* Dropdown */
         .dd-menu {
-            background: #fff; border: 1px solid #E8EEF8;
-            border-radius: 14px; box-shadow: 0 16px 40px rgba(11,61,145,.12);
+            background: #fff; border: 1px solid #E8EEF6;
+            border-radius: 14px; box-shadow: 0 16px 40px rgba(30,78,140,.12);
             overflow: hidden;
         }
         .dark .dd-menu { background: #1f2937; border-color: #374151; box-shadow: 0 10px 40px rgba(0,0,0,.3); }
         .dd-item { display: flex; align-items: center; transition: background .1s; }
-        .dd-item:hover { background: #F4F7FC; }
+        .dd-item:hover { background: #F7F8FB; }
         .dark .dd-item:hover { background: #374151; }
 
         /* User avatar */
         .u-avatar {
             width: 34px; height: 34px; border-radius: 10px;
-            background: linear-gradient(145deg, #0B3D91, #072A66);
+            background: linear-gradient(145deg, #1E4E8C, #184888);
             display: flex; align-items: center; justify-content: center;
             color: #fff; font-weight: 700; font-size: 13px;
-            box-shadow: 0 0 0 2px #F5B80033;
+            box-shadow: 0 0 0 2px #A8805033;
         }
         .u-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
 
@@ -214,12 +214,12 @@
         .n-badge {
             position: absolute; top: -3px; right: -3px;
             min-width: 16px; height: 16px; padding: 0 4px;
-            background: #F5B800; color: #072A66; border-radius: 99px;
+            background: #A88050; color: #184888; border-radius: 99px;
             font-size: 9px; font-weight: 800;
             display: flex; align-items: center; justify-content: center;
             border: 2px solid #fff;
         }
-        .dark .n-badge { border-color: #111827; color: #0B1220; }
+        .dark .n-badge { border-color: #111827; color: #152A4A; }
 
         /* Stat mini cards (student sidebar) */
         .stat-mini { border-radius: 8px; padding: 8px 10px; }
@@ -231,8 +231,8 @@
             font-size: 13px; font-weight: 500;
             color: #4b5563; transition: all .15s;
         }
-        .nav-item:hover { background: #F4F7FC; color: #0B1220; }
-        .nav-item.active { background: #EEF3FB; color: #0B3D91; }
+        .nav-item:hover { background: #F7F8FB; color: #152A4A; }
+        .nav-item.active { background: #E8EEF6; color: #1E4E8C; }
         .dark .nav-item { color: #9ca3af; }
         .dark .nav-item:hover { background: #1f2937; color: #e5e7eb; }
         .dark .nav-item.active { background: #172554; color: #60a5fa; }
@@ -243,29 +243,29 @@
         }
 
         /* Student sidebar bottom card */
-        .user-card-bottom { border-top: 1px solid #E8EEF8; }
+        .user-card-bottom { border-top: 1px solid #E8EEF6; }
         .dark .user-card-bottom { border-top-color: #1f2937; }
-        .logo-area { border-bottom: 1px solid #E8EEF8; }
+        .logo-area { border-bottom: 1px solid #E8EEF6; }
         .dark .logo-area { border-bottom-color: #1f2937; }
 
-        /* ── Student / instructor sidebar (Glottical academy) ── */
+        /* ── Student / instructor sidebar (TADRIS LAB academy) ── */
         .ins-sidebar-brand {
-            background: linear-gradient(160deg, #0B3D91 0%, #072A66 100%);
+            background: linear-gradient(160deg, #1E4E8C 0%, #184888 100%);
             border-bottom: 0;
             position: relative;
             color: #fff;
         }
         .dark .ins-sidebar-brand {
-            background: linear-gradient(160deg, #0B3D91 0%, #051E4A 100%);
+            background: linear-gradient(160deg, #1E4E8C 0%, #152A4A 100%);
             border-bottom: 0;
         }
         .ins-stat-card {
             border-radius: 14px; padding: 12px 14px;
             transition: transform .2s, box-shadow .2s, border-color .2s;
             background: #fff;
-            border: 1px solid #E8EEF8;
+            border: 1px solid #E8EEF6;
         }
-        .ins-stat-card:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -12px rgba(11,61,145,.18); border-color: #C5D4EF !important; }
+        .ins-stat-card:hover { transform: translateY(-1px); box-shadow: 0 10px 24px -12px rgba(30,78,140,.18); border-color: #C5D4EF !important; }
         .dark .ins-stat-card { background: #1f2937; border-color: #374151; }
         .dark .ins-stat-card:hover { box-shadow: 0 8px 20px -8px rgba(0,0,0,.35); border-color: #475569 !important; }
         .ins-nav-group {
@@ -287,25 +287,25 @@
         .ins-nav::before {
             content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
             width: 3px; height: 0; border-radius: 3px 0 0 3px;
-            background: #F5B800;
+            background: #A88050;
             transition: height .2s ease;
         }
-        .ins-nav:hover { background: #F4F7FC; color: #0B1220; }
-        .ins-nav.active { background: #EEF3FB; color: #072A66; border-color: #D6E2F5; font-weight: 700; }
+        .ins-nav:hover { background: #F7F8FB; color: #152A4A; }
+        .ins-nav.active { background: #E8EEF6; color: #184888; border-color: #D4DEED; font-weight: 700; }
         .ins-nav.active::before { height: 22px; }
         .dark .ins-nav { color: #9ca3af; }
         .dark .ins-nav:hover { background: #1f2937; color: #f1f5f9; }
         .dark .ins-nav.active { background: #132445; color: #bfdbfe; border-color: #1e3a5f; font-weight: 700; }
-        .dark .ins-nav.active::before { background: #F5B800; }
+        .dark .ins-nav.active::before { background: #A88050; }
         .ins-nav .ins-icon {
             width: 34px; height: 34px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 13px; flex-shrink: 0;
-            background: #EEF3FB; color: #0B3D91;
+            background: #E8EEF6; color: #1E4E8C;
             transition: transform .2s, box-shadow .2s, background .2s;
         }
         .ins-nav:hover .ins-icon { transform: scale(1.04); }
-        .ins-nav.active .ins-icon { background: #0B3D91; color: #fff; box-shadow: 0 4px 12px -4px rgba(11,61,145,.45); }
+        .ins-nav.active .ins-icon { background: #1E4E8C; color: #fff; box-shadow: 0 4px 12px -4px rgba(30,78,140,.45); }
         .ins-nav-badge {
             min-width: 20px; height: 20px; padding: 0 6px;
             border-radius: 10px; font-size: 11px; font-weight: 800;
@@ -313,11 +313,11 @@
             background: #FFF3CC; color: #8A6A00;
         }
         .ins-user-card {
-            background: #F4F7FC;
-            border: 1px solid #E8EEF8; border-radius: 14px;
+            background: #F7F8FB;
+            border: 1px solid #E8EEF6; border-radius: 14px;
             padding: 12px 14px; transition: all .2s;
         }
-        .ins-user-card:hover { border-color: #C5D4EF; box-shadow: 0 4px 12px -4px rgba(11,61,145,.1); }
+        .ins-user-card:hover { border-color: #C5D4EF; box-shadow: 0 4px 12px -4px rgba(30,78,140,.1); }
         .dark .ins-user-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-color: #334155; }
         .dark .ins-user-card:hover { border-color: #475569; box-shadow: 0 4px 12px -4px rgba(0,0,0,.25); }
 
@@ -326,13 +326,13 @@
             align-items: center; gap: 6px;
             height: 34px; padding: 0 12px; border-radius: 999px;
             font-size: 12px; font-weight: 700;
-            color: #0B3D91; background: #EEF3FB; border: 1px solid #D6E2F5;
+            color: #1E4E8C; background: #E8EEF6; border: 1px solid #D4DEED;
             text-decoration: none !important; white-space: nowrap;
             transition: background .15s, border-color .15s;
         }
-        .app-quick-link:hover { background: #E0EAF8; border-color: #0B3D91; }
+        .app-quick-link:hover { background: #E0EAF8; border-color: #1E4E8C; }
         .app-quick-link--gold {
-            color: #072A66; background: #FFF6D6; border-color: #F5B800;
+            color: #184888; background: #FFF6D6; border-color: #A88050;
         }
         .app-quick-link--gold:hover { background: #FFEEC2; }
         @media (min-width: 1100px) {
@@ -542,7 +542,7 @@ function themeManager() {
                         </div>
 
                         <div class="hidden lg:flex items-center gap-2 ms-2">
-                            @if(Route::has('public.groups'))
+                            @if(\App\Support\PlatformModules::enabled('tutoring') && Route::has('public.groups'))
                                 <a href="{{ route('public.groups') }}" class="app-quick-link app-quick-link--gold">
                                     <i class="fas fa-users text-[10px]"></i>
                                     {{ $appRtl ? 'المجموعات' : 'Groups' }}

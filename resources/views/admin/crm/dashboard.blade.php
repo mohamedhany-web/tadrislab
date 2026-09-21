@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
-@section('title', 'Glottical CRM - Glottical')
+@section('title', 'TADRIS CRM - TADRIS LAB')
 @section('page_title', 'لوحة CRM')
 
 @section('content')
 @php
     $kpis = [
-        ['label' => 'كل العملاء', 'value' => $stats['total_leads'] ?? 0, 'icon' => 'fa-users', 'tone' => 'accent', 'note' => 'إجمالي العملاء المحتملين'],
+        ['label' => 'كل الفرص', 'value' => $stats['total_leads'] ?? 0, 'icon' => 'fa-users', 'tone' => 'accent', 'note' => 'مدارس · مؤسسات · معلمون'],
         ['label' => 'مفتوحة', 'value' => $stats['open_leads'] ?? 0, 'icon' => 'fa-folder-open', 'tone' => 'accent', 'note' => 'ما زالت قيد المتابعة'],
         ['label' => 'بانتظار الدفع', 'value' => $stats['payment_pending'] ?? 0, 'icon' => 'fa-clock', 'tone' => 'metal', 'note' => 'مرحلة الدفع'],
-        ['label' => 'مغلقة ناجحة', 'value' => $stats['closed_won'] ?? 0, 'icon' => 'fa-check-circle', 'tone' => 'accent', 'note' => 'صفقات مكتملة'],
+        ['label' => 'مغلقة ناجحة', 'value' => $stats['closed_won'] ?? 0, 'icon' => 'fa-check-circle', 'tone' => 'accent', 'note' => 'باقات/برامج مكتملة'],
         ['label' => 'عمولات معلقة', 'value' => $stats['commissions_pending'] ?? 0, 'icon' => 'fa-hourglass-half', 'tone' => 'muted', 'note' => 'بانتظار الصرف'],
         ['label' => 'إجمالي عمولات', 'value' => number_format((float) ($stats['commissions_total'] ?? 0), 0), 'icon' => 'fa-coins', 'tone' => 'metal', 'note' => 'EGP · كل الحالات', 'raw' => true],
     ];
@@ -24,9 +24,9 @@
 
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">المبيعات · Glottical CRM</p>
+            <p class="text-xs font-medium text-muted">التشغيل التجاري · CRM المؤسسات والمعلمين</p>
             <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">لوحة CRM</h2>
-            <p class="mt-1 text-sm text-muted">متابعة العملاء والعمولات ومسار البيع من مكان واحد</p>
+            <p class="mt-1 text-sm text-muted">متابعة فرص المدارس والمؤسسات والمعلمين الفرديين حتى إغلاق الباقة أو البرنامج</p>
         </div>
         <div class="admin-hero-actions flex flex-wrap gap-2">
             <a href="{{ route('admin.crm.pipeline') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink-soft transition hover:border-accent/30 hover:text-accent">
@@ -35,7 +35,7 @@
             </a>
             <a href="{{ route('admin.crm.leads.index') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white">
                 <i class="fas fa-user-plus text-xs"></i>
-                العملاء المحتملون
+                فرص ومدارس/معلمون
             </a>
         </div>
     </section>
@@ -50,8 +50,8 @@
                 <i class="fas fa-shield-alt"></i>
             </span>
             <div class="min-w-0">
-                <p class="text-sm font-semibold text-ink">أي تواصل أو بيع أو عمولة يجب أن يمر عبر النظام</p>
-                <p class="mt-1 text-xs text-muted">وإلا لن يُحتسب ضمن التقارير أو العمولات.</p>
+                <p class="text-sm font-semibold text-ink">أي فرصة مؤسسة أو معلم أو باقة يجب أن تمر عبر النظام</p>
+                <p class="mt-1 text-xs text-muted">وإلا لن تُحتسب ضمن التقارير أو العمولات أو متابعة برامج التدريب.</p>
             </div>
         </div>
     </article>

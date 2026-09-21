@@ -2,14 +2,14 @@
 
 /**
  * Replace legacy Muallimx branding in source files (not vendor/storage).
- * Usage: php scripts/rebrand-glottical.php
+ * Usage: php scripts/rebrand-tadrislab.php
  */
 
 $root = dirname(__DIR__);
 $extensions = ['php', 'blade.php', 'js', 'json', 'md', 'sql'];
 $skipDirs = ['vendor', 'node_modules', 'storage', '.git'];
 $skipFiles = [
-    'scripts/rebrand-glottical.php',
+    'scripts/rebrand-tadrislab.php',
     'app/Services/MuallimxAiClient.php',
     'config/muallimx_ai.php',
 ];
@@ -17,24 +17,24 @@ $skipFiles = [
 $replacements = [
     "config('app.name', 'Muallimx')" => "config('app.name')",
     'config("app.name", "Muallimx")' => 'config("app.name")',
-    "config('app.name', 'Glottical')" => "config('app.name')",
-    'config("app.name", "Glottical")' => 'config("app.name")',
-    'Muallimx Academy' => 'Glottical Academy',
-    'Muallimx Classroom' => 'Glottical Classroom',
-    'Muallimx AI' => 'Glottical AI',
-    'Muallimx —' => 'Glottical —',
-    'منصة Muallimx' => 'منصة Glottical',
-    'منصة Muallimx' => 'منصة Glottical',
-    'معرض Muallimx' => 'معرض Glottical',
-    'فريق Muallimx' => 'فريق Glottical',
-    'Muallimx administration' => 'Glottical administration',
-    'إدارة Muallimx' => 'إدارة Glottical',
-    'Muallimx' => 'Glottical',
-    "'Muallimx'" => "'Glottical'",
-    '"Muallimx"' => '"Glottical"',
-    'muallimx-shell-v' => 'glottical-shell-v',
-    'muallimx-board-' => 'glottical-board-',
-    'Muallimx-' => 'Glottical-',
+    "config('app.name', 'TADRIS LAB')" => "config('app.name')",
+    'config("app.name", "TADRIS LAB")' => 'config("app.name")',
+    'Muallimx Academy' => 'TADRIS LAB',
+    'Muallimx Classroom' => 'TADRIS LAB Classroom',
+    'Muallimx AI' => 'TADRIS AI',
+    'Muallimx —' => 'TADRIS LAB —',
+    'منصة Muallimx' => 'منصة تدريس لاب',
+    'منصة Muallimx' => 'منصة تدريس لاب',
+    'معرض Muallimx' => 'معرض TADRIS LAB',
+    'فريق Muallimx' => 'فريق TADRIS LAB',
+    'Muallimx administration' => 'TADRIS LAB administration',
+    'إدارة Muallimx' => 'إدارة TADRIS LAB',
+    'Muallimx' => 'TADRIS LAB',
+    "'Muallimx'" => "'TADRIS LAB'",
+    '"Muallimx"' => '"TADRIS LAB"',
+    'muallimx-shell-v' => 'tadrislab-shell-v',
+    'muallimx-board-' => 'tadrislab-board-',
+    'Muallimx-' => 'TADRIS LAB-',
 ];
 
 $changed = 0;

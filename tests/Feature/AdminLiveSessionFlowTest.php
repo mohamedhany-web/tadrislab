@@ -90,8 +90,8 @@ class AdminLiveSessionFlowTest extends TestCase
             'livekit.provider' => 'livekit',
             'livekit.livekit.api_key' => 'APItestkey',
             'livekit.livekit.api_secret' => 'test-secret-value-1234567890',
-            'livekit.livekit.url' => 'wss://live.glottical.com',
-            'livekit.livekit.host' => 'live.glottical.com',
+            'livekit.livekit.url' => 'wss://live.tadrislab.com',
+            'livekit.livekit.host' => 'live.tadrislab.com',
             'currency.code' => 'USD',
         ]);
     }
@@ -122,8 +122,8 @@ class AdminLiveSessionFlowTest extends TestCase
         $admin = $this->admin();
 
         LiveServer::create([
-            'name' => 'Glottical LiveKit',
-            'domain' => 'live.glottical.com',
+            'name' => 'TADRIS LAB LiveKit',
+            'domain' => 'live.tadrislab.com',
             'provider' => 'livekit',
             'status' => 'active',
         ]);
@@ -160,8 +160,8 @@ class AdminLiveSessionFlowTest extends TestCase
     {
         $admin = $this->admin();
         $server = LiveServer::create([
-            'name' => 'Glottical LiveKit',
-            'domain' => 'live.glottical.com',
+            'name' => 'TADRIS LAB LiveKit',
+            'domain' => 'live.tadrislab.com',
             'provider' => 'livekit',
             'status' => 'active',
         ]);
@@ -212,10 +212,10 @@ class AdminLiveSessionFlowTest extends TestCase
             ->assertSee('إنهاء البث', false);
     }
 
-    public function test_currency_helper_defaults_to_usd(): void
+    public function test_currency_helper_defaults_to_qar(): void
     {
-        $this->assertSame('USD', platform_currency());
-        $this->assertSame('$', currency_symbol());
-        $this->assertSame('USD', config('currency.code'));
+        $this->assertSame('QAR', platform_currency());
+        $this->assertSame('ر.ق', currency_symbol());
+        $this->assertSame('QAR', config('currency.code'));
     }
 }

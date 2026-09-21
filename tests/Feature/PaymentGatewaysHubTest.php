@@ -30,7 +30,7 @@ class PaymentGatewaysHubTest extends TestCase
             'api_key' => 'api-key-test',
             'secret' => 'secret-value',
             'currency' => 'USD',
-            'merchant_redirect_url' => 'https://glottical.test/checkout/kashier/callback',
+            'merchant_redirect_url' => 'https://tadrislab.test/checkout/kashier/callback',
         ]);
 
         $this->assertTrue(KashierSettings::isEnabled());

@@ -1,5 +1,5 @@
-# robots.txt — Glottical
-# https://glottical.com
+# robots.txt — TADRIS LAB
+# https://tadrislab.com
 
 User-agent: *
 Allow: /
@@ -55,6 +55,5 @@ Disallow: /
 User-agent: anthropic-ai
 Disallow: /
 
-# ─── Sitemap (يُغيَّر عند النشر الفعلي) ─────────────────
 # ─── Sitemap ───────────────────────────────────────────────
-Sitemap: https://glottical.com/sitemap.xml
+Sitemap: https://tadrislab.com/sitemap.xml

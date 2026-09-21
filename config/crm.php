@@ -42,13 +42,13 @@ return [
     | صلاحيات CRM الدقيقة — تُضبط من إدارة الوظائف (employee_jobs.permissions)
     */
     'permissions' => [
-        'crm_desk' => 'الوصول للوحة CRM',
-        'crm_create_leads' => 'إنشاء عملاء محتملين',
-        'crm_submit_to_sales' => 'إرسال العملاء لصندوق المبيعات',
-        'crm_edit_leads' => 'تعديل بيانات العملاء',
-        'crm_assign_leads' => 'تعيين العملاء للمبيعات',
-        'crm_transition_leads' => 'تحديث حالة العميل',
-        'crm_add_notes' => 'إضافة ملاحظات على العملاء',
+        'crm_desk' => 'الوصول للوحة CRM (مؤسسات ومعلمون)',
+        'crm_create_leads' => 'إنشاء فرص مدارس/معلمين',
+        'crm_submit_to_sales' => 'إرسال الفرص لصندوق المبيعات',
+        'crm_edit_leads' => 'تعديل بيانات الفرص',
+        'crm_assign_leads' => 'تعيين الفرص للمبيعات',
+        'crm_transition_leads' => 'تحديث حالة الفرصة',
+        'crm_add_notes' => 'إضافة ملاحظات على الفرص',
         'crm_manage_team' => 'إدارة أعضاء الفريق',
         'crm_view_team_performance' => 'عرض أداء أعضاء الفريق',
         'crm_submit_reports' => 'رفع تقارير CRM',

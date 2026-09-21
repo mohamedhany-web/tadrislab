@@ -1,6 +1,6 @@
 <?php
 /**
- * Remap Sana purple kit → Glottical blue/yellow (config/academy-theme.php).
+ * Remap Sana purple kit → TADRIS LAB blue/yellow (config/academy-theme.php).
  * php public/css/landing/_rebrand.php
  */
 declare(strict_types=1);
@@ -66,7 +66,7 @@ foreach ($files as $file) {
     // Root token aliases for clarity
     $out = preg_replace(
         '/:root\s*\{/',
-        ":root {\n    /* Glottical brand: blue #0B3D91 + yellow #F5B800 (from designs/public-pages structure) */",
+        ":root {\n    /* TADRIS LAB brand: blue #0B3D91 + yellow #F5B800 (from designs/public-pages structure) */",
         $out,
         1
     ) ?? $out;

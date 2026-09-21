@@ -30,6 +30,7 @@ class User extends Authenticatable
         'community_contributor_type',
         'parent_id',
         'is_active',
+        'instructor_grants_enabled',
         'profile_image',
         'birth_date',
         'address',
@@ -96,6 +97,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'instructor_grants_enabled' => 'boolean',
             'is_community_contributor' => 'boolean',
             'birth_date' => 'date',
             'last_login_at' => 'datetime',
@@ -454,6 +456,13 @@ class User extends Authenticatable
         } catch (\Throwable) {
         }
 
+        try {
+            if ($this->hasGrantedServices() && $this->instructorDeliveryEnabled()) {
+                return true;
+            }
+        } catch (\Throwable) {
+        }
+
         if (\Illuminate\Support\Facades\Schema::hasTable('tutoring_groups')) {
             try {
                 if (TutoringGroup::query()->where('instructor_id', $this->id)->exists()) {
@@ -582,12 +591,11 @@ class User extends Authenticatable
     }
 
     /**
-     * التحقق من كون المستخدم ولي أمر (للتوافق مع الكود القديم - تم إزالة هذا الدور)
-     * هذا method للتوافق فقط - سيُعيد دائماً false
+     * التحقق من كون المستخدم ولي أمر — الدور مُزال من تدريس لاب (دائمًا false).
      */
     public function isParent(): bool
     {
-        return false; // تم إزالة دور ولي الأمر
+        return false;
     }
 
     /**
@@ -1225,7 +1233,7 @@ class User extends Authenticatable
     }
 
     /**
-     * معرفات الكورسات العادية المعيَّنة للمدرب (مباشرة أو عبر المسار).
+     * معرفات الكورسات العادية المعيَّنة للمدرب (مباشرة أو عبر المسار أو منح الأدمن).
      */
     public function teachingAdvancedCourseIds(): \Illuminate\Support\Collection
     {
@@ -1237,7 +1245,16 @@ class User extends Authenticatable
             return is_array($ids) ? $ids : [];
         });
 
-        return $direct->merge($fromPaths)->unique()->filter()->values();
+        $fromGrants = collect();
+        if ($this->instructorDeliveryEnabled()
+            && \Illuminate\Support\Facades\Schema::hasTable('instructor_course_assignments')) {
+            $fromGrants = InstructorCourseAssignment::query()
+                ->where('user_id', $this->id)
+                ->where('is_active', true)
+                ->pluck('advanced_course_id');
+        }
+
+        return $direct->merge($fromPaths)->merge($fromGrants)->unique()->filter()->values();
     }
 
     /**
@@ -1246,6 +1263,138 @@ class User extends Authenticatable
     public function hasTeachingCourses(): bool
     {
         return $this->teachingAdvancedCourseIds()->isNotEmpty();
+    }
+
+    public function instructorDeliveryEnabled(): bool
+    {
+        if (\Illuminate\Support\Facades\Schema::hasColumn($this->getTable(), 'instructor_grants_enabled')) {
+            return (bool) $this->instructor_grants_enabled;
+        }
+
+        return (bool) $this->is_active;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function grantedServiceKeys(): array
+    {
+        if (! \Illuminate\Support\Facades\Schema::hasTable('instructor_service_assignments')) {
+            return [];
+        }
+
+        return InstructorServiceAssignment::query()
+            ->where('user_id', $this->id)
+            ->where('is_active', true)
+            ->pluck('service_key')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    public function hasGrantedServices(): bool
+    {
+        return $this->grantedServiceKeys() !== [];
+    }
+
+    public function canDeliverService(string $serviceKey): bool
+    {
+        if (! $this->instructorDeliveryEnabled()) {
+            return false;
+        }
+
+        return in_array($serviceKey, $this->grantedServiceKeys(), true);
+    }
+
+    /**
+     * مسارات التطوير المهني المسموح للمدرب بتقديمها.
+     */
+    public function teachingLearningPathIds(): \Illuminate\Support\Collection
+    {
+        if (! $this->instructorDeliveryEnabled()) {
+            return collect();
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('instructor_service_assignments')
+            && ! $this->canDeliverService('learning_paths')) {
+            return collect();
+        }
+
+        $owned = collect();
+        if (\Illuminate\Support\Facades\Schema::hasTable('learning_paths')) {
+            $owned = LearningPath::query()
+                ->where('instructor_id', $this->id)
+                ->pluck('id');
+        }
+
+        $fromGrants = collect();
+        if (\Illuminate\Support\Facades\Schema::hasTable('instructor_learning_path_assignments')) {
+            $fromGrants = InstructorLearningPathAssignment::query()
+                ->where('user_id', $this->id)
+                ->where('is_active', true)
+                ->pluck('learning_path_id');
+        }
+
+        return $owned->merge($fromGrants)->unique()->filter()->values();
+    }
+
+    public function hasTeachingLearningPaths(): bool
+    {
+        return $this->teachingLearningPathIds()->isNotEmpty();
+    }
+
+    public function teacherPathEnrollments()
+    {
+        return $this->hasMany(TeacherPathEnrollment::class, 'user_id');
+    }
+
+    /**
+     * مسارات المعلّم المتعلّم المفعّلة عبر الباقات.
+     */
+    public function accessibleLearningPaths()
+    {
+        if (! \Illuminate\Support\Facades\Schema::hasTable('teacher_path_enrollments')) {
+            return LearningPath::query()->whereRaw('1 = 0');
+        }
+
+        $ids = TeacherPathEnrollment::query()
+            ->where('user_id', $this->id)
+            ->activeAccessible()
+            ->pluck('learning_path_id');
+
+        return LearningPath::query()
+            ->whereIn('id', $ids->all() ?: [0])
+            ->ordered();
+    }
+
+    public function hasAccessibleLearningPaths(): bool
+    {
+        if (! \Illuminate\Support\Facades\Schema::hasTable('teacher_path_enrollments')) {
+            return false;
+        }
+
+        return TeacherPathEnrollment::query()
+            ->where('user_id', $this->id)
+            ->activeAccessible()
+            ->exists();
+    }
+
+    public function assignedTeachingCourses()
+    {
+        return $this->belongsToMany(AdvancedCourse::class, 'instructor_course_assignments', 'user_id', 'advanced_course_id')
+            ->withPivot(['is_active', 'assigned_by'])
+            ->withTimestamps();
+    }
+
+    public function instructorServiceAssignments()
+    {
+        return $this->hasMany(InstructorServiceAssignment::class, 'user_id');
+    }
+
+    public function instructorCourseAssignments()
+    {
+        return $this->hasMany(InstructorCourseAssignment::class, 'user_id');
     }
 
     /**
@@ -1260,6 +1409,10 @@ class User extends Authenticatable
 
         if (! $this->is_active) {
             return false;
+        }
+
+        if ($this->instructorDeliveryEnabled() && ($this->hasTeachingCourses() || $this->hasGrantedServices())) {
+            return true;
         }
 
         // كورس مسند أو فصل/حجز فعلي = يعمل معنا
@@ -1320,5 +1473,41 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | TADRIS LAB Brief V3 relations (expandable data model)
+    |--------------------------------------------------------------------------
+    */
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(ConsultationRequest::class, 'student_id');
+    }
+
+    public function inquiries()
+    {
+        return $this->hasMany(Inquiry::class);
+    }
+
+    public function packageEntitlements()
+    {
+        return $this->hasMany(UserPackageEntitlement::class);
+    }
+
+    public function pathEnrollments()
+    {
+        return $this->hasMany(TeacherPathEnrollment::class);
+    }
+
+    public function institutionMemberships()
+    {
+        return $this->hasMany(InstitutionMember::class);
     }
 }

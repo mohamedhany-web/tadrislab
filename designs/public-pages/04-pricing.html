@@ -3,343 +3,201 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <title>اختر خطة التعلّم — Sana</title>
-  <meta name="theme-color" content="#5B21B6">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@800;900&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- CSS مستخرج من landing/sana: theme + courses-catalog-theme + pricing-theme -->
-  <link rel="stylesheet" href="assets/sana-theme.css">
-  <link rel="stylesheet" href="assets/sana-courses-catalog-theme.css">
-  <link rel="stylesheet" href="assets/sana-pricing-theme.css">
+  <title>الباقات — تدريس لاب (مرآة تصميم)</title>
+  <meta name="theme-color" content="#1E4E8C">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/lasles-theme.css">
+  <link rel="stylesheet" href="assets/lasles-pricing.css">
   <style>
-    .design-mirror-badge {
-      position: fixed; z-index: 99999; bottom: 12px; inset-inline-start: 12px;
-      background: #1e1b4b; color: #fff; font: 700 .72rem/1 Tajawal,sans-serif;
-      padding: .45rem .7rem; border-radius: 999px; opacity: .85; pointer-events: none;
-    }
+    .mirror-note{margin:0;padding:.55rem 1rem;background:#152A4A;color:#fff;font:500 .8rem Rubik,sans-serif}
   </style>
 </head>
-<body class="sana-home sana-courses-page">
-<div class="design-mirror-badge">مرآة تصميم الإنتاج · public/pricing.blade.php</div>
-<div id="sana-scroll-progress"></div>
+<body class="lasles-home lasles-pricing-page">
+  <p class="mirror-note">مرآة تصميم — الإنتاج: <code>public/pricing</code> + <code>lasles-pricing.css</code> + <code>package-card</code></p>
 
-<header id="sana-nav" class="sana-nav sana-nav--hero">
-  <div class="sana-container">
-    <div class="sana-nav__inner">
-      <a href="01-home.html" class="sana-nav__brand"><span class="sana-nav__logo-text">SANA</span></a>
-      <nav class="sana-nav__links" aria-label="القائمة">
+  <header class="lasles-nav">
+    <div class="lasles-container lasles-nav__inner">
+      <a href="01-home.html" class="lasles-brand"><span><b>تدريس لاب</b></span></a>
+      <nav class="lasles-nav__links" aria-label="القائمة">
         <a href="01-home.html">الرئيسية</a>
-        <a href="03-courses.html" class="sana-nav__path sana-nav__path--family">للطلاب وأولياء الأمور</a>
-        <a href="02-about.html">كيف تعمل سنا؟</a>
-        <a href="05-contact.html">تواصل معنا</a>
+        <a href="02-about.html">عنّا</a>
+        <a href="03-courses.html">كورسات</a>
+        <a href="04-pricing.html" class="is-active">الباقات</a>
+        <a href="05-contact.html">تواصل</a>
       </nav>
-      <div class="sana-nav__actions">
-        <a href="06-auth-login.html" class="sana-nav__login">تسجيل الدخول</a>
-        <a href="05-contact.html" class="sana-nav__signup">احجز تقييم مستوى</a>
-      </div>
-      <button type="button" id="sana-mobile-toggle" class="sana-nav__burger" aria-expanded="false" aria-controls="sana-mobile-menu" aria-label="فتح القائمة">
-        <i class="fas fa-bars" aria-hidden="true"></i>
-      </button>
     </div>
-    <div id="sana-mobile-menu" class="sana-nav__mobile" aria-hidden="true">
-      <a href="01-home.html">الرئيسية</a>
-      <a href="03-courses.html" class="sana-nav__path sana-nav__path--family">للطلاب وأولياء الأمور</a>
-      <a href="02-about.html">كيف تعمل سنا؟</a>
-      <a href="05-contact.html">تواصل معنا</a>
-      <a href="06-auth-login.html">تسجيل الدخول</a>
-      <a href="05-contact.html" class="sana-nav__signup sana-nav__signup--block">احجز تقييم مستوى</a>
-      <a href="05-contact.html" class="sana-nav__signup sana-nav__signup--block sana-nav__signup--wa">تواصل عبر واتساب</a>
-    </div>
-  </div>
-</header>
-<div id="sana-mobile-backdrop" class="sana-nav__backdrop" aria-hidden="true"></div>
+  </header>
 
-<main class="sana-pricing-page">
-
-<section class="sana-prx-hero">
-  <div class="sana-container sana-prx-hero__inner sana-reveal">
-    <span class="sana-prx-hero__eyebrow"><i class="fas fa-sparkles"></i> خطط اشتراك مرنة</span>
-    <h1 class="sana-prx-hero__title">
-      اختر خطة التعلّم
-      <span class="hl">المناسبة لرحلتك</span>
-    </h1>
-    <p class="sana-prx-hero__sub">منصة تعليمية عربية متكاملة — حصص مباشرة، كورسات منظّمة، شهادات إتمام رقمية قابلة للتحقق، ومتابعة ذكية لوليّ الأمر. ادفع مقابل قيمة حقيقية، لا مقابل جداول فارغة.</p>
-    <div class="sana-prx-hero__actions">
-      <a href="05-contact.html" class="sana-btn sana-btn--yellow sana-btn--lg"><i class="fas fa-clipboard-check"></i> احجز تقييم مستوى مجاني</a>
-      <a href="#plans" class="sana-btn sana-btn--white-outline sana-btn--lg"><i class="fas fa-layer-group"></i> استكشف الباقات</a>
-    </div>
-    <div class="sana-prx-trust">
-      <div class="sana-prx-trust__item">
-        <i class="fas fa-comments"></i>
-        <strong>تواصل لمعرفة السعر</strong>
-        <span>نستعد لإطلاق أول دفعة تعليمية — تواصل معنا لاختيار الباقة المناسبة لابنك.</span>
-      </div>
-      <div class="sana-prx-trust__item">
-        <i class="fas fa-layer-group"></i>
-        <strong>باقات مرنة</strong>
-        <span>Sana</span>
-      </div>
-      <div class="sana-prx-trust__item">
-        <i class="fas fa-chalkboard-user"></i>
-        <strong>معلّمون معتمدون</strong>
-        <span>Sana</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="sana-section" id="plans">
-  <div class="sana-container">
-    <div class="sana-head sana-head--center sana-reveal" style="margin-bottom:32px">
-      <span class="sana-head__eyebrow">Sana</span>
-      <h2 class="sana-head__title">باقات مصمّمة <span class="hl">لنتائج حقيقية</span></h2>
-      <span class="sana-head__line"></span>
-      <p class="sana-head__sub">كل باقة تمنحك حصصاً مع معلمين معتمدين، وصولاً للمحتوى، ومتابعة واضحة — اختر ما يناسب أهداف ابنك.</p>
-      <p class="sana-prx-pricing-note sana-reveal">الأسعار تُعرض عند تفعيلها من الإدارة — تواصل معنا لمعرفة الباقة والسعر المناسب لابنك.</p>
-    </div>
-
-    <div class="sana-prx-plans">
-      <article class="sana-prx-plan sana-reveal">
-        <div class="sana-prx-plan__head">
-          <div class="sana-prx-plan__icon"><i class="fas fa-seedling"></i></div>
-          <p class="sana-prx-plan__tagline">البداية الذكية</p>
-          <h3 class="sana-prx-plan__name">باقة أساسية</h3>
-          <p class="sana-prx-plan__desc">مثالية للتأسيس والمتابعة الأسبوعية — حصص مركّزة مع معلم متخصّص.</p>
-        </div>
-        <div class="sana-prx-plan__price-block">
-          <div class="sana-prx-plan__price">
-            <strong class="is-contact-price">تواصل لمعرفة السعر</strong>
+  <main>
+    <section class="lasles-pricing-hero" aria-labelledby="pricing-hero-title">
+      <div class="lasles-container lasles-pricing-hero__inner">
+        <p class="lasles-pricing-hero__crumb">
+          <a href="01-home.html">الرئيسية</a>
+          <span aria-hidden="true">/</span>
+          <span>الباقات</span>
+        </p>
+        <div class="lasles-pricing-hero__copy">
+          <p class="lasles-pricing-hero__kicker">باقات التطوير المهني</p>
+          <h1 id="pricing-hero-title" class="lasles-pricing-hero__title">اختر مستوى وصولك كمعلم</h1>
+          <p class="lasles-pricing-hero__lead">من استكشاف مجاني إلى باقة متقدمة أو عرض مؤسسي — الباقات تجمع المسارات والأدوات والاستشارات بما يناسب ممارستك.</p>
+          <p class="lasles-pricing-hero__note">الأسعار بالريال القطري (QAR). الباقات المؤسسية والمخصصة تُحدَّد عبر عرض.</p>
+          <div class="lasles-pricing-hero__meta">
+            <span class="lasles-pricing-chip">مسارات وكورسات</span>
+            <span class="lasles-pricing-chip">أدوات وموارد</span>
+            <span class="lasles-pricing-chip">استشارات</span>
+            <span class="lasles-pricing-chip">مدارس ومؤسسات</span>
           </div>
-          <p class="sana-prx-plan__contact-sub">السعر يُحدَّد حسب المرحلة والمادة وعدد الساعات — فريقنا يساعدك في اختيار الباقة المناسبة.</p>
-          <p class="sana-prx-plan__hint">شهرياً · 8 ساعات حصص</p>
         </div>
-        <div class="sana-prx-plan__body">
-          <ul class="sana-prx-plan__benefits">
-            <li><i class="fas fa-check"></i><span>٨ ساعات حصص فردية شهرياً</span></li>
-            <li><i class="fas fa-check"></i><span>وصول لكورسات أساسية مختارة</span></li>
-            <li><i class="fas fa-check"></i><span>تقارير تقدّم لوليّ الأمر</span></li>
-            <li><i class="fas fa-check"></i><span>شهادة إتمام عند إنجاز المسار</span></li>
-          </ul>
-          <a href="05-contact.html" class="sana-btn sana-btn--purple sana-prx-plan__cta">اطلب عرض سعر <i class="fas fa-comments"></i></a>
-        </div>
-      </article>
+      </div>
+    </section>
 
-      <article class="sana-prx-plan sana-reveal is-featured">
-        <span class="sana-prx-plan__ribbon">الأكثر طلباً</span>
-        <div class="sana-prx-plan__head">
-          <div class="sana-prx-plan__icon"><i class="fas fa-star"></i></div>
-          <p class="sana-prx-plan__tagline">التوازن المثالي</p>
-          <h3 class="sana-prx-plan__name">باقة قياسية</h3>
-          <p class="sana-prx-plan__desc">الخيار الأفضل لمعظم الطلاب — متابعة أسبوعية، حصص أكثر، ومحتوى أوسع.</p>
+    <section class="lasles-pricing-catalog" id="plans">
+      <div class="lasles-container">
+        <div class="lasles-pricing-catalog__head">
+          <p class="lasles-path-kicker">مستويات الوصول</p>
+          <h2 class="lasles-section-title">باقات تدريس لاب</h2>
+          <p class="lasles-section-lead">باقات للمعلم الفردي، وعروض للمدارس والمؤسسات — اختر ما يناسب ممارستك أو فريقك.</p>
         </div>
-        <div class="sana-prx-plan__price-block">
-          <div class="sana-prx-plan__price">
-            <strong class="is-contact-price">تواصل لمعرفة السعر</strong>
+
+        <div class="lasles-pricing-group">
+          <h3 class="lasles-pricing-group__title">للمعلم الفردي</h3>
+          <div class="lasles-plans lasles-plans--pricing lasles-plans--teacher">
+            <article class="lasles-plan lasles-plan--type-free">
+              <p class="lasles-plan__type">باقة مجانية</p>
+              <h3 class="lasles-plan__name">باقة مجانية</h3>
+              <p class="lasles-plan__audience">تعرّف على المنصة واستكشف عينات من الموارد والمسارات.</p>
+              <div class="lasles-plan__pricing">
+                <p class="lasles-plan__price"><b>مجاني</b></p>
+              </div>
+              <div class="lasles-plan__cta-wrap"><a href="#" class="lasles-btn-outline">ابدأ رحلتك</a></div>
+              <ul class="lasles-plan__list">
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>إنشاء حساب معلم</li>
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>استكشاف المسارات</li>
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>عينات من الأدوات</li>
+              </ul>
+            </article>
+            <article class="lasles-plan lasles-plan--type-individual">
+              <p class="lasles-plan__type">باقة فردية</p>
+              <h3 class="lasles-plan__name">باقة فردية</h3>
+              <p class="lasles-plan__audience">للمعلم الفردي: مسارات مختارة وأدوات تطبيقية ومتابعة تقدّم.</p>
+              <div class="lasles-plan__pricing">
+                <p class="lasles-plan__price"><b>299 QAR</b></p>
+              </div>
+              <div class="lasles-plan__specs">
+                <span>أدوات وموارد</span>
+              </div>
+              <div class="lasles-plan__cta-wrap"><a href="#" class="lasles-btn-outline">ابدأ رحلتك</a></div>
+              <ul class="lasles-plan__list">
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>مسارات مختارة</li>
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>أدوات وموارد</li>
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>متابعة التقدّم</li>
+              </ul>
+            </article>
+            <article class="lasles-plan is-featured lasles-plan--type-advanced">
+              <span class="lasles-plan__badge">الأكثر اختيارًا</span>
+              <p class="lasles-plan__type">باقة متقدمة</p>
+              <h3 class="lasles-plan__name">باقة متقدمة</h3>
+              <p class="lasles-plan__audience">وصول أوسع + جلسات استشارة + قياس أوضح للتقدّم.</p>
+              <div class="lasles-plan__pricing">
+                <p class="lasles-plan__price"><b>599 QAR</b></p>
+              </div>
+              <div class="lasles-plan__specs">
+                <span>2 جلسة استشارة</span>
+                <span>أدوات وموارد</span>
+              </div>
+              <div class="lasles-plan__cta-wrap"><a href="#" class="lasles-btn-primary">ابدأ رحلتك</a></div>
+              <ul class="lasles-plan__list">
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>مكتبة أوسع</li>
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>استشارات ضمن الباقة</li>
+                <li><span class="lasles-plan__check" aria-hidden="true"></span>قياس تقدّم أوضح</li>
+              </ul>
+            </article>
           </div>
-          <p class="sana-prx-plan__contact-sub">السعر يُحدَّد حسب المرحلة والمادة وعدد الساعات — فريقنا يساعدك في اختيار الباقة المناسبة.</p>
-          <p class="sana-prx-plan__hint">شهرياً · 16 ساعة حصص</p>
         </div>
-        <div class="sana-prx-plan__body">
-          <ul class="sana-prx-plan__benefits">
-            <li><i class="fas fa-check"></i><span>١٦ ساعة حصص مع معلم مخصّص</span></li>
-            <li><i class="fas fa-check"></i><span>وصول لجميع الكورسات المسجّلة</span></li>
-            <li><i class="fas fa-check"></i><span>اختبارات وواجبات تفاعلية</span></li>
-            <li><i class="fas fa-check"></i><span>مجتمع تعلّم ودعم أسرع</span></li>
-          </ul>
-          <a href="05-contact.html" class="sana-btn sana-btn--yellow sana-prx-plan__cta">اطلب عرض سعر <i class="fas fa-comments"></i></a>
-        </div>
-      </article>
 
-      <article class="sana-prx-plan sana-reveal">
-        <span class="sana-prx-plan__ribbon sana-prx-plan__ribbon--value">أفضل قيمة</span>
-        <div class="sana-prx-plan__head">
-          <div class="sana-prx-plan__icon"><i class="fas fa-crown"></i></div>
-          <p class="sana-prx-plan__tagline">تعلّم بلا حدود</p>
-          <h3 class="sana-prx-plan__name">باقة مميزة</h3>
-          <p class="sana-prx-plan__desc">للطلاب الطموحين — حصص مكثّفة، أولوية في الحجز، ومساعد ذكي للتعلّم.</p>
-        </div>
-        <div class="sana-prx-plan__price-block">
-          <div class="sana-prx-plan__price">
-            <strong class="is-contact-price">تواصل لمعرفة السعر</strong>
+        <div class="lasles-pricing-group">
+          <h3 class="lasles-pricing-group__title">للمدارس والمؤسسات</h3>
+          <div class="lasles-plans lasles-plans--pricing lasles-plans--org">
+            <article class="lasles-plan lasles-plan--type-school_institution">
+              <p class="lasles-plan__type">باقة مدارس ومؤسسات</p>
+              <h3 class="lasles-plan__name">باقة مدارس ومؤسسات</h3>
+              <p class="lasles-plan__audience">تدريب وتطوير مؤسسي لعدة مشاركين مع منسق وتقارير أساسية.</p>
+              <div class="lasles-plan__pricing">
+                <p class="lasles-plan__price"><b>عرض مخصص</b></p>
+              </div>
+              <div class="lasles-plan__specs">
+                <span>25 مقعد</span>
+              </div>
+              <div class="lasles-plan__cta-wrap"><a href="#" class="lasles-btn-outline">تواصل معنا</a></div>
+            </article>
+            <article class="lasles-plan lasles-plan--type-custom">
+              <p class="lasles-plan__type">باقة مخصصة</p>
+              <h3 class="lasles-plan__name">باقة مخصصة</h3>
+              <p class="lasles-plan__audience">عرض يُبنى حسب احتياجكم: مسارات، تدريب، استشارات، وعدد مقاعد مرن.</p>
+              <div class="lasles-plan__pricing">
+                <p class="lasles-plan__price"><b>عرض مخصص</b></p>
+              </div>
+              <div class="lasles-plan__cta-wrap"><a href="#" class="lasles-btn-outline">تواصل معنا</a></div>
+            </article>
           </div>
-          <p class="sana-prx-plan__contact-sub">السعر يُحدَّد حسب المرحلة والمادة وعدد الساعات — فريقنا يساعدك في اختيار الباقة المناسبة.</p>
-          <p class="sana-prx-plan__hint">شهرياً · 32 ساعة حصص</p>
-        </div>
-        <div class="sana-prx-plan__body">
-          <ul class="sana-prx-plan__benefits">
-            <li><i class="fas fa-check"></i><span>٣٢ ساعة حصص + أولوية الحجز</span></li>
-            <li><i class="fas fa-check"></i><span>كورسات لايف + محتوى مميز</span></li>
-            <li><i class="fas fa-check"></i><span>مساعد تعلّم بالذكاء الاصطناعي</span></li>
-            <li><i class="fas fa-check"></i><span>دعم أولوية ومراجعات مكثّفة</span></li>
-          </ul>
-          <a href="05-contact.html" class="sana-btn sana-btn--purple sana-prx-plan__cta">اطلب عرض سعر <i class="fas fa-comments"></i></a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="sana-section sana-section--soft" id="compare">
-  <div class="sana-container sana-reveal">
-    <div class="sana-head sana-head--center" style="margin-bottom:32px">
-      <h2 class="sana-head__title">قارن <span class="hl">كل الباقات</span></h2>
-      <span class="sana-head__line"></span>
-      <p class="sana-head__sub">جدول مقارنة شفاف — اعرف بالضبط ما تحصل عليه قبل الاشتراك.</p>
-    </div>
-    <div class="sana-prx-compare-wrap">
-      <table class="sana-prx-compare">
-        <thead>
-          <tr>
-            <th>الميزة</th>
-            <th>باقة أساسية</th>
-            <th class="is-featured-col">باقة قياسية</th>
-            <th>باقة مميزة</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="feat-label"><i class="fas fa-book-open"></i> الوصول للكورسات</span></td>
-            <td><span class="cell-text">كورسات مختارة</span></td>
-            <td class="is-featured-col"><span class="cell-text">جميع الكورسات</span></td>
-            <td><span class="cell-text">جميع الكورسات + مميز</span></td>
-          </tr>
-          <tr>
-            <td><span class="feat-label"><i class="fas fa-certificate"></i> شهادات إتمام قابلة للتحقق</span></td>
-            <td><i class="fas fa-check-circle cell-yes" aria-label="متاح"></i></td>
-            <td class="is-featured-col"><i class="fas fa-check-circle cell-yes" aria-label="متاح"></i></td>
-            <td><i class="fas fa-check-circle cell-yes" aria-label="متاح"></i></td>
-          </tr>
-          <tr>
-            <td><span class="feat-label"><i class="fas fa-download"></i> تحميل المواد</span></td>
-            <td><i class="fas fa-minus cell-no" aria-label="غير متاح"></i></td>
-            <td class="is-featured-col"><i class="fas fa-check-circle cell-yes" aria-label="متاح"></i></td>
-            <td><i class="fas fa-check-circle cell-yes" aria-label="متاح"></i></td>
-          </tr>
-          <tr>
-            <td><span class="feat-label"><i class="fas fa-robot"></i> مساعد التعلّم بالذكاء الاصطناعي</span></td>
-            <td><i class="fas fa-minus cell-no" aria-label="غير متاح"></i></td>
-            <td class="is-featured-col"><span class="cell-text">محدود</span></td>
-            <td><span class="cell-text">غير محدود</span></td>
-          </tr>
-          <tr>
-            <td><span class="feat-label"><i class="fas fa-headset"></i> دعم أولوية</span></td>
-            <td><i class="fas fa-minus cell-no" aria-label="غير متاح"></i></td>
-            <td class="is-featured-col"><i class="fas fa-minus cell-no" aria-label="غير متاح"></i></td>
-            <td><i class="fas fa-check-circle cell-yes" aria-label="متاح"></i></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="sana-section">
-  <div class="sana-container">
-    <div class="sana-head sana-head--center sana-reveal" style="margin-bottom:36px">
-      <h2 class="sana-head__title">لماذا <span class="hl">الترقية؟</span></h2>
-      <span class="sana-head__line"></span>
-      <p class="sana-head__sub">الاشتراك المميز ليس «مزايا إضافية فقط» — بل مسار تعلّم أسرع، متابعة أدق، وثقة أكبر قبل الاختبارات.</p>
-    </div>
-    <div class="sana-prx-why">
-      <div class="sana-prx-why__card sana-reveal"><div class="sana-prx-why__icon"><i class="fas fa-infinity"></i></div><strong>تعلّم بلا قيود</strong><p>محتوى أوسع وحصص أكثر — تقدّم أسرع نحو أهدافك الدراسية.</p></div>
-      <div class="sana-prx-why__card sana-reveal"><div class="sana-prx-why__icon"><i class="fas fa-award"></i></div><strong>شهادات إتمام رقمية</strong><p>شهادات قابلة للتحقق — إنجاز يفتخر به الطالب ووليّ الأمر.</p></div>
-      <div class="sana-prx-why__card sana-reveal"><div class="sana-prx-why__icon"><i class="fas fa-chalkboard-user"></i></div><strong>معلّمون خبراء</strong><p>معلّمون معتمدون بخبرة حقيقية في المناهج العربية والدولية.</p></div>
-      <div class="sana-prx-why__card sana-reveal"><div class="sana-prx-why__icon"><i class="fas fa-route"></i></div><strong>مسار شخصي</strong><p>خطة تعلّم تتكيّف مع مستوى الطالب — لا حل واحد للجميع.</p></div>
-      <div class="sana-prx-why__card sana-reveal"><div class="sana-prx-why__icon"><i class="fas fa-chart-line"></i></div><strong>متابعة التقدّم</strong><p>لوحة وليّ أمر واضحة — حضور، درجات، ونقاط القوة والضعف.</p></div>
-      <div class="sana-prx-why__card sana-reveal"><div class="sana-prx-why__icon"><i class="fas fa-robot"></i></div><strong>مساعد ذكي</strong><p>دعم فوري للأسئلة والمراجعة — متاح في الباقات المتقدمة.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="sana-section sana-section--soft" id="faq">
-  <div class="sana-container">
-    <div class="sana-head sana-head--center sana-reveal" style="margin-bottom:32px">
-      <h2 class="sana-head__title">أسئلة <span class="hl">الأسعار والاشتراك</span></h2>
-      <span class="sana-head__line"></span>
-      <p class="sana-head__sub">إجابات واضحة على أكثر ما يهمّك قبل الدفع.</p>
-    </div>
-    <div class="sana-faq-m sana-reveal">
-      <div class="sana-faq-m__visual">
-        <img src="../../public/img/sanua/landing-hero-boy.png" alt="">
-        <span class="bubble bubble--1">💳</span>
-        <span class="bubble bubble--2">✅</span>
-      </div>
-      <div class="sana-faq" id="sana-faq">
-        <div class="sana-faq-item is-open">
-          <button type="button" class="sana-faq-q" aria-expanded="true">هل يمكنني الإلغاء في أي وقت؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">نعم. يمكنك إلغاء أو تعديل اشتراكك قبل موعد التجديد التالي — بدون التزام طويل الأمد.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">هل أحصل على شهادة؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">نعم. عند إتمام المسار أو الكورس تحصل على شهادة رقمية قابلة للتحقق عبر رابط فريد.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">هل توجد تجربة مجانية؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">يمكنك التسجيل مجاناً واستكشاف دروس تجريبية قبل الاشتراك في أي باقة مدفوعة.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">هل يمكنني الترقية لاحقاً؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">بالتأكيد. يمكنك الترقية أو تغيير الباقة في أي وقت — نحسب الفرق بشفافية.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">هل الدفع آمن؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">نعم. جميع المعاملات مشفّرة ومعالجة عبر بوابات دفع موثوقة — بياناتك محمية بالكامل.</div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="sana-prx-final">
-  <div class="sana-container sana-reveal">
-    <div class="sana-prx-final__box">
-      <h2>ابدأ التعلّم اليوم</h2>
-      <p>ابدأ رحلة تعلّم أوضح على Sana — اختر الباقة المناسبة أو تواصل مع فريقنا للمساعدة.</p>
-      <div class="sana-prx-final__actions">
-        <a href="07-auth-register.html" class="sana-btn sana-btn--yellow sana-btn--lg">ابدأ الآن مجاناً <i class="fas fa-arrow-left"></i></a>
-        <a href="05-contact.html" class="sana-btn sana-btn--ghost-light sana-btn--lg">تحدّث مع فريقنا <i class="fas fa-comments"></i></a>
+    <section class="lasles-pricing-compare">
+      <div class="lasles-container">
+        <div class="lasles-pricing-compare__head">
+          <p class="lasles-path-kicker">دليل سريع</p>
+          <h2 class="lasles-section-title">كيف تختار؟</h2>
+          <p class="lasles-section-lead">مطابقة سريعة بين احتياجك ونوع الباقة.</p>
+        </div>
+        <ol class="lasles-pricing-compare__list">
+          <li>
+            <span class="lasles-pricing-compare__num" aria-hidden="true">01</span>
+            <div>
+              <strong>مجانية</strong>
+              <span>للتعرّف على المنصة وتجربة عينات قبل الاشتراك.</span>
+            </div>
+          </li>
+          <li>
+            <span class="lasles-pricing-compare__num" aria-hidden="true">02</span>
+            <div>
+              <strong>فردية</strong>
+              <span>للمعلم الذي يريد مسارات وأدوات ومتابعة تقدّم.</span>
+            </div>
+          </li>
+          <li>
+            <span class="lasles-pricing-compare__num" aria-hidden="true">03</span>
+            <div>
+              <strong>متقدمة</strong>
+              <span>وصول أوسع + استشارات ضمن الباقة + قياس أوضح.</span>
+            </div>
+          </li>
+          <li>
+            <span class="lasles-pricing-compare__num" aria-hidden="true">04</span>
+            <div>
+              <strong>مدارس / مخصصة</strong>
+              <span>للجهات: مقاعد متعددة أو نطاق يُبنى حسب الاحتياج.</span>
+            </div>
+          </li>
+        </ol>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-</main>
-
-<footer class="sana-foot-m">
-  <div class="sana-container">
-    <div class="sana-foot-m__grid">
-      <div class="sana-foot-m__brand">
-        <a href="01-home.html" class="sana-foot-m__logo"><span>SANA</span></a>
-        <p>منصة تعليمية عربية تفاعلية للأطفال والطلاب — تعلّم بمتعة وثقة.</p>
+    <section class="lasles-pricing-cta">
+      <div class="lasles-container">
+        <div class="lasles-pricing-cta__inner">
+          <div class="lasles-pricing-cta__copy">
+            <h2>لست متأكداً أي باقة تناسبك؟</h2>
+            <p>ابدأ بحساب مجاني لاستكشاف المنصة، أو راسلنا لعرض مدارس ومؤسسات.</p>
+          </div>
+          <div class="lasles-pricing-cta__actions">
+            <a href="07-auth-register.html" class="lasles-btn-primary">إنشاء حساب معلم</a>
+            <a href="05-contact.html" class="lasles-btn-outline">تواصل لعرض مؤسسي</a>
+          </div>
+        </div>
       </div>
-      <div>
-        <h4>تصفّح</h4>
-        <ul>
-          <li><a href="02-about.html">كيف تعمل سنا؟</a></li>
-          <li><a href="03-courses.html">الكورسات</a></li>
-          <li><a href="09-instructors.html">المعلّمون</a></li>
-          <li><a href="04-pricing.html">الأسعار</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>روابط مهمة</h4>
-        <ul>
-          <li><a href="02-about.html">من نحن</a></li>
-          <li><a href="05-contact.html">اتصل بنا</a></li>
-          <li><a href="08-tutor-apply.html">تسجيل معلّم</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>تواصل معنا</h4>
-        <ul><li><a href="05-contact.html"><i class="fab fa-whatsapp"></i> واتساب</a></li></ul>
-      </div>
-    </div>
-    <p class="sana-foot-m__copy">&copy; 2026 Sana. جميع الحقوق محفوظة.</p>
-  </div>
-</footer>
-
-<script src="assets/sana-scripts.js"></script>
+    </section>
+  </main>
 </body>
 </html>

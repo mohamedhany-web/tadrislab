@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', __('instructor.build_curriculum') . ' - ' . $course->title)
 @section('page_title', __('instructor.build_curriculum'))
@@ -21,37 +21,33 @@
 @endpush
 
 @section('content')
-<div class="su-page">
-    <div class="su-page-head">
-        <div class="min-w-0">
-            <h1 class="su-page-head__title">
-                <i class="fas fa-sitemap su-page-head__ico" aria-hidden="true"></i>
-                {{ __('instructor.build_curriculum') }}
-            </h1>
-            <p class="su-page-head__sub">{{ $course->title }}</p>
-        </div>
-        <div class="su-page-head__actions">
-            <a href="{{ route('instructor.lectures.index') }}" class="su-btn su-btn--primary">
-                <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
-                {{ __('instructor.lectures') }}
-            </a>
-            <a href="{{ route('instructor.courses.index') }}" class="su-btn">
-                <i class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}" aria-hidden="true"></i>
-                {{ __('instructor.back') }}
-            </a>
-        </div>
-    </div>
+@php $isRtl = app()->getLocale() === 'ar'; @endphp
 
+<section class="st-join-hero" aria-label="{{ __('instructor.build_curriculum') }}">
+    <div class="st-join-hero__copy">
+        <p class="st-join-hero__kicker">{{ $course->title }}</p>
+        <h2 class="st-join-hero__title">{{ __('instructor.build_curriculum') }}</h2>
+        <p class="st-join-hero__meta">
+            {{ $isRtl ? 'رتّب الأقسام والمحاضرات والواجبات والاختبارات داخل المنهج.' : 'Organize sections, lectures, assignments, and exams in the curriculum.' }}
+        </p>
+    </div>
+    <div class="st-join-hero__actions">
+        <a href="{{ route('instructor.courses.show', $course) }}" class="st-pill st-pill--outline">{{ __('instructor.back') }}</a>
+        <a href="{{ route('instructor.lectures.index') }}" class="st-pill st-pill--solid">{{ __('instructor.lectures') }}</a>
+    </div>
+</section>
+
+<div class="su-page st-curr-wrap">
     <div class="su-curr-layout">
         <div>
             <div id="sections-container">
                 @forelse($sections as $section)
                     @include('instructor.curriculum.partials.section', ['section' => $section, 'depth' => 0])
                 @empty
-                    <div class="su-empty">
+                    <div class="su-empty st-panel">
                         <i class="fas fa-folder-open" aria-hidden="true"></i>
                         <p>{{ __('instructor.curr_no_sections') }}</p>
-                        <button type="button" onclick="showAddSectionModal()" class="su-btn su-btn--primary" style="margin-top:12px">
+                        <button type="button" onclick="showAddSectionModal()" class="st-pill st-pill--solid" style="margin-top:12px">
                             <i class="fas fa-plus" aria-hidden="true"></i>
                             {{ __('instructor.curr_add_section') }}
                         </button>
@@ -60,14 +56,14 @@
             </div>
 
             @if($sections->count() > 0)
-                <button type="button" onclick="showAddSectionModal()" class="su-btn" style="width:100%;justify-content:center;margin-top:12px">
+                <button type="button" onclick="showAddSectionModal()" class="st-pill st-pill--outline" style="width:100%;justify-content:center;margin-top:12px">
                     <i class="fas fa-plus" aria-hidden="true"></i>
                     {{ __('instructor.curr_add_section') }}
                 </button>
             @endif
         </div>
 
-        <aside class="su-card">
+        <aside class="su-card st-panel" style="box-shadow:none">
             <h3 class="su-card__title" style="margin-bottom:14px">{{ __('instructor.curr_available_items') }}</h3>
 
             @if($availableLectures->count() > 0)
@@ -971,8 +967,8 @@ async function editLectureFromCurriculum(lectureId, sectionId) {
         if (lecture.scheduled_at) {
             var tzEl = document.querySelector('[data-timezone-select]');
             var tz = tzEl && tzEl.value ? tzEl.value : 'UTC';
-            if (window.glotticalDateTimeLocal) {
-                document.getElementById('lectureScheduledAt').value = window.glotticalDateTimeLocal(lecture.scheduled_at, tz);
+            if (window.tadrislabDateTimeLocal) {
+                document.getElementById('lectureScheduledAt').value = window.tadrislabDateTimeLocal(lecture.scheduled_at, tz);
             } else {
                 const scheduledDate = new Date(lecture.scheduled_at);
                 scheduledDate.setMinutes(scheduledDate.getMinutes() - scheduledDate.getTimezoneOffset());

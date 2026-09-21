@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\TwoFactorLog;
 use App\Models\User;
-use App\Support\RbacAdminRouteAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -102,16 +101,12 @@ class TwoFactorController extends Controller
         $cacheKey = "user_session_{$user->id}";
         Cache::put($cacheKey, $sessionId, now()->addDays(7));
 
-        if ($user->isEmployee()) {
-            return redirect()->intended(route($this->getDashboardRoute($user)));
+        $home = \App\Support\TadrisRoles::homeRouteName($user);
+        if ($home === 'public.tutor.apply.profile') {
+            return redirect()->route($home);
         }
-        if ($user->role === 'super_admin' || $user->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard'));
-        }
-        if ($user->isInstructor()) {
-            return redirect()->intended($user->instructorHomeUrl());
-        }
-        return redirect()->intended(route('dashboard'));
+
+        return redirect()->intended(route($home));
     }
 
     /**
@@ -209,23 +204,7 @@ class TwoFactorController extends Controller
 
     protected function getDashboardRoute(User $user): string
     {
-        if ($user->isEmployee()) {
-            if ($user->roles()->exists()) {
-                $adminRoute = RbacAdminRouteAccess::firstPostLoginAdminRouteName($user);
-                if ($adminRoute !== null) {
-                    return $adminRoute;
-                }
-            }
-
-            return 'employee.dashboard';
-        }
-        if ($user->role === 'super_admin' || $user->role === 'admin') {
-            return 'admin.dashboard';
-        }
-        if ($user->isInstructor()) {
-            return $user->canAccessInstructorPanel() ? 'dashboard' : 'public.tutor.apply.profile';
-        }
-        return 'dashboard';
+        return \App\Support\TadrisRoles::homeRouteName($user);
     }
 
     /** توحيد رمز 2FA: استخراج 6 أرقام فقط مع دعم الأرقام العربية ٠-٩ */

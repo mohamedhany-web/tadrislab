@@ -102,6 +102,12 @@ class CheckoutController extends Controller
         $studentWallet = Wallet::where('user_id', Auth::id())->first();
         $studentWalletBalance = $studentWallet ? (float) $studentWallet->balance : 0.0;
 
+        $isRtl = app()->getLocale() === 'ar';
+        $pageTitle = __('public.checkout_page_label').' — '.($course->title ?? __('public.course_title_fallback'));
+        $pageDescription = __('landing.checkout.hero_lead');
+        $bodyClass = 'lasles-checkout-page';
+        $laslesNavActive = 'courses';
+
         return view('public.checkout', compact(
             'course',
             'wallets',
@@ -113,7 +119,11 @@ class CheckoutController extends Controller
             'kashierUseGateway',
             'kashierMisconfigured',
             'platformLogoUrl',
-            'studentWalletBalance'
+            'studentWalletBalance',
+            'pageTitle',
+            'pageDescription',
+            'bodyClass',
+            'laslesNavActive'
         ));
     }
 
@@ -125,14 +135,14 @@ class CheckoutController extends Controller
         $request->validate([
             'coupon_code' => 'nullable|string|max:64',
             'wallet_credit' => 'nullable|numeric|min:0',
-            'currency' => 'nullable|in:EGP,USD,egp,usd',
+            'currency' => 'nullable|string|in:'.implode(',', platform_currencies()),
         ]);
 
         $course = AdvancedCourse::where('id', $courseId)
             ->where('is_active', true)
             ->firstOrFail();
 
-        $currency = 'USD';
+        $currency = platform_currency();
 
         $pricing = CourseCheckoutPricingService::resolve(
             Auth::user(),
@@ -181,7 +191,7 @@ class CheckoutController extends Controller
         $request->validate([
             'coupon_code' => 'nullable|string|max:64',
             'wallet_credit' => 'nullable|numeric|min:0',
-            'currency' => 'nullable|in:EGP,USD,egp,usd',
+            'currency' => 'nullable|string|in:'.implode(',', platform_currencies()),
         ]);
 
         $pricing = CourseCheckoutPricingService::resolve(
@@ -189,9 +199,7 @@ class CheckoutController extends Controller
             $course,
             $request->input('coupon_code'),
             (float) $request->input('wallet_credit', 0),
-            null,
-            'USD'
-        );
+            null, platform_currency());
 
         if (! $pricing['ok']) {
             return back()->with('error', $pricing['message']);
@@ -207,7 +215,7 @@ class CheckoutController extends Controller
             'discount_amount' => $pricing['discount_amount'],
             'wallet_credit_amount' => $pricing['wallet_credit_amount'],
             'amount' => $pricing['final_amount'],
-            'currency' => 'USD',
+            'currency' => platform_currency(),
             'billing_mode' => $course->billing_mode ?? CourseSubscriptionService::BILLING_ONE_TIME,
             'payment_method' => 'online',
             'payment_proof' => null,
@@ -302,12 +310,16 @@ class CheckoutController extends Controller
         }
 
         if (! $kashier->isPaymentSuccess($query)) {
-            if ($order->advanced_course_id) {
-                return redirect()->route('public.course.show', $order->advanced_course_id)
-                    ->with('error', 'لم يتم إتمام الدفع. يمكنك المحاولة مرة أخرى.');
+            try {
+                event(new \App\Events\PaymentFailed(
+                    $order,
+                    'لم يتم إتمام الدفع عبر كاشير.'
+                ));
+            } catch (\Throwable $e) {
+                Log::warning('PaymentFailed dispatch failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
             }
 
-            return redirect()->route('orders.index')
+            return redirect()->to($this->onlinePaymentRetryUrl($order))
                 ->with('error', 'لم يتم إتمام الدفع. يمكنك المحاولة مرة أخرى.');
         }
 
@@ -352,13 +364,13 @@ class CheckoutController extends Controller
         }
 
         $fresh = $order->fresh();
-        if ($fresh && $fresh->advanced_course_id) {
-            return redirect()->route('public.course.show', $fresh->advanced_course_id)
-                ->with('success', 'تم الدفع بنجاح! تم تفعيل الكورس على حسابك.');
-        }
 
-        return redirect()->route('orders.index')
-            ->with('success', 'تم الدفع بنجاح! تمت معالجة الطلب.');
+        return redirect()->to($this->onlinePaymentSuccessUrl($fresh ?? $order))
+            ->with('success', $fresh && $fresh->isConsultationOrder()
+                ? 'تم الدفع بنجاح! تم تأكيد دفع الاستشارة — سنؤكّد الموعد قريبًا.'
+                : ($fresh && $fresh->advanced_course_id
+                    ? 'تم الدفع بنجاح! تم تفعيل الكورس على حسابك.'
+                    : 'تم الدفع بنجاح! تمت معالجة الطلب.'));
     }
 
     /**
@@ -400,10 +412,10 @@ class CheckoutController extends Controller
         $request->validate([
             'coupon_code' => 'nullable|string|max:64',
             'wallet_credit' => 'nullable|numeric|min:0',
-            'currency' => 'nullable|in:EGP,USD,egp,usd',
+            'currency' => 'nullable|string|in:'.implode(',', platform_currencies()),
         ]);
 
-        $currency = 'USD';
+        $currency = platform_currency();
 
         $pricing = CourseCheckoutPricingService::resolve(
             Auth::user(),
@@ -546,7 +558,7 @@ class CheckoutController extends Controller
             $phone = '0000000000';
         }
 
-        $currency = $order->currencyCode() ?: (string) config('currency.code', 'USD');
+        $currency = $order->currencyCode() ?: (string) config('currency.code', 'QAR');
         $cartTotal = number_format($amount, 2, '.', '');
         $itemPrice = $cartTotal;
 
@@ -685,7 +697,7 @@ class CheckoutController extends Controller
         }
 
         $amount = (float) $order->amount;
-        $currency = $order->currencyCode() ?: (string) config('currency.code', 'USD');
+        $currency = $order->currencyCode() ?: (string) config('currency.code', 'QAR');
         $cartTotal = number_format($amount, 2, '.', '');
         $itemPrice = $cartTotal;
 
@@ -910,8 +922,46 @@ class CheckoutController extends Controller
 
     private function fawaterakSuccessUrl(Order $order): string
     {
+        return $this->onlinePaymentSuccessUrl($order);
+    }
+
+    private function onlinePaymentSuccessUrl(Order $order): string
+    {
+        if ($order->isConsultationOrder()) {
+            $consultation = \App\Services\ConsultationOrderFulfillmentService::resolveConsultation($order);
+            if ($consultation) {
+                return route('consultations.show', $consultation);
+            }
+        }
+
         if (in_array($order->order_type, [Order::TYPE_SERVICE_PACKAGE, Order::TYPE_CUSTOM_SERVICE_PACKAGE], true)) {
             return route('student.service-entitlements.index');
+        }
+
+        if ($order->package_id || $order->order_type === Order::TYPE_PACKAGE) {
+            return route('student.learning-paths.index');
+        }
+
+        if ($order->learning_path_id && $order->learningPath) {
+            return route('student.learning-paths.show', $order->learningPath->slug);
+        }
+
+        if ($order->advanced_course_id) {
+            return route('public.course.show', $order->advanced_course_id);
+        }
+
+        return route('orders.index');
+    }
+
+    private function onlinePaymentRetryUrl(Order $order): string
+    {
+        if ($order->isConsultationOrder()) {
+            $slug = data_get($order->custom_package_data, 'consultation_service_slug');
+            if (filled($slug)) {
+                return route('public.consultations.book.service', $slug);
+            }
+
+            return route('orders.show', $order);
         }
 
         if ($order->advanced_course_id) {
@@ -952,14 +1002,33 @@ class CheckoutController extends Controller
         array $gatewayResponse,
         string $gatewayDisplayName
     ): Invoice {
-        $order->loadMissing(['course', 'servicePackage']);
+        $order->loadMissing(['course', 'servicePackage', 'package', 'learningPath']);
 
         $isPackageOrder = in_array($order->order_type, [
             Order::TYPE_SERVICE_PACKAGE,
             Order::TYPE_CUSTOM_SERVICE_PACKAGE,
         ], true);
+        $isConsultationOrder = $order->isConsultationOrder();
+        $isCatalogOrder = \App\Services\CatalogOrderFulfillmentService::isCatalogOrder($order);
 
-        if ($isPackageOrder) {
+        if ($isConsultationOrder) {
+            $orderTitle = (string) (data_get($order->custom_package_data, 'consultation_title')
+                ?: 'استشارة مهنية');
+            $invoiceType = 'consultation';
+            $invoiceDescription = 'حجز استشارة: '.$orderTitle;
+            $itemDescription = 'استشارة: '.$orderTitle;
+            $transactionCategory = 'consultation';
+            $transactionDescription = 'دفع استشارة: '.$orderTitle.' - طلب #'.$order->id;
+        } elseif ($isCatalogOrder) {
+            $orderTitle = $order->package_id
+                ? (string) ($order->package?->name ?? 'باقة')
+                : (string) ($order->learningPath?->title() ?? 'مسار');
+            $invoiceType = 'subscription';
+            $invoiceDescription = 'شراء: '.$orderTitle;
+            $itemDescription = $orderTitle;
+            $transactionCategory = 'subscription';
+            $transactionDescription = 'دفع كتالوج: '.$orderTitle.' - طلب #'.$order->id;
+        } elseif ($isPackageOrder) {
             $orderTitle = $order->order_type === Order::TYPE_CUSTOM_SERVICE_PACKAGE
                 ? (string) ($order->custom_package_data['name'] ?? 'باقة مخصصة')
                 : (string) ($order->servicePackage?->name ?? 'باقة حصص');
@@ -977,7 +1046,7 @@ class CheckoutController extends Controller
             $transactionDescription = 'دفع كورس: '.$orderTitle.' - طلب #'.$order->id;
         }
 
-        $currency = $order->currencyCode() ?: (string) config('currency.code', 'USD');
+        $currency = $order->currencyCode() ?: (string) config('currency.code', 'QAR');
 
         $orig = (float) ($order->original_amount ?? $order->amount);
         $couponDisc = (float) ($order->discount_amount ?? 0);
@@ -1033,9 +1102,16 @@ class CheckoutController extends Controller
             'invoice_id' => $invoice->id,
             'payment_id' => $payment->id,
         ];
-        if ($isPackageOrder) {
+        if ($isConsultationOrder) {
+            $transactionMetadata['order_type'] = Order::TYPE_CONSULTATION;
+            $transactionMetadata['consultation_request_id'] = data_get($order->custom_package_data, 'consultation_request_id');
+        } elseif ($isPackageOrder) {
             $transactionMetadata['service_package_id'] = $order->service_package_id;
             $transactionMetadata['order_type'] = $order->order_type;
+        } elseif ($isCatalogOrder) {
+            $transactionMetadata['order_type'] = $order->order_type;
+            $transactionMetadata['package_id'] = $order->package_id;
+            $transactionMetadata['learning_path_id'] = $order->learning_path_id;
         } else {
             $transactionMetadata['course_id'] = $order->advanced_course_id;
         }
@@ -1130,7 +1206,47 @@ class CheckoutController extends Controller
             }
         }
 
+        if (\App\Services\CatalogOrderFulfillmentService::isCatalogOrder($order)) {
+            try {
+                \App\Services\CatalogOrderFulfillmentService::fulfill($order->fresh());
+            } catch (\Throwable $e) {
+                Log::error('Catalog fulfill failed after online payment: '.$e->getMessage(), [
+                    'order_id' => $order->id,
+                ]);
+            }
+        }
+
+        if (\App\Services\ConsultationOrderFulfillmentService::isConsultationOrder($order)) {
+            try {
+                \App\Services\ConsultationOrderFulfillmentService::fulfill($order->fresh());
+            } catch (\Throwable $e) {
+                Log::error('Consultation fulfill failed after online payment: '.$e->getMessage(), [
+                    'order_id' => $order->id,
+                ]);
+            }
+        }
+
         OrderWalletAndCouponFinalizer::run($order->fresh());
+
+        try {
+            $fresh = $order->fresh(['user', 'payment', 'package', 'learningPath']);
+            event(new \App\Events\PaymentSuccessful($fresh, $fresh?->payment));
+            event(new \App\Events\OrderStatusChanged($fresh, Order::STATUS_PENDING, Order::STATUS_APPROVED));
+            if ($fresh?->user && $order->advanced_course_id) {
+                $courseTitle = (string) ($order->course?->title ?? 'مسار / كورس');
+                event(new \App\Events\AccessSubscriptionActivated(
+                    $fresh->user,
+                    $courseTitle,
+                    'تم تفعيل الوصول بعد الدفع الإلكتروني',
+                    $fresh->id
+                ));
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Payment notification dispatch failed', [
+                'order_id' => $order->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return $invoice;
     }
@@ -1214,10 +1330,10 @@ class CheckoutController extends Controller
         $request->validate([
             'coupon_code' => 'nullable|string|max:64',
             'wallet_credit' => 'nullable|numeric|min:0',
-            'currency' => 'nullable|in:EGP,USD,egp,usd',
+            'currency' => 'nullable|string|in:'.implode(',', platform_currencies()),
         ]);
 
-        $currency = 'USD';
+        $currency = platform_currency();
 
         $pricing = CourseCheckoutPricingService::resolve(
             Auth::user(),

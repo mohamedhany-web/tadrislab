@@ -27,11 +27,13 @@
         var quoteUrl = panel.getAttribute('data-quote-url');
         var meta = document.querySelector('meta[name="csrf-token"]');
         var csrf = (meta && meta.getAttribute('content')) || '';
+        var platformCurrency = @json(platform_currency());
+        var platformCurrencyLabel = @json(currency_label());
         function el(id){ return document.getElementById(id); }
         function fmt(n){
             var x = parseFloat(n);
             if (isNaN(x)) x = 0;
-            return x.toLocaleString('ar-EG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return x.toLocaleString('ar-QA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
         function setMsg(text, isErr) {
             var m = el('checkout_pricing_msg');
@@ -46,8 +48,8 @@
             var base = parseFloat(summary.getAttribute('data-base-price')) || 0;
             var isMonthly = summary.getAttribute('data-is-monthly') === '1';
             var curEl = el('checkout_currency');
-            var cur = 'USD';
-            var curLabel = cur === 'USD' ? '{{ __('public.currency_usd') }}' : '{{ __('public.currency_egp') }}';
+            var cur = (curEl && curEl.value) ? curEl.value : platformCurrency;
+            var curLabel = cur || platformCurrencyLabel || platformCurrency;
             var egpSmall = ' <span style="font-size:.75rem;font-weight:700;color:#8A94A6">' + curLabel + '</span>' + (isMonthly ? ' <span style="font-size:.7rem;font-weight:700;color:#8A94A6">/{{ __('public.per_month') }}</span>' : '');
             var egpLarge = ' <span style="font-size:.8rem;font-weight:700;color:#8A94A6">' + curLabel + '</span>' + (isMonthly ? ' <span style="font-size:.75rem;font-weight:700;color:#8A94A6">/{{ __('public.per_month') }}</span>' : '');
             if (!data || !data.ok) {
@@ -72,16 +74,81 @@
             }
             el('sum-final').innerHTML = fmt(data.final_amount) + egpLarge;
         }
-        function quote() {
+        function syncCouponFromModal() {
+            var hidden = el('checkout_coupon_code');
+            var input = el('checkout_coupon_code_input');
+            if (hidden && input) hidden.value = (input.value || '').trim();
+        }
+        function showCouponApplied(code) {
+            var ask = el('checkout-coupon-ask');
+            var applied = el('checkout-coupon-applied');
+            var declined = el('checkout-coupon-declined');
+            var codeEl = el('checkout-coupon-applied-code');
+            if (ask) ask.classList.add('hidden');
+            if (declined) declined.classList.add('hidden');
+            if (applied) applied.classList.remove('hidden');
+            if (codeEl) codeEl.textContent = code || '';
+        }
+        function showCouponAsk() {
+            var ask = el('checkout-coupon-ask');
+            var applied = el('checkout-coupon-applied');
+            var declined = el('checkout-coupon-declined');
+            if (ask) ask.classList.remove('hidden');
+            if (applied) applied.classList.add('hidden');
+            if (declined) declined.classList.add('hidden');
+        }
+        function showCouponDeclined() {
+            var ask = el('checkout-coupon-ask');
+            var applied = el('checkout-coupon-applied');
+            var declined = el('checkout-coupon-declined');
+            if (ask) ask.classList.add('hidden');
+            if (applied) applied.classList.add('hidden');
+            if (declined) declined.classList.remove('hidden');
+        }
+        function openCouponModal() {
+            var modal = el('checkout-coupon-modal');
+            var input = el('checkout_coupon_code_input');
+            var hidden = el('checkout_coupon_code');
+            var err = el('checkout-coupon-modal-error');
+            if (!modal) return;
+            if (input && hidden) input.value = hidden.value || '';
+            if (err) { err.textContent = ''; err.classList.add('hidden'); }
+            modal.classList.remove('hidden');
+            modal.removeAttribute('hidden');
+            document.body.classList.add('lasles-checkout-modal-open');
+            setTimeout(function(){ if (input) input.focus(); }, 50);
+        }
+        function closeCouponModal() {
+            var modal = el('checkout-coupon-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.setAttribute('hidden', 'hidden');
+            document.body.classList.remove('lasles-checkout-modal-open');
+        }
+        function setModalError(text) {
+            var err = el('checkout-coupon-modal-error');
+            if (!err) return;
+            err.textContent = text || '';
+            err.classList.toggle('hidden', !text);
+        }
+        function quote(opts) {
+            opts = opts || {};
             setMsg('', false);
+            setModalError('');
+            syncCouponFromModal();
+            var c = el('checkout_coupon_code');
+            var code = c ? (c.value || '').trim() : '';
+            if (opts.requireCoupon && !code) {
+                setModalError(@json(__('landing.checkout.coupon_required')));
+                return Promise.resolve(null);
+            }
             var fd = new FormData();
             fd.append('_token', csrf);
-            var c = el('checkout_coupon_code');
             var w = el('checkout_wallet_credit');
             var cur = el('checkout_currency');
-            fd.append('coupon_code', c ? (c.value || '').trim() : '');
+            fd.append('coupon_code', code);
             fd.append('wallet_credit', w && w.value !== '' ? w.value : '0');
-            fd.append('currency', 'USD');
+            fd.append('currency', (cur && cur.value) ? cur.value : platformCurrency);
             var ar = document.querySelector('input[name="auto_renew"]');
             if (ar && ar.checked) { fd.append('auto_renew', '1'); }
             return fetch(quoteUrl, {
@@ -94,50 +161,100 @@
             }).then(function(res){
                 if (res.ok && res.data && res.data.ok) {
                     updateSummary(res.data);
-                    setMsg('تم تحديث السعر.', false);
+                    if (code && res.data.discount_amount > 0) {
+                        showCouponApplied(code);
+                        closeCouponModal();
+                        setMsg(@json(__('landing.checkout.coupon_success')), false);
+                    } else if (code && !(res.data.discount_amount > 0)) {
+                        setModalError(@json(__('landing.checkout.coupon_invalid')));
+                        setMsg(@json(__('landing.checkout.coupon_invalid')), true);
+                    } else {
+                        setMsg(@json(__('landing.checkout.price_updated')), false);
+                    }
                     var hfC = el('form_coupon_code');
                     var hfW = el('form_wallet_credit');
                     var hfCur = el('form_currency');
-                    if (hfC) hfC.value = (el('checkout_coupon_code').value || '').trim();
+                    if (hfC) hfC.value = code;
                     if (hfW) {
                         var wIn = el('checkout_wallet_credit');
                         hfW.value = wIn && wIn.value !== '' ? wIn.value : '0';
                     }
-                    if (hfCur && cur) hfCur.value = 'USD';
+                    if (hfCur) hfCur.value = (cur && cur.value) ? cur.value : platformCurrency;
                     if (typeof window.muallimxOnCheckoutPricingUpdated === 'function') {
                         try { window.muallimxOnCheckoutPricingUpdated(res.data); } catch (e) {}
                     }
                     return res.data;
                 }
-                var msg = (res.data && res.data.message) ? res.data.message : 'تعذّر حساب السعر.';
+                var msg = (res.data && res.data.message) ? res.data.message : @json(__('landing.checkout.price_error'));
+                setModalError(msg);
                 setMsg(msg, true);
                 updateSummary(null);
                 return null;
             }).catch(function(){
-                setMsg('خطأ في الاتصال.', true);
+                var fail = @json(__('landing.checkout.connection_error'));
+                setModalError(fail);
+                setMsg(fail, true);
                 updateSummary(null);
                 return null;
             });
         }
         var btn = el('checkout_apply_pricing');
-        if (btn) btn.addEventListener('click', function(e){ e.preventDefault(); quote(); });
+        if (btn) btn.addEventListener('click', function(e){ e.preventDefault(); quote({ requireCoupon: true }); });
+        var walletBtn = el('checkout_apply_wallet');
+        if (walletBtn) walletBtn.addEventListener('click', function(e){ e.preventDefault(); quote(); });
+        var yesBtn = el('checkout-coupon-yes');
+        if (yesBtn) yesBtn.addEventListener('click', function(){ openCouponModal(); });
+        var noBtn = el('checkout-coupon-no');
+        if (noBtn) noBtn.addEventListener('click', function(){ showCouponDeclined(); });
+        var changeBtn = el('checkout-coupon-change');
+        if (changeBtn) changeBtn.addEventListener('click', function(){ openCouponModal(); });
+        var removeBtn = el('checkout-coupon-remove');
+        if (removeBtn) removeBtn.addEventListener('click', function(){
+            var hidden = el('checkout_coupon_code');
+            var input = el('checkout_coupon_code_input');
+            if (hidden) hidden.value = '';
+            if (input) input.value = '';
+            showCouponAsk();
+            quote();
+        });
+        var laterBtn = el('checkout-coupon-open-later');
+        if (laterBtn) laterBtn.addEventListener('click', function(){ openCouponModal(); });
+        var closeBtn = el('checkout-coupon-modal-close');
+        if (closeBtn) closeBtn.addEventListener('click', closeCouponModal);
+        var backdrop = el('checkout-coupon-modal-backdrop');
+        if (backdrop) backdrop.addEventListener('click', closeCouponModal);
+        var couponInput = el('checkout_coupon_code_input');
+        if (couponInput) {
+            couponInput.addEventListener('keydown', function(e){
+                if (e.key === 'Enter') { e.preventDefault(); quote({ requireCoupon: true }); }
+            });
+        }
+        document.addEventListener('keydown', function(e){
+            if (e.key === 'Escape') closeCouponModal();
+        });
         var curSel = el('checkout_currency');
         if (curSel) curSel.addEventListener('change', function(){ quote(); });
         var form = el('manual-checkout-form');
         if (form) {
             form.addEventListener('submit', function(){
+                syncCouponFromModal();
                 var c = el('checkout_coupon_code');
                 var w = el('checkout_wallet_credit');
                 var cur = el('checkout_currency');
                 if (el('form_coupon_code')) el('form_coupon_code').value = c ? (c.value || '').trim() : '';
                 if (el('form_wallet_credit')) el('form_wallet_credit').value = w && w.value !== '' ? w.value : '0';
-                if (el('form_currency')) el('form_currency').value = 'USD';
+                if (el('form_currency')) el('form_currency').value = (cur && cur.value) ? cur.value : platformCurrency;
             });
         }
         var oc = el('checkout_coupon_code');
         var ow = el('checkout_wallet_credit');
         if (el('form_coupon_code') && el('form_coupon_code').value && oc) oc.value = el('form_coupon_code').value;
         if (ow && el('form_wallet_credit') && el('form_wallet_credit').value) ow.value = el('form_wallet_credit').value;
+        if (oc && oc.value) {
+            var input = el('checkout_coupon_code_input');
+            if (input) input.value = oc.value;
+            showCouponApplied(oc.value);
+        }
         quote();
     })();
     </script>
@@ -225,7 +342,7 @@
             fd.append('coupon_code', cEl ? (cEl.value || '').trim() : '');
             fd.append('wallet_credit', wEl && wEl.value !== '' ? wEl.value : '0');
             var curEl = document.getElementById('checkout_currency');
-            fd.append('currency', 'USD');
+            fd.append('currency', (curEl && curEl.value) ? curEl.value : @json(platform_currency()));
             var arEl = document.querySelector('input[name="auto_renew"]');
             if (arEl && arEl.checked) { fd.append('auto_renew', '1'); }
             fetch(prepareUrl, {
@@ -399,7 +516,7 @@
             fd.append('coupon_code', cEl ? (cEl.value || '').trim() : '');
             fd.append('wallet_credit', wEl && wEl.value !== '' ? wEl.value : '0');
             var curEl = document.getElementById('checkout_currency');
-            fd.append('currency', 'USD');
+            fd.append('currency', (curEl && curEl.value) ? curEl.value : @json(platform_currency()));
             var arEl = document.querySelector('input[name="auto_renew"]');
             if (arEl && arEl.checked) { fd.append('auto_renew', '1'); }
             fetch(prepareUrl, {

@@ -33,6 +33,12 @@ class SendMonthlyReports extends Command
      */
     public function handle()
     {
+        if (\App\Support\PlatformModules::disabled('parent_progress')) {
+            $this->warn('وحدة ولي الأمر مُزالة من تدريس لاب — تم تخطي إرسال التقارير الشهرية لأولياء الأمور.');
+
+            return 0;
+        }
+
         $month = $this->option('month') ?? now()->subMonth()->format('Y-m');
         $dryRun = $this->option('dry-run');
         $force = $this->option('force');

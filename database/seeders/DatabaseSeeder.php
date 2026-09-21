@@ -49,10 +49,10 @@ class DatabaseSeeder extends Seeder
             $this->command->newLine();
         }
 
-        // 4. إنشاء مستخدمي أكاديمية Glottical
-        $this->command->info('👥 4. إنشاء مستخدمي أكاديمية Glottical...');
+        // 4. إنشاء مستخدمي تدريس لاب
+        $this->command->info('👥 4. إنشاء مستخدمي تدريس لاب...');
         $this->call([
-            GlotticalAcademyUserSeeder::class,
+            TADRIS LABAcademyUserSeeder::class,
         ]);
         $this->command->info('✅ تم إنشاء المستخدمين');
         $this->command->newLine();
@@ -120,15 +120,29 @@ class DatabaseSeeder extends Seeder
             $this->command->newLine();
         }
 
+        // 8c. باقات تدريس لاب العامة (/pricing)
+        if (\Illuminate\Support\Facades\Schema::hasTable('packages')) {
+            $this->command->info('📦 باقات تدريس لاب...');
+            $this->call([
+                TadrisPackagesSeeder::class,
+                LearningPathsSeeder::class,
+                TadrisPathContentSeeder::class,
+                TeacherToolsSeeder::class,
+                ConsultationServicesSeeder::class,
+            ]);
+            $this->command->info('✅ تم تجهيز باقات المنصة ومسارات التعلم وخدمات الاستشارات');
+            $this->command->newLine();
+        }
+
         $this->command->info('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         $this->command->info('✨ تم إكمال عملية Seed بنجاح!');
         $this->command->info('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         $this->command->newLine();
         $this->command->info('📋 بيانات الدخول الافتراضية (كلمة المرور: password123):');
-        $this->command->info('   👨‍💼 مدير المنصة: admin@Glottical.com أو 0500000000');
-        $this->command->info('   👩‍💼 مديرة أكاديمية: academy@Glottical.com أو 0500000001');
-        $this->command->info('   👨‍🏫 مدرب: instructor1@Glottical.com أو 0500000010');
-        $this->command->info('   👩‍🎓 طالب: student1@Glottical.com أو 0500000020');
+        $this->command->info('   👨‍💼 مدير المنصة: admin@TADRIS LAB.com أو 0500000000');
+        $this->command->info('   👩‍💼 مديرة أكاديمية: academy@TADRIS LAB.com أو 0500000001');
+        $this->command->info('   👨‍🏫 مدرب: instructor1@TADRIS LAB.com أو 0500000010');
+        $this->command->info('   👩‍🎓 طالب: student1@TADRIS LAB.com أو 0500000020');
         $this->command->newLine();
     }
 }

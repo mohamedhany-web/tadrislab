@@ -11,7 +11,6 @@
         'instructor' => ['label' => 'معلم', 'badge' => 'bg-metal/15 text-metal'],
         'teacher' => ['label' => 'معلم (مدرس)', 'badge' => 'bg-metal/15 text-metal'],
         'student' => ['label' => __('admin.student_role_label'), 'badge' => 'bg-accent-soft text-accent'],
-        'parent' => ['label' => 'ولي أمر', 'badge' => 'bg-canvas-muted text-muted'],
         'employee' => ['label' => 'موظف', 'badge' => 'bg-metal/15 text-metal'],
     ];
     $roleKey = $user->is_employee ? 'employee' : $user->role;

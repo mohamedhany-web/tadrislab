@@ -1,326 +1,294 @@
+@extends('layouts.lasles-public')
+
 @php
     $locale = app()->getLocale();
     $isRtl = $locale === 'ar';
-    $itemTitle = $course->title ?? ($isRtl ? 'الحصة' : 'Lesson');
+    $itemTitle = $course->title ?? __('public.course_title_fallback');
     $thumbUrl = null;
     if (isset($course) && ($course->thumbnail ?? null)) {
         $thumbUrl = storage_asset(str_replace('\\', '/', $course->thumbnail));
     }
-    $appName = config('app.name');
     $isMonthlyCheckout = $course->isMonthlyBilling();
     $baseCoursePrice = (float) $course->effectiveCheckoutPrice();
     $studentBal = isset($studentWalletBalance) ? (float) $studentWalletBalance : 0;
     $checkoutHasWalletBalance = isset($studentWalletBalance) && (float) $studentWalletBalance > 0;
-    $fawaterakActive = !empty($fawaterakUseGateway);
-    $fawaterakMis = !empty($fawaterakMisconfigured);
+    $fawaterakActive = ! empty($fawaterakUseGateway);
+    $fawaterakMis = ! empty($fawaterakMisconfigured);
     $fawaterakIntegration = $fawaterakIntegration ?? 'iframe';
-    $paypalActive = !empty($paypalUseGateway);
-    $paypalMis = !empty($paypalMisconfigured);
-    $kashierActive = !empty($kashierUseGateway);
-    $kashierMis = !empty($kashierMisconfigured);
+    $paypalActive = ! empty($paypalUseGateway);
+    $paypalMis = ! empty($paypalMisconfigured);
+    $kashierActive = ! empty($kashierUseGateway);
+    $kashierMis = ! empty($kashierMisconfigured);
     $anyOnlineGateway = $fawaterakActive || $paypalActive || $kashierActive;
+    $pageTitle = __('public.checkout_page_label').' — '.$itemTitle;
+    $pageDescription = __('landing.checkout.hero_lead');
+    $bodyClass = 'lasles-checkout-page';
+    $laslesNavActive = 'courses';
 @endphp
-<!DOCTYPE html>
-<html lang="{{ $locale }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
-  <title>{{ __('public.checkout_page_label') }} — {{ $itemTitle }} — {{ $appName }}</title>
-  <meta name="theme-color" content="#0B3D91">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    @include('partials.favicon-links')
-  @include('partials.landing.head', ['landingCss' => ['theme']])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <style>
-        [x-cloak]{display:none!important}
-    .gl-ck{background:var(--bg,#F4F7FC);padding:0 0 4rem}
-    .gl-ck-hero{
-      padding:clamp(88px,11vw,110px) 0 1.25rem;
-      background:linear-gradient(175deg,#051F4D 0%,#072A66 45%,#0B3D91 100%);
-      color:#fff;
-    }
-    .gl-ck-crumb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:700 .75rem Tajawal,sans-serif;color:rgba(255,255,255,.7);margin-bottom:.85rem}
-    .gl-ck-crumb a{color:#F5B800;text-decoration:none!important}
-    .gl-ck-hero h1{margin:0 0 .4rem;font:900 clamp(1.35rem,3vw,1.85rem)/1.3 Cairo,Tajawal,sans-serif}
-    .gl-ck-hero p{margin:0;font:600 .9rem/1.6 Tajawal,sans-serif;color:rgba(255,255,255,.85);max-width:40rem}
-    .gl-ck-steps{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
-    .gl-ck-step{display:inline-flex;align-items:center;gap:8px;padding:.4rem .75rem;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);font:800 .72rem Tajawal,sans-serif}
-    .gl-ck-step.is-done{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.35)}
-    .gl-ck-step.is-on{background:rgba(245,184,0,.95);color:#072A66;border-color:transparent}
-    .gl-ck-wrap{margin-top:-1.25rem;position:relative;z-index:2}
-    .gl-ck-grid{display:grid;gap:1rem}
-    @media(min-width:992px){.gl-ck-grid{grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);align-items:start}}
-    .gl-ck-card{
-      background:#fff;border:1.5px solid #D7DDE6;border-radius:18px;
-      box-shadow:0 14px 36px -22px rgba(11,61,145,.35);padding:1.15rem 1.2rem 1.3rem;
-    }
-    .gl-ck-card h2{margin:0 0 .35rem;font:900 1.1rem/1.35 Cairo,Tajawal,sans-serif;color:#0B1220}
-    .gl-ck-card__sub{margin:0 0 1rem;font:600 .82rem/1.5 Tajawal,sans-serif;color:#5B6577}
-    .gl-ck-alert{border-radius:14px;padding:.85rem 1rem;display:flex;gap:.65rem;align-items:flex-start;font:600 .84rem/1.5 Tajawal,sans-serif;margin-bottom:.9rem}
-    .gl-ck-alert--err{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B}
-    .gl-ck-alert--ok{background:#ECFDF5;border:1px solid #A7F3D0;color:#065F46}
-    .gl-ck-alert--info{background:#FFF8E6;border:1px solid #F5D56B;color:#8A6A00}
-    .gl-ck-alert--sky{background:#E8EEF8;border:1px solid #C5D4EF;color:#072A66}
-    .gl-ck-field{margin-bottom:.85rem}
-    .gl-ck-field label{display:block;margin:0 0 .35rem;font:800 .78rem Tajawal,sans-serif;color:#5B6577}
-    .gl-ck-input,.input-checkout{
-      width:100%;border-radius:12px;border:1.5px solid #D7DDE6;background:#F4F7FC;color:#0B1220;
-      padding:.8rem .95rem;font:600 .9rem Tajawal,sans-serif;
-    }
-    .gl-ck-input:focus,.input-checkout:focus{outline:none;border-color:#0B3D91;box-shadow:0 0 0 3px rgba(11,61,145,.12);background:#fff}
-    .gl-ck-panel{border:1px solid #E8EEF8;background:#F8FAFD;border-radius:14px;padding:1rem;margin-bottom:1rem}
-    .gl-ck-panel h3{margin:0 0 .35rem;font:800 .95rem Tajawal,sans-serif;color:#0B1220;display:flex;align-items:center;gap:8px}
-    .gl-ck-sum-row{display:flex;justify-content:space-between;gap:10px;font:700 .84rem Tajawal,sans-serif;color:#5B6577;margin:.35rem 0}
-    .gl-ck-sum-row strong,.gl-ck-sum-row #sum-original,#sum-final{color:#0B3D91;font-weight:900}
-    .gl-ck-sum-total{border-top:1px solid #E8EEF8;padding-top:.75rem;margin-top:.55rem;display:flex;justify-content:space-between;align-items:center}
-    .gl-ck-sum-total span{font:800 .9rem Tajawal,sans-serif;color:#0B1220}
-    .gl-ck-sum-total #sum-final{font:900 1.35rem Cairo,Tajawal,sans-serif;color:#0B3D91}
-    .gl-ck-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid #E8EEF8}
-    .gl-ck-item img,.gl-ck-item__ph{width:64px;height:64px;border-radius:14px;object-fit:cover;flex-shrink:0;background:#E8EEF8}
-    .gl-ck-item__ph{display:grid;place-items:center;color:#0B3D91;font-size:1.25rem}
-    .gl-ck-item h3{margin:0;font:800 .95rem/1.4 Tajawal,sans-serif;color:#0B1220}
-    .gl-ck-item p{margin:.25rem 0 0;font:600 .78rem Tajawal,sans-serif;color:#5B6577}
-    .gl-ck-benefits{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
-    .gl-ck-benefits li{display:flex;gap:8px;align-items:center;font:700 .78rem Tajawal,sans-serif;color:#5B6577}
-    .gl-ck-benefits i{color:#059669}
-    .btn-acad-primary,.gl-ck-btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
-      padding:.85rem 1.35rem;border-radius:14px;border:0;cursor:pointer;
-      background:#F5B800;color:#072A66;font:800 .9rem Tajawal,sans-serif;text-decoration:none!important;
-    }
-    .btn-acad-primary:disabled{opacity:.55;cursor:not-allowed}
-    .btn-acad-ghost,.gl-ck-btn--ghost{
-      display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
-      padding:.85rem 1.35rem;border-radius:14px;border:1.5px solid #D7DDE6;background:#fff;
-      color:#0B3D91;font:800 .85rem Tajawal,sans-serif;text-decoration:none!important;
-    }
-    #fawaterkDivId{min-height:480px;width:100%;border-radius:14px;border:1.5px solid #D7DDE6;background:#fff;overflow:hidden}
-    .hidden{display:none!important}
-    .flex{display:flex}.items-center{align-items:center}.justify-center{justify-content:center}
-    .gap-3{gap:.75rem}.p-3{padding:.75rem}.rounded-xl{border-radius:12px}
-    .border-2{border-width:2px;border-style:solid}.bg-white{background:#fff}
-    .text-start{text-align:start}.font-bold{font-weight:800}.min-w-0{min-width:0}.flex-1{flex:1}
-    .shrink-0{flex-shrink:0}.h-10{height:2.5rem}.w-10{width:2.5rem}.w-auto{width:auto}
-    .object-contain{object-fit:contain}.ring-2{box-shadow:0 0 0 2px rgba(245,184,0,.3)}
-    .transition-colors{transition:border-color .15s ease,box-shadow .15s ease}
-    </style>
-</head>
-<body class="sana-home" x-data="{ isSubmitting: false }">
-<div id="sana-scroll-progress"></div>
-<div id="scroll-progress" style="display:none"></div>
-@include('partials.landing.navbar', ['navActive' => 'courses', 'navSolid' => false, 'navHero' => true])
 
-<main class="gl-ck">
-  <section class="gl-ck-hero">
-    <div class="sana-container">
-      <nav class="gl-ck-crumb" aria-label="breadcrumb">
-        <a href="{{ route('home') }}">{{ __('public.home') }}</a>
-        <span>/</span>
-        <a href="{{ route('public.courses') }}">{{ __('landing.nav.courses') }}</a>
-        <span>/</span>
-        <a href="{{ route('public.course.show', $course->id) }}">{{ \Illuminate\Support\Str::limit($itemTitle, 28) }}</a>
-        <span>/</span>
-        <span>{{ __('public.checkout_breadcrumb_current') }}</span>
-                </nav>
-      <h1>{{ __('public.checkout_page_label') }}</h1>
-      <p>{{ $isRtl ? 'أكمل الاشتراك بأمان في خطوة واحدة.' : 'Complete your purchase securely in one step.' }}</p>
-      <div class="gl-ck-steps" aria-hidden="true">
-        <span class="gl-ck-step is-done">1 · {{ $isRtl ? 'اختر المعلم' : 'Choose teacher' }}</span>
-        <span class="gl-ck-step is-on">2 · {{ $isRtl ? 'الدفع' : 'Checkout' }}</span>
-        <span class="gl-ck-step">3 · {{ $isRtl ? 'ابدأ الحصص' : 'Start lessons' }}</span>
-                </div>
-            </div>
-        </section>
+@push('head')
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<style>[x-cloak]{display:none!important}</style>
+@endpush
 
-  <section class="sana-container gl-ck-wrap">
-    <div class="gl-ck-grid">
-      <div class="gl-ck-card">
+@section('content')
+<section class="lasles-checkout-hero" aria-labelledby="checkout-title">
+  <div class="lasles-container lasles-checkout-hero__inner">
+    <p class="lasles-checkout-hero__crumb">
+      <a href="{{ route('home') }}">{{ __('site.nav_short.home') }}</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ route('public.courses') }}">{{ __('landing.course_detail.crumb_courses') }}</a>
+      <span aria-hidden="true">/</span>
+      <a href="{{ route('public.course.show', $course->id) }}">{{ \Illuminate\Support\Str::limit($itemTitle, 36) }}</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ __('public.checkout_breadcrumb_current') }}</span>
+    </p>
+    <p class="lasles-checkout-hero__kicker">{{ __('landing.checkout.kicker') }}</p>
+    <h1 id="checkout-title" class="lasles-checkout-hero__title">{{ __('public.checkout_page_label') }}</h1>
+    <p class="lasles-checkout-hero__lead">{{ __('landing.checkout.hero_lead') }}</p>
+    <ol class="lasles-checkout-steps" aria-label="{{ __('public.checkout_steps_label') }}">
+      <li class="is-done"><span>01</span>{{ __('landing.checkout.step_review') }}</li>
+      <li class="is-on"><span>02</span>{{ __('landing.checkout.step_pay') }}</li>
+      <li><span>03</span>{{ __('landing.checkout.step_access') }}</li>
+    </ol>
+  </div>
+</section>
+
+<section class="lasles-checkout-body" x-data="{ isSubmitting: false }">
+  <div class="lasles-container lasles-checkout-body__grid">
+    <div class="lasles-checkout-main">
+      <div class="lasles-checkout-card">
         <h2>{{ __('public.checkout_payment_section_title') }}</h2>
-        <p class="gl-ck-card__sub">{{ __('public.checkout_payment_section_desc') }}</p>
+        <p class="lasles-checkout-card__sub">{{ __('public.checkout_payment_section_desc') }}</p>
 
-                            @if(session('error'))
-          <div class="gl-ck-alert gl-ck-alert--err"><i class="fas fa-exclamation-circle"></i><p style="margin:0">{{ session('error') }}</p></div>
-                            @endif
-                            @if($errors->any())
-          <div class="gl-ck-alert gl-ck-alert--err"><ul style="margin:0;padding-inline-start:1.1rem">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
-                            @endif
-                            @if(session('success'))
-          <div class="gl-ck-alert gl-ck-alert--ok"><i class="fas fa-check-circle"></i><p style="margin:0">{{ session('success') }}</p></div>
-                            @endif
-                            @if(session('info'))
-          <div class="gl-ck-alert gl-ck-alert--info"><i class="fas fa-info-circle"></i><p style="margin:0">{{ session('info') }}</p></div>
-                            @endif
+        @if(session('error'))
+          <div class="lasles-checkout-alert lasles-checkout-alert--err"><p>{{ session('error') }}</p></div>
+        @endif
+        @if(isset($errors) && $errors->any())
+          <div class="lasles-checkout-alert lasles-checkout-alert--err">
+            <ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+          </div>
+        @endif
+        @if(session('success'))
+          <div class="lasles-checkout-alert lasles-checkout-alert--ok"><p>{{ session('success') }}</p></div>
+        @endif
+        @if(session('info'))
+          <div class="lasles-checkout-alert lasles-checkout-alert--info"><p>{{ session('info') }}</p></div>
+        @endif
 
-        <div class="gl-ck-panel" id="checkout-discount-panel"
-                                     data-quote-url="{{ route('public.course.checkout.quote', $course->id) }}"
-                                     data-has-wallet="{{ $checkoutHasWalletBalance ? '1' : '0' }}">
-          <h3><i class="fas fa-tags" style="color:#F5B800"></i> {{ $checkoutHasWalletBalance ? ($isRtl ? 'كوبون ورصيد المحفظة' : 'Coupon & wallet') : ($isRtl ? 'كوبون الخصم' : 'Discount coupon') }}</h3>
-          <p style="margin:0 0 .75rem;font:600 .78rem Tajawal,sans-serif;color:#5B6577">
-            {{ $checkoutHasWalletBalance
-              ? ($isRtl ? 'أضف كوبوناً و/أو استخدم رصيد محفظتك. الكوبون أولاً ثم المحفظة.' : 'Apply a coupon and/or wallet credit. Coupon first, then wallet.')
-              : ($isRtl ? 'أدخل كوبوناً صالحاً إن وُجد، ثم حدّث السعر.' : 'Enter a valid coupon if you have one, then update the price.') }}
-          </p>
+        <div class="lasles-checkout-panel" id="checkout-discount-panel"
+             data-quote-url="{{ route('public.course.checkout.quote', $course->id) }}"
+             data-has-wallet="{{ $checkoutHasWalletBalance ? '1' : '0' }}">
           @if($isMonthlyCheckout)
-            <label style="display:flex;gap:10px;align-items:flex-start;cursor:pointer;margin-bottom:.75rem;padding:.65rem .75rem;border-radius:12px;background:#fff;border:1px solid #E8EEF8">
-              <input type="checkbox" name="auto_renew" value="1" form="manual-checkout-form" {{ old('auto_renew', '1') ? 'checked' : '' }} style="margin-top:3px">
+            <label class="lasles-checkout-check">
+              <input type="checkbox" name="auto_renew" value="1" form="manual-checkout-form" {{ old('auto_renew', '1') ? 'checked' : '' }}>
               <span>
-                <strong style="display:block;color:#0B1220;font:800 .82rem Tajawal,sans-serif">{{ __('public.checkout_auto_renew_label') }}</strong>
-                <span style="font:600 .72rem Tajawal,sans-serif;color:#5B6577">{{ __('public.checkout_auto_renew_hint') }}</span>
+                <strong>{{ __('public.checkout_auto_renew_label') }}</strong>
+                <em>{{ __('public.checkout_auto_renew_hint') }}</em>
               </span>
             </label>
-                                        @endif
-                                        @if($checkoutHasWalletBalance)
-            <p style="margin:0 0 .75rem;font:800 .78rem Tajawal,sans-serif;color:#0B3D91">{{ $isRtl ? 'رصيدك:' : 'Balance:' }} {{ number_format($studentWalletBalance, 2) }} {{ __('public.currency_egp') }}</p>
-                                        @endif
-          <input type="hidden" id="checkout_currency" value="USD">
-          <div style="display:grid;gap:.75rem;grid-template-columns:{{ $checkoutHasWalletBalance ? '1fr 1fr' : '1fr' }}">
-            <div class="gl-ck-field" style="margin:0">
-              <label for="checkout_coupon_code">{{ $isRtl ? 'كود الكوبون' : 'Coupon code' }}</label>
-              <input type="text" id="checkout_coupon_code" dir="ltr" autocomplete="off" class="input-checkout" placeholder="SAVE10">
-                                        </div>
-                                        @if($checkoutHasWalletBalance)
-              <div class="gl-ck-field" style="margin:0">
-                <label for="checkout_wallet_credit">{{ $isRtl ? 'من المحفظة' : 'From wallet' }}</label>
-                <input type="number" id="checkout_wallet_credit" step="0.01" min="0" value="0" max="{{ max(0, $studentWalletBalance ?? 0) }}" class="input-checkout">
-                                            </div>
-                                        @endif
-                                    </div>
-          <div style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.85rem">
-            <button type="button" id="checkout_apply_pricing" class="btn-acad-ghost"><i class="fas fa-rotate"></i> {{ $isRtl ? 'تحديث السعر' : 'Update price' }}</button>
-            <span id="checkout_pricing_msg" class="hidden" style="font:700 .8rem Tajawal,sans-serif;color:#059669"></span>
-                                    </div>
-                                </div>
+          @endif
 
-                            @if($fawaterakMis && ! $paypalActive && ! $kashierActive)
-          <div class="gl-ck-alert gl-ck-alert--err">
-                                        <i class="fas fa-exclamation-triangle"></i>
-            <div>
-              <strong>{{ $isRtl ? 'إعدادات الدفع غير مكتملة' : 'Payment settings incomplete' }}</strong>
-              <p style="margin:.35rem 0 0;font-weight:600">{{ $isRtl ? 'تم تفعيل فواتيرك لكن الربط غير مكتمل على الخادم.' : 'Fawaterak is enabled but server credentials are incomplete.' }}</p>
-            </div>
-                                </div>
-          <a href="{{ route('orders.index') }}" class="btn-acad-ghost"><i class="fas fa-arrow-{{ $isRtl ? 'right' : 'left' }}"></i> {{ $isRtl ? 'رجوع' : 'Back' }}</a>
-                            @elseif($paypalMis && ! $fawaterakActive && ! $kashierActive)
-          <div class="gl-ck-alert gl-ck-alert--err">
-                                        <i class="fas fa-exclamation-triangle"></i>
-            <div>
-              <strong>{{ $isRtl ? 'إعدادات PayPal غير مكتملة' : 'PayPal settings incomplete' }}</strong>
-              <p style="margin:.35rem 0 0;font-weight:600">{{ $isRtl ? 'تم تفعيل PayPal من إعدادات النظام لكن بيانات الاتصال ناقصة.' : 'PayPal is enabled but connection credentials are missing.' }}</p>
-            </div>
-                                </div>
-                            @elseif($fawaterakActive && $fawaterakIntegration === 'api')
-          <div class="gl-ck-alert gl-ck-alert--sky"><i class="fas fa-lock"></i><div><strong>{{ $isRtl ? 'الدفع الإلكتروني' : 'Online payment' }}</strong><p style="margin:.25rem 0 0">{{ $isRtl ? 'اختر وسيلة الدفع ثم تابع.' : 'Choose a payment method and continue.' }}</p></div></div>
-          <div id="fawaterk-api-error" class="hidden gl-ck-alert gl-ck-alert--err"></div>
-          <div id="fawaterk-api-loading" style="margin-bottom:1rem;font:700 .85rem Tajawal,sans-serif;color:#5B6577"><i class="fas fa-spinner fa-spin" style="color:#0B3D91"></i> {{ $isRtl ? 'جاري تحميل وسائل الدفع...' : 'Loading payment methods…' }}</div>
-          <div id="fawaterk-api-methods" class="hidden" style="display:grid;gap:.55rem;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));margin-bottom:1rem"></div>
-          <div id="fawaterk-api-wallet-wrap" class="hidden gl-ck-field">
-            <label for="fawaterk-api-wallet">{{ $isRtl ? 'رقم المحفظة' : 'Wallet number' }}</label>
-                                    <input type="text" id="fawaterk-api-wallet" dir="ltr" class="input-checkout" placeholder="01xxxxxxxxx" autocomplete="tel">
-                                </div>
-          <div id="fawaterk-api-result" class="hidden gl-ck-panel" style="font:600 .85rem Tajawal,sans-serif;color:#0B1220"></div>
-          <button type="button" id="fawaterk-api-pay-btn" disabled class="btn-acad-primary" style="width:100%"><i class="fas fa-lock"></i> {{ $isRtl ? 'متابعة الدفع' : 'Continue payment' }}</button>
-                            @elseif($fawaterakActive)
-          <div class="gl-ck-alert gl-ck-alert--sky"><i class="fas fa-lock"></i><div><strong>{{ $isRtl ? 'الدفع عبر فواتيرك' : 'Pay with Fawaterak' }}</strong><p style="margin:.25rem 0 0">{{ $isRtl ? 'اختر وسيلة الدفع داخل الإطار. بعد النجاح يُفعَّل الاشتراك تلقائياً.' : 'Choose a method below. Access activates automatically after success.' }}</p></div></div>
-          <div id="fawaterk-checkout-error" class="hidden gl-ck-alert gl-ck-alert--err"></div>
-          <div id="fawaterkDivId"></div>
-          <a href="{{ route('orders.index') }}" class="btn-acad-ghost" style="margin-top:1rem"><i class="fas fa-arrow-{{ $isRtl ? 'right' : 'left' }}"></i> {{ $isRtl ? 'رجوع' : 'Back' }}</a>
-                            @endif
+          <input type="hidden" id="checkout_currency" value="{{ platform_currency() }}">
+          {{-- Synced from modal input; used by quote JS + payment forms --}}
+          <input type="hidden" id="checkout_coupon_code" value="{{ old('coupon_code', '') }}">
 
-                            @if($kashierMis && ! $anyOnlineGateway && ! $fawaterakMis && ! $paypalMis)
-          <div class="gl-ck-alert gl-ck-alert--err">
-                                        <i class="fas fa-exclamation-triangle"></i>
-            <div>
-              <strong>{{ $isRtl ? 'إعدادات كاشير غير مكتملة' : 'Kashier settings incomplete' }}</strong>
-              <p style="margin:.35rem 0 0;font-weight:600">{{ $isRtl ? 'تم تفعيل كاشير من إدارة النظام لكن بيانات الاتصال ناقصة.' : 'Kashier is enabled but connection credentials are missing.' }}</p>
+          <div class="lasles-checkout-coupon-ask" id="checkout-coupon-ask">
+            <p class="lasles-checkout-coupon-ask__q">{{ __('landing.checkout.coupon_ask') }}</p>
+            <div class="lasles-checkout-coupon-ask__actions">
+              <button type="button" class="lasles-btn-primary" id="checkout-coupon-yes">{{ __('landing.checkout.coupon_yes') }}</button>
+              <button type="button" class="lasles-btn-outline" id="checkout-coupon-no">{{ __('landing.checkout.coupon_no') }}</button>
             </div>
-                                </div>
-                            @endif
+          </div>
 
-                            @if($paypalActive)
+          <div class="lasles-checkout-coupon-applied hidden" id="checkout-coupon-applied">
+            <div>
+              <span class="lasles-checkout-coupon-applied__label">{{ __('landing.checkout.coupon_applied') }}</span>
+              <strong id="checkout-coupon-applied-code"></strong>
+            </div>
+            <div class="lasles-checkout-coupon-applied__actions">
+              <button type="button" class="lasles-checkout-linkbtn" id="checkout-coupon-change">{{ __('landing.checkout.coupon_change') }}</button>
+              <button type="button" class="lasles-checkout-linkbtn is-muted" id="checkout-coupon-remove">{{ __('landing.checkout.coupon_remove') }}</button>
+            </div>
+          </div>
+
+          <div class="lasles-checkout-coupon-declined hidden" id="checkout-coupon-declined">
+            <p>{{ __('landing.checkout.coupon_declined_note') }}</p>
+            <button type="button" class="lasles-checkout-linkbtn" id="checkout-coupon-open-later">{{ __('landing.checkout.coupon_add_later') }}</button>
+          </div>
+
+          @if($checkoutHasWalletBalance)
+            <div class="lasles-checkout-wallet-block">
+              <p class="lasles-checkout-balance">{{ __('landing.checkout.balance_label') }}: {{ number_format($studentWalletBalance, 2) }} {{ __('public.currency_egp') }}</p>
+              <div class="lasles-checkout-field">
+                <label for="checkout_wallet_credit">{{ __('landing.checkout.wallet_label') }}</label>
+                <input type="number" id="checkout_wallet_credit" step="0.01" min="0" value="0" max="{{ max(0, $studentWalletBalance ?? 0) }}" class="lasles-checkout-input">
+              </div>
+              <button type="button" id="checkout_apply_wallet" class="lasles-btn-outline">{{ __('landing.checkout.update_price') }}</button>
+            </div>
+          @endif
+
+          <span id="checkout_pricing_msg" class="lasles-checkout-msg hidden"></span>
+        </div>
+
+        <div class="lasles-checkout-modal hidden" id="checkout-coupon-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-coupon-modal-title" hidden>
+          <button type="button" class="lasles-checkout-modal__backdrop" id="checkout-coupon-modal-backdrop" aria-label="{{ __('landing.checkout.cancel') }}"></button>
+          <div class="lasles-checkout-modal__panel">
+            <h3 id="checkout-coupon-modal-title">{{ __('landing.checkout.coupon_modal_title') }}</h3>
+            <p class="lasles-checkout-modal__lead">{{ __('landing.checkout.coupon_modal_lead') }}</p>
+            <div class="lasles-checkout-field">
+              <label for="checkout_coupon_code_input">{{ __('landing.checkout.coupon_label') }}</label>
+              <input type="text" id="checkout_coupon_code_input" dir="ltr" autocomplete="off" class="lasles-checkout-input" placeholder="SAVE10">
+            </div>
+            <p id="checkout-coupon-modal-error" class="lasles-checkout-modal__error hidden"></p>
+            <div class="lasles-checkout-modal__actions">
+              <button type="button" class="lasles-btn-primary" id="checkout_apply_pricing">{{ __('landing.checkout.coupon_apply') }}</button>
+              <button type="button" class="lasles-btn-outline" id="checkout-coupon-modal-close">{{ __('landing.checkout.cancel') }}</button>
+            </div>
+          </div>
+        </div>
+
+        @if($fawaterakMis && ! $paypalActive && ! $kashierActive)
+          <div class="lasles-checkout-alert lasles-checkout-alert--err">
+            <div>
+              <strong>{{ __('landing.checkout.gateway_incomplete') }}</strong>
+              <p>{{ __('landing.checkout.fawaterak_incomplete') }}</p>
+            </div>
+          </div>
+          <a href="{{ route('public.course.show', $course->id) }}" class="lasles-btn-outline">{{ __('landing.checkout.back') }}</a>
+        @elseif($paypalMis && ! $fawaterakActive && ! $kashierActive)
+          <div class="lasles-checkout-alert lasles-checkout-alert--err">
+            <div>
+              <strong>{{ __('landing.checkout.paypal_incomplete_title') }}</strong>
+              <p>{{ __('landing.checkout.paypal_incomplete') }}</p>
+            </div>
+          </div>
+        @elseif($fawaterakActive && $fawaterakIntegration === 'api')
+          <div class="lasles-checkout-alert lasles-checkout-alert--sky">
+            <div>
+              <strong>{{ __('landing.checkout.online_title') }}</strong>
+              <p>{{ __('landing.checkout.online_hint') }}</p>
+            </div>
+          </div>
+          <div id="fawaterk-api-error" class="hidden lasles-checkout-alert lasles-checkout-alert--err"></div>
+          <div id="fawaterk-api-loading" class="lasles-checkout-loading">{{ __('landing.checkout.loading_methods') }}</div>
+          <div id="fawaterk-api-methods" class="hidden lasles-checkout-methods"></div>
+          <div id="fawaterk-api-wallet-wrap" class="hidden lasles-checkout-field">
+            <label for="fawaterk-api-wallet">{{ __('landing.checkout.wallet_number') }}</label>
+            <input type="text" id="fawaterk-api-wallet" dir="ltr" class="lasles-checkout-input" placeholder="01xxxxxxxxx" autocomplete="tel">
+          </div>
+          <div id="fawaterk-api-result" class="hidden lasles-checkout-panel"></div>
+          <button type="button" id="fawaterk-api-pay-btn" disabled class="lasles-btn-primary lasles-checkout-submit">{{ __('landing.checkout.continue_pay') }}</button>
+        @elseif($fawaterakActive)
+          <div class="lasles-checkout-alert lasles-checkout-alert--sky">
+            <div>
+              <strong>{{ __('landing.checkout.fawaterak_title') }}</strong>
+              <p>{{ __('landing.checkout.fawaterak_hint') }}</p>
+            </div>
+          </div>
+          <div id="fawaterk-checkout-error" class="hidden lasles-checkout-alert lasles-checkout-alert--err"></div>
+          <div id="fawaterkDivId" class="lasles-checkout-iframe"></div>
+          <a href="{{ route('public.course.show', $course->id) }}" class="lasles-btn-outline">{{ __('landing.checkout.back') }}</a>
+        @endif
+
+        @if($kashierMis && ! $anyOnlineGateway && ! $fawaterakMis && ! $paypalMis)
+          <div class="lasles-checkout-alert lasles-checkout-alert--err">
+            <div>
+              <strong>{{ __('landing.checkout.kashier_incomplete_title') }}</strong>
+              <p>{{ __('landing.checkout.kashier_incomplete') }}</p>
+            </div>
+          </div>
+        @endif
+
+        @if($paypalActive)
           @if($fawaterakActive)
-          <p style="margin:1.1rem 0 .65rem;font:800 .8rem Tajawal,sans-serif;color:#5B6577;text-align:center">{{ $isRtl ? 'أو' : 'or' }}</p>
+            <p class="lasles-checkout-or">{{ __('landing.checkout.or') }}</p>
           @endif
           <form method="POST" action="{{ route('public.course.checkout.paypal', $course->id) }}" id="paypal-checkout-form">
             @csrf
             <input type="hidden" name="coupon_code" id="paypal_coupon_code" value="">
             <input type="hidden" name="wallet_credit" id="paypal_wallet_credit" value="0">
-            <input type="hidden" name="currency" id="paypal_currency" value="USD">
-            <button type="submit" class="btn-acad-primary" style="width:100%;background:#003087">
-              <i class="fab fa-paypal"></i>
-              {{ $isRtl ? 'الدفع عبر PayPal' : 'Pay with PayPal' }}
-            </button>
+            <input type="hidden" name="currency" id="paypal_currency" value="{{ platform_currency() }}">
+            <button type="submit" class="lasles-btn-primary lasles-checkout-submit lasles-checkout-submit--paypal">{{ __('landing.checkout.pay_paypal') }}</button>
           </form>
-                            @endif
+        @endif
 
-                            @if($kashierActive)
+        @if($kashierActive)
           @if($fawaterakActive || $paypalActive)
-          <p style="margin:1.1rem 0 .65rem;font:800 .8rem Tajawal,sans-serif;color:#5B6577;text-align:center">{{ $isRtl ? 'أو' : 'or' }}</p>
+            <p class="lasles-checkout-or">{{ __('landing.checkout.or') }}</p>
           @endif
           <form method="POST" action="{{ route('public.course.checkout.kashier', $course->id) }}" id="kashier-checkout-form">
             @csrf
             <input type="hidden" name="coupon_code" id="kashier_coupon_code" value="">
             <input type="hidden" name="wallet_credit" id="kashier_wallet_credit" value="0">
-            <input type="hidden" name="currency" id="kashier_currency" value="USD">
-            <button type="submit" class="btn-acad-primary" style="width:100%;background:#00B0B5">
-              <i class="fas fa-university"></i>
-              {{ $isRtl ? 'الدفع عبر كاشير' : 'Pay with Kashier' }}
-            </button>
+            <input type="hidden" name="currency" id="kashier_currency" value="{{ platform_currency() }}">
+            <button type="submit" class="lasles-btn-primary lasles-checkout-submit lasles-checkout-submit--kashier">{{ __('landing.checkout.pay_kashier') }}</button>
           </form>
-                            @endif
+        @endif
 
-                            @if(! $anyOnlineGateway && ! $fawaterakMis && ! $paypalMis && ! $kashierMis)
-          <div class="gl-ck-alert gl-ck-alert--info"><i class="fas fa-circle-info"></i><div><strong>{{ $isRtl ? 'الدفع اليدوي' : 'Manual payment' }}</strong><p style="margin:.25rem 0 0">{{ $isRtl ? 'ارفع إيصال التحويل — يُراجع الطلب ثم يُفعَّل.' : 'Upload your transfer receipt — we review, then activate.' }}</p></div></div>
-          <form action="{{ route('public.course.checkout.complete', $course->id) }}" method="POST" enctype="multipart/form-data" @submit="isSubmitting = true" x-data="{paymentMethod:'bank_transfer'}" id="manual-checkout-form">
-                                    @csrf
-                                        <input type="hidden" name="coupon_code" id="form_coupon_code" value="{{ old('coupon_code', '') }}">
-                                        <input type="hidden" name="wallet_credit" id="form_wallet_credit" value="{{ old('wallet_credit', '0') }}">
-                                        <input type="hidden" name="currency" id="form_currency" value="{{ old('currency', 'USD') }}">
-            <div class="gl-ck-field">
-              <label>{{ $isRtl ? 'طريقة الدفع' : 'Payment method' }}</label>
-                                            <select name="payment_method" x-model="paymentMethod" class="input-checkout" required>
-                <option value="bank_transfer">{{ $isRtl ? 'تحويل بنكي / محفظة' : 'Bank / wallet transfer' }}</option>
-                <option value="cash">{{ $isRtl ? 'دفع نقدي' : 'Cash' }}</option>
-                <option value="other">{{ $isRtl ? 'طريقة أخرى' : 'Other' }}</option>
-                                            </select>
-                                        </div>
-            <div class="gl-ck-field" x-show="paymentMethod === 'bank_transfer'" x-cloak>
-              <label>{{ $isRtl ? 'حساب التحويل' : 'Transfer account' }}</label>
-                                            <select name="wallet_id" class="input-checkout" :required="paymentMethod === 'bank_transfer'">
-                <option value="">{{ $isRtl ? 'اختر الحساب' : 'Select account' }}</option>
-                                                @foreach(($wallets ?? []) as $wallet)
-                  <option value="{{ $wallet->id }}">{{ $wallet->name ?? ($isRtl ? 'حساب منصة' : 'Platform account') }} — {{ $wallet->account_number ?? $wallet->phone ?? '—' }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-            <div class="gl-ck-field">
-              <label>{{ $isRtl ? 'إيصال الدفع' : 'Payment proof' }}</label>
-              <input type="file" name="payment_proof" accept="image/*" required class="input-checkout" style="padding:.65rem">
-                                        </div>
-            <div class="gl-ck-field">
-              <label>{{ $isRtl ? 'ملاحظات (اختياري)' : 'Notes (optional)' }}</label>
-              <textarea name="notes" rows="3" class="input-checkout" placeholder="{{ $isRtl ? 'تفاصيل التحويل' : 'Transfer details' }}"></textarea>
-                                        </div>
-            <div style="display:flex;flex-wrap:wrap;gap:.65rem">
-              <button type="submit" :disabled="isSubmitting" class="btn-acad-primary" style="flex:1">
-                                            <i class="fas fa-file-upload" x-show="!isSubmitting"></i>
-                                            <i class="fas fa-spinner fa-spin" x-show="isSubmitting" x-cloak></i>
-                <span x-text="isSubmitting ? '{{ $isRtl ? 'جاري الإرسال...' : 'Submitting…' }}' : '{{ $isRtl ? 'إرسال الطلب' : 'Submit order' }}'"></span>
-                                        </button>
-              <a href="{{ route('orders.index') }}" class="btn-acad-ghost">{{ $isRtl ? 'إلغاء' : 'Cancel' }}</a>
-                                    </div>
-                                </form>
-                            @endif
-                        </div>
+        @if(! $anyOnlineGateway && ! $fawaterakMis && ! $paypalMis && ! $kashierMis)
+          <div class="lasles-checkout-alert lasles-checkout-alert--info">
+            <div>
+              <strong>{{ __('landing.checkout.manual_title') }}</strong>
+              <p>{{ __('landing.checkout.manual_hint') }}</p>
+            </div>
+          </div>
+          <form action="{{ route('public.course.checkout.complete', $course->id) }}" method="POST" enctype="multipart/form-data" @submit="isSubmitting = true" x-data="{paymentMethod:'bank_transfer'}" id="manual-checkout-form" class="lasles-checkout-form">
+            @csrf
+            <input type="hidden" name="coupon_code" id="form_coupon_code" value="{{ old('coupon_code', '') }}">
+            <input type="hidden" name="wallet_credit" id="form_wallet_credit" value="{{ old('wallet_credit', '0') }}">
+            <input type="hidden" name="currency" id="form_currency" value="{{ old('currency', platform_currency()) }}">
 
-      <aside class="gl-ck-card" style="position:sticky;top:1rem">
-        <div class="gl-ck-item">
+            <div class="lasles-checkout-field">
+              <label for="payment_method">{{ __('landing.checkout.method_label') }}</label>
+              <select name="payment_method" id="payment_method" x-model="paymentMethod" class="lasles-checkout-input" required>
+                <option value="bank_transfer">{{ __('landing.checkout.method_bank') }}</option>
+                <option value="cash">{{ __('landing.checkout.method_cash') }}</option>
+                <option value="other">{{ __('landing.checkout.method_other') }}</option>
+              </select>
+            </div>
+
+            <div class="lasles-checkout-field" x-show="paymentMethod === 'bank_transfer'" x-cloak>
+              <label for="wallet_id">{{ __('landing.checkout.account_label') }}</label>
+              <select name="wallet_id" id="wallet_id" class="lasles-checkout-input" :required="paymentMethod === 'bank_transfer'">
+                <option value="">{{ __('landing.checkout.account_placeholder') }}</option>
+                @foreach(($wallets ?? []) as $wallet)
+                  <option value="{{ $wallet->id }}">{{ $wallet->name ?? __('landing.checkout.platform_account') }} — {{ $wallet->account_number ?? $wallet->phone ?? '—' }}</option>
+                @endforeach
+              </select>
+            </div>
+
+            <div class="lasles-checkout-field">
+              <label for="payment_proof">{{ __('landing.checkout.proof_label') }}</label>
+              <input type="file" name="payment_proof" id="payment_proof" accept="image/*" required class="lasles-checkout-input lasles-checkout-input--file">
+            </div>
+
+            <div class="lasles-checkout-field">
+              <label for="notes">{{ __('landing.checkout.notes_label') }}</label>
+              <textarea name="notes" id="notes" rows="3" class="lasles-checkout-input" placeholder="{{ __('landing.checkout.notes_placeholder') }}"></textarea>
+            </div>
+
+            <div class="lasles-checkout-form__actions">
+              <button type="submit" :disabled="isSubmitting" class="lasles-btn-primary lasles-checkout-submit">
+                <span x-text="isSubmitting ? '{{ __('landing.checkout.submitting') }}' : '{{ __('landing.checkout.submit_order') }}'"></span>
+              </button>
+              <a href="{{ route('public.course.show', $course->id) }}" class="lasles-btn-outline">{{ __('landing.checkout.cancel') }}</a>
+            </div>
+          </form>
+        @endif
+      </div>
+    </div>
+
+    <aside class="lasles-checkout-side">
+      <div class="lasles-checkout-side__card">
+        <div class="lasles-checkout-item">
           @if($thumbUrl)
-            <img src="{{ $thumbUrl }}" alt="">
+            <img src="{{ $thumbUrl }}" alt="" width="72" height="72">
           @else
-            <div class="gl-ck-item__ph"><i class="fas fa-chalkboard-teacher"></i></div>
+            <div class="lasles-checkout-item__ph" aria-hidden="true">✦</div>
           @endif
           <div>
-            <h3>{{ $course->title }}</h3>
+            <h2>{{ $course->title }}</h2>
             <p>
               {{ $course->instructor->name ?? '' }}
               @if($course->academicSubject)
@@ -330,7 +298,7 @@
           </div>
         </div>
 
-        <h2 style="font-size:1rem;margin-bottom:.75rem">{{ __('public.checkout_order_summary_title') }}</h2>
+        <h3>{{ __('public.checkout_order_summary_title') }}</h3>
 
         <div id="checkout-pricing-summary"
              data-base-price="{{ $baseCoursePrice }}"
@@ -338,75 +306,81 @@
              data-has-course="1"
              data-is-monthly="{{ $isMonthlyCheckout ? '1' : '0' }}">
           @if($isMonthlyCheckout)
-            <p class="gl-ck-alert gl-ck-alert--sky" style="margin-bottom:.75rem;padding:.65rem .8rem">{{ __('public.checkout_monthly_notice') }}</p>
+            <p class="lasles-checkout-alert lasles-checkout-alert--sky lasles-checkout-alert--compact">{{ __('public.checkout_monthly_notice') }}</p>
           @endif
-          <div class="gl-ck-sum-row">
+          <div class="lasles-checkout-sum-row">
             <span>{{ $isMonthlyCheckout ? __('public.checkout_monthly_price_label') : __('public.checkout_base_price_label') }}</span>
-            <strong id="sum-original">{{ number_format($baseCoursePrice, 2) }} <span style="font-size:.75rem;font-weight:700;color:#8A94A6">{{ __('public.currency_egp') }}@if($isMonthlyCheckout)/{{ __('public.per_month') }}@endif</span></strong>
+            <strong id="sum-original">{{ number_format($baseCoursePrice, 2) }} <small>{{ __('public.currency_egp') }}@if($isMonthlyCheckout)/{{ __('public.per_month') }}@endif</small></strong>
           </div>
-          <div class="gl-ck-sum-row hidden" id="sum-coupon-row" style="color:#059669">
-            <span>{{ $isRtl ? 'خصم الكوبون' : 'Coupon' }}</span>
+          <div class="lasles-checkout-sum-row is-green hidden" id="sum-coupon-row">
+            <span>{{ __('landing.checkout.coupon_discount') }}</span>
             <span id="sum-coupon">—</span>
           </div>
-          <div class="gl-ck-sum-row hidden" id="sum-wallet-row" style="color:#0B3D91">
-            <span>{{ $isRtl ? 'رصيد المحفظة' : 'Wallet' }}</span>
+          <div class="lasles-checkout-sum-row is-blue hidden" id="sum-wallet-row">
+            <span>{{ __('landing.checkout.wallet_row') }}</span>
             <span id="sum-wallet">—</span>
           </div>
-          <div class="gl-ck-sum-total">
-            <span>{{ $isRtl ? 'المستحق' : 'Due now' }}</span>
-            <span id="sum-final">{{ number_format($baseCoursePrice, 2) }} <span style="font-size:.8rem;font-weight:700;color:#8A94A6">{{ __('public.currency_egp') }}</span></span>
-                    </div>
-                </div>
+          <div class="lasles-checkout-sum-total">
+            <span>{{ __('landing.checkout.due_now') }}</span>
+            <span id="sum-final">{{ number_format($baseCoursePrice, 2) }} <small>{{ __('public.currency_egp') }}</small></span>
+          </div>
+        </div>
 
-        <ul class="gl-ck-benefits" style="margin-top:1rem">
+        <ul class="lasles-checkout-benefits">
           @if($isMonthlyCheckout)
-            <li><i class="fas fa-check"></i> {{ __('public.checkout_benefit_monthly_access') }}</li>
+            <li>{{ __('public.checkout_benefit_monthly_access') }}</li>
           @else
-            <li><i class="fas fa-check"></i> {{ __('public.checkout_benefit_lifetime') }}</li>
+            <li>{{ __('public.checkout_benefit_lifetime') }}</li>
           @endif
-          <li><i class="fas fa-check"></i> {{ __('public.checkout_benefit_support') }}</li>
+          <li>{{ __('public.checkout_benefit_support') }}</li>
+          <li>{{ __('public.checkout_benefit_certificate') }}</li>
         </ul>
-      </aside>
-            </div>
-        </section>
-    </main>
 
-@include('partials.landing.footer')
+        <div class="lasles-checkout-trust">
+          <span>{{ __('landing.checkout.trust_secure') }}</span>
+          <span>{{ __('landing.checkout.trust_fast') }}</span>
+          <span>{{ __('landing.checkout.trust_support') }}</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+@endsection
+
+@push('scripts')
 @include('public.partials.checkout-scripts')
 @if(!empty($paypalUseGateway))
 <script>
 (function(){
-    var form = document.getElementById('paypal-checkout-form');
-    if (!form) return;
-    form.addEventListener('submit', function(){
-        var c = document.getElementById('checkout_coupon_code');
-        var w = document.getElementById('checkout_wallet_credit');
-        var cur = document.getElementById('checkout_currency');
-        var pc = document.getElementById('paypal_coupon_code');
-        var pw = document.getElementById('paypal_wallet_credit');
-        var pcur = document.getElementById('paypal_currency');
-        if (pc) pc.value = c ? (c.value || '').trim() : '';
-        if (pw) pw.value = w && w.value !== '' ? w.value : '0';
-        if (pcur) pcur.value = 'USD';
-    });
+  var form = document.getElementById('paypal-checkout-form');
+  if (!form) return;
+  form.addEventListener('submit', function(){
+    var c = document.getElementById('checkout_coupon_code');
+    var w = document.getElementById('checkout_wallet_credit');
+    var pc = document.getElementById('paypal_coupon_code');
+    var pw = document.getElementById('paypal_wallet_credit');
+    var pcur = document.getElementById('paypal_currency');
+    if (pc) pc.value = c ? (c.value || '').trim() : '';
+    if (pw) pw.value = w && w.value !== '' ? w.value : '0';
+    if (pcur) pcur.value = @json(platform_currency());
+  });
 })();
 </script>
 @endif
 @if(!empty($kashierUseGateway))
 <script>
 (function(){
-    var form = document.getElementById('kashier-checkout-form');
-    if (!form) return;
-    form.addEventListener('submit', function(){
-        var c = document.getElementById('checkout_coupon_code');
-        var w = document.getElementById('checkout_wallet_credit');
-        var kc = document.getElementById('kashier_coupon_code');
-        var kw = document.getElementById('kashier_wallet_credit');
-        if (kc) kc.value = c ? (c.value || '').trim() : '';
-        if (kw) kw.value = w && w.value !== '' ? w.value : '0';
-    });
+  var form = document.getElementById('kashier-checkout-form');
+  if (!form) return;
+  form.addEventListener('submit', function(){
+    var c = document.getElementById('checkout_coupon_code');
+    var w = document.getElementById('checkout_wallet_credit');
+    var kc = document.getElementById('kashier_coupon_code');
+    var kw = document.getElementById('kashier_wallet_credit');
+    if (kc) kc.value = c ? (c.value || '').trim() : '';
+    if (kw) kw.value = w && w.value !== '' ? w.value : '0';
+  });
 })();
 </script>
 @endif
-</body>
-</html>
+@endpush

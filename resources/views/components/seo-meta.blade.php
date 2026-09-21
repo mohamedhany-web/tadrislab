@@ -1,9 +1,9 @@
-{{-- SEO Meta Tags Component — Glottical --}}
+{{-- SEO Meta Tags Component — TADRIS LAB --}}
 @php
     $siteName    = config('app.name');
     $title       = $title       ?? $siteName . ' — ' . __('landing.hero.headline');
     $description = $description ?? __('landing.meta.description');
-    $keywords    = $keywords    ?? 'تعليم ألماني, تعليم إنجليزي, كول سنتر, سوق العمل, ألمانيا, Glottical, ' . $siteName;
+    $keywords    = $keywords    ?? (__('landing.meta.keywords') ?: ('تدريس لاب, تطوير مهني للمعلمين, TADRIS LAB, ' . $siteName));
     $image       = $image       ?? \App\Services\SeoAssets::ogImageUrl();
     $imageAlt    = $imageAlt    ?? $title;
     $url         = $url         ?? url()->current();
@@ -43,8 +43,8 @@
 
 <!-- ═══ Twitter / X Card ═══ -->
 <meta name="twitter:card"        content="summary_large_image">
-<meta name="twitter:site"        content="@Glottical">
-<meta name="twitter:creator"     content="@Glottical">
+<meta name="twitter:site"        content="@tadrislab">
+<meta name="twitter:creator"     content="@tadrislab">
 <meta name="twitter:url"         content="{{ $url }}">
 <meta name="twitter:title"       content="{{ $title }}">
 <meta name="twitter:description" content="{{ $description }}">

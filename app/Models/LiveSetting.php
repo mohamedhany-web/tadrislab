@@ -59,7 +59,7 @@ class LiveSetting extends Model
             return static::normalizeLiveHost($legacy);
         }
 
-        return 'live.glottical.com';
+        return 'live.tadrislab.com';
     }
 
     public static function get(string $key, $default = null)

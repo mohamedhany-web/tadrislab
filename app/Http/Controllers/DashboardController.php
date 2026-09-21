@@ -200,6 +200,36 @@ class DashboardController extends Controller
             } catch (\Throwable $e) {
             }
 
+            $stats['learning_paths_count'] = $user->teachingLearningPathIds()->count();
+            $stats['consultations_count'] = 0;
+            $stats['upcoming_consultations'] = 0;
+            $upcoming_consultations = collect();
+            if (\Illuminate\Support\Facades\Schema::hasTable('consultation_requests')) {
+                $stats['consultations_count'] = \App\Models\ConsultationRequest::query()
+                    ->where('instructor_id', $user->id)
+                    ->count();
+                $upcoming_consultations = \App\Models\ConsultationRequest::query()
+                    ->where('instructor_id', $user->id)
+                    ->where(function ($q) {
+                        $q->where(function ($q2) {
+                            $q2->whereNotNull('scheduled_at')->where('scheduled_at', '>=', now());
+                        })->orWhere(function ($q2) {
+                            $q2->whereNotNull('preferred_slot_at')->where('preferred_slot_at', '>=', now());
+                        });
+                    })
+                    ->whereIn('status', [
+                        \App\Models\ConsultationRequest::STATUS_NEW,
+                        \App\Models\ConsultationRequest::STATUS_PAID,
+                        \App\Models\ConsultationRequest::STATUS_CONFIRMED,
+                        \App\Models\ConsultationRequest::STATUS_RESCHEDULED,
+                        \App\Models\ConsultationRequest::STATUS_SCHEDULED,
+                    ])
+                    ->orderByRaw('COALESCE(scheduled_at, preferred_slot_at) asc')
+                    ->limit(8)
+                    ->get();
+                $stats['upcoming_consultations'] = $upcoming_consultations->count();
+            }
+
             return view('dashboard.instructor', compact(
                 'stats',
                 'my_courses',
@@ -207,7 +237,8 @@ class DashboardController extends Controller
                 'upcoming_lectures',
                 'pending_assignments',
                 'upcomingTutoringBooking',
-                'upcoming_tutoring_bookings'
+                'upcoming_tutoring_bookings',
+                'upcoming_consultations'
             ));
         } catch (\Exception $e) {
             // في حالة وجود خطأ، نعيد لوحة تحكم بسيطة
@@ -224,6 +255,9 @@ class DashboardController extends Controller
                 'upcoming_tutoring' => 0,
                 'cohorts_count' => 0,
                 'live_now' => 0,
+                'learning_paths_count' => 0,
+                'consultations_count' => 0,
+                'upcoming_consultations' => 0,
             ];
             $my_courses = collect();
             $my_classrooms = collect();
@@ -231,6 +265,7 @@ class DashboardController extends Controller
             $pending_assignments = collect();
             $upcomingTutoringBooking = null;
             $upcoming_tutoring_bookings = collect();
+            $upcoming_consultations = collect();
 
             return view('dashboard.instructor', compact(
                 'stats',
@@ -239,7 +274,8 @@ class DashboardController extends Controller
                 'upcoming_lectures',
                 'pending_assignments',
                 'upcomingTutoringBooking',
-                'upcoming_tutoring_bookings'
+                'upcoming_tutoring_bookings',
+                'upcoming_consultations'
             ));
         }
     }

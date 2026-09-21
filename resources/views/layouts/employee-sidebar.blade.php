@@ -12,15 +12,10 @@
 <div class="flex flex-col h-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
     <div class="px-4 py-4 flex-shrink-0 border-b border-slate-700/50 dark:border-slate-600/50">
         <a href="{{ $employeeHomeUrl }}" class="sidebar-logo flex items-center gap-3 w-full">
-            @if(! empty($adminPanelLogoUrl))
-            <div class="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 overflow-hidden bg-white border border-slate-200/80 shadow-sm">
-                <img src="{{ $adminPanelLogoUrl }}" alt="{{ config('app.name') }}" width="36" height="36" class="w-full h-full object-contain p-0.5" onerror="this.onerror=null;this.src='{{ \App\Services\AdminPanelBranding::inlineFallbackDataUri() }}';">
+            @php $sidebarLogo = $adminPanelLogoUrl ?: \App\Services\AdminPanelBranding::logoPublicUrl(); @endphp
+            <div class="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0 overflow-hidden bg-white border border-white/20 shadow-sm">
+                <img src="{{ $sidebarLogo }}" alt="{{ config('app.name') }}" width="36" height="36" class="w-full h-full object-contain p-1" onerror="this.onerror=null;this.src='{{ \App\Services\AdminPanelBranding::inlineFallbackDataUri() }}';">
             </div>
-            @else
-            <div class="w-9 h-9 rounded-[10px] bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md shadow-blue-500/25 flex-shrink-0">
-                <span class="text-lg font-black text-white">{{ mb_substr(config('app.name'), 0, 1) }}</span>
-            </div>
-            @endif
             <div class="sidebar-logo-text text-right min-w-0 flex-1">
                 <h2 class="text-sm font-bold text-white tracking-tight leading-tight">{{ config('app.name') }}</h2>
                 <p class="text-[9px] text-slate-400 font-medium truncate">

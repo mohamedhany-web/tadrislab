@@ -1,6 +1,6 @@
 @php
 /*
- * Glottical — JSON-LD Structured Data
+ * TADRIS LAB — JSON-LD Structured Data
  * Usage: @include('partials.seo-jsonld', ['jsonldType' => 'website|course|instructor|about'])
  */
 $_jldType    = $jsonldType ?? 'website';
@@ -86,7 +86,7 @@ if ($_jldType === 'course' && isset($course)) {
     if (isset($course->price) && $course->effectivePurchasePrice() > 0) {
         $_courseData['offers'] = [
             '@type' => 'Offer', 'price' => (string) $course->effectivePurchasePrice(),
-            'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock',
+            'priceCurrency' => platform_currency(), 'availability' => 'https://schema.org/InStock',
         ];
     }
     if (!empty($course->instructor) && !empty($course->instructor->name)) {

@@ -1,38 +1,37 @@
 <?php
 
 /**
- * هوية Glottical — تصميم فاتح مستوحى من site/ مع براند أكاديمي.
- * أزرق #0B3D91 · أصفر #F5B800 · سماوي هادئ · خلفية قماشية فاتحة.
+ * هوية الواجهة للمنصّة — متوافقة مع Lasles / TADRIS LAB.
  */
 return [
-    'navy' => '#0B1220',
-    'navy_mid' => '#1C2738',
-    'navy_gradient' => '#152238',
-    'navy_deep' => '#070E18',
-    'navy_drawer_start' => '#152238',
-    'navy_drawer_end' => '#0B1220',
-    'navy_hero_mid' => '#0B3D91',
-    'navy_rgb' => '11, 18, 32',
-    'navy_mid_rgb' => '28, 39, 56',
+    'navy' => '#152A4A',
+    'navy_mid' => '#1A3558',
+    'navy_gradient' => '#184888',
+    'navy_deep' => '#0F1F38',
+    'navy_drawer_start' => '#1A3558',
+    'navy_drawer_end' => '#152A4A',
+    'navy_hero_mid' => '#1E4E8C',
+    'navy_rgb' => '21, 42, 74',
+    'navy_mid_rgb' => '26, 53, 88',
 
-    'blue' => '#0B3D91',
-    'blue_dark' => '#072A66',
-    'blue_soft' => '#E8EEF8',
+    'blue' => '#1E4E8C',
+    'blue_dark' => '#184888',
+    'blue_soft' => '#E8EEF6',
+    'blue_cta' => '#3B7BC4',
 
-    'cyan' => '#00A3C4',
-    'cyan_rgb' => '0, 163, 196',
-    'neon' => '#00A3C4',
+    'cyan' => '#3B7BC4',
+    'cyan_rgb' => '59, 123, 196',
+    'neon' => '#3B7BC4',
 
-    'yellow' => '#F5B800',
-    'yellow_soft' => '#FFF6D6',
-    'yellow_rgb' => '245, 184, 0',
+    'yellow' => '#A88050',
+    'yellow_soft' => '#F7F1E8',
+    'yellow_rgb' => '168, 128, 80',
 
-    'ink' => '#0B1220',
-    'gray' => '#F3F5F7',
+    'ink' => '#152A4A',
+    'gray' => '#F7F8FB',
 
-    // أسطح تصميم site
-    'canvas' => '#F3F5F7',
+    'canvas' => '#F7F8FB',
     'surface' => '#FFFFFF',
-    'muted' => '#5B6577',
-    'line' => '#D7DDE6',
+    'muted' => '#3F4A5A',
+    'line' => '#D8DEE8',
 ];

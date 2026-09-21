@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $folder->displayName())
 @section('page_title', $folder->displayName())

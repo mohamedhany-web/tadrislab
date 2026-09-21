@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicYear;
 use App\Models\AdvancedCourse;
+use App\Models\InstructorCourseAssignment;
+use App\Models\InstructorLearningPathAssignment;
+use App\Models\InstructorServiceAssignment;
+use App\Models\LearningPath;
 use App\Models\StudentInstructorAssignment;
 use App\Models\TutoringGroup;
 use App\Models\TutoringGroupBooking;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -98,10 +103,40 @@ class AcademyInstructorController extends Controller
             ->get();
 
         $courses = AdvancedCourse::query()
-            ->where('instructor_id', $instructor->id)
+            ->whereIn('id', $instructor->teachingAdvancedCourseIds()->all() ?: [0])
             ->with(['academicSubject:id,name', 'academicYear:id,name'])
             ->orderBy('title')
             ->get();
+
+        $allCourses = AdvancedCourse::query()
+            ->where('is_active', true)
+            ->orderBy('title')
+            ->get(['id', 'title', 'instructor_id']);
+
+        $grantedCourseIds = Schema::hasTable('instructor_course_assignments')
+            ? InstructorCourseAssignment::query()
+                ->where('user_id', $instructor->id)
+                ->where('is_active', true)
+                ->pluck('advanced_course_id')
+                ->map(fn ($id) => (int) $id)
+                ->all()
+            : [];
+
+        $allLearningPaths = Schema::hasTable('learning_paths')
+            ? LearningPath::query()->where('is_active', true)->ordered()->get(['id', 'title_ar', 'slug', 'instructor_id', 'skill_focus_ar'])
+            : collect();
+
+        $grantedPathIds = Schema::hasTable('instructor_learning_path_assignments')
+            ? InstructorLearningPathAssignment::query()
+                ->where('user_id', $instructor->id)
+                ->where('is_active', true)
+                ->pluck('learning_path_id')
+                ->map(fn ($id) => (int) $id)
+                ->all()
+            : [];
+
+        $grantableServices = config('tadris_services.grantable_services', []);
+        $grantedServiceKeys = $instructor->grantedServiceKeys();
 
         $assignments = Schema::hasTable('student_instructor_assignments')
             ? StudentInstructorAssignment::query()
@@ -133,11 +168,131 @@ class AcademyInstructorController extends Controller
             'collectiveGroups',
             'individualGroups',
             'courses',
+            'allCourses',
+            'grantedCourseIds',
+            'allLearningPaths',
+            'grantedPathIds',
+            'grantableServices',
+            'grantedServiceKeys',
             'assignments',
             'upcomingBookings',
             'students',
             'years'
         ));
+    }
+
+    public function updateGrants(Request $request, User $instructor): RedirectResponse
+    {
+        abort_unless($instructor->isInstructor() || $instructor->isTeacher(), 404);
+
+        $serviceKeys = array_keys(config('tadris_services.grantable_services', []));
+
+        $data = $request->validate([
+            'instructor_grants_enabled' => ['sometimes', 'boolean'],
+            'is_active' => ['sometimes', 'boolean'],
+            'course_ids' => ['nullable', 'array'],
+            'course_ids.*' => ['integer', 'exists:advanced_courses,id'],
+            'path_ids' => ['nullable', 'array'],
+            'path_ids.*' => ['integer', 'exists:learning_paths,id'],
+            'service_keys' => ['nullable', 'array'],
+            'service_keys.*' => ['string', Rule::in($serviceKeys)],
+        ]);
+
+        $enabled = $request->boolean('instructor_grants_enabled');
+        $active = $request->boolean('is_active');
+        $courseIds = collect($data['course_ids'] ?? [])->map(fn ($id) => (int) $id)->unique()->values()->all();
+        $pathIds = collect($data['path_ids'] ?? [])->map(fn ($id) => (int) $id)->unique()->values()->all();
+        $selectedServices = collect($data['service_keys'] ?? [])->unique()->values()->all();
+        $adminId = $request->user()?->id;
+
+        // Auto-include learning_paths service when paths are granted
+        if ($pathIds !== [] && ! in_array('learning_paths', $selectedServices, true)) {
+            $selectedServices[] = 'learning_paths';
+        }
+
+        DB::transaction(function () use ($instructor, $enabled, $active, $courseIds, $pathIds, $selectedServices, $adminId, $serviceKeys) {
+            $instructor->forceFill([
+                'is_active' => $active,
+                'instructor_grants_enabled' => $enabled,
+            ])->save();
+
+            if (Schema::hasTable('instructor_course_assignments')) {
+                InstructorCourseAssignment::query()
+                    ->where('user_id', $instructor->id)
+                    ->whereNotIn('advanced_course_id', $courseIds ?: [0])
+                    ->update(['is_active' => false]);
+
+                foreach ($courseIds as $courseId) {
+                    InstructorCourseAssignment::query()->updateOrCreate(
+                        [
+                            'user_id' => $instructor->id,
+                            'advanced_course_id' => $courseId,
+                        ],
+                        [
+                            'is_active' => true,
+                            'assigned_by' => $adminId,
+                        ]
+                    );
+
+                    AdvancedCourse::query()
+                        ->where('id', $courseId)
+                        ->whereNull('instructor_id')
+                        ->update(['instructor_id' => $instructor->id]);
+                }
+            }
+
+            if (Schema::hasTable('instructor_learning_path_assignments')) {
+                InstructorLearningPathAssignment::query()
+                    ->where('user_id', $instructor->id)
+                    ->whereNotIn('learning_path_id', $pathIds ?: [0])
+                    ->update(['is_active' => false]);
+
+                foreach ($pathIds as $pathId) {
+                    InstructorLearningPathAssignment::query()->updateOrCreate(
+                        [
+                            'user_id' => $instructor->id,
+                            'learning_path_id' => $pathId,
+                        ],
+                        [
+                            'is_active' => true,
+                            'assigned_by' => $adminId,
+                        ]
+                    );
+
+                    LearningPath::query()
+                        ->where('id', $pathId)
+                        ->whereNull('instructor_id')
+                        ->update(['instructor_id' => $instructor->id]);
+                }
+            }
+
+            if (Schema::hasTable('instructor_service_assignments')) {
+                InstructorServiceAssignment::query()
+                    ->where('user_id', $instructor->id)
+                    ->whereNotIn('service_key', $selectedServices ?: ['__none__'])
+                    ->update(['is_active' => false]);
+
+                foreach ($selectedServices as $key) {
+                    if (! in_array($key, $serviceKeys, true)) {
+                        continue;
+                    }
+                    InstructorServiceAssignment::query()->updateOrCreate(
+                        [
+                            'user_id' => $instructor->id,
+                            'service_key' => $key,
+                        ],
+                        [
+                            'is_active' => true,
+                            'assigned_by' => $adminId,
+                        ]
+                    );
+                }
+            }
+        });
+
+        return redirect()
+            ->route('admin.academy-instructors.show', $instructor)
+            ->with('success', 'تم تحديث تفعيل المدرب وصلاحيات المسارات والكورسات والخدمات.');
     }
 
     public function storeAssignment(Request $request): RedirectResponse
@@ -160,10 +315,10 @@ class AcademyInstructorController extends Controller
         $instructor = User::findOrFail($data['instructor_id']);
 
         if ($student->role !== 'student') {
-            return back()->withInput()->withErrors(['student_id' => 'المستخدم المحدد ليس طالباً.']);
+            return back()->withInput()->withErrors(['student_id' => 'المستخدم المحدد ليس معلمًا (متعلّم مهني).']);
         }
         if (! $instructor->isInstructor() && ! $instructor->isTeacher()) {
-            return back()->withInput()->withErrors(['instructor_id' => 'المستخدم المحدد ليس مدرّباً.']);
+            return back()->withInput()->withErrors(['instructor_id' => 'المستخدم المحدد ليس مدربًا.']);
         }
 
         StudentInstructorAssignment::updateOrCreate(

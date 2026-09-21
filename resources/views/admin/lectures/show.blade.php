@@ -27,7 +27,7 @@
         <div class="flex flex-wrap items-center gap-2">
             <span class="inline-flex rounded-full px-3 py-1 text-xs font-medium {{ $status['class'] }}">{{ $status['label'] }}</span>
             <a href="{{ route('admin.lectures.edit', $lecture) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-edit text-xs"></i>
                 تعديل
             </a>
@@ -84,7 +84,7 @@
                         <div class="sm:col-span-2">
                             <p class="text-xs font-medium text-muted">الرابط</p>
                             <a href="{{ $lecture->recording_url }}" target="_blank" rel="noopener"
-                               class="mt-1 inline-flex items-center gap-1 break-all text-sm font-medium text-accent hover:text-[#0d4f4a]">
+                               class="mt-1 inline-flex items-center gap-1 break-all text-sm font-medium text-accent hover:text-[#184888]">
                                 {{ Str::limit($lecture->recording_url, 60) }}
                                 <i class="fas fa-external-link-alt text-[10px]"></i>
                             </a>
@@ -134,7 +134,7 @@
                                         <span class="rounded-lg bg-[#f2f5f4] px-2 py-1 text-[11px] font-medium text-muted">مخفي</span>
                                     @endif
                                     <a href="{{ storage_asset($material->file_path) }}" target="_blank"
-                                       class="inline-flex items-center gap-1 text-xs font-medium text-accent hover:text-[#0d4f4a]">
+                                       class="inline-flex items-center gap-1 text-xs font-medium text-accent hover:text-[#184888]">
                                         <i class="fas fa-download"></i>
                                         تحميل
                                     </a>
@@ -178,7 +178,7 @@
                 <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
                     <h3 class="text-sm font-semibold text-ink">الحضور</h3>
                     <a href="{{ route('admin.attendance.lecture', $lecture) }}"
-                       class="btn-press mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                       class="btn-press mt-4 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-medium text-white hover:bg-[#184888]">
                         عرض تفاصيل الحضور
                         <i class="fas fa-arrow-left text-xs"></i>
                     </a>

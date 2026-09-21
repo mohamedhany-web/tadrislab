@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $thread->student?->name ?: __('instructor.pm_chat_fallback'))
 @section('page_title', $thread->student?->name ?: __('instructor.pm_chat_fallback'))

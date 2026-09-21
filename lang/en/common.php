@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'app_name' => 'Glottical',
+    'app_name' => 'TADRIS LAB',
     'save' => 'Save',
     'cancel' => 'Cancel',
     'edit' => 'Edit',

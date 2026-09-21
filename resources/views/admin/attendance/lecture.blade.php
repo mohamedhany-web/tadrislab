@@ -41,7 +41,7 @@
             @csrf
             <input type="file" name="file" accept=".csv,.xlsx,.xls"
                    class="block w-full text-sm text-ink file:ml-2 file:rounded-lg file:border-0 file:bg-[#f2f5f4] file:px-3 file:py-2 file:text-xs file:font-medium file:text-accent sm:w-auto {{ $fieldClass }}">
-            <button type="submit" class="btn-press inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+            <button type="submit" class="btn-press inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-upload text-xs"></i>
                 رفع ملف Teams
             </button>

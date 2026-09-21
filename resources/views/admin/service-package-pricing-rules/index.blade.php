@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'تسعير الباقات المخصصة - Glottical')
+@section('title', 'تسعير الباقات المخصصة - TADRIS LAB')
 @section('page_title', 'تسعير الباقات المخصصة')
 
 @section('content')
@@ -99,7 +99,7 @@
             <div class="mb-4 flex items-center justify-between gap-3">
                 <div>
                     <h3 class="font-semibold text-ink">{{ $editing ? 'تعديل قاعدة التسعير' : 'إضافة قاعدة تسعير' }}</h3>
-                    <p class="text-xs text-muted">جميع الأسعار بالدولار الأمريكي USD.</p>
+                    <p class="text-xs text-muted">جميع الأسعار بعملة المنصة: {{ currency_label() }} ({{ platform_currency() }}).</p>
                 </div>
                 @if($editing)
                     <a href="{{ route('admin.service-package-pricing-rules.index') }}" class="text-sm text-accent">إلغاء</a>

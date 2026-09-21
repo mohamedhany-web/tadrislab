@@ -4,17 +4,24 @@
 @section('page_title', 'تفاصيل الباقة')
 
 @section('content')
+@php
+    $ctaLabels = [
+        'register' => 'تسجيل / اشتراك',
+        'contact' => 'تواصل لعرض مؤسسي',
+        'quote' => 'طلب عرض سعر',
+    ];
+@endphp
 <div class="space-y-5">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">الباقات والأسعار · برامج مسجّلة</p>
+            <p class="text-xs font-medium text-muted">الباقات · تدريس لاب</p>
             <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink">{{ $package->name }}</h2>
             @if($package->trackLabel())
-                <p class="mt-1 text-sm text-muted">المسار: {{ $package->trackLabel() }}</p>
+                <p class="mt-1 text-sm text-muted">النوع: {{ $package->trackLabel() }}</p>
             @endif
         </div>
         <div class="flex flex-wrap gap-2">
-            <a href="{{ route('admin.packages.edit', $package) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+            <a href="{{ route('admin.packages.edit', $package) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-edit text-xs"></i> تعديل
             </a>
             <a href="{{ route('admin.packages.index') }}" class="btn-press inline-flex h-9 items-center rounded-xl border border-line px-4 text-sm text-ink-soft">رجوع</a>
@@ -38,6 +45,9 @@
                         <p class="text-sm text-muted line-through">{{ $package->formattedOriginalPrice(2) }}</p>
                         <p class="text-sm font-medium text-emerald-700">خصم {{ $package->discount_percentage }}%</p>
                     @endif
+                    @if(filled($package->discount_note))
+                        <p class="mt-1 text-sm text-muted">{{ $package->discount_note }}</p>
+                    @endif
                 </div>
                 @php $bundleSave = $package->coursesBundleSavings(); @endphp
                 @if($bundleSave > 0)
@@ -56,6 +66,9 @@
                     @if($package->is_popular)
                         <span class="inline-flex rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">الأكثر شعبية</span>
                     @endif
+                    @if($package->includes_tools)
+                        <span class="inline-flex rounded-full bg-[#f2f5f4] px-2.5 py-0.5 text-xs font-medium text-ink-soft">أدوات وموارد</span>
+                    @endif
                 </div>
             </div>
         </article>
@@ -68,25 +81,56 @@
                     <h3 class="mt-5 text-sm font-semibold text-ink">نص البطاقة</h3>
                     <p class="mt-2 whitespace-pre-line text-sm text-muted">{{ $package->card_summary }}</p>
                 @endif
-                <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     <div class="rounded-xl border border-line px-3 py-2">
                         <p class="text-xs text-muted">العملة</p>
                         <p class="mt-1 font-semibold text-ink">{{ $package->currencyCode() }}</p>
                     </div>
                     <div class="rounded-xl border border-line px-3 py-2">
-                        <p class="text-xs text-muted">عدد البرامج</p>
-                        <p class="mt-1 font-semibold tabular-nums text-ink">{{ $package->courses->count() }}</p>
-                    </div>
-                    <div class="rounded-xl border border-line px-3 py-2">
                         <p class="text-xs text-muted">مدة الصلاحية</p>
                         <p class="mt-1 font-semibold text-ink">{{ $package->duration_days ? $package->duration_days.' يوم' : 'دائمة' }}</p>
                     </div>
+                    <div class="rounded-xl border border-line px-3 py-2">
+                        <p class="text-xs text-muted">جلسات الاستشارة</p>
+                        <p class="mt-1 font-semibold tabular-nums text-ink">{{ $package->consultation_sessions ?? '—' }}</p>
+                    </div>
+                    <div class="rounded-xl border border-line px-3 py-2">
+                        <p class="text-xs text-muted">المقاعد / المشاركون</p>
+                        <p class="mt-1 font-semibold tabular-nums text-ink">{{ $package->participant_seats ?? '—' }}</p>
+                    </div>
+                    <div class="rounded-xl border border-line px-3 py-2">
+                        <p class="text-xs text-muted">مسارات تعليمية</p>
+                        <p class="mt-1 font-semibold tabular-nums text-ink">{{ $package->learningPaths->count() }}</p>
+                    </div>
+                    <div class="rounded-xl border border-line px-3 py-2">
+                        <p class="text-xs text-muted">زر الدعوة</p>
+                        <p class="mt-1 font-semibold text-ink">{{ $ctaLabels[$package->cta_mode] ?? ($package->cta_mode ?: '—') }}</p>
+                    </div>
                 </div>
+                @if($package->starts_at || $package->ends_at)
+                    <div class="mt-4 flex flex-wrap gap-4 text-xs text-muted">
+                        @if($package->starts_at)
+                            <span>يبدأ: {{ $package->starts_at->format('Y-m-d') }}</span>
+                        @endif
+                        @if($package->ends_at)
+                            <span>ينتهي: {{ $package->ends_at->format('Y-m-d') }}</span>
+                        @endif
+                    </div>
+                @endif
             </article>
+
+            @if(session('success'))
+                <div class="rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-medium text-ink shadow-soft">{{ session('success') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="rounded-2xl border border-danger/20 bg-danger/5 p-4 text-sm text-danger">
+                    <ul class="list-disc list-inside space-y-1">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+                </div>
+            @endif
 
             @if($package->features && count($package->features) > 0)
                 <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
-                    <h3 class="text-sm font-semibold text-ink">المميزات</h3>
+                    <h3 class="text-sm font-semibold text-ink">المزايا</h3>
                     <ul class="mt-3 space-y-2">
                         @foreach($package->features as $feature)
                             <li class="flex items-start gap-2 text-sm text-ink">
@@ -98,6 +142,77 @@
                 </article>
             @endif
 
+            @if($package->tools_resources && count($package->tools_resources) > 0)
+                <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
+                    <h3 class="text-sm font-semibold text-ink">الأدوات والموارد (نصوص البطاقة)</h3>
+                    <ul class="mt-3 space-y-2">
+                        @foreach($package->tools_resources as $tool)
+                            <li class="flex items-start gap-2 text-sm text-ink">
+                                <i class="fas fa-wrench mt-0.5 text-accent"></i>
+                                <span>{{ $tool }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </article>
+            @endif
+
+            @if($package->relationLoaded('teacherTools') ? $package->teacherTools->isNotEmpty() : $package->teacherTools()->exists())
+                <article class="rounded-2xl border border-accent/20 bg-accent-soft/20 p-5 shadow-soft">
+                    <h3 class="text-sm font-semibold text-ink">كيانات الأدوات المربوطة ({{ $package->teacherTools->count() }})</h3>
+                    <ul class="mt-3 space-y-2">
+                        @foreach($package->teacherTools as $linkedTool)
+                            <li class="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3 py-3">
+                                <div class="min-w-0">
+                                    <p class="truncate text-sm font-medium text-ink">{{ $linkedTool->title_ar }}</p>
+                                    <p class="text-xs text-muted">{{ $linkedTool->typeLabel() }}</p>
+                                </div>
+                                <a href="{{ route('admin.teacher-tools.show', $linkedTool) }}" class="text-xs font-semibold text-accent">إدارة</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </article>
+            @endif
+
+            <article class="rounded-2xl border border-accent/20 bg-accent-soft/20 p-5 shadow-soft">
+                <h3 class="text-sm font-semibold text-ink">المسارات التعليمية ({{ $package->learningPaths->count() }})</h3>
+                <p class="mt-1 text-xs text-muted">هذه هي المسارات التي تُفعَّل للمعلم عند منحه هذه الباقة.</p>
+                @if($package->learningPaths->count() > 0)
+                    <ul class="mt-4 space-y-2">
+                        @foreach($package->learningPaths as $path)
+                            <li class="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3 py-3">
+                                <div class="min-w-0">
+                                    <p class="truncate text-sm font-medium text-ink">{{ $path->title_ar }}</p>
+                                    <p class="text-xs text-muted">{{ $path->skill_focus_ar ?: $path->slug }}</p>
+                                </div>
+                                <a href="{{ route('admin.learning-paths.show', $path) }}" class="text-xs font-semibold text-accent">بناء</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="mt-4 py-4 text-center text-sm text-muted">لا مسارات مربوطة — عدّل الباقة واختر المسارات.</p>
+                @endif
+            </article>
+
+            <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
+                <h3 class="text-sm font-semibold text-ink">تفعيل الباقة لمعلم (متعلّم مهني)</h3>
+                <p class="mt-1 text-xs text-muted mb-3">يسجّل استحقاق الباقة ويفتح المسارات المربوطة. الدفع الإلكتروني للباقات التجارية سيُربَط لاحقًا بنفس الخدمة.</p>
+                <form method="POST" action="{{ route('admin.packages.activate-learner', $package) }}" class="flex flex-wrap items-end gap-3">
+                    @csrf
+                    <div class="min-w-[16rem] flex-1">
+                        <label class="mb-1 block text-xs text-muted">المعلم</label>
+                        <select name="user_id" required class="h-11 w-full rounded-xl border border-line bg-surface px-3 text-sm">
+                            <option value="">اختر معلمًا…</option>
+                            @foreach(($learners ?? []) as $learner)
+                                <option value="{{ $learner->id }}">{{ $learner->name }} — {{ $learner->email }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-press inline-flex h-11 items-center rounded-xl bg-accent px-5 text-sm font-medium text-white">
+                        تفعيل الباقة
+                    </button>
+                </form>
+            </article>
+
             <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
                 <h3 class="text-sm font-semibold text-ink">البرامج في الباقة ({{ $package->courses->count() }})</h3>
                 @if($package->courses->count() > 0)
@@ -108,7 +223,7 @@
                                     <p class="truncate text-sm font-medium text-ink">{{ $course->title }}</p>
                                     <p class="mt-0.5 text-xs tabular-nums text-muted">
                                         @if((float) $course->price > 0)
-                                            {{ number_format((float) $course->price, 2) }} USD
+                                            {{ number_format((float) $course->price, 2) }} {{ $package->currencyCode() }}
                                         @else
                                             مجاني
                                         @endif

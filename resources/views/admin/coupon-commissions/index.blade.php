@@ -80,7 +80,7 @@
                        class="h-11 w-full rounded-xl border border-line bg-surface px-4 text-sm text-ink transition placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20">
             </div>
             <div class="flex items-end gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-filter text-xs"></i> تطبيق
                 </button>
                 @if(request()->hasAny(['status', 'beneficiary_id']))

@@ -7,23 +7,23 @@ use Illuminate\Support\Facades\Cache;
 
 class PublicFooterSettings
 {
-    public const CACHE_KEY = 'public_footer_payload_v1';
+    public const CACHE_KEY = 'public_footer_payload_v2';
 
     /** @return array<string, string> */
     public static function defaults(): array
     {
         return [
-            'footer_brand_tagline' => 'تعلّم لغة. احصل على وظيفة. ابدأ مستقبلك.',
-            'footer_blurb' => 'منصة متخصصة في تعليم الألمانية والإنجليزية المرتبطة بسوق العمل — كورسات عملية، جلسات خاصة، واستشارات مهنية للكول سنتر، الدعم الفني، السياحة، وألمانيا.',
-            'footer_email' => 'info@glottical.com',
+            'footer_brand_tagline' => 'تطوير الممارسات المهنية للمعلمين.',
+            'footer_blurb' => 'منصة متخصصة لتطوير الممارسات المهنية للمعلمين — مسارات، استشارات، باقات، وأدوات تطبيقية للصف والمدرسة.',
+            'footer_email' => 'info@tadrislab.com',
             'footer_phone' => '01044610507',
             'footer_whatsapp_url' => 'https://wa.me/201044610507',
-            'footer_bottom_tagline' => 'اللغة والمهارة المهنية — طريقك إلى سوق العمل',
-            'social_facebook_url' => '',
-            'social_x_url' => '',
-            'social_instagram_url' => '',
-            'social_youtube_url' => '',
-            'social_linkedin_url' => '',
+            'footer_bottom_tagline' => 'تشخيص → وصول → تطوير → قياس',
+            'social_facebook_url' => 'https://www.facebook.com/',
+            'social_x_url' => 'https://x.com/',
+            'social_instagram_url' => 'https://www.instagram.com/',
+            'social_youtube_url' => 'https://www.youtube.com/',
+            'social_linkedin_url' => 'https://www.linkedin.com/',
             'social_tiktok_url' => '',
             'social_telegram_url' => '',
             'social_snapchat_url' => '',

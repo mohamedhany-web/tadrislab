@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', $typeLabel.' - Glottical')
+@section('title', $typeLabel.' - TADRIS LAB')
 @section('page_title', $typeLabel)
 
 @section('content')

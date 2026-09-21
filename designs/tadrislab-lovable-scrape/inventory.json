@@ -1,0 +1,136 @@
+{
+  "source": "https://tadrislab.lovable.app/",
+  "routes_detected": [
+    "/about",
+    "/admin/consultation-requests",
+    "/auth",
+    "/blog",
+    "/consultation",
+    "/contact",
+    "/courses",
+    "/home",
+    "/institutions",
+    "/privacy",
+    "/reset-password",
+    "/services/*",
+    "/teachers",
+    "/terms",
+    "/trusted"
+  ],
+  "nav_pages_from_site": [
+    "/",
+    "/teachers",
+    "/institutions? or school training",
+    "/trusted or institutions",
+    "/consultation",
+    "/about",
+    "/contact",
+    "/privacy",
+    "/terms"
+  ],
+  "contact": {
+    "email": "dr.shaimaabelal44@gmail.com",
+    "phones": [
+      "+974 6667 9656",
+      "0097466679656",
+      "(+97466679656)"
+    ],
+    "whatsapp": [],
+    "author": "Dr. Shaimaa Belal / د. شيماء بلال",
+    "region": "Qatar & GCC"
+  },
+  "arabic_string_count": 497,
+  "english_string_count": 89,
+  "assets_count": 22,
+  "downloaded": [
+    "cert-hajar-primary.jpg (5266979 bytes)",
+    "cert-khawarizmi-3.webp (206292 bytes)",
+    "eadaad-certificate.jpg (169346 bytes)",
+    "cert-alpha-cambridge.png (1039432 bytes)",
+    "dr-shaimaa-belal.jpg (42128 bytes)",
+    "cert-brighton.webp (448330 bytes)",
+    "cert-khawarizmi-1.jpg (2030704 bytes)",
+    "cert-pakshamaa-2.webp (187076 bytes)",
+    "cert-khawarizmi-2.webp (166424 bytes)",
+    "cert-pakshamaa-1.webp (193140 bytes)",
+    "hero-education-D_9B39yJ.jpg (142897 bytes)",
+    "tadris-lab-logo-Dpgletgo.png (979565 bytes)",
+    "cert-hajar-primary.jpg",
+    "cert-khawarizmi-3.webp",
+    "eadaad-certificate.jpg",
+    "cert-alpha-cambridge.png",
+    "dr-shaimaa-belal.jpg",
+    "cert-brighton.webp",
+    "cert-khawarizmi-1.jpg",
+    "cert-pakshamaa-2.webp",
+    "cert-khawarizmi-2.webp",
+    "cert-pakshamaa-1.webp"
+  ],
+  "page_fetches": {
+    "/": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/teachers": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/institutions": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/trusted": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/consultation": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/about": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/contact": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/terms": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/home": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/courses": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    },
+    "/blog": {
+      "status": 200,
+      "title": "TADRIS LAB | تدريس لاب — منصة للتدريب والتطوير التعليمي",
+      "len": 11942
+    }
+  },
+  "branding": {
+    "name": "TADRIS LAB | تدريس لاب",
+    "tagline_ar": "منصة للتدريب والتطوير التعليمي",
+    "tagline_en": "Educational Training & Development Platform"
+  }
+}

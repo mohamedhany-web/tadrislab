@@ -45,7 +45,7 @@
     <section class="flex flex-wrap gap-2">
         @foreach($filterTabs as $tab)
             <a href="{{ route('admin.personal-branding.index', ['status' => $tab['status']]) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl px-4 text-sm font-medium transition {{ $tab['active'] ? 'bg-accent text-white hover:bg-[#0d4f4a]' : 'border border-line bg-surface text-ink hover:bg-accent-soft hover:text-accent' }}">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl px-4 text-sm font-medium transition {{ $tab['active'] ? 'bg-accent text-white hover:bg-[#184888]' : 'border border-line bg-surface text-ink hover:bg-accent-soft hover:text-accent' }}">
                 {{ $tab['label'] }}
                 <span class="inline-flex min-w-[1.25rem] items-center justify-center rounded-lg px-1.5 py-0.5 text-[11px] font-semibold tabular-nums {{ $tab['active'] ? 'bg-white/20 text-white' : 'bg-canvas text-muted' }}">
                     {{ $tab['count'] }}
@@ -79,7 +79,7 @@
             @endif
             <div class="flex items-end">
                 <button type="submit"
-                        class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-5 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                        class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-5 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-search text-xs"></i>
                     بحث
                 </button>

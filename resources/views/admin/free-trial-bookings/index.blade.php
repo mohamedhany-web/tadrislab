@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'حجوزات الحصة المجانية - Glottical')
+@section('title', 'حجوزات الحصة المجانية - TADRIS LAB')
 @section('page_title', 'حجوزات الحصة المجانية')
 
 @section('content')

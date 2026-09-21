@@ -97,7 +97,7 @@
             </div>
             <div class="flex items-end gap-2">
                 <button type="submit"
-                        class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                        class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-search text-xs"></i>
                     بحث
                 </button>
@@ -210,7 +210,7 @@
             <p class="mt-4 text-lg font-semibold text-ink">لا توجد إحالات</p>
             <p class="mt-1 text-sm text-muted">ابدأ بإنشاء برنامج إحالات لتفعيل نظام الإحالات</p>
             <a href="{{ route('admin.referral-programs.index') }}"
-               class="btn-press mt-6 inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press mt-6 inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-gift text-xs"></i>
                 إنشاء برنامج إحالات
             </a>

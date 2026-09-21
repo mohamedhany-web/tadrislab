@@ -126,13 +126,23 @@
             <article class="overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
                 <div class="border-b border-line px-4 py-4 sm:px-5">
                     <h3 class="text-base font-semibold text-ink">
-                        {{ in_array($order->order_type, [\App\Models\Order::TYPE_SERVICE_PACKAGE, \App\Models\Order::TYPE_CUSTOM_SERVICE_PACKAGE], true) ? 'معلومات باقة الحصص' : ($order->academic_year_id && ! $order->advanced_course_id ? 'طلب قديم' : 'معلومات الكورس') }}
+                        @if($order->isConsultationOrder())
+                            معلومات الاستشارة
+                        @elseif(in_array($order->order_type, [\App\Models\Order::TYPE_SERVICE_PACKAGE, \App\Models\Order::TYPE_CUSTOM_SERVICE_PACKAGE], true))
+                            معلومات باقة الحصص
+                        @elseif($order->academic_year_id && ! $order->advanced_course_id)
+                            طلب قديم
+                        @else
+                            معلومات الكورس
+                        @endif
                     </h3>
                 </div>
                 <div class="p-4 sm:p-5">
                     <div class="flex flex-col gap-4 sm:flex-row">
                         <div class="flex h-24 w-full flex-shrink-0 items-center justify-center rounded-xl bg-accent-soft sm:w-24">
-                            @if($order->course && $order->course->thumbnail)
+                            @if($order->isConsultationOrder())
+                                <i class="fas fa-comments text-2xl text-accent"></i>
+                            @elseif($order->course && $order->course->thumbnail)
                                 <img src="{{ storage_asset($order->course->thumbnail) }}" alt="{{ htmlspecialchars($order->course->title ?? 'كورس', ENT_QUOTES, 'UTF-8') }}"
                                      class="h-full w-full rounded-xl object-cover" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'%3E%3Cpath fill=\'%230B3D91\' d=\'M8 5v14l11-7z\'/%3E%3C/svg%3E';">
                             @elseif(in_array($order->order_type, [\App\Models\Order::TYPE_SERVICE_PACKAGE, \App\Models\Order::TYPE_CUSTOM_SERVICE_PACKAGE], true))
@@ -143,7 +153,16 @@
                         </div>
 
                         <div class="flex-1">
-                            @if($order->order_type === \App\Models\Order::TYPE_CUSTOM_SERVICE_PACKAGE)
+                            @if($order->isConsultationOrder())
+                                @php $cMeta = $order->custom_package_data ?? []; @endphp
+                                <h4 class="mb-2 text-base font-semibold text-ink">{{ $cMeta['consultation_title'] ?? 'استشارة مهنية' }}</h4>
+                                <p class="text-sm text-muted mb-3">حجز استشارة · {{ number_format((float) $order->amount, 2) }} {{ $order->currencyCode() }}</p>
+                                @if(!empty($cMeta['consultation_request_id']))
+                                    <a href="{{ route('admin.consultations.show', $cMeta['consultation_request_id']) }}" class="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white">
+                                        فتح الحجز #{{ $cMeta['consultation_request_id'] }}
+                                    </a>
+                                @endif
+                            @elseif($order->order_type === \App\Models\Order::TYPE_CUSTOM_SERVICE_PACKAGE)
                                 @php $custom = $order->custom_package_data ?? []; @endphp
                                 <h4 class="mb-3 text-base font-semibold text-ink">{{ $custom['name'] ?? 'باقة مخصصة' }}</h4>
                                 <div class="grid gap-2 text-sm sm:grid-cols-3">

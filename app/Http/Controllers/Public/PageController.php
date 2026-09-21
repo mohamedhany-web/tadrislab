@@ -14,13 +14,7 @@ class PageController extends Controller
 
     public function about()
     {
-        $stats = [
-            'courses' => \App\Models\AdvancedCourse::where('is_active', true)->count(),
-            'students' => \App\Models\User::where('role', 'student')->where('is_active', true)->count(),
-            'instructors' => \App\Models\User::where('role', 'instructor')->where('is_active', true)->count(),
-        ];
-        
-        return view('public.about', compact('stats'));
+        return redirect()->route('public.about');
     }
 
     public function faq()
@@ -58,25 +52,13 @@ class PageController extends Controller
     public function pricing()
     {
         $packages = \App\Models\Package::active()
-            ->with(['courses' => function ($query) {
-                $query->where('is_active', true);
-            }])
-            ->withCount('courses')
-            ->orderBy('is_popular', 'desc')
-            ->orderBy('is_featured', 'desc')
             ->orderBy('order')
-            ->orderBy('price', 'asc')
-            ->get();
-
-        $tutoringGroups = \App\Models\TutoringGroup::query()
-            ->active()
-            ->with(['instructor:id,name'])
+            ->orderByDesc('is_popular')
             ->orderByDesc('is_featured')
-            ->orderBy('sort_order')
             ->orderBy('price')
             ->get();
 
-        return view('public.pricing', compact('packages', 'tutoringGroups'));
+        return view('public.pricing', compact('packages'));
     }
 
     public function team()
@@ -92,6 +74,16 @@ class PageController extends Controller
     public function help()
     {
         return view('public.help');
+    }
+
+    public function path()
+    {
+        return view('public.path', [
+            'laslesNavActive' => 'path',
+            'pageTitle' => __('landing.path.meta_title'),
+            'pageDescription' => __('landing.path.meta_description'),
+            'bodyClass' => 'lasles-path-page',
+        ]);
     }
 
     public function refund()

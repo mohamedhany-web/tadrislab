@@ -24,13 +24,12 @@
         'instructor' => ['label' => 'معلم', 'badge' => 'bg-[#f2f5f4] text-accent border-line'],
         'teacher' => ['label' => 'معلم (مدرس)', 'badge' => 'bg-[#f2f5f4] text-accent border-line'],
         'student' => ['label' => __('admin.student_role_label'), 'badge' => 'bg-emerald-50 text-emerald-700 border-emerald-100'],
-        'parent' => ['label' => 'ولي أمر', 'badge' => 'bg-canvas text-ink border-line'],
         'employee' => ['label' => 'موظف', 'badge' => 'bg-amber-50 text-amber-800 border-amber-100'],
     ];
 
     $kpiCards = [
         [
-            'label' => $isStudents ? 'إجمالي الطلاب' : 'إجمالي المستخدمين',
+            'label' => $isStudents ? 'إجمالي المعلمين' : 'إجمالي المستخدمين',
             'value' => number_format($stats['total'] ?? 0),
             'meta' => isset($stats['new_this_month']) ? ('+'.number_format($stats['new_this_month']).' هذا الشهر') : null,
             'trend' => $trends['users'] ?? null,
@@ -42,13 +41,13 @@
             'trend' => null,
         ],
         [
-            'label' => 'المعلمون',
+            'label' => 'الميسّرون',
             'value' => number_format($stats['teachers'] ?? 0),
             'meta' => isset($stats['new_teachers_this_month']) ? ('+'.number_format($stats['new_teachers_this_month']).' هذا الشهر') : null,
             'trend' => $trends['teachers'] ?? null,
         ],
         [
-            'label' => 'الطلاب',
+            'label' => 'المعلمون',
             'value' => number_format($stats['students'] ?? 0),
             'meta' => isset($stats['new_students_this_month']) ? ('+'.number_format($stats['new_students_this_month']).' هذا الشهر') : null,
             'trend' => $trends['students'] ?? null,
@@ -64,18 +63,13 @@
         ],
         'instructor' => [
             'count' => (int) (($usersByRole['instructor'] ?? 0) + ($usersByRole['teacher'] ?? 0)),
-            'label' => 'معلمون',
+            'label' => 'ميسّرون',
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         'student' => [
             'count' => (int) ($usersByRole['student'] ?? 0),
             'label' => __('admin.student_role_label'),
             'icon' => 'fas fa-user-graduate',
-        ],
-        'parent' => [
-            'count' => (int) ($usersByRole['parent'] ?? 0),
-            'label' => 'أولياء أمور',
-            'icon' => 'fas fa-user-friends',
         ],
         'employee' => [
             'count' => (int) \App\Models\User::where('is_employee', true)->count(),
@@ -95,14 +89,14 @@
 <div class="space-y-5">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">{{ $isStudents ? 'الطلاب والحسابات' : 'المستخدمون والصلاحيات' }}</p>
+            <p class="text-xs font-medium text-muted">{{ $isStudents ? 'المعلمون والحسابات' : 'المستخدمون والصلاحيات' }}</p>
             <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ $pageTitle }}</h2>
             <p class="mt-1 max-w-2xl text-sm text-muted">{{ $pageDescription }}</p>
         </div>
         <a href="{{ route('admin.users.create') }}"
-           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
             <i class="fas fa-user-plus text-xs"></i>
-            {{ $isStudents ? 'إضافة طالب' : 'إضافة مستخدم' }}
+            {{ $isStudents ? 'إضافة معلم' : 'إضافة مستخدم' }}
         </a>
     </section>
 
@@ -223,7 +217,6 @@
                         <option value="instructor" @selected(request('role') == 'instructor')>معلم</option>
                         <option value="teacher" @selected(request('role') == 'teacher')>معلم (مدرس)</option>
                         <option value="student" @selected(request('role') == 'student')>{{ __('admin.student_role_label') }}</option>
-                        <option value="parent" @selected(request('role') == 'parent')>ولي أمر</option>
                         <option value="employee" @selected(request('role') == 'employee')>موظف</option>
                     </select>
                 </div>
@@ -237,7 +230,7 @@
                 </select>
             </div>
             <div class="flex items-end gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-search text-xs"></i> بحث
                 </button>
                 @if(request()->anyFilled(['search', 'role', 'status']))
@@ -463,7 +456,7 @@
             @endif
             <a href="{{ route('admin.users.create') }}" class="rounded-xl border border-line px-4 py-3 hover:bg-canvas">
                 <p class="text-sm font-semibold text-ink">إضافة حساب</p>
-                <p class="mt-0.5 text-xs text-muted">إنشاء مدرب أو طالب أو موظف</p>
+                <p class="mt-0.5 text-xs text-muted">إنشاء معلم أو ميسر أو موظف</p>
             </a>
             @if(Route::has('admin.activity-log'))
                 <a href="{{ route('admin.activity-log') }}" class="rounded-xl border border-line px-4 py-3 hover:bg-canvas">

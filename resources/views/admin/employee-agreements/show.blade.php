@@ -39,7 +39,7 @@
         </div>
         <div class="admin-hero-actions flex flex-wrap gap-2">
             <a href="{{ route('admin.employee-agreements.edit', $employeeAgreement) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-edit text-xs"></i>
                 تعديل
             </a>
@@ -180,7 +180,7 @@
                     </div>
                     @if($employeeAgreement->status === 'active')
                     <button type="button" onclick="document.getElementById('new-payment-form').classList.toggle('hidden')"
-                            class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                            class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-plus text-xs"></i>
                         إنشاء دفعة راتب
                     </button>
@@ -203,7 +203,7 @@
                             <label class="{{ $labelClass }}">ملاحظات</label>
                             <input type="text" name="notes" placeholder="اختياري" class="{{ $fieldClass }}">
                         </div>
-                        <button type="submit" class="btn-press inline-flex h-11 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">إنشاء الدفعة</button>
+                        <button type="submit" class="btn-press inline-flex h-11 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">إنشاء الدفعة</button>
                     </form>
                 </div>
                 @endif
@@ -249,7 +249,7 @@
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3">
                                     @if(in_array($payment->status, ['pending', 'overdue']))
-                                        <button type="button" class="open-pay-modal text-sm font-medium text-accent hover:text-[#0d4f4a]" data-action="{{ route('admin.employee-agreements.payments.mark-paid', $payment) }}" data-payment-num="{{ $payment->payment_number }}">دفع ورفع إيصال</button>
+                                        <button type="button" class="open-pay-modal text-sm font-medium text-accent hover:text-[#184888]" data-action="{{ route('admin.employee-agreements.payments.mark-paid', $payment) }}" data-payment-num="{{ $payment->payment_number }}">دفع ورفع إيصال</button>
                                     @else
                                         —
                                     @endif
@@ -327,7 +327,7 @@
                     </div>
                 </div>
                 <div class="mt-6 flex gap-2">
-                    <button type="submit" class="btn-press flex-1 rounded-xl bg-accent py-2.5 text-sm font-semibold text-white hover:bg-[#0d4f4a]">تسجيل الدفع</button>
+                    <button type="submit" class="btn-press flex-1 rounded-xl bg-accent py-2.5 text-sm font-semibold text-white hover:bg-[#184888]">تسجيل الدفع</button>
                     <button type="button" id="pay-modal-close" class="btn-press rounded-xl border border-line px-4 py-2.5 text-sm font-medium text-ink hover:bg-accent-soft hover:text-accent">إلغاء</button>
                 </div>
             </form>

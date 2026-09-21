@@ -92,7 +92,7 @@
                 </div>
 
                 <div x-show="status === 'active'" x-cloak>
-                    <label class="{{ $labelClass }}" for="final_price">مبلغ التفعيل (USD) — اختياري</label>
+                    <label class="{{ $labelClass }}" for="final_price">مبلغ التفعيل ({{ platform_currency() }}) — اختياري</label>
                     <input type="number" name="final_price" id="final_price" value="{{ old('final_price') }}" min="0" step="0.01"
                            class="{{ $fieldClass }}" placeholder="فارغ = سعر البرنامج">
                     <p class="mt-1 text-xs text-muted">لحساب نسبة المدرب من مبلغ التفعيل الفعلي.</p>
@@ -123,7 +123,7 @@
         </article>
 
         <div class="flex flex-wrap gap-3">
-            <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+            <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-save text-xs"></i> حفظ التسجيل
             </button>
             <a href="{{ route('admin.online-enrollments.index') }}" class="inline-flex h-11 items-center rounded-xl border border-line px-5 text-sm text-ink-soft">إلغاء</a>

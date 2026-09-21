@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', __('instructor.question_bank') . ': ' . $questionBank->title . ' - ' . config('app.name'))
 @section('page_title', $questionBank->title)

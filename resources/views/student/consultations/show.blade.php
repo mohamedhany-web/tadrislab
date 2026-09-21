@@ -42,13 +42,42 @@
                 <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-700">
                     <dt class="text-gray-500 dark:text-gray-400 text-xs mb-1">طريقة الدفع</dt>
                     <dd class="font-bold text-gray-900 dark:text-white">
-                        @if($consultation->payment_method === 'bank_transfer') تحويل بنكي / محفظة
+                        @if(in_array($consultation->payment_method, ['online', 'paypal', 'kashier'], true)) دفع إلكتروني
+                        @elseif($consultation->payment_method === 'bank_transfer') تحويل بنكي / محفظة
                         @elseif($consultation->payment_method === 'cash') نقدي
                         @else أخرى @endif
                     </dd>
                 </div>
                 @endif
+                @if($consultation->order_id)
+                <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-700">
+                    <dt class="text-gray-500 dark:text-gray-400 text-xs mb-1">طلب الدفع</dt>
+                    <dd class="font-bold text-gray-900 dark:text-white">
+                        <a href="{{ route('orders.show', $consultation->order_id) }}" class="text-sky-600 hover:underline">#{{ $consultation->order_id }}</a>
+                        @if($consultation->paid_confirmed_at)
+                            <span class="ms-2 text-xs font-semibold text-emerald-600">مدفوع</span>
+                        @elseif($consultation->order && $consultation->order->status === \App\Models\Order::STATUS_PENDING)
+                            <span class="ms-2 text-xs font-semibold text-amber-600">بانتظار الدفع</span>
+                        @endif
+                    </dd>
+                </div>
+                @endif
             </dl>
+
+            @if($consultation->order_id && ! $consultation->paid_confirmed_at && $consultation->order && $consultation->order->status === \App\Models\Order::STATUS_PENDING && in_array($consultation->payment_method, ['online', 'paypal', 'kashier'], true))
+            <div class="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 p-4 sm:p-6">
+                <h3 class="font-bold text-amber-900 dark:text-amber-100 mb-2">أكمل الدفع لإتمام الحجز</h3>
+                <p class="text-sm text-amber-800 dark:text-amber-200/90 mb-3">لم يُستلم الدفع بعد. افتح صفحة الطلب لإعادة المحاولة عبر بوابة الدفع.</p>
+                <a href="{{ route('orders.show', $consultation->order_id) }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-600 text-white text-sm font-bold hover:bg-amber-700">متابعة الدفع</a>
+            </div>
+            @endif
+
+            @if($consultation->paid_confirmed_at && in_array($consultation->status, [\App\Models\ConsultationRequest::STATUS_PAID, \App\Models\ConsultationRequest::STATUS_NEW], true))
+            <div class="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 p-4 sm:p-6">
+                <h3 class="font-bold text-emerald-900 dark:text-emerald-100">تم تأكيد الدفع</h3>
+                <p class="text-sm text-emerald-800 dark:text-emerald-200/90 mt-2">استلمنا الدفع. الإدارة ستؤكّد الموعد النهائي ويصلك إشعار عبر واتساب والبريد.</p>
+            </div>
+            @endif
 
             @if($consultation->platformWallet)
             <div class="rounded-xl border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-900/20 p-4 text-sm">
@@ -117,14 +146,22 @@
                 </form>
             @endif
 
-            @if($consultation->status === \App\Models\ConsultationRequest::STATUS_SCHEDULED && $consultation->classroomMeeting)
-                @php $joinUrl = url('classroom/join/'.$consultation->classroomMeeting->code); @endphp
+            @if($consultation->isScheduled() && $consultation->classroomMeeting)
+                @php
+                    $meeting = $consultation->classroomMeeting;
+                    $enterUrl = \App\Services\ClassroomMeetingAccessService::platformEnterUrl($meeting);
+                @endphp
                 <div class="rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 p-4 sm:p-6 space-y-3">
                     <h3 class="font-bold text-emerald-900 dark:text-emerald-100 flex items-center gap-2"><i class="fas fa-video"></i> موعد الجلسة</h3>
-                    <p class="text-sm text-emerald-800 dark:text-emerald-200">{{ $consultation->scheduled_at?->format('Y-m-d H:i') }}</p>
+                    <p class="text-sm text-emerald-800 dark:text-emerald-200">{{ $consultation->scheduled_at?->format('Y-m-d H:i') }} · {{ $consultation->briefStatusLabel() }}</p>
                     <div class="flex flex-wrap gap-2 items-center">
-                        <input type="text" readonly value="{{ $joinUrl }}" class="flex-1 min-w-[200px] text-xs px-3 py-2 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-900">
-                        <button type="button" onclick="navigator.clipboard.writeText('{{ $joinUrl }}')" class="px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold">نسخ الرابط</button>
+                        @if(! $meeting->ended_at)
+                            <a href="{{ $enterUrl }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold">
+                                <i class="fas fa-video"></i> دخول الغرفة
+                            </a>
+                        @else
+                            <span class="text-sm text-emerald-800 dark:text-emerald-200">انتهت الجلسة.</span>
+                        @endif
                     </div>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">يظهر الموعد في <a href="{{ route('calendar') }}" class="text-sky-600 dark:text-sky-400 font-semibold underline">تقويمك</a>.</p>

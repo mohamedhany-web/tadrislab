@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title') — {{ config('app.name') }}</title>
-  <meta name="theme-color" content="#0B3D91">
+  <meta name="theme-color" content="#1E4E8C">
   <meta name="robots" content="noindex, nofollow">
   @include('partials.favicon-links')
   <link rel="preload" as="image" href="{{ $authBg }}" fetchpriority="high">
@@ -22,11 +22,11 @@
       var base = (typeof tailwind !== 'undefined' && tailwind.config) ? tailwind.config : {};
       var extend = (base.theme && base.theme.extend) ? base.theme.extend : {};
       var colors = Object.assign({}, extend.colors || {}, {
-        accent: '#0B3D91',
-        'accent-soft': '#E8EEF8',
-        metal: '#F5B800',
-        canvas: '#F4F7FC',
-        'canvas-muted': '#E8EEF8',
+        accent: '#1E4E8C',
+        'accent-soft': '#E8EEF6',
+        metal: '#A88050',
+        canvas: '#F7F8FB',
+        'canvas-muted': '#E8EEF6',
       });
       tailwind.config = Object.assign({}, base, {
         theme: Object.assign({}, base.theme || {}, {
@@ -43,112 +43,112 @@
       background-size:cover;
       background-position:center;
     }
-    /* Glottical brand tokens — auth shell only */
-    body.auth-glottical{
-      --atheer-accent:#0B3D91;
-      --atheer-metal:#F5B800;
-      --atheer-canvas:#F4F7FC;
-      background:#F4F7FC;
+    /* TADRIS LAB brand tokens — auth shell only */
+    body.auth-tadrislab{
+      --atheer-accent:#1E4E8C;
+      --atheer-metal:#A88050;
+      --atheer-canvas:#F7F8FB;
+      background:#F7F8FB;
       overflow-x:clip;
     }
-    body.auth-glottical .bg-accent{background-color:#0B3D91!important}
-    body.auth-glottical .bg-accent-soft{background-color:#E8EEF8!important}
-    body.auth-glottical .text-accent{color:#0B3D91!important}
-    body.auth-glottical .text-metal{color:#F5B800!important}
-    body.auth-glottical .bg-metal\/15{background-color:rgba(245,184,0,.15)!important}
-    body.auth-glottical .auth-brand-panel{
+    body.auth-tadrislab .bg-accent{background-color:#1E4E8C!important}
+    body.auth-tadrislab .bg-accent-soft{background-color:#E8EEF6!important}
+    body.auth-tadrislab .text-accent{color:#1E4E8C!important}
+    body.auth-tadrislab .text-metal{color:#A88050!important}
+    body.auth-tadrislab .bg-metal\/15{background-color:rgba(245,184,0,.15)!important}
+    body.auth-tadrislab .auth-brand-panel{
       background:
-        radial-gradient(ellipse 80% 60% at 10% 0%, rgba(11,61,145,.58), transparent 55%),
+        radial-gradient(ellipse 80% 60% at 10% 0%, rgba(30,78,140,.58), transparent 55%),
         radial-gradient(ellipse 70% 50% at 100% 100%, rgba(245,184,0,.22), transparent 50%),
-        #0b1220;
+        #152A4A;
     }
-    body.auth-glottical .auth-input:focus,
-    body.auth-glottical .auth-phone:focus-within{
-      border-color:#0B3D91;
-      box-shadow:0 0 0 3px rgba(11,61,145,.16);
+    body.auth-tadrislab .auth-input:focus,
+    body.auth-tadrislab .auth-phone:focus-within{
+      border-color:#1E4E8C;
+      box-shadow:0 0 0 3px rgba(30,78,140,.16);
     }
-    body.auth-glottical .auth-input[type="checkbox"],
-    body.auth-glottical input[type="checkbox"].text-accent{
-      accent-color:#0B3D91;
+    body.auth-tadrislab .auth-input[type="checkbox"],
+    body.auth-tadrislab input[type="checkbox"].text-accent{
+      accent-color:#1E4E8C;
     }
     /* Responsive polish */
-    body.auth-glottical .auth-shell{
+    body.auth-tadrislab .auth-shell{
       min-height:100dvh;
       display:block;
     }
-    body.auth-glottical .auth-brand-panel{
+    body.auth-tadrislab .auth-brand-panel{
       display:none;
     }
-    body.auth-glottical .auth-form-col{
+    body.auth-tadrislab .auth-form-col{
       min-height:100dvh;
       display:flex;
       flex-direction:column;
     }
-    body.auth-glottical .auth-mobile-strip{
+    body.auth-tadrislab .auth-mobile-strip{
       display:block;
     }
-    body.auth-glottical .auth-desktop-header{
+    body.auth-tadrislab .auth-desktop-header{
       display:none;
     }
-    body.auth-glottical .auth-form-main{
+    body.auth-tadrislab .auth-form-main{
       padding-bottom:max(1.5rem, env(safe-area-inset-bottom));
       display:flex;
       flex:1 1 auto;
       flex-direction:column;
       justify-content:center;
     }
-    body.auth-glottical .auth-mobile-footer{
+    body.auth-tadrislab .auth-mobile-footer{
       display:block;
     }
     @media (min-width:1024px){
-      body.auth-glottical .auth-shell{
+      body.auth-tadrislab .auth-shell{
         display:grid;
         grid-template-columns:1fr 1fr;
       }
-      body.auth-glottical .auth-brand-panel{
+      body.auth-tadrislab .auth-brand-panel{
         display:flex;
         flex-direction:column;
         justify-content:space-between;
       }
-      body.auth-glottical .auth-mobile-strip,
-      body.auth-glottical .auth-mobile-footer{
+      body.auth-tadrislab .auth-mobile-strip,
+      body.auth-tadrislab .auth-mobile-footer{
         display:none!important;
       }
-      body.auth-glottical .auth-desktop-header{
+      body.auth-tadrislab .auth-desktop-header{
         display:flex;
         align-items:center;
         justify-content:space-between;
       }
     }
     /* منع القفزة عند التحميل — إلغاء أنيميشن الدخول */
-    body.auth-glottical .fade-up,
-    body.auth-glottical .fade-up-delay-1,
-    body.auth-glottical .fade-up-delay-2,
-    body.auth-glottical .fade-up-delay-3,
-    body.auth-glottical .page-enter{
+    body.auth-tadrislab .fade-up,
+    body.auth-tadrislab .fade-up-delay-1,
+    body.auth-tadrislab .fade-up-delay-2,
+    body.auth-tadrislab .fade-up-delay-3,
+    body.auth-tadrislab .page-enter{
       animation:none!important;
       opacity:1!important;
       transform:none!important;
     }
     @media (max-width:1023px){
-      body.auth-glottical .auth-mobile-strip{
+      body.auth-tadrislab .auth-mobile-strip{
         padding-top:max(0.75rem, env(safe-area-inset-top));
       }
-      body.auth-glottical .auth-form-main{
+      body.auth-tadrislab .auth-form-main{
         justify-content:flex-start;
         padding-top:1.25rem;
       }
-      body.auth-glottical .auth-form-col{
+      body.auth-tadrislab .auth-form-col{
         min-height:auto;
       }
     }
     @media (max-width:380px){
-      body.auth-glottical .auth-form-card h1{
+      body.auth-tadrislab .auth-form-card h1{
         font-size:1.5rem;
       }
     }
     @media (prefers-reduced-motion: reduce){
-      body.auth-glottical *{
+      body.auth-tadrislab *{
         animation:none!important;
         transition:none!important;
       }
@@ -156,7 +156,7 @@
   </style>
   @stack('head')
 </head>
-<body class="auth-glottical font-sans antialiased text-ink" @yield('body_attrs')>
+<body class="auth-tadrislab font-sans antialiased text-ink" @yield('body_attrs')>
   <div class="auth-shell min-h-screen lg:grid lg:grid-cols-2">
     {{-- Brand / atmosphere panel --}}
     <aside class="auth-brand-panel relative hidden overflow-hidden text-white lg:flex lg:flex-col lg:justify-between lg:p-12 xl:p-14">

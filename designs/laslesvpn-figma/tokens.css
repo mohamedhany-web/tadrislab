@@ -1,0 +1,14 @@
+/* Color preset — LaslesVPN Figma (node 643:2318) for TADRIS LAB */
+:root {
+  --lasles-red: #F53838;
+  --lasles-red-soft: #F53855;
+  --lasles-red-tint: #FFECEC;
+  --lasles-red-glow: rgba(245, 56, 56, 0.35);
+  --lasles-navy: #0B132A;
+  --lasles-muted: #4F5665;
+  --lasles-border: #DDDDDD;
+  --lasles-bg: #FFFFFF;
+  --lasles-bg-soft: #F8F8F8;
+  --lasles-font: "Rubik", system-ui, sans-serif;
+  --lasles-max: 1140px;
+}

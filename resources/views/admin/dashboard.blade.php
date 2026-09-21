@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'لوحة الإدارة - Glottical')
-@section('page_title', 'لوحة الإدارة')
+@section('title', __('admin.dashboard_title') . ' - ' . config('app.name'))
+@section('page_title', __('admin.dashboard_title'))
 
 @section('content')
 @php
@@ -23,7 +23,7 @@
     };
     $ordersPending = (int) data_get($salesSection, 'orders_pending', 0);
     $recentOrders = collect(data_get($salesSection, 'recent_orders', []));
-    $currency = '$';
+    $currency = currency_symbol();
 
     $studentsTotal = (int) data_get($metrics, 'students.total', data_get($stats, 'total_students', 0));
     $coursesTotal = (int) data_get($metrics, 'courses.total', data_get($stats, 'total_courses', 0));
@@ -31,11 +31,11 @@
     $usersTotal = (int) data_get($metrics, 'users.total', data_get($stats, 'total_users', 0));
     $funnelBase = max(1, $usersTotal ?: $studentsTotal);
     $funnelSteps = [
-        ['label' => '1. المستخدمون', 'count' => $usersTotal ?: $studentsTotal, 'pct' => 100, 'opacity' => '0.35', 'accent' => false],
-        ['label' => '2. الطلاب', 'count' => $studentsTotal, 'pct' => round(($studentsTotal / $funnelBase) * 100, 1), 'opacity' => '0.45', 'accent' => false],
-        ['label' => '3. الكورسات النشطة', 'count' => $coursesTotal, 'pct' => round(($coursesTotal / $funnelBase) * 100, 1), 'opacity' => '0.55', 'accent' => false],
-        ['label' => '4. طلبات معلّقة', 'count' => $ordersPending, 'pct' => round(($ordersPending / $funnelBase) * 100, 1), 'opacity' => '0.65', 'accent' => false],
-        ['label' => '5. اشتراكات نشطة', 'count' => $enrollmentsTotal, 'pct' => round(($enrollmentsTotal / $funnelBase) * 100, 1), 'opacity' => '1', 'accent' => true],
+        ['label' => __('admin.dashboard_funnel_users'), 'count' => $usersTotal ?: $studentsTotal, 'pct' => 100, 'tone' => 'soft'],
+        ['label' => __('admin.dashboard_funnel_teachers'), 'count' => $studentsTotal, 'pct' => round(($studentsTotal / $funnelBase) * 100, 1), 'tone' => 'soft'],
+        ['label' => __('admin.dashboard_funnel_courses'), 'count' => $coursesTotal, 'pct' => round(($coursesTotal / $funnelBase) * 100, 1), 'tone' => 'mid'],
+        ['label' => __('admin.dashboard_funnel_pending'), 'count' => $ordersPending, 'pct' => round(($ordersPending / $funnelBase) * 100, 1), 'tone' => 'mid'],
+        ['label' => __('admin.dashboard_funnel_enrollments'), 'count' => $enrollmentsTotal, 'pct' => round(($enrollmentsTotal / $funnelBase) * 100, 1), 'tone' => 'strong'],
     ];
     $conversionPct = $usersTotal > 0 ? round(($enrollmentsTotal / max(1, $usersTotal)) * 100, 1) : 0;
 
@@ -44,21 +44,26 @@
     $weekTotal = collect($weeklyActivity ?? [])->sum('count');
 @endphp
 
-<div class="space-y-5">
+<div class="space-y-5 admin-dashboard">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">مرحباً، {{ auth()->user()->name }} · نظرة حسب صلاحيات دورك</p>
-            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">نظرة تشغيلية لليوم</h2>
+            <p class="admin-dash-kicker mb-2">TADRIS LAB</p>
+            <p class="text-xs font-medium text-muted">{{ __('admin.dashboard_welcome', ['name' => auth()->user()->name]) }}</p>
+            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ __('admin.dashboard_ops_today') }}</h2>
         </div>
         <div class="admin-hero-actions flex flex-wrap gap-2">
             @if(! empty($ds['sales_section']) && Route::has('admin.orders.index'))
-                <a href="{{ route('admin.orders.index', ['status' => 'pending']) }}" class="btn-press inline-flex h-9 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white">
-                    الطلبات المعلّقة@if($ordersPending > 0) ({{ number_format($ordersPending) }})@endif
+                <a href="{{ route('admin.orders.index', ['status' => 'pending']) }}" class="btn-press inline-flex h-9 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-brand-dark">
+                    {{ __('admin.dashboard_pending_orders') }}@if($ordersPending > 0) ({{ number_format($ordersPending) }})@endif
                 </a>
             @endif
-            @if(! empty($ds['courses_metric']) && Route::has('admin.courses.create'))
-                <a href="{{ route('admin.courses.create') }}" class="btn-press inline-flex h-9 items-center rounded-xl border border-line px-4 text-sm font-medium text-ink hover:bg-canvas">
-                    كورس جديد
+            @if(Route::has('admin.learning-paths.create'))
+                <a href="{{ route('admin.learning-paths.create') }}" class="btn-press inline-flex h-9 items-center rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent">
+                    {{ __('admin.dashboard_new_path') }}
+                </a>
+            @elseif(! empty($ds['courses_metric']) && Route::has('admin.courses.create'))
+                <a href="{{ route('admin.courses.create') }}" class="btn-press inline-flex h-9 items-center rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink hover:border-accent/30 hover:bg-accent-soft hover:text-accent">
+                    {{ __('admin.dashboard_new_course') }}
                 </a>
             @endif
         </div>
@@ -66,7 +71,7 @@
 
     @if(isset($dashboardShow) && ! $hasAnyDashboardWidget)
         <div class="rounded-2xl border border-line bg-surface px-4 py-3 text-sm text-ink shadow-soft">
-            لا توجد بطاقات إحصائية لعرضها حالياً. اطلب من المسؤول إسناد الصلاحيات المناسبة لدورك.
+            {{ __('admin.dashboard_no_widgets') }}
         </div>
     @endif
 
@@ -82,7 +87,7 @@
             @endphp
             <article class="rounded-2xl border border-line bg-surface p-4 shadow-soft">
                 <div class="flex items-start justify-between gap-3">
-                    <div class="inline-flex size-9 items-center justify-center rounded-xl bg-[#f2f5f4] text-accent">
+                    <div class="admin-kpi-icon inline-flex size-9 items-center justify-center rounded-xl">
                         <i class="fas fa-chart-line text-sm"></i>
                     </div>
                     @if($revTrend !== null)
@@ -91,11 +96,11 @@
                         </span>
                     @endif
                 </div>
-                <p class="mt-3 text-xs text-muted">{{ ! empty($ds['monthly_revenue']) ? 'إيراد هذا الشهر' : 'إجمالي الإيراد' }}</p>
+                <p class="mt-3 text-xs text-muted">{{ ! empty($ds['monthly_revenue']) ? __('admin.dashboard_monthly_revenue') : __('admin.dashboard_total_revenue') }}</p>
                 <p class="mt-1 text-xl font-semibold tabular-nums tracking-tight text-ink">{{ number_format((float) $revValue, 0) }} {{ $currency }}</p>
                 <div class="mt-2 flex h-8 items-end gap-0.5">
                     @foreach($bars as $i => $h)
-                        <span class="w-2 rounded-t {{ $i === count($bars) - 1 ? 'bg-accent' : 'bg-accent/30' }}" style="height:{{ $h }}%"></span>
+                        <span class="admin-spark-bar w-2 rounded-t {{ $i === count($bars) - 1 ? 'is-live' : '' }}" style="height:{{ $h }}%"></span>
                     @endforeach
                 </div>
                 <p class="mt-1 text-[11px] text-muted">مقارنة بالفترة السابقة</p>
@@ -106,7 +111,7 @@
             @php $st = $metrics['students'] ?? []; $stTrend = $trendPct($st['trend'] ?? null); $bars = $spark($stTrend); @endphp
             <article class="rounded-2xl border border-line bg-surface p-4 shadow-soft">
                 <div class="flex items-start justify-between gap-3">
-                    <div class="inline-flex size-9 items-center justify-center rounded-xl bg-[#f2f5f4] text-accent">
+                    <div class="admin-kpi-icon inline-flex size-9 items-center justify-center rounded-xl">
                         <i class="fas fa-user-graduate text-sm"></i>
                     </div>
                     @if($stTrend !== null)
@@ -119,7 +124,7 @@
                 <p class="mt-1 text-xl font-semibold tabular-nums tracking-tight text-ink">{{ number_format($st['total'] ?? 0) }}</p>
                 <div class="mt-2 flex h-8 items-end gap-0.5">
                     @foreach($bars as $i => $h)
-                        <span class="w-2 rounded-t {{ $i === count($bars) - 1 ? 'bg-accent' : 'bg-accent/30' }}" style="height:{{ $h }}%"></span>
+                        <span class="admin-spark-bar w-2 rounded-t {{ $i === count($bars) - 1 ? 'is-live' : '' }}" style="height:{{ $h }}%"></span>
                     @endforeach
                 </div>
                 <p class="mt-1 text-[11px] text-muted">هذا الشهر: {{ number_format($st['new_this_month'] ?? 0) }}</p>
@@ -128,7 +133,7 @@
             @php $us = $metrics['users'] ?? []; $usTrend = $trendPct($us['trend'] ?? null); $bars = $spark($usTrend); @endphp
             <article class="rounded-2xl border border-line bg-surface p-4 shadow-soft">
                 <div class="flex items-start justify-between gap-3">
-                    <div class="inline-flex size-9 items-center justify-center rounded-xl bg-[#f2f5f4] text-accent">
+                    <div class="admin-kpi-icon inline-flex size-9 items-center justify-center rounded-xl">
                         <i class="fas fa-users text-sm"></i>
                     </div>
                     @if($usTrend !== null)
@@ -141,7 +146,7 @@
                 <p class="mt-1 text-xl font-semibold tabular-nums tracking-tight text-ink">{{ number_format($us['total'] ?? 0) }}</p>
                 <div class="mt-2 flex h-8 items-end gap-0.5">
                     @foreach($bars as $i => $h)
-                        <span class="w-2 rounded-t {{ $i === count($bars) - 1 ? 'bg-accent' : 'bg-accent/30' }}" style="height:{{ $h }}%"></span>
+                        <span class="admin-spark-bar w-2 rounded-t {{ $i === count($bars) - 1 ? 'is-live' : '' }}" style="height:{{ $h }}%"></span>
                     @endforeach
                 </div>
                 <p class="mt-1 text-[11px] text-muted">هذا الشهر: {{ number_format($us['new_this_month'] ?? 0) }}</p>
@@ -152,7 +157,7 @@
             @php $co = $metrics['courses'] ?? []; $coTrend = $trendPct($co['trend'] ?? null); $bars = $spark($coTrend); @endphp
             <article class="rounded-2xl border border-line bg-surface p-4 shadow-soft">
                 <div class="flex items-start justify-between gap-3">
-                    <div class="inline-flex size-9 items-center justify-center rounded-xl bg-[#f2f5f4] text-accent">
+                    <div class="admin-kpi-icon inline-flex size-9 items-center justify-center rounded-xl">
                         <i class="fas fa-graduation-cap text-sm"></i>
                     </div>
                     @if($coTrend !== null)
@@ -165,7 +170,7 @@
                 <p class="mt-1 text-xl font-semibold tabular-nums tracking-tight text-ink">{{ number_format($co['total'] ?? 0) }}</p>
                 <div class="mt-2 flex h-8 items-end gap-0.5">
                     @foreach($bars as $i => $h)
-                        <span class="w-2 rounded-t {{ $i === count($bars) - 1 ? 'bg-accent' : 'bg-accent/30' }}" style="height:{{ $h }}%"></span>
+                        <span class="admin-spark-bar w-2 rounded-t {{ $i === count($bars) - 1 ? 'is-live' : '' }}" style="height:{{ $h }}%"></span>
                     @endforeach
                 </div>
                 <p class="mt-1 text-[11px] text-muted">جديد هذا الشهر: {{ number_format($co['new_this_month'] ?? 0) }}</p>
@@ -176,7 +181,7 @@
             @php $en = $metrics['enrollments'] ?? []; $enTrend = $trendPct($en['trend'] ?? null); $bars = $spark($enTrend); @endphp
             <article class="rounded-2xl border border-line bg-surface p-4 shadow-soft">
                 <div class="flex items-start justify-between gap-3">
-                    <div class="inline-flex size-9 items-center justify-center rounded-xl bg-[#f2f5f4] text-accent">
+                    <div class="admin-kpi-icon inline-flex size-9 items-center justify-center rounded-xl">
                         <i class="fas fa-user-plus text-sm"></i>
                     </div>
                     @if($enTrend !== null)
@@ -189,7 +194,7 @@
                 <p class="mt-1 text-xl font-semibold tabular-nums tracking-tight text-ink">{{ number_format($en['total'] ?? 0) }}</p>
                 <div class="mt-2 flex h-8 items-end gap-0.5">
                     @foreach($bars as $i => $h)
-                        <span class="w-2 rounded-t {{ $i === count($bars) - 1 ? 'bg-accent' : 'bg-accent/30' }}" style="height:{{ $h }}%"></span>
+                        <span class="admin-spark-bar w-2 rounded-t {{ $i === count($bars) - 1 ? 'is-live' : '' }}" style="height:{{ $h }}%"></span>
                     @endforeach
                 </div>
                 <p class="mt-1 text-[11px] text-muted">هذا الشهر: {{ number_format($en['new_this_month'] ?? 0) }}</p>
@@ -198,7 +203,7 @@
             @php $ins = $metrics['instructors'] ?? []; $insTrend = $trendPct($ins['trend'] ?? null); $bars = $spark($insTrend); @endphp
             <article class="rounded-2xl border border-line bg-surface p-4 shadow-soft">
                 <div class="flex items-start justify-between gap-3">
-                    <div class="inline-flex size-9 items-center justify-center rounded-xl bg-[#f2f5f4] text-accent">
+                    <div class="admin-kpi-icon inline-flex size-9 items-center justify-center rounded-xl">
                         <i class="fas fa-chalkboard-teacher text-sm"></i>
                     </div>
                     @if($insTrend !== null)
@@ -211,7 +216,7 @@
                 <p class="mt-1 text-xl font-semibold tabular-nums tracking-tight text-ink">{{ number_format($ins['total'] ?? 0) }}</p>
                 <div class="mt-2 flex h-8 items-end gap-0.5">
                     @foreach($bars as $i => $h)
-                        <span class="w-2 rounded-t {{ $i === count($bars) - 1 ? 'bg-accent' : 'bg-accent/30' }}" style="height:{{ $h }}%"></span>
+                        <span class="admin-spark-bar w-2 rounded-t {{ $i === count($bars) - 1 ? 'is-live' : '' }}" style="height:{{ $h }}%"></span>
                     @endforeach
                 </div>
                 <p class="mt-1 text-[11px] text-muted">هذا الشهر: {{ number_format($ins['new_this_month'] ?? 0) }}</p>
@@ -224,6 +229,7 @@
         <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft md:p-6">
             <div class="mb-5 flex flex-wrap items-start justify-between gap-3">
                 <div class="min-w-0">
+                    <p class="admin-dash-kicker mb-1">Activity</p>
                     <h3 class="text-base font-semibold text-ink">نشاط المنصة · 7 أيام</h3>
                     <p class="mt-1 text-xs text-muted">سجل النشاط اليومي على الأكاديمية</p>
                 </div>
@@ -241,7 +247,7 @@
                     @foreach($week as $day)
                         @php $h = max(8, (int) round(((int) $day->count / $max) * 100)); @endphp
                         <div class="flex min-w-0 flex-1 flex-col items-center gap-1.5">
-                            <span class="w-full max-w-[28px] rounded-t-lg bg-accent/80" style="height:{{ $h }}%" title="{{ $day->count }}"></span>
+                            <span class="admin-dash-bar w-full max-w-[28px] rounded-t-lg {{ $loop->last ? 'is-peak' : '' }}" style="height:{{ $h }}%" title="{{ $day->count }}"></span>
                             <span class="text-[10px] tabular-nums text-muted">{{ \Illuminate\Support\Carbon::parse($day->date)->format('d') }}</span>
                         </div>
                     @endforeach
@@ -250,7 +256,7 @@
                     <span class="inline-flex items-center gap-1.5"><span class="size-2 rounded-full bg-accent"></span>نشاط يومي</span>
                 </div>
             @else
-                <div class="flex h-36 items-center justify-center rounded-xl bg-canvas text-sm text-muted">
+                <div class="flex h-36 items-center justify-center rounded-xl border border-dashed border-line bg-accent-soft/40 text-sm text-muted">
                     لا توجد بيانات نشاط للعرض
                 </div>
             @endif
@@ -260,6 +266,7 @@
             <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
                 <div class="mb-4 flex items-center justify-between gap-2">
                     <div class="min-w-0">
+                        <p class="admin-dash-kicker mb-1">Snapshot</p>
                         <h3 class="text-base font-semibold text-ink">لمحة سريعة</h3>
                         <p class="mt-1 text-xs text-muted">مؤشرات الأكاديمية الآن</p>
                     </div>
@@ -293,10 +300,11 @@
         <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft md:p-6">
             <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
                 <div class="min-w-0">
+                    <p class="admin-dash-kicker mb-1">Funnel</p>
                     <h3 class="text-base font-semibold text-ink">قمع الأكاديمية</h3>
                     <p class="mt-1 text-xs text-muted">من المستخدم حتى الاشتراك النشط · نسب نسبية</p>
                 </div>
-                <span class="rounded-lg bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">{{ number_format($conversionPct, 1) }}% تحويل</span>
+                <span class="admin-chip-gold rounded-lg px-2.5 py-1 text-xs font-medium">{{ number_format($conversionPct, 1) }}% تحويل</span>
             </div>
             <div class="space-y-3">
                 @foreach($funnelSteps as $step)
@@ -306,8 +314,15 @@
                             <span class="font-medium text-ink">{{ $step['label'] }}</span>
                             <span class="shrink-0 tabular-nums text-muted">{{ number_format($step['count']) }} · {{ number_format($step['pct'], 1) }}%</span>
                         </div>
-                        <div class="h-2 overflow-hidden rounded-full bg-[#eef1f5]">
-                            <div class="h-full rounded-full {{ $step['accent'] ? 'bg-accent' : 'bg-ink' }}" style="width:{{ $barW }}%;opacity:{{ $step['accent'] ? '1' : $step['opacity'] }}"></div>
+                        @php
+                            $toneClass = match ($step['tone'] ?? 'mid') {
+                                'strong' => 'is-strong',
+                                'mid' => 'is-mid',
+                                default => 'is-soft',
+                            };
+                        @endphp
+                        <div class="admin-funnel-track h-2.5 overflow-hidden rounded-full">
+                            <div class="admin-funnel-fill h-full rounded-full {{ $toneClass }}" style="width:{{ $barW }}%"></div>
                         </div>
                     </div>
                 @endforeach
@@ -316,24 +331,25 @@
 
         <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft md:p-6">
             <div class="mb-4 flex items-center justify-between">
+                <p class="admin-dash-kicker mb-1">Alerts</p>
                 <h3 class="text-base font-semibold text-ink">تنبيهات تحتاج إجراء</h3>
                 <span class="text-xs text-muted">{{ $alertCount }}</span>
             </div>
             <div class="space-y-3">
                 @forelse(($quickActions ?? []) as $action)
-                    <a href="{{ $action['route'] }}" class="block rounded-xl border border-line bg-[#f7f8fa] px-4 py-3 transition hover:border-accent/30 hover:bg-accent-soft/40">
+                    <a href="{{ $action['route'] }}" class="block rounded-xl border border-line bg-canvas px-4 py-3 transition hover:border-accent/30 hover:bg-accent-soft/40">
                         <div class="flex items-center justify-between gap-3">
                             <p class="min-w-0 truncate text-sm font-semibold text-ink">{{ $action['title'] }}</p>
                             @php
                                 $prio = ((int) ($action['count'] ?? 0)) > 0 ? 'عاجل' : 'معلومة';
-                                $prioClass = ((int) ($action['count'] ?? 0)) > 0 ? 'bg-metal/15 text-metal' : 'bg-canvas-muted text-muted';
+                                $prioClass = ((int) ($action['count'] ?? 0)) > 0 ? 'admin-chip-gold' : 'admin-chip-blue';
                             @endphp
                             <span class="shrink-0 rounded-lg px-2 py-0.5 text-[10px] font-medium {{ $prioClass }}">{{ $prio }}</span>
                         </div>
                         <p class="mt-1.5 text-xs leading-6 text-muted">{{ $action['meta'] ?? ($action['cta'] ?? '') }} · {{ number_format($action['count'] ?? 0) }}</p>
                     </a>
                 @empty
-                    <div class="rounded-xl border border-line bg-[#f7f8fa] px-4 py-6 text-center text-sm text-muted">
+                    <div class="rounded-xl border border-line bg-canvas px-4 py-6 text-center text-sm text-muted">
                         لا توجد تنبيهات عاجلة حالياً
                     </div>
                 @endforelse
@@ -348,6 +364,7 @@
             <article class="overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
                 <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-4 sm:px-5">
                     <div class="min-w-0">
+                        <p class="admin-dash-kicker mb-1">Orders</p>
                         <h3 class="text-base font-semibold text-ink">تدفق الطلبات</h3>
                         <p class="mt-0.5 text-xs text-muted">آخر الطلبات مع الحالة والمبلغ</p>
                     </div>
@@ -357,10 +374,10 @@
                 </div>
                 <div class="admin-table-wrap">
                     <table class="w-full min-w-[740px] text-right text-sm">
-                        <thead class="bg-[#f7f8fa] text-[11px] uppercase tracking-wide text-muted">
+                        <thead class="bg-canvas text-[11px] uppercase tracking-wide text-muted">
                             <tr>
                                 <th class="px-5 py-3 font-medium">الطلب</th>
-                                <th class="px-3 py-3 font-medium">الطالب</th>
+                                <th class="px-3 py-3 font-medium">المعلم</th>
                                 <th class="px-3 py-3 font-medium">الكورس</th>
                                 <th class="px-3 py-3 font-medium">الحالة</th>
                                 <th class="px-3 py-3 font-medium">المبلغ</th>
@@ -372,8 +389,8 @@
                                 @php
                                     $status = (string) ($order->status ?? '');
                                     $badgeClass = match ($status) {
-                                        'approved', 'completed' => 'bg-accent-soft text-accent',
-                                        'pending' => 'bg-metal/15 text-metal',
+                                        'approved', 'completed' => 'admin-chip-blue',
+                                        'pending' => 'admin-chip-gold',
                                         'rejected', 'cancelled' => 'bg-danger/10 text-danger',
                                         default => 'bg-canvas-muted text-ink-soft',
                                     };
@@ -386,7 +403,7 @@
                                         default => $status ?: '—',
                                     };
                                 @endphp
-                                <tr class="border-t border-line/70 transition hover:bg-[#f9fafb]">
+                                <tr class="border-t border-line/70 transition hover:bg-canvas">
                                     <td class="px-5 py-3.5">
                                         @if(Route::has('admin.orders.show'))
                                             <a href="{{ route('admin.orders.show', $order) }}" class="font-semibold tabular-nums text-ink hover:text-accent">#{{ $order->id }}</a>
@@ -427,8 +444,8 @@
                     </div>
                     <ul class="space-y-2.5">
                         @foreach($recent_courses->take(5) as $i => $course)
-                            <li class="flex items-center gap-3 rounded-xl border border-transparent px-2 py-2 hover:border-line hover:bg-[#f7f8fa]">
-                                <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-[#eef1f5] text-[11px] font-bold tabular-nums text-ink">{{ $i + 1 }}</span>
+                            <li class="flex items-center gap-3 rounded-xl border border-transparent px-2 py-2 hover:border-line hover:bg-canvas">
+                                <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-[11px] font-bold tabular-nums text-accent">{{ $i + 1 }}</span>
                                 <div class="min-w-0 flex-1">
                                     <p class="truncate text-sm font-medium text-ink">{{ $course->title }}</p>
                                     <p class="text-[11px] text-muted">{{ $course->academicSubject->name ?? '—' }}</p>
@@ -449,7 +466,7 @@
                     </div>
                     <ul class="space-y-2.5">
                         @foreach($recent_users->take(5) as $user)
-                            <li class="flex items-center gap-3 rounded-xl border border-transparent px-2 py-2 hover:border-line hover:bg-[#f7f8fa]">
+                            <li class="flex items-center gap-3 rounded-xl border border-transparent px-2 py-2 hover:border-line hover:bg-canvas">
                                 <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent-soft text-xs font-semibold text-accent">{{ mb_substr($user->name ?? '؟', 0, 1) }}</span>
                                 <div class="min-w-0 flex-1">
                                     <p class="truncate text-sm font-medium text-ink">{{ $user->name }}</p>
@@ -472,7 +489,7 @@
                     </div>
                     <ul class="space-y-2.5">
                         @foreach($pending_invoices->take(4) as $invoice)
-                            <li class="flex items-center justify-between gap-3 rounded-xl bg-[#f7f8fa] px-3 py-2.5">
+                            <li class="flex items-center justify-between gap-3 rounded-xl bg-canvas px-3 py-2.5">
                                 <div class="min-w-0">
                                     <p class="truncate text-sm font-medium text-ink">{{ $invoice->user->name ?? '—' }}</p>
                                     <p class="text-[11px] text-muted">#{{ $invoice->id }}</p>

@@ -33,8 +33,8 @@ class StudentSchoolGameService
         $defaults = [
             [
                 'code' => 'daily_attend_1',
-                'title' => 'حضور حصة اليوم',
-                'description' => 'ادخل حصة واحدة اليوم داخل فصلك.',
+                'title' => 'جلسة التطوير اليوم',
+                'description' => 'ادخل جلسة تطوير واحدة اليوم ضمن مسارك المهني.',
                 'cadence' => 'daily',
                 'mission_type' => 'attend_session',
                 'target_count' => 1,
@@ -43,8 +43,8 @@ class StudentSchoolGameService
             ],
             [
                 'code' => 'daily_earn_50',
-                'title' => 'اجمع 50 XP اليوم',
-                'description' => 'أي نشاط تعلّمي: حضور أو تسليم أو امتحان.',
+                'title' => '50 نقطة تطوير اليوم',
+                'description' => 'أي إنجاز مهني: حضور جلسة أو إكمال مهمة أو تمرين عملي.',
                 'cadence' => 'daily',
                 'mission_type' => 'earn_xp',
                 'target_count' => 50,
@@ -53,8 +53,8 @@ class StudentSchoolGameService
             ],
             [
                 'code' => 'weekly_attend_3',
-                'title' => 'تحدّي الأسبوع: 3 حصص',
-                'description' => 'احضر 3 حصص هذا الأسبوع.',
+                'title' => 'هدف الأسبوع: 3 جلسات',
+                'description' => 'أكمل 3 جلسات تطوير مهني هذا الأسبوع.',
                 'cadence' => 'weekly',
                 'mission_type' => 'attend_session',
                 'target_count' => 3,
@@ -63,8 +63,8 @@ class StudentSchoolGameService
             ],
             [
                 'code' => 'weekly_activity_5',
-                'title' => 'تحدّي الأسبوع: 5 أنشطة',
-                'description' => 'اجمع 5 أنشطة (حضور / تسليم / امتحان).',
+                'title' => 'هدف الأسبوع: 5 إنجازات',
+                'description' => 'أنجز 5 أنشطة مهنية (حضور / مهمة / تقييم ذاتي).',
                 'cadence' => 'weekly',
                 'mission_type' => 'learning_activity',
                 'target_count' => 5,

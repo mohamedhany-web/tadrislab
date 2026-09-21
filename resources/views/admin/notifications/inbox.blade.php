@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'وارد الإشعارات - Glottical')
+@section('title', 'وارد الإشعارات - TADRIS LAB')
 @section('page_title', 'وارد الإشعارات')
 
 @section('content')

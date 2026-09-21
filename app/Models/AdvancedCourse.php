@@ -310,7 +310,7 @@ class AdvancedCourse extends Model
      */
     public function listPriceAmount(?string $currency = null): float
     {
-        $currency = strtoupper((string) ($currency ?: 'USD'));
+        $currency = normalize_currency($currency);
         if ($currency === 'USD') {
             $v = $this->price_usd;
             if ($v !== null && $v !== '') {
@@ -329,6 +329,7 @@ class AdvancedCourse extends Model
             }
         }
 
+        // QAR / عملة المنصة: الحقل الأساسي price
         return round(max(0, (float) ($this->price ?? 0)), 2);
     }
 
@@ -337,7 +338,7 @@ class AdvancedCourse extends Model
      */
     public function effectivePurchasePrice(?string $currency = null): float
     {
-        $currency = strtoupper((string) ($currency ?: 'USD'));
+        $currency = normalize_currency($currency);
         $list = $this->listPriceAmount($currency);
         if ($list <= 0) {
             return 0.0;
@@ -345,7 +346,8 @@ class AdvancedCourse extends Model
 
         $sale = match ($currency) {
             'USD' => $this->price_usd_after_discount,
-            default => $this->price_egp_after_discount,
+            'EGP' => $this->price_egp_after_discount,
+            default => $this->price_after_discount,
         };
         // توافق مع الحقل القديم إن لم تُملأ الأسعار المزدوجة
         if (($sale === null || $sale === '') && $currency === 'USD') {
@@ -353,6 +355,9 @@ class AdvancedCourse extends Model
         }
         if (($sale === null || $sale === '') && $currency === 'EGP' && ($this->price_egp === null || $this->price_egp === '')) {
             $sale = $this->price_after_discount;
+        }
+        if (($sale === null || $sale === '') && ! in_array($currency, ['USD', 'EGP'], true)) {
+            $sale = $this->price_after_discount ?? $this->price_usd_after_discount;
         }
 
         if ($sale === null || $sale === '') {
@@ -371,16 +376,17 @@ class AdvancedCourse extends Model
      */
     public function hasPromotionalPrice(?string $currency = null): bool
     {
-        $currency = strtoupper((string) ($currency ?: 'USD'));
+        $currency = normalize_currency($currency);
         $list = $this->listPriceAmount($currency);
         if ($list <= 0) {
             return false;
         }
         $sale = match ($currency) {
             'USD' => $this->price_usd_after_discount,
-            default => ($this->price_egp_after_discount !== null && $this->price_egp_after_discount !== '')
+            'EGP' => ($this->price_egp_after_discount !== null && $this->price_egp_after_discount !== '')
                 ? $this->price_egp_after_discount
                 : $this->price_after_discount,
+            default => $this->price_after_discount ?? $this->price_usd_after_discount,
         };
         if ($sale === null || $sale === '') {
             return false;

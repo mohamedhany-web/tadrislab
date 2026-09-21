@@ -1143,7 +1143,7 @@ class AdminController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'nullable|email|unique:users,email,' . $id,
                 'phone' => 'nullable|string|max:50|unique:users,phone,' . $id,
-                'role' => 'required|in:super_admin,admin,instructor,teacher,student,parent,employee',
+                'role' => 'required|in:super_admin,admin,instructor,teacher,student,employee',
                 'is_active' => 'required|boolean',
                 'bio' => 'nullable|string|max:1000',
                 'password' => 'nullable|string|min:8|max:255',

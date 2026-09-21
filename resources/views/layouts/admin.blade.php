@@ -100,25 +100,29 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     
     <script>
-        // Glottical brand tokens for admin (blue #0B3D91 · gold #F5B800)
+        // TADRIS LAB brand tokens for admin (blue #1E4E8C · gold #A88050)
         (function () {
             var base = (typeof tailwind !== 'undefined' && tailwind.config) ? tailwind.config : {};
             var extend = (base.theme && base.theme.extend) ? base.theme.extend : {};
             var colors = Object.assign({}, extend.colors || {}, {
-                canvas: '#F4F7FC',
-                'canvas-muted': '#E8EEF8',
-                accent: '#0B3D91',
-                'accent-soft': '#E8EEF8',
-                gold: '#F5B800',
-                'gold-soft': '#FFF6D6',
-                metal: '#F5B800',
+                canvas: '#F7F8FB',
+                'canvas-muted': '#E8EEF6',
+                accent: '#1E4E8C',
+                'accent-soft': '#E8EEF6',
+                gold: '#A88050',
+                'gold-soft': '#F7F1E8',
+                metal: '#A88050',
+                muted: '#3F4A5A',
+                line: '#D8DEE8',
+                success: '#1E4E8C',
+                danger: '#9B3B2E',
                 navy: {
-                    50: '#f0f4ff', 100: '#dfe6ff', 200: '#c7d6fe',
-                    300: '#a4b8fc', 400: '#818cf8', 500: '#6366f1',
-                    600: '#4f46e5', 700: '#0B3D91', 800: '#0F172A',
-                    900: '#0B1120', 950: '#060B16',
+                    50: '#F7F8FB', 100: '#E8EEF6', 200: '#D4DEED',
+                    300: '#A8BED9', 400: '#6A92C4', 500: '#3B7BC4',
+                    600: '#1E4E8C', 700: '#184888', 800: '#152A4A',
+                    900: '#0F1F38', 950: '#0A1528',
                 },
-                brand: { DEFAULT: '#0B3D91', light: '#1A56B0', dark: '#072A66' }
+                brand: { DEFAULT: '#1E4E8C', light: '#3B7BC4', dark: '#184888' }
             });
             tailwind.config = Object.assign({}, base, {
                 darkMode: 'class',
@@ -161,13 +165,13 @@
         }
         .stat-card::after {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, transparent 60%, rgba(11, 61, 145, 0.03) 100%);
+            background: linear-gradient(135deg, transparent 60%, rgba(30, 78, 140, 0.03) 100%);
             pointer-events: none; border-radius: 16px;
         }
         .stat-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
-            border-color: rgba(11, 61, 145, 0.14);
+            border-color: rgba(30, 78, 140, 0.14);
         }
         .stat-card:active { transform: translateY(-1px); }
 
@@ -188,7 +192,7 @@
         }
         .section-card:hover {
             box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.06);
-            border-color: rgba(11, 61, 145, 0.1);
+            border-color: rgba(30, 78, 140, 0.1);
         }
         .section-card-header {
             padding: 1.25rem 1.5rem;
@@ -318,8 +322,8 @@
         .animate-fade-in-5 { animation-delay: 0.30s; }
 
         /* ========== BUTTONS ========== */
-        .btn-primary { background: #0B3D91; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; }
-        .btn-primary:hover { background: #072A66; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(11, 61, 145, 0.28); }
+        .btn-primary { background: #1E4E8C; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; }
+        .btn-primary:hover { background: #184888; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(30, 78, 140, 0.28); }
         .btn-primary:active { transform: translateY(0); }
         .btn-secondary { background: #64748b; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; }
         .btn-secondary:hover { background: #475569; }
@@ -327,26 +331,26 @@
         .btn-success:hover { background: #047857; }
         .btn-danger { background: #dc2626; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; }
         .btn-danger:hover { background: #b91c1c; }
-        .btn-warning { background: #F5B800; color: #0B1220; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; }
-        .btn-warning:hover { background: #e0a800; }
+        .btn-warning { background: #A88050; color: #152A4A; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; }
+        .btn-warning:hover { background: #8F6B3F; color: #fff; }
 
         /* ========== COMPAT for other admin pages ========== */
         .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 1rem; border-radius: 0.5rem; color: #475569; transition: all 0.2s; }
         .nav-link:hover { background: #f1f5f9; color: #1e293b; }
-        .nav-link.active { background: #E8EEF8; color: #0B3D91; }
+        .nav-link.active { background: #E8EEF6; color: #1E4E8C; }
         .dashboard-card { background: white; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: 16px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         .dashboard-card:hover { box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.06); }
         .card-hover-effect { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover-effect:hover { transform: translateY(-2px); }
-        .card-icon { background: linear-gradient(135deg, #0B3D91, #1A56B0); box-shadow: 0 4px 14px rgba(11, 61, 145, 0.28); }
+        .card-icon { background: linear-gradient(135deg, #1E4E8C, #3B7BC4); box-shadow: 0 4px 14px rgba(30, 78, 140, 0.28); }
         .card-icon:hover { transform: scale(1.08); }
         .section-header { padding: 1rem 1.5rem; border-bottom: 1px solid rgba(226, 232, 240, 0.6); background: rgba(248, 250, 252, 0.4); }
         .list-item-card { background: white; border: 1px solid rgba(226, 232, 240, 0.6); border-radius: 12px; transition: all 0.2s; }
-        .list-item-card:hover { background: #f8fafc; border-color: rgba(11, 61, 145, 0.14); }
+        .list-item-card:hover { background: #f8fafc; border-color: rgba(30, 78, 140, 0.14); }
 
         /* ========== FOCUS STATES ========== */
         button:focus-visible, a:focus-visible, input:focus-visible {
-            outline: 2px solid rgba(11, 61, 145, 0.45);
+            outline: 2px solid rgba(30, 78, 140, 0.45);
             outline-offset: 2px;
             border-radius: 0.375rem;
         }
@@ -403,11 +407,11 @@
 
     {{-- Mobile drawer --}}
     <div id="admin-drawer" class="fixed inset-0 z-50 lg:hidden" x-show="sidebarOpen" x-cloak>
-        <button type="button" class="absolute inset-0 bg-ink/50" @click="sidebarOpen = false" aria-label="إغلاق"></button>
-        <aside class="drawer-panel absolute inset-y-0 right-0 flex h-full w-[min(88vw,300px)] flex-col overflow-hidden bg-ink text-white shadow-lift admin-sidebar">
+        <button type="button" class="absolute inset-0 bg-ink/50" @click="sidebarOpen = false" aria-label="{{ __('admin.close') }}"></button>
+        <aside class="drawer-panel absolute inset-y-0 {{ $adminRtl ? 'right-0' : 'left-0' }} flex h-full w-[min(88vw,300px)] flex-col overflow-hidden bg-ink text-white shadow-lift admin-sidebar">
             <div class="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-4">
                 <p class="font-bold">{{ config('app.name') }} Control</p>
-                <button type="button" class="btn-press px-2 text-xl leading-none text-white/80" @click="sidebarOpen = false" aria-label="إغلاق">×</button>
+                <button type="button" class="btn-press px-2 text-xl leading-none text-white/80" @click="sidebarOpen = false" aria-label="{{ __('admin.close') }}">×</button>
             </div>
             <div class="flex min-h-0 flex-1 flex-col overflow-hidden">
                 @include('layouts.admin-sidebar', ['adminSidebarDrawer' => true])
@@ -418,41 +422,54 @@
     <div class="admin-main-column flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <header class="admin-topbar shrink-0 z-40">
             <div class="flex h-[72px] items-center gap-2 px-3 sm:gap-3 sm:px-4 md:px-6">
-                <button type="button" @click="sidebarOpen = true" class="btn-press inline-flex size-10 shrink-0 items-center justify-center rounded-xl lg:hidden" aria-label="فتح القائمة">
+                <button type="button" @click="sidebarOpen = true" class="btn-press inline-flex size-10 shrink-0 items-center justify-center rounded-xl lg:hidden" aria-label="{{ __('admin.open_menu') }}">
                     <i class="fas fa-bars text-sm text-ink"></i>
                 </button>
 
                 <div class="admin-topbar-title">
-                    <p class="truncate text-[11px] font-medium text-muted">مركز التحكم · {{ config('app.name') }}</p>
+                    <p class="truncate text-[11px] font-medium text-muted">{{ __('admin.control_center') }} · {{ config('app.name') }}</p>
                     <h1 class="truncate text-base font-semibold text-ink sm:text-lg md:text-xl">
                         @hasSection('header')
                             @yield('header')
                         @else
-                            @yield('page_title', 'لوحة الإدارة')
+                            @yield('page_title', __('admin.admin_console'))
                         @endif
                     </h1>
                 </div>
 
                 <form class="mx-auto hidden min-w-0 max-w-md flex-1 md:block" onsubmit="return false">
-                    <input type="search" class="admin-topbar-search" placeholder="بحث سريع: طلب، كورس، طالب…" aria-label="بحث سريع">
+                    <input type="search" class="admin-topbar-search" placeholder="{{ __('admin.quick_search_placeholder') }}" aria-label="{{ __('admin.search') }}">
                 </form>
 
                 <div class="admin-topbar-actions ms-auto flex items-center gap-1 sm:gap-1.5 md:gap-2">
-                    <a href="{{ url('/?open_trial=1') }}" class="btn-press hidden rounded-xl bg-accent-soft px-3 py-2 text-sm text-accent sm:inline-flex">مساعد التشغيل</a>
+                    @php
+                        $adminLangToggle = $adminLocale === 'ar' ? 'en' : 'ar';
+                        $adminLangUrl = url()->current().(request()->getQueryString() ? '?'.preg_replace('/(^|&)lang=[^&]*/', '', request()->getQueryString()).'&' : '?').'lang='.$adminLangToggle;
+                        $adminLangUrl = preg_replace('/\?&/', '?', $adminLangUrl);
+                        $adminLangUrl = preg_replace('/&&+/', '&', $adminLangUrl);
+                    @endphp
+                    <a href="{{ $adminLangUrl }}" class="btn-press inline-flex h-10 items-center rounded-xl border border-line px-2.5 text-xs font-semibold text-ink hover:bg-canvas" title="{{ __('admin.language') }}">
+                        {{ $adminLocale === 'ar' ? __('admin.lang_en') : __('admin.lang_ar') }}
+                    </a>
+
+                    <a href="{{ url('/?open_trial=1') }}" class="btn-press hidden rounded-xl bg-accent-soft px-3 py-2 text-sm text-accent sm:inline-flex">{{ __('admin.ops_assistant') }}</a>
 
                     <div class="relative" x-data="adminNavNotifications({{ \Illuminate\Support\Js::from($adminNavBellConfig) }})" @click.outside="openNotif = false">
-                        <button type="button" @click="openNotif = !openNotif" class="btn-press relative inline-flex size-10 items-center justify-center rounded-xl hover:bg-canvas" aria-label="الإشعارات">
+                        <button type="button" @click="openNotif = !openNotif" class="btn-press relative inline-flex size-10 items-center justify-center rounded-xl hover:bg-canvas" aria-label="{{ __('admin.notifications') }}">
                             <i class="fas fa-bell text-sm text-ink"></i>
-                            <span x-show="unread > 0" x-cloak class="absolute top-2 left-2 size-2 rounded-full bg-danger"></span>
+                            <span x-show="unread > 0" x-cloak class="absolute top-2 {{ $adminRtl ? 'left-2' : 'right-2' }} size-2 rounded-full bg-danger"></span>
                         </button>
                         <div x-show="openNotif" x-cloak
-                             class="admin-dropdown-panel absolute left-0 z-50 mt-2 max-h-[min(420px,70vh)] overflow-hidden rounded-2xl border border-line bg-surface shadow-lift">
+                             class="admin-dropdown-panel absolute {{ $adminRtl ? 'left-0' : 'right-0' }} z-50 mt-2 max-h-[min(420px,70vh)] overflow-hidden rounded-2xl border border-line bg-surface shadow-lift">
                             <div class="flex items-center justify-between border-b border-line bg-canvas/80 px-4 py-3">
                                 <div class="min-w-0">
-                                    <p class="text-sm font-semibold text-ink">أحدث الإشعارات</p>
-                                    <p class="mt-0.5 text-xs text-muted" x-text="unread > 0 ? ('لديك ' + unread + ' إشعار غير مقروء') : 'لا توجد إشعارات جديدة حالياً'"></p>
+                                    <p class="text-sm font-semibold text-ink">{{ __('admin.latest_notifications') }}</p>
+                                    <p class="mt-0.5 text-xs text-muted"
+                                       x-text="unread > 0
+                                         ? @js(__('admin.unread_notifications_count', ['count' => '__COUNT__'])).replace('__COUNT__', unread)
+                                         : @js(__('admin.no_new_notifications'))"></p>
                                 </div>
-                                <a href="{{ route('admin.notifications.inbox') }}" class="shrink-0 text-xs font-semibold text-accent">عرض الكل</a>
+                                <a href="{{ route('admin.notifications.inbox') }}" class="shrink-0 text-xs font-semibold text-accent">{{ __('admin.view_all') }}</a>
                             </div>
                             <div class="max-h-[min(320px,55vh)] overflow-y-auto">
                                 <template x-for="item in items" :key="item.id">
@@ -465,12 +482,12 @@
                                         </div>
                                     </a>
                                 </template>
-                                <div x-show="items.length === 0" class="px-4 py-6 text-center text-xs text-muted">لا توجد إشعارات جديدة</div>
+                                <div x-show="items.length === 0" class="px-4 py-6 text-center text-xs text-muted">{{ __('admin.no_new_notifications') }}</div>
                             </div>
                         </div>
                     </div>
 
-                    <a href="{{ url('/') }}" class="btn-press hidden items-center rounded-xl border border-line px-3 py-2 text-sm xl:inline-flex">الموقع</a>
+                    <a href="{{ url('/') }}" class="btn-press hidden items-center rounded-xl border border-line px-3 py-2 text-sm xl:inline-flex">{{ __('admin.public_site') }}</a>
 
                     <div class="relative ms-0.5 sm:ms-1" x-data="{ open: false }" @click.outside="open = false">
                         <button type="button" @click.stop="open = !open" class="flex items-center gap-2 rounded-xl bg-canvas px-1.5 py-1.5 sm:px-2 md:px-3" :aria-expanded="open">
@@ -482,23 +499,23 @@
                             @endif
                             <div class="hidden leading-tight md:block">
                                 <p class="max-w-[100px] truncate text-xs font-semibold text-ink">{{ auth()->user()->name }}</p>
-                                <p class="text-[10px] text-muted">صلاحيات كاملة</p>
+                                <p class="text-[10px] text-muted">{{ __('admin.full_access') }}</p>
                             </div>
                         </button>
-                        <div x-show="open" x-cloak class="admin-dropdown-panel absolute left-0 z-[9999] mt-2 overflow-hidden rounded-2xl border border-line bg-surface shadow-lift" style="width:min(14rem,calc(100vw - 1.5rem))">
+                        <div x-show="open" x-cloak class="admin-dropdown-panel absolute {{ $adminRtl ? 'left-0' : 'right-0' }} z-[9999] mt-2 overflow-hidden rounded-2xl border border-line bg-surface shadow-lift" style="width:min(14rem,calc(100vw - 1.5rem))">
                             <div class="border-b border-line bg-canvas/80 px-4 py-3">
                                 <p class="truncate text-sm font-semibold text-ink">{{ auth()->user()->name }}</p>
                                 <p class="mt-0.5 truncate text-xs text-muted">{{ auth()->user()->email ?? auth()->user()->phone }}</p>
                             </div>
                             <div class="py-1.5">
-                                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 text-[13px] text-ink-soft hover:bg-canvas">لوحة التحكم</a>
-                                <a href="{{ route('admin.profile') }}" class="flex items-center gap-3 px-4 py-2.5 text-[13px] text-ink-soft hover:bg-canvas">الملف الشخصي</a>
-                                <a href="{{ $adminNavSettingsUrl }}" class="flex items-center gap-3 px-4 py-2.5 text-[13px] text-ink-soft hover:bg-canvas">إعدادات النظام</a>
+                                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 text-[13px] text-ink-soft hover:bg-canvas">{{ __('admin.dashboard') }}</a>
+                                <a href="{{ route('admin.profile') }}" class="flex items-center gap-3 px-4 py-2.5 text-[13px] text-ink-soft hover:bg-canvas">{{ __('admin.profile') }}</a>
+                                <a href="{{ $adminNavSettingsUrl }}" class="flex items-center gap-3 px-4 py-2.5 text-[13px] text-ink-soft hover:bg-canvas">{{ __('admin.system_settings') }}</a>
                             </div>
                             <div class="border-t border-line py-1.5">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-2.5 text-start text-[13px] text-ink-soft hover:bg-danger/10 hover:text-danger">تسجيل الخروج</button>
+                                    <button type="submit" class="flex w-full items-center gap-3 px-4 py-2.5 text-start text-[13px] text-ink-soft hover:bg-danger/10 hover:text-danger">{{ __('admin.logout') }}</button>
                                 </form>
                             </div>
                         </div>
@@ -513,19 +530,19 @@
                 @if(session('success'))
                     <div class="flex items-center gap-3 rounded-2xl border border-line bg-success/10 px-4 py-3 text-success sm:px-5" role="alert">
                         <span class="min-w-0 flex-1 text-sm font-medium">{{ session('success') }}</span>
-                        <button type="button" onclick="this.parentElement.remove()" class="shrink-0 text-muted hover:text-ink" aria-label="إغلاق">×</button>
+                        <button type="button" onclick="this.parentElement.remove()" class="shrink-0 text-muted hover:text-ink" aria-label="{{ __('admin.close') }}">×</button>
                     </div>
                 @endif
                 @if(session('error'))
                     <div class="flex items-center gap-3 rounded-2xl border border-line bg-danger/10 px-4 py-3 text-danger sm:px-5" role="alert">
                         <span class="min-w-0 flex-1 text-sm font-medium">{{ session('error') }}</span>
-                        <button type="button" onclick="this.parentElement.remove()" class="shrink-0 text-muted hover:text-ink" aria-label="إغلاق">×</button>
+                        <button type="button" onclick="this.parentElement.remove()" class="shrink-0 text-muted hover:text-ink" aria-label="{{ __('admin.close') }}">×</button>
                     </div>
                 @endif
                 @if(session('warning'))
                     <div class="flex items-center gap-3 rounded-2xl border border-line bg-metal/15 px-4 py-3 text-[#7a5c2e] sm:px-5" role="alert">
                         <span class="min-w-0 flex-1 text-sm font-medium">{{ session('warning') }}</span>
-                        <button type="button" onclick="this.parentElement.remove()" class="shrink-0 text-muted hover:text-ink" aria-label="إغلاق">×</button>
+                        <button type="button" onclick="this.parentElement.remove()" class="shrink-0 text-muted hover:text-ink" aria-label="{{ __('admin.close') }}">×</button>
                     </div>
                 @endif
                 @yield('content')

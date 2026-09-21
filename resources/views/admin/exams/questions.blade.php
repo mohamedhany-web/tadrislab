@@ -40,7 +40,7 @@
                 رجوع لامتحانات البرنامج
             </a>
             <a href="{{ route('admin.question-bank.index') }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-database text-xs"></i>
                 بنك الأسئلة
             </a>
@@ -113,7 +113,7 @@
                             <i class="fas fa-question-circle mb-4 text-5xl text-muted/40"></i>
                             <h3 class="mb-2 text-lg font-semibold text-ink">لا توجد أسئلة في الامتحان</h3>
                             <p class="mb-4 text-sm text-muted">أضف أسئلة من بنك الأسئلة باستخدام النموذج على اليمين</p>
-                            <a href="{{ route('admin.question-bank.index') }}" class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                            <a href="{{ route('admin.question-bank.index') }}" class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                                 <i class="fas fa-database text-xs"></i>
                                 بنك الأسئلة
                             </a>
@@ -167,7 +167,7 @@
                             <input type="checkbox" name="is_required" value="1" {{ old('is_required', true) ? 'checked' : '' }} class="{{ $checkboxClass }}">
                             <span class="text-sm font-medium text-ink">سؤال مطلوب</span>
                         </label>
-                        <button type="submit" class="btn-press inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                        <button type="submit" class="btn-press inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                             <i class="fas fa-plus text-xs"></i>
                             إضافة السؤال للامتحان
                         </button>

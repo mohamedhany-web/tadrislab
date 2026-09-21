@@ -1,7 +1,7 @@
 @php
     $locale = app()->getLocale();
     $isRtl = $locale === 'ar';
-    $brand = config('app.name', 'Glottical');
+    $brand = config('app.name', 'TADRIS LAB');
     $application = $application ?? null;
     $waitStatus = $waitStatus ?? ($application->status ?? 'pending');
     $isApproved = $waitStatus === \App\Models\TutorApplication::STATUS_APPROVED;

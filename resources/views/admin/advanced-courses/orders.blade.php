@@ -21,7 +21,7 @@
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('admin.orders.index') }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-list text-xs"></i>
                 جميع الطلبات
             </a>
@@ -146,7 +146,7 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-ink">{{ $paymentLabel }}</td>
-                                <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold tabular-nums text-ink">{{ number_format($order->amount, 2) }} USD</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold tabular-nums text-ink">{{ number_format($order->amount, 2) }} {{ platform_currency() }}</td>
                                 <td class="px-4 py-3 whitespace-nowrap">
                                     <span class="inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-medium {{ $statusClass }}">
                                         {{ $order->status_text }}
@@ -198,7 +198,7 @@
             <h3 class="mt-4 text-lg font-semibold text-ink">لا توجد طلبات</h3>
             <p class="mt-1 text-sm text-muted">لم يتم تقديم أي طلبات تسجيل لهذا البرنامج بعد</p>
             <a href="{{ route('admin.orders.index') }}"
-               class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-list text-xs"></i>
                 عرض جميع الطلبات
             </a>

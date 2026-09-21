@@ -43,7 +43,7 @@ class ShowcaseDemoCoursesSeeder extends Seeder
             ?? User::query()->first();
 
         if (! $instructor) {
-            $this->command->error('لا يوجد مستخدم لربطه كمدرّب. شغّل GlotticalAcademyUserSeeder أولاً.');
+            $this->command->error('لا يوجد مستخدم لربطه كمدرّب. شغّل TADRIS LABAcademyUserSeeder أولاً.');
 
             return;
         }
@@ -313,7 +313,7 @@ class ShowcaseDemoCoursesSeeder extends Seeder
             $response = Http::timeout(120)
                 ->withHeaders([
                     'Accept' => 'image/jpeg,image/webp,*/*',
-                    'User-Agent' => 'GlotticalShowcaseSeeder/1.1',
+                    'User-Agent' => 'TADRIS LABShowcaseSeeder/1.1',
                 ])
                 ->get($url);
 

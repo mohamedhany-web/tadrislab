@@ -1,5 +1,5 @@
 -- ============================================
--- Glottical Platform - Complete Database Schema
+-- TADRIS LAB Platform - Complete Database Schema
 -- ============================================
 -- Auto-generated on: 2025-11-15 17:31:06
 -- ============================================

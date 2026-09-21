@@ -68,8 +68,8 @@ class OneToOneSessionSequentialUnlockTest extends TestCase
         config([
             'livekit.livekit.api_key' => 'APItestkey',
             'livekit.livekit.api_secret' => 'test-secret-value-1234567890',
-            'livekit.livekit.url' => 'wss://live.glottical.com',
-            'livekit.livekit.host' => 'live.glottical.com',
+            'livekit.livekit.url' => 'wss://live.tadrislab.com',
+            'livekit.livekit.host' => 'live.tadrislab.com',
         ]);
     }
 
@@ -167,7 +167,7 @@ class OneToOneSessionSequentialUnlockTest extends TestCase
             'user_id' => $instructor->id,
             'one_to_one_session_id' => $session->id,
             'code' => $code,
-            'room_name' => 'Glottical-'.$code,
+            'room_name' => 'TADRIS LAB-'.$code,
             'title' => 'Session '.$number,
             'max_participants' => 4,
             'settings' => ['allow_guest_join' => false, 'private_lesson' => true],

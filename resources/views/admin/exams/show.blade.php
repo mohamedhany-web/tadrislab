@@ -27,7 +27,7 @@
         </div>
         <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('admin.exams.edit', $exam) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-edit text-xs"></i>
                 تعديل
             </a>
@@ -181,7 +181,7 @@
             <div x-show="activeTab === 'questions'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
                 <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
                     <h3 class="text-sm font-semibold text-ink">أسئلة الامتحان</h3>
-                    <a href="{{ route('admin.exams.questions.manage', $exam) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                    <a href="{{ route('admin.exams.questions.manage', $exam) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-cog text-xs"></i>
                         إدارة الأسئلة
                     </a>
@@ -218,7 +218,7 @@
                         <i class="fas fa-question-circle mb-4 text-5xl text-muted/40"></i>
                         <h4 class="mb-2 text-lg font-semibold text-ink">لا توجد أسئلة</h4>
                         <p class="mb-4 text-sm text-muted">ابدأ بإضافة الأسئلة لهذا الامتحان</p>
-                        <a href="{{ route('admin.exams.questions.manage', $exam) }}" class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                        <a href="{{ route('admin.exams.questions.manage', $exam) }}" class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                             <i class="fas fa-plus text-xs"></i>
                             إضافة أسئلة
                         </a>
@@ -229,7 +229,7 @@
             <div x-show="activeTab === 'attempts'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-cloak style="display: none;">
                 <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
                     <h3 class="text-sm font-semibold text-ink">محاولات الطلاب</h3>
-                    <a href="{{ route('admin.exams.statistics', $exam) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                    <a href="{{ route('admin.exams.statistics', $exam) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-chart-bar text-xs"></i>
                         إحصائيات مفصلة
                     </a>
@@ -325,14 +325,14 @@
                     <div class="rounded-2xl border border-line p-5 transition hover:border-accent/30">
                         <h4 class="mb-1 font-semibold text-ink">حالة النشر</h4>
                         <p class="mb-4 text-sm text-muted">نشر للطلاب</p>
-                        <button type="button" onclick="toggleExamPublish({{ $exam->id }})" class="btn-press w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition {{ $exam->is_published ? 'bg-amber-600 hover:bg-amber-700' : 'bg-accent hover:bg-[#0d4f4a]' }}">
+                        <button type="button" onclick="toggleExamPublish({{ $exam->id }})" class="btn-press w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white transition {{ $exam->is_published ? 'bg-amber-600 hover:bg-amber-700' : 'bg-accent hover:bg-[#184888]' }}">
                             {{ $exam->is_published ? 'إلغاء النشر' : 'نشر الامتحان' }}
                         </button>
                     </div>
                     <div class="rounded-2xl border border-line p-5 transition hover:border-accent/30">
                         <h4 class="mb-1 font-semibold text-ink">معاينة</h4>
                         <p class="mb-4 text-sm text-muted">كمعلم</p>
-                        <a href="{{ route('admin.exams.preview', $exam) }}" class="btn-press block w-full rounded-xl bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#0d4f4a]">
+                        <a href="{{ route('admin.exams.preview', $exam) }}" class="btn-press block w-full rounded-xl bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-[#184888]">
                             معاينة الامتحان
                         </a>
                     </div>

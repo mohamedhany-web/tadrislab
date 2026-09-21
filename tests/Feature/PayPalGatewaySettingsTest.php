@@ -151,8 +151,8 @@ class PayPalGatewaySettingsTest extends TestCase
         $created = app(PayPalService::class)->createOrder(
             25.5,
             'USD',
-            'https://glottical.test/checkout/paypal/return',
-            'https://glottical.test/checkout/paypal/cancel',
+            'https://tadrislab.test/checkout/paypal/return',
+            'https://tadrislab.test/checkout/paypal/cancel',
             '99',
             'Test course'
         );

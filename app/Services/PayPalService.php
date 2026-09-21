@@ -53,7 +53,7 @@ class PayPalService
         $payload = [
             'intent' => 'CAPTURE',
             'purchase_units' => [[
-                'reference_id' => 'glottical-'.$customId,
+                'reference_id' => 'tadrislab-'.$customId,
                 'custom_id' => $customId,
                 'invoice_id' => 'GLOT-'.$customId,
                 'description' => mb_substr($description, 0, 120),
@@ -63,7 +63,7 @@ class PayPalService
                 ],
             ]],
             'application_context' => [
-                'brand_name' => mb_substr((string) config('app.name', 'Glottical'), 0, 120),
+                'brand_name' => mb_substr((string) config('app.name', 'TADRIS LAB'), 0, 120),
                 'locale' => app()->getLocale() === 'ar' ? 'ar-EG' : 'en-US',
                 'landing_page' => 'LOGIN',
                 'user_action' => 'PAY_NOW',
@@ -73,7 +73,7 @@ class PayPalService
         ];
 
         $response = $this->request('post', '/v2/checkout/orders', $payload, [
-            'PayPal-Request-Id' => 'glottical-order-'.$customId,
+            'PayPal-Request-Id' => 'tadrislab-order-'.$customId,
         ]);
 
         if (! $response->successful()) {
@@ -291,7 +291,7 @@ class PayPalService
             ->asJson()
             ->withToken($this->accessToken())
             ->withHeaders(array_merge([
-                'PayPal-Partner-Attribution-Id' => 'Glottical_Checkout',
+                'PayPal-Partner-Attribution-Id' => 'TADRIS LAB_Checkout',
             ], $headers));
 
         $url = PayPalSettings::apiBaseUrl().$path;

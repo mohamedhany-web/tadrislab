@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <!-- Classroom tool: clipboard / checklist template -->
+  <rect x="6" y="4.5" width="12" height="16" rx="2" fill="#1E4E8C"/>
+  <rect x="8.2" y="2.8" width="7.6" height="3.2" rx="1.2" fill="#A88050"/>
+  <path stroke="#fff" stroke-width="1.6" stroke-linecap="round" d="M9.2 11h5.6M9.2 14.2h5.6M9.2 17.4h3.4"/>
+  <path stroke="#E8C68C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M9.3 8.2 10.5 9.4 12.8 7"/>
+</svg>

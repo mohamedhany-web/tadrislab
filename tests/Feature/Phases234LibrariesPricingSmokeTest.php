@@ -155,20 +155,12 @@ class Phases234LibrariesPricingSmokeTest extends TestCase
 
         $this->assertTrue($teacher->fresh()->isAcademyWorkingInstructor());
 
-        // تسعير بالدولار فقط (عملة المنصة)
+        // المدرب لا يسعّر — التسعير من الإدارة فقط
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('instructor.courses.pricing.edit'));
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('instructor.courses.pricing.update'));
         $this->actingAs($teacher)
-            ->put(route('instructor.courses.pricing.update', $course), [
-                'price_usd' => 12,
-                'price_usd_after_discount' => null,
-            ])
-            ->assertRedirect();
-
-        $course->refresh();
-        $this->assertSame(12.0, (float) $course->price_usd);
-        $this->assertSame(12.0, (float) $course->price);
-        $this->assertSame(12.0, (float) $course->price_egp);
-        $this->assertSame(12.0, $course->effectivePurchasePrice('USD'));
-        $this->assertSame(12.0, $course->effectivePurchasePrice('EGP'));
+            ->get('/instructor/courses/'.$course->id.'/pricing')
+            ->assertNotFound();
 
         $this->assertTrue(\Illuminate\Support\Facades\Route::has('instructor.libraries.materials.index'));
         $this->assertTrue(\Illuminate\Support\Facades\Route::has('instructor.lecture-recordings.index'));

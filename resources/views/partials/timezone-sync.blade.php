@@ -1,6 +1,6 @@
 {{-- كشف وحفظ المنطقة الزمنية من المتصفح --}}
 <script>
-window.glotticalDateTimeLocal = function (iso, timeZone) {
+window.tadrislabDateTimeLocal = function (iso, timeZone) {
     try {
         var d = new Date(iso);
         if (isNaN(d.getTime())) return '';
@@ -43,7 +43,7 @@ window.glotticalDateTimeLocal = function (iso, timeZone) {
 
         if (!syncUrl || !token) return;
 
-        var key = 'glottical_tz_synced';
+        var key = 'tadrislab_tz_synced';
         var last = sessionStorage.getItem(key);
         if (last === tz) return;
 

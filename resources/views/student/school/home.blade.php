@@ -37,7 +37,7 @@
     $weekdays = $isRtl
         ? ['س', 'ح', 'ن', 'ث', 'ر', 'خ', 'ج']
         : ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
-    $subjectTones = ['pink', 'blue', 'purple', 'orange'];
+    $subjectTones = ['blue', 'orange', 'purple', 'green'];
     $subjectIcons = [
         asset('img/student-timeline/sqrt.svg'),
         asset('img/student-timeline/earth.svg'),
@@ -406,7 +406,7 @@
     $game = $game ?? ['weekly_missions' => collect(), 'daily_missions' => collect()];
     $upcoming = $upcoming ?? collect();
     $weekDays = $weekDays ?? collect();
-    $eventTones = ['green', 'purple', 'orange'];
+    $eventTones = ['blue', 'orange', 'green'];
     $eventMasks = [
         asset('img/student-timeline/event-mask-1.svg'),
         asset('img/student-timeline/event-mask-2.svg'),
@@ -450,7 +450,7 @@
         $eventCards->push((object) [
             'title' => $mission->title,
             'subtitle' => $mission->description,
-            'meta' => '+'.$mission->xp_reward.' XP',
+            'meta' => __('student_timeline.xp_reward_meta', ['n' => $mission->xp_reward]),
             'url' => Route::has('student.classes.index') ? route('student.classes.index') : route('dashboard'),
             'person' => null,
         ]);
@@ -515,7 +515,7 @@
             <h3>{{ $mission->title }}</h3>
             <p class="st-event-card__sub">{{ $mission->description }}</p>
             <div class="st-event-card__meta">
-                <span>{{ $mission->progress }}/{{ $mission->target }} · +{{ $mission->xp_reward }} XP</span>
+                <span>{{ $mission->progress }}/{{ $mission->target }} · {{ __('student_timeline.xp_reward_meta', ['n' => $mission->xp_reward]) }}</span>
             </div>
         </a>
     @empty

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', __('instructor.dashboard_title'))
 @section('page_title', __('instructor.overview'))
@@ -7,6 +7,8 @@
 @php
     $isRtl = app()->getLocale() === 'ar';
     $showCourses = instructor_ui('show_courses', false);
+    $showTutoring = instructor_ui('show_tutoring', false);
+    $showLive = instructor_ui('show_live_broadcast', false);
     $pending = (int) ($stats['pending_submissions'] ?? 0);
     $students = (int) ($stats['total_students'] ?? 0);
     $courses = (int) ($stats['my_courses'] ?? 0);
@@ -15,6 +17,9 @@
     $upcomingLectures = (int) ($stats['upcoming_lectures'] ?? 0);
     $exams = (int) ($stats['total_exams'] ?? 0);
     $assignments = (int) ($stats['total_assignments'] ?? 0);
+    $pathCount = (int) ($stats['learning_paths_count'] ?? auth()->user()?->teachingLearningPathIds()->count() ?? 0);
+    $consultCount = (int) ($stats['consultations_count'] ?? 0);
+    $upcomingConsult = (int) ($stats['upcoming_consultations'] ?? 0);
     $bookingsHref = Route::has('instructor.tutoring-bookings.index')
         ? route('instructor.tutoring-bookings.index')
         : route('dashboard');
@@ -26,6 +31,12 @@
         : route('dashboard');
     $calendarHref = Route::has('instructor.calendar')
         ? route('instructor.calendar')
+        : route('dashboard');
+    $pathsHref = Route::has('instructor.learning-paths.index')
+        ? route('instructor.learning-paths.index')
+        : route('dashboard');
+    $consultHref = Route::has('instructor.consultations.index')
+        ? route('instructor.consultations.index')
         : route('dashboard');
 
     if ($showCourses) {
@@ -39,270 +50,283 @@
         ];
     } else {
         $workload = [
-            ['label' => __('instructor.group_bookings'), 'value' => $upcomingTutoring, 'href' => $bookingsHref],
-            ['label' => __('instructor.class_command'), 'value' => (int) ($stats['cohorts_count'] ?? 0), 'href' => $cohortsHref],
-            ['label' => __('instructor.live_broadcast'), 'value' => (int) ($stats['live_now'] ?? 0), 'href' => $liveHref],
-            ['label' => __('instructor.upcoming'), 'value' => $upcomingTutoring, 'href' => $calendarHref],
+            ['label' => 'مساراتي المسندة', 'value' => $pathCount, 'href' => $pathsHref],
+            ['label' => 'استشاراتي', 'value' => $consultCount, 'href' => $consultHref],
+            ['label' => __('instructor.upcoming'), 'value' => $upcomingConsult, 'href' => $consultHref],
+            ['label' => __('instructor.my_calendar'), 'value' => $upcomingLectures + $upcomingTutoring + $upcomingConsult, 'href' => $calendarHref],
         ];
     }
     $maxWorkload = max(1, collect($workload)->max('value'));
+    $subjMask1 = asset('img/student-timeline/subj-mask-1.svg');
+    $subjMask2 = asset('img/student-timeline/subj-mask-2.svg');
 @endphp
 
-<div class="su-overview">
-    <div class="su-ov-head">
-        <div>
-            <h1 class="su-ov-title">{{ __('instructor.overview') }}</h1>
-            <p class="su-rail-m" style="margin-top:4px">{{ __('instructor.welcome') }}، {{ auth()->user()->name }}</p>
+<section class="st-join-hero" aria-label="{{ __('instructor.overview') }}">
+    <div class="st-join-hero__copy">
+        <p class="st-join-hero__kicker">TADRIS LAB</p>
+        <h2 class="st-join-hero__title">{{ __('instructor.welcome') }}، {{ auth()->user()->name }}</h2>
+        <p class="st-join-hero__meta">
+            {{ $isRtl ? 'لوحة المدرب — مسارات واستشارات ومواعيد مسندة إليك.' : 'Coach panel — assigned paths, consultations, and slots.' }}
+            · {{ now()->translatedFormat($isRtl ? 'l، j F' : 'D, M j') }}
+        </p>
+    </div>
+    <div class="st-join-hero__actions">
+        @if(Route::has('instructor.consultations.index') && instructor_ui('show_consultations', true))
+            <a href="{{ route('instructor.consultations.index') }}" class="st-pill st-pill--solid st-pill--lg">استشاراتي</a>
+        @endif
+        @if(Route::has('instructor.learning-paths.index') && instructor_ui('show_learning_paths', true))
+            <a href="{{ route('instructor.learning-paths.index') }}" class="st-pill st-pill--outline">مساراتي</a>
+        @elseif(Route::has('instructor.calendar'))
+            <a href="{{ route('instructor.calendar') }}" class="st-pill st-pill--outline">{{ __('instructor.my_calendar') }}</a>
+        @endif
+    </div>
+</section>
+
+<section class="st-stats st-stats--classes" aria-label="{{ __('instructor.overview') }}">
+    @if($showCourses)
+        <a href="{{ route('instructor.courses.index') }}" class="st-subject st-subject--blue st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask1 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">{{ __('instructor.my_courses') }}</p>
+            <p class="st-stat-card__value">{{ number_format($courses) }}</p>
+            <p class="st-stat-card__hint">{{ $lectures }} {{ __('instructor.lectures') }}</p>
+        </a>
+        <a href="{{ route('instructor.courses.index') }}" class="st-subject st-subject--pink st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask2 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">{{ __('instructor.total_students') }}</p>
+            <p class="st-stat-card__value">{{ number_format($students) }}</p>
+            <p class="st-stat-card__hint">{{ $isRtl ? 'طلاب مسجّلون' : 'Enrolled learners' }}</p>
+        </a>
+        <a href="{{ route('instructor.lectures.index') }}" class="st-subject st-subject--orange st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask1 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">{{ __('instructor.upcoming_lectures') }}</p>
+            <p class="st-stat-card__value">{{ number_format($upcomingLectures) }}</p>
+            <p class="st-stat-card__hint">{{ __('instructor.upcoming') }}</p>
+        </a>
+        <a href="{{ route('instructor.assignments.index') }}" class="st-subject st-subject--purple st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask2 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">{{ __('instructor.need_grading') }}</p>
+            <p class="st-stat-card__value">{{ number_format($pending) }}</p>
+            <p class="st-stat-card__hint">{{ __('instructor.assignments') }}</p>
+        </a>
+    @else
+        <a href="{{ $pathsHref }}" class="st-subject st-subject--blue st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask1 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">مساراتي المسندة</p>
+            <p class="st-stat-card__value">{{ number_format($pathCount) }}</p>
+            <p class="st-stat-card__hint">{{ $isRtl ? 'مسارات للتدريب' : 'Assigned paths' }}</p>
+        </a>
+        <a href="{{ $consultHref }}" class="st-subject st-subject--pink st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask2 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">استشاراتي</p>
+            <p class="st-stat-card__value">{{ number_format($consultCount) }}</p>
+            <p class="st-stat-card__hint">{{ $isRtl ? 'إجمالي الطلبات' : 'Total requests' }}</p>
+        </a>
+        <a href="{{ $consultHref }}" class="st-subject st-subject--orange st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask1 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">{{ __('instructor.upcoming') }}</p>
+            <p class="st-stat-card__value">{{ number_format($upcomingConsult) }}</p>
+            <p class="st-stat-card__hint">{{ $isRtl ? 'استشارات قادمة' : 'Upcoming consultations' }}</p>
+        </a>
+        <a href="{{ $calendarHref }}" class="st-subject st-subject--purple st-stat-card">
+            <img class="st-subject__blob" src="{{ $subjMask2 }}" alt="" width="132" height="132">
+            <p class="st-stat-card__label">{{ __('instructor.my_calendar') }}</p>
+            <p class="st-stat-card__value">{{ number_format($upcomingLectures + $upcomingTutoring + $upcomingConsult) }}</p>
+            <p class="st-stat-card__hint">{{ $isRtl ? 'مواعيد قادمة' : 'Upcoming slots' }}</p>
+        </a>
+    @endif
+</section>
+
+<section class="st-msg-intro">
+    <div>
+        <h2>{{ __('instructor.overview') }}</h2>
+        <p>{{ $isRtl ? 'اختصارات سريعة لما تحتاجه اليوم.' : 'Quick shortcuts for what you need today.' }}</p>
+    </div>
+</section>
+
+<section class="su-quick-grid" style="margin-bottom:1.25rem">
+    @if(Route::has('instructor.calendar'))
+    <a href="{{ route('instructor.calendar') }}" class="su-quick">
+        <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-calendar-alt"></i></span>
+        <span>
+            <strong>{{ __('instructor.my_calendar') }}</strong>
+            <em>{{ ($showCourses ? $upcomingLectures : $upcomingConsult) + ($showTutoring ? $upcomingTutoring : 0) }} {{ __('instructor.upcoming') }}</em>
+        </span>
+    </a>
+    @endif
+    @if(instructor_ui('show_learning_paths', true) && Route::has('instructor.learning-paths.index'))
+    <a href="{{ route('instructor.learning-paths.index') }}" class="su-quick">
+        <span class="su-rail-ico su-rail-ico--a"><i class="fas fa-route"></i></span>
+        <span>
+            <strong>مساراتي المسندة</strong>
+            <em>{{ $pathCount }} مسار</em>
+        </span>
+    </a>
+    @endif
+    @if(instructor_ui('show_consultations', true) && Route::has('instructor.consultations.index'))
+    <a href="{{ route('instructor.consultations.index') }}" class="su-quick">
+        <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-comments"></i></span>
+        <span>
+            <strong>استشاراتي</strong>
+            <em>{{ $consultCount }} · {{ $upcomingConsult }} قادمة</em>
+        </span>
+    </a>
+    @endif
+    @if($showTutoring && Route::has('instructor.tutoring-bookings.index'))
+    <a href="{{ route('instructor.tutoring-bookings.index') }}" class="su-quick">
+        <span class="su-rail-ico su-rail-ico--a"><i class="fas fa-users"></i></span>
+        <span>
+            <strong>{{ __('instructor.group_bookings') }}</strong>
+            <em>{{ $upcomingTutoring }} {{ __('instructor.upcoming') }}</em>
+        </span>
+    </a>
+    @endif
+    @if($showCourses)
+    <a href="{{ route('instructor.assignments.index') }}" class="su-quick">
+        <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-tasks"></i></span>
+        <span>
+            <strong>{{ __('instructor.assignments') }}</strong>
+            <em>@if($pending > 0){{ $pending }} {{ __('instructor.need_grading') }}@else{{ __('instructor.all_assignments_graded') }}@endif</em>
+        </span>
+    </a>
+    @endif
+    @if($showLive && Route::has('instructor.live-sessions.index'))
+    <a href="{{ route('instructor.live-sessions.index') }}" class="su-quick">
+        <span class="su-rail-ico su-rail-ico--a"><i class="fas fa-broadcast-tower"></i></span>
+        <span>
+            <strong>{{ __('instructor.live_broadcast') }}</strong>
+            <em>{{ __('instructor.manage_streams') }}</em>
+        </span>
+    </a>
+    @endif
+</section>
+
+@if(!empty($upcomingTutoringBooking) && $showTutoring)
+    <section class="st-join-hero st-join-hero--muted" style="margin-bottom:1.25rem">
+        <div class="st-join-hero__copy">
+            <p class="st-join-hero__kicker">{{ __('instructor.next_live_session') }}</p>
+            <h2 class="st-join-hero__title">{{ $upcomingTutoringBooking->tutoringGroup?->title ?? __('instructor.group_session') }}</h2>
+            <p class="st-join-hero__meta">
+                <x-app-datetime :at="$upcomingTutoringBooking->starts_at" pattern="D j M · g:i A" />
+                @if($upcomingTutoringBooking->user) · {{ $upcomingTutoringBooking->user->name }} @endif
+            </p>
         </div>
-        <div class="su-today" aria-hidden="true">
-            {{ now()->translatedFormat($isRtl ? 'l، j F' : 'D, M j') }}
+        <div class="st-join-hero__actions">
+            @if($upcomingTutoringBooking->classroomMeeting)
+                <form method="POST" action="{{ route('instructor.classroom.start-meeting', $upcomingTutoringBooking->classroomMeeting) }}">
+                    @csrf
+                    <button type="submit" class="st-pill st-pill--solid">{{ __('instructor.start_live') }}</button>
+                </form>
+            @endif
+            @if(Route::has('instructor.tutoring-bookings.show'))
+                <a href="{{ route('instructor.tutoring-bookings.show', $upcomingTutoringBooking) }}" class="st-pill st-pill--outline">{{ __('instructor.view_details') }}</a>
+            @endif
+        </div>
+    </section>
+@endif
+
+<section class="su-bottom">
+    @if($showCourses)
+    <div class="su-block st-panel">
+        <div class="flex items-center justify-between mb-3">
+            <div class="su-block__title" style="margin:0">{{ __('instructor.upcoming_lectures') }}</div>
+            <a href="{{ route('instructor.lectures.index') }}" class="su-rail-m">{{ __('instructor.view_all') }}</a>
+        </div>
+        <div class="space-y-1">
+            @forelse(($upcoming_lectures ?? collect())->take(5) as $lecture)
+                <a href="{{ route('instructor.lectures.show', $lecture) }}" class="su-rail-item">
+                    <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-chalkboard"></i></span>
+                    <div class="min-w-0">
+                        <div class="su-rail-t truncate">{{ $lecture->title }}</div>
+                        <div class="su-rail-m truncate">
+                            {{ $lecture->course->title ?? __('instructor.not_specified') }}
+                            · {{ $lecture->scheduled_at?->diffForHumans() }}
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <p class="su-rail-m" style="padding:16px;text-align:center">{{ __('instructor.no_lectures') }}</p>
+            @endforelse
+        </div>
+    </div>
+    @elseif(Route::has('instructor.consultations.index'))
+    <div class="su-block st-panel">
+        <div class="flex items-center justify-between mb-3">
+            <div class="su-block__title" style="margin:0">استشارات قادمة</div>
+            <a href="{{ $consultHref }}" class="su-rail-m">{{ __('instructor.view_all') }}</a>
+        </div>
+        <div class="space-y-1">
+            @forelse(($upcoming_consultations ?? collect())->take(5) as $c)
+                <a href="{{ route('instructor.consultations.show', $c) }}" class="su-rail-item">
+                    <span class="su-rail-ico su-rail-ico--a"><i class="fas fa-comments"></i></span>
+                    <div class="min-w-0">
+                        <div class="su-rail-t truncate">{{ $c->contact_name ?? $c->student?->name ?? 'استشارة' }}</div>
+                        <div class="su-rail-m truncate">{{ $c->scheduled_at?->diffForHumans() ?? $c->statusLabel() }}</div>
+                    </div>
+                </a>
+            @empty
+                <p class="su-rail-m" style="padding:16px;text-align:center">لا استشارات قادمة حاليًا</p>
+            @endforelse
+        </div>
+    </div>
+    @endif
+
+    <div class="su-block st-panel">
+        <div class="su-block__title">{{ __('instructor.workload_summary') }}</div>
+        <div class="su-workload">
+            @foreach($workload as $row)
+                <a href="{{ $row['href'] }}" class="su-workload-row">
+                    <span class="su-workload-label truncate">{{ $row['label'] }}</span>
+                    <div class="su-workload-bar" aria-hidden="true">
+                        <i style="width: {{ max(8, (int) round(($row['value'] / $maxWorkload) * 100)) }}%"></i>
+                    </div>
+                    <strong>{{ number_format($row['value']) }}</strong>
+                </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+@if($showCourses)
+<section class="su-bottom" style="margin-top:20px">
+    <div class="su-block st-panel">
+        <div class="flex items-center justify-between mb-3">
+            <div class="su-block__title" style="margin:0">{{ __('instructor.my_recent_courses') }}</div>
+            <a href="{{ route('instructor.courses.index') }}" class="su-rail-m">{{ __('instructor.view_all') }}</a>
+        </div>
+        <div class="space-y-1">
+            @forelse(($my_courses ?? collect()) as $course)
+                <a href="{{ route('instructor.courses.show', $course) }}" class="su-rail-item">
+                    <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-book"></i></span>
+                    <div class="min-w-0">
+                        <div class="su-rail-t truncate">{{ $course->title }}</div>
+                        <div class="su-rail-m">{{ $course->active_students_count ?? 0 }} {{ __('instructor.student_single') }}</div>
+                    </div>
+                </a>
+            @empty
+                <p class="su-rail-m" style="padding:16px;text-align:center">{{ __('instructor.no_courses_assigned') }}</p>
+            @endforelse
         </div>
     </div>
 
-    <section class="su-kpi-row">
-        @if($showCourses)
-            <a href="{{ route('instructor.courses.index') }}" class="su-kpi su-kpi--1">
-                <div class="su-kpi__l">{{ __('instructor.my_courses') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format($courses) }}</div>
-                    <div class="su-kpi__d">{{ $lectures }} {{ __('instructor.lectures') }}</div>
-                </div>
-            </a>
-            <a href="{{ route('instructor.courses.index') }}" class="su-kpi su-kpi--2">
-                <div class="su-kpi__l">{{ __('instructor.total_students') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format($students) }}</div>
-                    <div class="su-kpi__d">{{ __('instructor.active') }}</div>
-                </div>
-            </a>
-            <a href="{{ route('instructor.lectures.index') }}" class="su-kpi su-kpi--3">
-                <div class="su-kpi__l">{{ __('instructor.upcoming_lectures') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format($upcomingLectures) }}</div>
-                    <div class="su-kpi__d">{{ $assignments }} {{ __('instructor.assignments') }}</div>
-                </div>
-            </a>
-            <a href="{{ $bookingsHref }}" class="su-kpi su-kpi--4">
-                <div class="su-kpi__l">{{ __('instructor.need_grading') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format($pending) }}</div>
-                    <div class="su-kpi__d">{{ $upcomingTutoring }} {{ __('instructor.group_bookings') }}</div>
-                </div>
-            </a>
-        @else
-            <a href="{{ $bookingsHref }}" class="su-kpi su-kpi--1">
-                <div class="su-kpi__l">{{ __('instructor.group_bookings') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format($upcomingTutoring) }}</div>
-                    <div class="su-kpi__d">{{ __('instructor.upcoming') }}</div>
-                </div>
-            </a>
-            <a href="{{ $cohortsHref }}" class="su-kpi su-kpi--2">
-                <div class="su-kpi__l">{{ __('instructor.class_command') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format((int) ($stats['cohorts_count'] ?? 0)) }}</div>
-                    <div class="su-kpi__d">{{ __('instructor.tc_cohorts') }}</div>
-                </div>
-            </a>
-            <a href="{{ $liveHref }}" class="su-kpi su-kpi--3">
-                <div class="su-kpi__l">{{ __('instructor.live_broadcast') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format((int) ($stats['live_now'] ?? 0)) }}</div>
-                    <div class="su-kpi__d">{{ __('instructor.ls_live_now') }}</div>
-                </div>
-            </a>
-            <a href="{{ $calendarHref }}" class="su-kpi su-kpi--4">
-                <div class="su-kpi__l">{{ __('instructor.my_calendar') }}</div>
-                <div class="su-kpi__row">
-                    <div class="su-kpi__v">{{ number_format($upcomingTutoring) }}</div>
-                    <div class="su-kpi__d">{{ __('instructor.upcoming') }}</div>
-                </div>
-            </a>
-        @endif
-    </section>
-
-    @if(!empty($upcomingTutoringBooking))
-        <section class="su-block su-next-session">
-            <div class="min-w-0">
-                <p class="su-rail-m">{{ __('instructor.next_live_session') }}</p>
-                <h2 class="su-ov-title" style="margin-top:4px">{{ $upcomingTutoringBooking->tutoringGroup?->title ?? __('instructor.group_session') }}</h2>
-                <p class="su-rail-m" style="margin-top:4px">
-                    <x-app-datetime :at="$upcomingTutoringBooking->starts_at" pattern="D j M · g:i A" />
-                    @if($upcomingTutoringBooking->user) · {{ $upcomingTutoringBooking->user->name }} @endif
-                </p>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                @if($upcomingTutoringBooking->classroomMeeting)
-                    <form method="POST" action="{{ route('instructor.classroom.start-meeting', $upcomingTutoringBooking->classroomMeeting) }}">
-                        @csrf
-                        <button type="submit" class="su-btn su-btn--primary">
-                            <i class="fas fa-video"></i> {{ __('instructor.start_live') }}
-                        </button>
-                    </form>
-                @endif
-                @if(Route::has('instructor.tutoring-bookings.show'))
-                    <a href="{{ route('instructor.tutoring-bookings.show', $upcomingTutoringBooking) }}" class="su-btn">
-                        {{ __('instructor.view_details') }}
-                    </a>
-                @endif
-            </div>
-        </section>
-    @endif
-
-    <section class="su-quick-grid">
-        @if(Route::has('instructor.calendar'))
-        <a href="{{ route('instructor.calendar') }}" class="su-quick">
-            <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-calendar-alt"></i></span>
-            <span>
-                <strong>{{ __('instructor.my_calendar') }}</strong>
-                <em>{{ ($showCourses ? $upcomingLectures : 0) + $upcomingTutoring }} {{ __('instructor.upcoming') }}</em>
-            </span>
-        </a>
-        @endif
-        @if(Route::has('instructor.tutoring-bookings.index'))
-        <a href="{{ route('instructor.tutoring-bookings.index') }}" class="su-quick">
-            <span class="su-rail-ico su-rail-ico--a"><i class="fas fa-users"></i></span>
-            <span>
-                <strong>{{ __('instructor.group_bookings') }}</strong>
-                <em>{{ $upcomingTutoring }} {{ __('instructor.upcoming') }}</em>
-            </span>
-        </a>
-        @endif
-        @if($showCourses)
-        <a href="{{ route('instructor.assignments.index') }}" class="su-quick">
-            <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-tasks"></i></span>
-            <span>
-                <strong>{{ __('instructor.assignments') }}</strong>
-                <em>@if($pending > 0){{ $pending }} {{ __('instructor.need_grading') }}@else{{ __('instructor.all_assignments_graded') }}@endif</em>
-            </span>
-        </a>
-        @elseif(Route::has('instructor.tutoring-cohorts.index'))
-        <a href="{{ route('instructor.tutoring-cohorts.index') }}" class="su-quick">
-            <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-layer-group"></i></span>
-            <span>
-                <strong>{{ __('instructor.class_command') }}</strong>
-                <em>{{ __('instructor.tc_subtitle') }}</em>
-            </span>
-        </a>
-        @endif
-        @if(Route::has('instructor.live-sessions.index'))
-        <a href="{{ route('instructor.live-sessions.index') }}" class="su-quick">
-            <span class="su-rail-ico su-rail-ico--a"><i class="fas fa-broadcast-tower"></i></span>
-            <span>
-                <strong>{{ __('instructor.live_broadcast') }}</strong>
-                <em>{{ __('instructor.manage_streams') }}</em>
-            </span>
-        </a>
-        @endif
-    </section>
-
-    <section class="su-bottom">
-        @if($showCourses)
-        <div class="su-block">
-            <div class="flex items-center justify-between mb-3">
-                <div class="su-block__title" style="margin:0">{{ __('instructor.upcoming_lectures') }}</div>
-                <a href="{{ route('instructor.lectures.index') }}" class="su-rail-m">{{ __('instructor.view_all') }}</a>
-            </div>
-            <div class="space-y-1">
-                @forelse($upcoming_lectures->take(5) as $lecture)
-                    <a href="{{ route('instructor.lectures.show', $lecture) }}" class="su-rail-item">
-                        <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-chalkboard"></i></span>
-                        <div class="min-w-0">
-                            <div class="su-rail-t truncate">{{ $lecture->title }}</div>
-                            <div class="su-rail-m truncate">
-                                {{ $lecture->course->title ?? __('instructor.not_specified') }}
-                                · {{ $lecture->scheduled_at?->diffForHumans() }}
-                            </div>
-                        </div>
-                    </a>
-                @empty
-                    <p class="su-rail-m" style="padding:16px;text-align:center">{{ __('instructor.no_lectures') }}</p>
-                @endforelse
-            </div>
+    <div class="su-block st-panel">
+        <div class="flex items-center justify-between mb-3">
+            <div class="su-block__title" style="margin:0">{{ __('instructor.assignments_need_grading') }}</div>
+            @if($pending > 0)<span class="su-link__badge">{{ $pending }}</span>@endif
         </div>
-        @else
-        <div class="su-block">
-            <div class="flex items-center justify-between mb-3">
-                <div class="su-block__title" style="margin:0">{{ __('instructor.group_bookings') }}</div>
-                <a href="{{ $bookingsHref }}" class="su-rail-m">{{ __('instructor.view_all') }}</a>
-            </div>
-            <div class="space-y-1">
-                @forelse(($upcoming_tutoring_bookings ?? collect())->take(5) as $booking)
-                    <a href="{{ route('instructor.tutoring-bookings.show', $booking) }}" class="su-rail-item">
-                        <span class="su-rail-ico su-rail-ico--a"><i class="fas fa-users"></i></span>
-                        <div class="min-w-0">
-                            <div class="su-rail-t truncate">{{ $booking->tutoringGroup?->title ?? __('instructor.group_session') }}</div>
-                            <div class="su-rail-m truncate">
-                                {{ $booking->contactName() }}
-                                · {{ $booking->starts_at?->diffForHumans() }}
-                            </div>
-                        </div>
-                    </a>
-                @empty
-                    <p class="su-rail-m" style="padding:16px;text-align:center">{{ __('instructor.tb_empty') }}</p>
-                @endforelse
-            </div>
+        <div class="space-y-1">
+            @forelse(($pending_assignments ?? collect())->take(5) as $submission)
+                <a href="{{ route('instructor.assignments.submissions', $submission->assignment) }}" class="su-rail-item">
+                    <span class="su-rail-avatar">{{ mb_substr($submission->student->name ?? 'S', 0, 1) }}</span>
+                    <div class="min-w-0">
+                        <div class="su-rail-t truncate">{{ $submission->assignment->title ?? __('instructor.assignment_default') }}</div>
+                        <div class="su-rail-m">{{ $submission->student->name ?? '' }} · {{ $submission->created_at->diffForHumans() }}</div>
+                    </div>
+                </a>
+            @empty
+                <p class="su-rail-m" style="padding:16px;text-align:center">{{ __('instructor.all_assignments_graded') }}</p>
+            @endforelse
         </div>
-        @endif
-
-        <div class="su-block">
-            <div class="su-block__title">{{ __('instructor.workload_summary') }}</div>
-            <div class="su-workload">
-                @foreach($workload as $row)
-                    <a href="{{ $row['href'] }}" class="su-workload-row">
-                        <span class="su-workload-label truncate">{{ $row['label'] }}</span>
-                        <div class="su-workload-bar" aria-hidden="true">
-                            <i style="width: {{ max(8, (int) round(($row['value'] / $maxWorkload) * 100)) }}%"></i>
-                        </div>
-                        <strong>{{ number_format($row['value']) }}</strong>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    @if($showCourses)
-    <section class="su-bottom" style="margin-top:20px">
-        <div class="su-block">
-            <div class="flex items-center justify-between mb-3">
-                <div class="su-block__title" style="margin:0">{{ __('instructor.my_recent_courses') }}</div>
-                <a href="{{ route('instructor.courses.index') }}" class="su-rail-m">{{ __('instructor.view_all') }}</a>
-            </div>
-            <div class="space-y-1">
-                @forelse($my_courses as $course)
-                    <a href="{{ route('instructor.courses.show', $course) }}" class="su-rail-item">
-                        <span class="su-rail-ico su-rail-ico--b"><i class="fas fa-book"></i></span>
-                        <div class="min-w-0">
-                            <div class="su-rail-t truncate">{{ $course->title }}</div>
-                            <div class="su-rail-m">{{ $course->active_students_count ?? 0 }} {{ __('instructor.student_single') }}</div>
-                        </div>
-                    </a>
-                @empty
-                    <p class="su-rail-m" style="padding:16px;text-align:center">{{ __('instructor.no_courses_assigned') }}</p>
-                @endforelse
-            </div>
-        </div>
-
-        <div class="su-block">
-            <div class="flex items-center justify-between mb-3">
-                <div class="su-block__title" style="margin:0">{{ __('instructor.assignments_need_grading') }}</div>
-                @if($pending > 0)<span class="su-link__badge">{{ $pending }}</span>@endif
-            </div>
-            <div class="space-y-1">
-                @forelse($pending_assignments->take(5) as $submission)
-                    <a href="{{ route('instructor.assignments.submissions', $submission->assignment) }}" class="su-rail-item">
-                        <span class="su-rail-avatar">{{ mb_substr($submission->student->name ?? 'S', 0, 1) }}</span>
-                        <div class="min-w-0">
-                            <div class="su-rail-t truncate">{{ $submission->assignment->title ?? __('instructor.assignment_default') }}</div>
-                            <div class="su-rail-m">{{ $submission->student->name ?? '' }} · {{ $submission->created_at->diffForHumans() }}</div>
-                        </div>
-                    </a>
-                @empty
-                    <p class="su-rail-m" style="padding:16px;text-align:center">{{ __('instructor.all_assignments_graded') }}</p>
-                @endforelse
-            </div>
-        </div>
-    </section>
-    @endif
-</div>
+    </div>
+</section>
+@endif
 @endsection

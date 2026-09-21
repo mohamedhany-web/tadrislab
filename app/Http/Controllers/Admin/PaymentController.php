@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Support\SearchInput;
-use App\Models\Payment;
-use App\Models\Invoice;
-use App\Models\User;
 use App\Models\ActivityLog;
+use App\Models\Invoice;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\User;
+use App\Services\CatalogOrderFulfillmentService;
+use App\Support\SearchInput;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -115,7 +117,7 @@ class PaymentController extends Controller
             'payment_method' => $validated['payment_method'],
             'wallet_id' => $request->wallet_id ?? null,
             'amount' => $validated['amount'],
-            'currency' => 'USD',
+            'currency' => platform_currency(),
             'status' => 'completed',
             'paid_at' => now(),
             'processed_by' => auth()->id(),
@@ -133,7 +135,7 @@ class PaymentController extends Controller
             'type' => 'credit', // دائن (إيراد)
             'category' => $invoice->type === 'subscription' ? 'subscription' : 'course_payment',
             'amount' => $validated['amount'],
-            'currency' => 'USD',
+            'currency' => platform_currency(),
             'description' => 'دفعة للفاتورة: ' . $invoice->invoice_number . ' - ' . $invoice->description,
             'status' => 'completed',
             'metadata' => [
@@ -148,6 +150,8 @@ class PaymentController extends Controller
         if ($invoice->remaining_amount <= 0 && !$invoice->isPaid()) {
                 $invoice->markAsPaid();
         }
+
+        $this->fulfillCatalogOrderForPayment($payment, $invoice);
 
         return redirect()->route('admin.payments.index')
             ->with('success', 'تم إنشاء الدفعة بنجاح');
@@ -201,6 +205,8 @@ class PaymentController extends Controller
             ])->withInput();
         }
 
+        $previousStatus = (string) $payment->status;
+
         $payment->update([
             'invoice_id' => $invoice->id,
             'user_id' => $validated['user_id'],
@@ -215,6 +221,20 @@ class PaymentController extends Controller
             $invoice->markAsPaid();
         }
 
+        try {
+            $order = Order::query()->where('payment_id', $payment->id)->orWhere('invoice_id', $invoice->id)->latest('id')->first();
+            if ($order && $previousStatus !== $validated['status']) {
+                if ($validated['status'] === 'completed') {
+                    event(new \App\Events\PaymentSuccessful($order->loadMissing('user'), $payment));
+                    $this->fulfillCatalogOrderForPayment($payment, $invoice, $order);
+                } elseif (in_array($validated['status'], ['failed', 'cancelled'], true)) {
+                    event(new \App\Events\PaymentFailed($order->loadMissing('user'), 'تم تحديث حالة الدفع إلى: '.$validated['status']));
+                }
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         return redirect()->route('admin.payments.index')
             ->with('success', 'تم تحديث الدفعة بنجاح');
     }
@@ -224,5 +244,40 @@ class PaymentController extends Controller
         $payment->delete();
         return redirect()->route('admin.payments.index')
             ->with('success', 'تم حذف الدفعة بنجاح');
+    }
+
+    /**
+     * عند اكتمال دفع مرتبط بطلب كتالوج (باقة/مسار) — فعّل entitlement حتى لو لم يمر الطلب من «اعتماد الطلب».
+     */
+    private function fulfillCatalogOrderForPayment(Payment $payment, Invoice $invoice, ?Order $order = null): void
+    {
+        try {
+            $order ??= Order::query()
+                ->where('payment_id', $payment->id)
+                ->orWhere('invoice_id', $invoice->id)
+                ->latest('id')
+                ->first();
+
+            if (! $order || ! CatalogOrderFulfillmentService::isCatalogOrder($order)) {
+                return;
+            }
+
+            if ($order->status === Order::STATUS_PENDING) {
+                $order->update([
+                    'status' => Order::STATUS_APPROVED,
+                    'approved_at' => $order->approved_at ?? now(),
+                    'approved_by' => $order->approved_by ?? Auth::id(),
+                ]);
+            }
+
+            CatalogOrderFulfillmentService::fulfill($order->fresh(), Auth::user());
+        } catch (\Throwable $e) {
+            Log::error('Catalog fulfill from PaymentController failed', [
+                'payment_id' => $payment->id,
+                'invoice_id' => $invoice->id,
+                'error' => $e->getMessage(),
+            ]);
+            report($e);
+        }
     }
 }

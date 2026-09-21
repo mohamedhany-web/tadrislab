@@ -57,7 +57,7 @@ class ServicePackageController extends Controller
             'units_count' => 8,
             'session_minutes' => 60,
             'duration_days' => 60,
-            'currency' => (string) config('currency.code', 'USD'),
+            'currency' => (string) config('currency.code', 'QAR'),
             'is_active' => true,
             'sort_order' => (int) ServicePackage::query()->max('sort_order') + 1,
         ]), 'create'));
@@ -311,13 +311,13 @@ class ServicePackageController extends Controller
             'duration_days' => ['nullable', 'integer', 'min:1', 'max:730'],
             'price' => ['required', 'numeric', 'min:0'],
             'original_price' => ['nullable', 'numeric', 'min:0'],
-            'currency' => ['nullable', 'in:USD,usd'],
+            'currency' => ['nullable', 'string', 'in:'.implode(',', platform_currencies())],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
         ]);
     }
 
     protected function normalizeCurrency(?string $currency): string
     {
-        return 'USD';
+        return normalize_currency($currency);
     }
 }

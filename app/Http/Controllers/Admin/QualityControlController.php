@@ -233,7 +233,7 @@ class QualityControlController extends Controller
 
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
-            ->setCreator('Glottical')
+            ->setCreator('TADRIS LAB')
             ->setTitle('تقرير رقابة المدرب - ' . $instructor->name)
             ->setSubject('تقرير شامل عن المدرب وأنشطته');
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $task->title . ' - ' . __('instructor.tasks_from_management'))
 @section('page_title', __('instructor.task_details'))

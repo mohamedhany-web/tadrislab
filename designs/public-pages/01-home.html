@@ -2,515 +2,358 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <title>منصة Sana لتعليم الأطفال أونلاين بثقة ومتعة</title>
-  <meta name="theme-color" content="#5B21B6">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تدريس لاب — الرئيسية (مرآة تصميم)</title>
+  <meta name="theme-color" content="#1E4E8C">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@800;900&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- CSS مستخرج حرفياً من resources/views/landing/sana/theme.blade.php -->
-  <link rel="stylesheet" href="assets/sana-theme.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700;800;900&family=Noto+Sans+Arabic:wght@400;500;600;700;800;900&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/lasles-theme.css">
   <style>
-    /* شارة ملفات التصميم فقط — لا توجد في الإنتاج */
-    .design-mirror-badge {
-      position: fixed; z-index: 99999; bottom: 12px; inset-inline-start: 12px;
-      background: #1e1b4b; color: #fff; font: 700 .72rem/1 Tajawal,sans-serif;
-      padding: .45rem .7rem; border-radius: 999px; opacity: .85; pointer-events: none;
+    /* Mirror helper: point images to production public assets when opened as file */
+    .mirror-note {
+      margin: 0;
+      padding: .75rem 1rem;
+      background: #FFF6F6;
+      color: #4F5665;
+      font: 500 .85rem/1.5 Rubik, sans-serif;
+      border-bottom: 1px solid #FFD6D6;
+      text-align: center;
     }
   </style>
 </head>
-<body class="sana-home">
-<div class="design-mirror-badge">مرآة تصميم الإنتاج · welcome + theme.blade.php</div>
-<div id="sana-scroll-progress"></div>
+<body class="lasles-home">
+  <p class="mirror-note">مرآة تصميم — ليست route إنتاج. Blade: <code>welcome</code> + <code>partials/landing/lasles/*</code> · CSS: <code>public/css/landing/lasles.css</code></p>
 
-<!-- ===== navbar — landing/sana/navbar.blade.php ===== -->
-<header id="sana-nav" class="sana-nav sana-nav--hero">
-  <div class="sana-container">
-    <div class="sana-nav__inner">
-      <a href="01-home.html" class="sana-nav__brand">
-        <span class="sana-nav__logo-text">SANA</span>
+  <!-- Structure mirrors production partials order -->
+  <header class="lasles-nav" id="lasles-nav">
+    <div class="lasles-topbar" role="complementary" aria-label="تواصل سريع">
+      <div class="lasles-container lasles-topbar__inner">
+        <div class="lasles-topbar__contacts">
+          <a href="tel:01044610507" class="lasles-topbar__link"><span dir="ltr">01044610507</span></a>
+          <a href="mailto:info@tadrislab.com" class="lasles-topbar__link">info@tadrislab.com</a>
+          <a href="https://wa.me/201044610507" class="lasles-topbar__link lasles-topbar__link--wa">واتساب</a>
+        </div>
+      </div>
+    </div>
+    <div class="lasles-container lasles-nav__inner">
+      <a href="#" class="lasles-brand">
+        <img src="../../public/img/lasles/logo-mark.png" width="35" height="35" alt="">
+        <span><em>تدريس</em><b> لاب</b></span>
       </a>
-      <nav class="sana-nav__links" aria-label="القائمة">
-        <a href="01-home.html" class="is-active">الرئيسية</a>
-        <a href="03-courses.html" class="sana-nav__path sana-nav__path--family">للطلاب وأولياء الأمور</a>
-        <a href="02-about.html">كيف تعمل سنا؟</a>
-        <a href="05-contact.html">تواصل معنا</a>
+      <nav class="lasles-nav__links" aria-label="القائمة">
+        <a href="#about" class="is-active">عن المنصة</a>
+        <a href="#path">المسار</a>
+        <a href="#features">الميزات</a>
+        <a href="#pricing">الباقات</a>
+        <a href="#testimonials">آراء المعلمين</a>
+        <a href="#help">مساعدة</a>
       </nav>
-      <div class="sana-nav__actions">
-        <a href="06-auth-login.html" class="sana-nav__login">تسجيل الدخول</a>
-        <a href="05-contact.html" class="sana-nav__signup">احجز تقييم مستوى</a>
+      <div class="lasles-nav__actions">
+        <a href="#" class="lasles-lang">EN</a>
+        <a href="#" class="lasles-nav__signin">تسجيل الدخول</a>
+        <a href="#" class="lasles-btn-outline">إنشاء حساب</a>
+        <button type="button" class="lasles-burger" aria-label="القائمة">☰</button>
       </div>
-      <button type="button" id="sana-mobile-toggle" class="sana-nav__burger" aria-expanded="false" aria-controls="sana-mobile-menu" aria-label="فتح القائمة">
-        <i class="fas fa-bars" aria-hidden="true"></i>
-      </button>
     </div>
-    <div id="sana-mobile-menu" class="sana-nav__mobile" aria-hidden="true">
-      <a href="01-home.html" class="is-active">الرئيسية</a>
-      <a href="03-courses.html" class="sana-nav__path sana-nav__path--family">للطلاب وأولياء الأمور</a>
-      <a href="02-about.html">كيف تعمل سنا؟</a>
-      <a href="05-contact.html">تواصل معنا</a>
-      <a href="06-auth-login.html">تسجيل الدخول</a>
-      <a href="05-contact.html" class="sana-nav__signup sana-nav__signup--block">احجز تقييم مستوى</a>
-      <a href="05-contact.html" class="sana-nav__signup sana-nav__signup--block sana-nav__signup--wa">تواصل عبر واتساب</a>
-    </div>
-  </div>
-</header>
-<div id="sana-mobile-backdrop" class="sana-nav__backdrop" aria-hidden="true"></div>
+  </header>
 
-<main>
-
-<!-- ===== hero — sections/hero.blade.php + hero-scene ===== -->
-<section class="sana-hero-wrap" id="top">
-  <div class="sana-hero">
-    <div class="sana-hero__bg-deco" aria-hidden="true">
-      <div class="sana-hero__glow sana-hero__glow--1"></div>
-      <div class="sana-hero__glow sana-hero__glow--2"></div>
-      <div class="sana-hero__glow sana-hero__glow--3"></div>
-      <div class="sana-hero__glow sana-hero__glow--4"></div>
-      <div class="sana-hero__dotgrid"></div>
-      <span class="sana-hero__bokeh sana-hero__bokeh--1"></span>
-      <span class="sana-hero__bokeh sana-hero__bokeh--2"></span>
-      <span class="sana-hero__bokeh sana-hero__bokeh--3"></span>
-      <span class="sana-hero__bokeh sana-hero__bokeh--4"></span>
-      <span class="sana-hero__geo sana-hero__geo--1"></span>
-      <span class="sana-hero__geo sana-hero__geo--2"></span>
-      <span class="sana-hero__geo sana-hero__geo--3"></span>
-      <span class="sana-hero__cross sana-hero__cross--1"></span>
-      <span class="sana-hero__cross sana-hero__cross--2"></span>
-      <svg class="sana-hero__wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,64 C240,120 480,0 720,48 C960,96 1200,24 1440,64 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.04)"/>
-        <path d="M0,88 C360,40 720,100 1080,56 C1260,36 1380,72 1440,80 L1440,120 L0,120 Z" fill="rgba(167,139,250,0.08)"/>
-      </svg>
-      <svg class="sana-hero__arc sana-hero__arc--1" viewBox="0 0 200 200" aria-hidden="true">
-        <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5" stroke-dasharray="6 10"/>
-      </svg>
-      <svg class="sana-hero__arc sana-hero__arc--2" viewBox="0 0 120 120" aria-hidden="true">
-        <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(251,191,36,0.12)" stroke-width="1.5" stroke-dasharray="4 8"/>
-      </svg>
-    </div>
-    <div class="sana-container sana-hero__container">
-      <div class="sana-hero__grid">
-        <div class="sana-hero__content sana-reveal">
-          <p class="sana-hero__eyebrow">
-            <span class="sana-hero__eyebrow-dot"></span>
-            للطلاب وأولياء الأمور
-          </p>
-          <h1 class="sana-hero__title">
-            منصة Sana لتعليم الأطفال أونلاين
-            <span class="hl">بثقة ومتعة</span>
-          </h1>
-          <p class="sana-hero__desc">حصص مباشرة، متابعة لولي الأمر، ومعلمون متخصصون لمساعدة طفلك في الرياضيات والمواد الدراسية خطوة بخطوة.</p>
-          <div class="sana-hero__actions">
-            <div class="sana-site-cta sana-site-cta--hero">
-              <a href="05-contact.html" class="sana-btn sana-btn--yellow sana-btn--lg">
-                <i class="fas fa-clipboard-check"></i> احجز تقييم مستوى مجاني
-              </a>
-              <a href="05-contact.html" class="sana-btn sana-btn--wa sana-btn--lg">
-                <i class="fab fa-whatsapp"></i> تواصل عبر واتساب
-              </a>
-            </div>
-          </div>
-          <ul class="sana-hero__trust" aria-label="خطوات الرحلة">
-            <li><i class="fas fa-clipboard-check"></i> احجز تقييم مستوى مجاني</li>
-            <li><i class="fas fa-user-check"></i> نختار المعلّم أو الباقة</li>
-            <li><i class="fas fa-chart-line"></i> ابدأ الحصص وتابع التقدّم</li>
-          </ul>
-          <div class="sana-hero__badges">
-            <span class="sana-hero__badge"><i class="fas fa-shield-halved"></i> منصة آمنة للأطفال</span>
-            <span class="sana-hero__badge"><i class="fas fa-chalkboard-user"></i> معلّمون مختارون</span>
+  <main>
+    <section class="lasles-hero" id="top">
+      <div class="lasles-hero__glow" aria-hidden="true"></div>
+      <div class="lasles-container lasles-hero__grid">
+        <div class="lasles-hero__copy">
+          <p class="lasles-hero__brand">تدريس لاب</p>
+          <h1 class="lasles-hero__title">طوّر ممارستك المهنية.</h1>
+          <p class="lasles-hero__lead">مسار تطوير مهني عملي يساعدك تشخّص احتياجك، تطور مهاراتك، وتقيس تقدمك.</p>
+          <div class="lasles-hero__actions">
+            <a href="#" class="lasles-btn-primary lasles-btn-primary--hero">ابدأ رحلتك</a>
+            <a href="#path" class="lasles-btn-outline lasles-btn-outline--hero">استكشف البرامج</a>
           </div>
         </div>
-        <div class="sana-hero__visual sana-reveal" aria-hidden="true">
-          <div class="sana-hero-illus">
-            <div class="sana-hero-illus__deco" aria-hidden="true">
-              <span class="sana-hero-illus__glow"></span>
-              <span class="sana-hero-illus__ring sana-hero-illus__ring--1"></span>
-              <span class="sana-hero-illus__ring sana-hero-illus__ring--2"></span>
-              <span class="sana-hero-illus__blob sana-hero-illus__blob--1"></span>
-              <span class="sana-hero-illus__blob sana-hero-illus__blob--2"></span>
-              <span class="sana-hero-illus__cloud sana-hero-illus__cloud--1"></span>
-              <span class="sana-hero-illus__cloud sana-hero-illus__cloud--2"></span>
-              <span class="sana-hero-illus__cloud sana-hero-illus__cloud--3"></span>
-              <span class="sana-hero-illus__cloud sana-hero-illus__cloud--4"></span>
-              <span class="sana-hero-illus__spark sana-hero-illus__spark--1">✦</span>
-              <span class="sana-hero-illus__spark sana-hero-illus__spark--2">✦</span>
-              <span class="sana-hero-illus__spark sana-hero-illus__spark--3">✦</span>
-              <span class="sana-hero-illus__star sana-hero-illus__star--1">⭐</span>
-              <span class="sana-hero-illus__star sana-hero-illus__star--2">⭐</span>
-              <span class="sana-hero-illus__float sana-hero-illus__float--bulb">💡</span>
-              <span class="sana-hero-illus__float sana-hero-illus__float--planet">🪐</span>
-              <span class="sana-hero-illus__dot sana-hero-illus__dot--1"></span>
-              <span class="sana-hero-illus__dot sana-hero-illus__dot--2"></span>
-              <span class="sana-hero-illus__dot sana-hero-illus__dot--3"></span>
-              <span class="sana-hero-illus__bokeh sana-hero-illus__bokeh--1"></span>
-              <span class="sana-hero-illus__bokeh sana-hero-illus__bokeh--2"></span>
-              <span class="sana-hero-illus__bokeh sana-hero-illus__bokeh--3"></span>
-              <span class="sana-hero-illus__shape sana-hero-illus__shape--sq"></span>
-              <span class="sana-hero-illus__shape sana-hero-illus__shape--ci"></span>
-              <span class="sana-hero-illus__cross"></span>
-            </div>
-            <div class="sana-hero-illus__char-wrap">
-              <img src="../../public/img/sanua/imagehome.png" alt="" class="sana-hero-illus__char" width="1536" height="1024" loading="eager">
-            </div>
+        <div class="lasles-hero__art">
+          <div class="lasles-hero__art-frame">
+            <img src="../../public/img/lasles/hero-illustration.svg" width="611" height="382" alt="">
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="sana-container">
-    <div class="sana-hero-stats sana-hero-stats--trust sana-reveal" aria-label="لماذا تثق بسنا">
-      <div class="sana-hero-stats__item">
-        <span class="sana-hero-stats__icon"><i class="fas fa-seedling"></i></span>
-        <div>
-          <strong>دفعات تعليمية محدودة</strong>
-          <span>نركّز على جودة التجربة قبل التوسع</span>
+    <section class="lasles-container lasles-stats-wrap" aria-label="إحصائيات">
+      <div class="lasles-stats">
+        <div class="lasles-stats__item">
+          <div class="lasles-stats__icon"><img src="../../public/img/lasles/icon-teachers.svg" width="40" height="40" alt=""></div>
+          <div><p class="lasles-stats__num">90+</p><p class="lasles-stats__label">معلمون</p></div>
+        </div>
+        <div class="lasles-stats__divider" aria-hidden="true"></div>
+        <div class="lasles-stats__item">
+          <div class="lasles-stats__icon"><img src="../../public/img/lasles/icon-paths.svg" width="40" height="40" alt=""></div>
+          <div><p class="lasles-stats__num">7</p><p class="lasles-stats__label">مسارات</p></div>
+        </div>
+        <div class="lasles-stats__divider" aria-hidden="true"></div>
+        <div class="lasles-stats__item">
+          <div class="lasles-stats__icon"><img src="../../public/img/lasles/icon-tools.svg" width="40" height="40" alt=""></div>
+          <div><p class="lasles-stats__num">50+</p><p class="lasles-stats__label">أدوات</p></div>
         </div>
       </div>
-      <div class="sana-hero-stats__item">
-        <span class="sana-hero-stats__icon"><i class="fas fa-comments"></i></span>
-        <div>
-          <strong>متابعة بعد كل حصة</strong>
-          <span>تواصل مستمر مع العائلة حول تقدّم الطالب</span>
+    </section>
+
+    <section class="lasles-path-home" id="path">
+      <div class="lasles-container">
+        <div class="lasles-path-home__head">
+          <p class="lasles-path-kicker">مسار المعلم</p>
+          <h2 class="lasles-section-title lasles-section-title--center">مسار تطوير الممارسة</h2>
+          <p class="lasles-section-lead lasles-section-lead--center">من التشخيص إلى قياس التقدّم — أربع خطوات للمعلم.</p>
+        </div>
+        <ol class="lasles-path-grid lasles-path-grid--home">
+          <li class="lasles-path-card lasles-path-card--compact">
+            <span class="lasles-path-card__num">01</span>
+            <h3 class="lasles-path-card__title">تشخيص</h3>
+            <p class="lasles-path-card__body">حدّد تحديات ممارستك الصفية بوضوح.</p>
+          </li>
+          <li class="lasles-path-card lasles-path-card--compact">
+            <span class="lasles-path-card__num">02</span>
+            <h3 class="lasles-path-card__title">وصول</h3>
+            <p class="lasles-path-card__body">ممارسات وأدوات وتحديات جاهزة للتطبيق.</p>
+          </li>
+          <li class="lasles-path-card lasles-path-card--compact">
+            <span class="lasles-path-card__num">03</span>
+            <h3 class="lasles-path-card__title">تطوير</h3>
+            <p class="lasles-path-card__body">طبّق وطوّر أداءك المهني باستمرار.</p>
+          </li>
+          <li class="lasles-path-card lasles-path-card--compact">
+            <span class="lasles-path-card__num">04</span>
+            <h3 class="lasles-path-card__title">قياس</h3>
+            <p class="lasles-path-card__body">تابع تقدّمك ببيانات واضحة.</p>
+          </li>
+        </ol>
+        <div class="lasles-path-home__actions">
+          <a href="10-path.html" class="lasles-btn-outline">تفاصيل المسار</a>
+          <a href="#" class="lasles-btn-primary">ابدأ المسار</a>
         </div>
       </div>
-      <div class="sana-hero-stats__item">
-        <span class="sana-hero-stats__icon"><i class="fas fa-chart-simple"></i></span>
-        <div>
-          <strong>تقارير واضحة لولي الأمر</strong>
-          <span>ملخصات مفهومة — بدون أرقام غير مؤكدة</span>
+    </section>
+
+    <section class="lasles-pillars" id="services">
+      <div class="lasles-container">
+        <div class="lasles-pillars__head">
+          <p class="lasles-path-kicker">رحلة المعلم</p>
+          <h2 class="lasles-section-title">خدماتنا للمعلمين</h2>
+          <p class="lasles-section-lead">مرتّبة حسب رحلتك: من التشخيص والوصول إلى التطوير والقياس — ثم الدعم المؤسسي عند الحاجة.</p>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== audience paths ===== -->
-<section class="sana-section sana-section--paths" id="paths">
-  <div class="sana-container sana-container--wide">
-    <div class="sana-paths-band sana-paths-band--wide sana-reveal">
-      <div class="sana-paths-band__dots" aria-hidden="true"></div>
-      <div class="sana-paths-band__glow sana-paths-band__glow--1" aria-hidden="true"></div>
-      <div class="sana-paths-band__glow sana-paths-band__glow--2" aria-hidden="true"></div>
-      <div class="sana-paths-band__shell">
-        <div class="sana-paths-band__row-top">
-          <div class="sana-paths-band__main">
-            <span class="sana-paths-band__eyebrow"><i class="fas fa-child-reaching"></i> للعائلات والطلاب</span>
-            <h2 class="sana-paths-band__title">ابدأ رحلة التعلّم</h2>
-            <p class="sana-paths-band__sub">خطوات بسيطة للطلاب وأولياء الأمور — من التقييم إلى الحصص والمتابعة.</p>
-            <div class="sana-paths-band__meta">
-              <h3>وليّ أمر / طالب</h3>
-              <p>ابدأ بتقييم مستوى مجاني — نحدّد معك المعلّم أو الباقة المناسبة، ثم تبدأ الحصص.</p>
-            </div>
-          </div>
-          <div class="sana-paths-band__actions">
-            <div class="sana-site-cta sana-paths-band__cta">
-              <a href="05-contact.html" class="sana-btn sana-btn--yellow sana-btn--lg"><i class="fas fa-clipboard-check"></i> احجز تقييم مستوى مجاني</a>
-              <a href="05-contact.html" class="sana-btn sana-btn--wa sana-btn--lg"><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</a>
-            </div>
-            <a href="02-about.html" class="sana-paths-band__link"><i class="fas fa-circle-info"></i> كيف تعمل سنا؟</a>
-          </div>
-        </div>
-        <div class="sana-paths-band__steps" aria-label="خطوات العائلات">
-          <article class="sana-paths-band__step">
-            <span class="sana-paths-band__step-num">الخطوة 1</span>
-            <div class="sana-paths-band__step-icon"><i class="fas fa-clipboard-check"></i></div>
-            <p class="sana-paths-band__step-text">احجز تقييم مستوى مجاني</p>
-          </article>
-          <article class="sana-paths-band__step">
-            <span class="sana-paths-band__step-num">الخطوة 2</span>
-            <div class="sana-paths-band__step-icon"><i class="fas fa-user-check"></i></div>
-            <p class="sana-paths-band__step-text">نختار المعلّم أو الباقة</p>
-          </article>
-          <article class="sana-paths-band__step">
-            <span class="sana-paths-band__step-num">الخطوة 3</span>
-            <div class="sana-paths-band__step-icon"><i class="fas fa-graduation-cap"></i></div>
-            <p class="sana-paths-band__step-text">ابدأ الحصص وتابع التقدّم</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== features — sections/features.blade.php ===== -->
-<section class="sana-section sana-section--white" id="features">
-  <div class="sana-container">
-    <div class="sana-head sana-reveal">
-      <h2 class="sana-head__title">لماذا تختار <span class="hl">منصتنا؟</span></h2>
-      <span class="sana-head__line"></span>
-    </div>
-    <div class="sana-features-m">
-      <article class="sana-feature-m sana-reveal">
-        <div class="sana-feature-m__icon" style="background:#EDE9FE">🗺️</div>
-        <h3>تعلّم تفاعلي</h3>
-        <p>دروس gamified تجعل التعلّم مغامرة ممتعة مع نقاط ومكافآت.</p>
-      </article>
-      <article class="sana-feature-m sana-reveal">
-        <div class="sana-feature-m__icon" style="background:#DBEAFE">🎧</div>
-        <h3>دعم مباشر</h3>
-        <p>تواصل مع المعلّمين واحصل على إجابات فورية خلال الحصص.</p>
-      </article>
-      <article class="sana-feature-m sana-reveal">
-        <div class="sana-feature-m__icon" style="background:#FEF3C7">📜</div>
-        <h3>شهادات إتمام رقمية</h3>
-        <p>شهادات قابلة للتحقق تُصدَر تلقائياً بعد إتمام المسارات.</p>
-      </article>
-      <article class="sana-feature-m sana-reveal">
-        <div class="sana-feature-m__icon" style="background:#D1FAE5">📊</div>
-        <h3>لوحة متابعة</h3>
-        <p>تتبّع تقدّمك وإنجازاتك لحظة بلحظة.</p>
-      </article>
-      <article class="sana-feature-m sana-reveal">
-        <div class="sana-feature-m__icon" style="background:#FCE7F3">📈</div>
-        <h3>تقارير ذكية</h3>
-        <p>تحليلات تفصيلية لنقاط القوة والتحسين.</p>
-      </article>
-      <article class="sana-feature-m sana-reveal">
-        <div class="sana-feature-m__icon" style="background:#E0E7FF">🎬</div>
-        <h3>دروس مسجّلة</h3>
-        <p>محتوى عالي الجودة متاح للمشاهدة في أي وقت.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ===== categories (sample mirrors dynamic subjects) ===== -->
-<section class="sana-section" id="categories">
-  <div class="sana-container">
-    <div class="sana-head-row sana-reveal">
-      <div class="sana-head">
-        <h2 class="sana-head__title">تصفّح <span class="hl">التصنيفات</span></h2>
-        <span class="sana-head__line"></span>
-      </div>
-      <a href="03-courses.html" class="sana-link-more">عرض الكل <i class="fas fa-arrow-left"></i></a>
-    </div>
-    <div class="sana-cats-row sana-reveal">
-      <a href="03-courses.html" class="sana-cat-m" style="background:linear-gradient(145deg,#EDE9FE,#C4B5FD)"><span class="sana-cat-m__emoji">🔢</span><span class="sana-cat-m__name">رياضيات</span></a>
-      <a href="03-courses.html" class="sana-cat-m" style="background:linear-gradient(145deg,#D1FAE5,#6EE7B7)"><span class="sana-cat-m__emoji">🔬</span><span class="sana-cat-m__name">علوم</span></a>
-      <a href="03-courses.html" class="sana-cat-m" style="background:linear-gradient(145deg,#DBEAFE,#93C5FD)"><span class="sana-cat-m__emoji">💻</span><span class="sana-cat-m__name">تقنية</span></a>
-      <a href="03-courses.html" class="sana-cat-m" style="background:linear-gradient(145deg,#FFEDD5,#FDBA74)"><span class="sana-cat-m__emoji">🌍</span><span class="sana-cat-m__name">إنجليزي</span></a>
-      <a href="03-courses.html" class="sana-cat-m" style="background:linear-gradient(145deg,#FCE7F3,#F9A8D4)"><span class="sana-cat-m__emoji">📚</span><span class="sana-cat-m__name">عربي</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== courses sample ===== -->
-<section class="sana-section sana-section--white" id="courses">
-  <div class="sana-container">
-    <div class="sana-head-row sana-reveal">
-      <div class="sana-head">
-        <h2 class="sana-head__title">أحدث <span class="hl">الدورات</span></h2>
-        <span class="sana-head__line"></span>
-      </div>
-      <a href="03-courses.html" class="sana-link-more">عرض الكل <i class="fas fa-arrow-left"></i></a>
-    </div>
-    <div class="sana-courses-m">
-      <article class="sana-course-card sana-course-card--featured sana-reveal">
-        <div class="sana-course-card__media">
-          <a href="03-courses.html" class="sana-course-card__img-link" tabindex="-1" aria-hidden="true">
-            <img src="../../public/img/sanua/landing-hero-3d-books.png" alt="دورة نموذجية" loading="lazy">
+        <div class="lasles-pillars__grid">
+          <a class="lasles-pillar" href="10-path.html">
+            <span class="lasles-pillar__top">
+              <span class="lasles-pillar__icon" aria-hidden="true"><img src="../../public/img/lasles/icon-paths.svg" width="28" height="28" alt=""></span>
+              <span class="lasles-pillar__step">تطوير</span>
+            </span>
+            <h3>المسارات التعليمية</h3>
+            <p>مهارة صفّية محددة، خطوات واضحة، وتطبيق فوري داخل الحصة.</p>
+            <span class="lasles-pillar__link">استكشف <span class="lasles-pillar__arrow" aria-hidden="true"></span></span>
           </a>
-          <div class="sana-course-card__shine" aria-hidden="true"></div>
-          <div class="sana-course-card__badges">
-            <span class="sana-course-card__badge sana-course-card__badge--subject">رياضيات</span>
-            <span class="sana-course-card__badge sana-course-card__badge--level">مبتدئ</span>
-          </div>
+          <a class="lasles-pillar" href="#">
+            <span class="lasles-pillar__top">
+              <span class="lasles-pillar__icon" aria-hidden="true"><img src="../../public/img/lasles/icon-tools.svg" width="28" height="28" alt=""></span>
+              <span class="lasles-pillar__step">وصول</span>
+            </span>
+            <h3>الأدوات والموارد</h3>
+            <p>قوالب وقوائم تحقق جاهزة للاستخدام في ممارستك اليومية.</p>
+            <span class="lasles-pillar__link">استكشف <span class="lasles-pillar__arrow" aria-hidden="true"></span></span>
+          </a>
+          <a class="lasles-pillar" href="#">
+            <span class="lasles-pillar__top">
+              <span class="lasles-pillar__icon" aria-hidden="true"><img src="../../public/img/lasles/check-list.svg" width="28" height="28" alt=""></span>
+              <span class="lasles-pillar__step">تشخيص</span>
+            </span>
+            <h3>الاستشارات</h3>
+            <p>جلسة فردية أو متخصصة لتفكيك تحدٍّ صفّي محدد.</p>
+            <span class="lasles-pillar__link">استكشف <span class="lasles-pillar__arrow" aria-hidden="true"></span></span>
+          </a>
+          <a class="lasles-pillar" href="04-pricing.html">
+            <span class="lasles-pillar__top">
+              <span class="lasles-pillar__icon" aria-hidden="true"><img src="../../public/img/lasles/check-green.svg" width="28" height="28" alt=""></span>
+              <span class="lasles-pillar__step">باقة</span>
+            </span>
+            <h3>الباقات</h3>
+            <p>مسارات + أدوات + استشارات في عرض واحد واضح.</p>
+            <span class="lasles-pillar__link">استكشف <span class="lasles-pillar__arrow" aria-hidden="true"></span></span>
+          </a>
+          <a class="lasles-pillar" href="#">
+            <span class="lasles-pillar__top">
+              <span class="lasles-pillar__icon" aria-hidden="true"><img src="../../public/img/lasles/icon-teachers.svg" width="28" height="28" alt=""></span>
+              <span class="lasles-pillar__step">مؤسسات</span>
+            </span>
+            <h3>المدارس والمؤسسات</h3>
+            <p>برامج تدريب وتطوير منسّقة لفريق المعلمين لديكم.</p>
+            <span class="lasles-pillar__link">استكشف <span class="lasles-pillar__arrow" aria-hidden="true"></span></span>
+          </a>
         </div>
-        <div class="sana-course-card__body">
-          <h3 class="sana-course-card__title"><a href="03-courses.html">دورة نموذجية (من قاعدة البيانات)</a></h3>
-          <p class="sana-course-card__desc">دورة تعليمية تفاعلية مصمّمة لتجربة تعلّم ممتعة وفعّالة.</p>
-          <div class="sana-course-card__instructor">
-            <span class="sana-course-card__avatar sana-course-card__avatar--initial">م</span>
-            <div class="sana-course-card__instructor-info">
-              <span class="sana-course-card__instructor-label">المعلّم</span>
-              <span class="sana-course-card__instructor-name">معلّم</span>
-            </div>
-          </div>
+      </div>
+    </section>
+
+    <section class="lasles-features" id="features">
+      <div class="lasles-container lasles-features__grid">
+        <div class="lasles-features__art">
+          <img src="../../public/img/lasles/features-illustration.png" width="508" height="414" alt="">
         </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ===== teachers sample ===== -->
-<section class="sana-section" id="instructors">
-  <div class="sana-container">
-    <div class="sana-head-row sana-reveal">
-      <div class="sana-head">
-        <h2 class="sana-head__title">تعرّف على <span class="hl">معلّمينا</span></h2>
-        <span class="sana-head__line"></span>
-      </div>
-      <a href="09-instructors.html" class="sana-link-more">عرض الكل <i class="fas fa-arrow-left"></i></a>
-    </div>
-    <div class="sana-teachers-m">
-      <a href="09-instructors.html" class="sana-teacher-m sana-reveal" style="text-decoration:none;color:inherit">
-        <div class="sana-teacher-m__ring"><span class="av">أ</span></div>
-        <h3>اسم المعلّم</h3>
-        <p class="role">معلّم على المنصة</p>
-        <span class="sana-teacher-m__book"><i class="fas fa-calendar-check"></i> احجز مع هذا المعلم</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== journey ===== -->
-<section class="sana-section sana-section--white" id="journey">
-  <div class="sana-container">
-    <div class="sana-head sana-reveal">
-      <h2 class="sana-head__title">رحلة وليّ الأمر <span class="hl">في 4 خطوات</span></h2>
-      <span class="sana-head__line"></span>
-    </div>
-    <div class="sana-journey-m sana-reveal">
-      <div class="sana-journey-m__line" aria-hidden="true"></div>
-      <div class="sana-journey-m__step">
-        <div class="sana-journey-m__icon"><i class="fas fa-clipboard-check"></i></div>
-        <span>احجز تقييم مستوى مجاني</span>
-      </div>
-      <div class="sana-journey-m__step">
-        <div class="sana-journey-m__icon"><i class="fas fa-user-check"></i></div>
-        <span>نختار المعلّم أو الباقة</span>
-      </div>
-      <div class="sana-journey-m__step">
-        <div class="sana-journey-m__icon"><i class="fas fa-video"></i></div>
-        <span>ابدأ الحصص</span>
-      </div>
-      <div class="sana-journey-m__step">
-        <div class="sana-journey-m__icon"><i class="fas fa-chart-line"></i></div>
-        <span>تابع التقدّم</span>
-      </div>
-    </div>
-    <div class="sana-reveal" style="margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:12px">
-      <div class="sana-site-cta">
-        <a href="05-contact.html" class="sana-btn sana-btn--yellow sana-btn--lg"><i class="fas fa-clipboard-check"></i> احجز تقييم مستوى</a>
-        <a href="05-contact.html" class="sana-btn sana-btn--wa sana-btn--lg"><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</a>
-      </div>
-      <a href="02-about.html" class="sana-link-more">كيف تعمل سنا؟ <i class="fas fa-arrow-left"></i></a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== certificates ===== -->
-<section class="sana-section" id="achievements">
-  <div class="sana-container">
-    <div class="sana-achieve-box sana-reveal">
-      <div class="sana-achieve-box__glow sana-achieve-box__glow--1"></div>
-      <div class="sana-achieve-box__glow sana-achieve-box__glow--2"></div>
-      <div class="sana-achieve-box__inner">
-        <div class="sana-achieve-box__content">
-          <span class="sana-achieve-box__tag"><i class="fas fa-certificate"></i> شهادات إتمام · قابلة للتحقق</span>
-          <h2 class="sana-achieve-box__title">إنجازاتك... <span class="hl">تفخر بها</span></h2>
-          <p class="sana-achieve-box__desc">شهادات رقمية قابلة للتحقق تُصدَر تلقائياً بعد إتمام المسارات — يمكن مشاركتها وطباعتها في أي وقت.</p>
-          <ul class="sana-achieve-box__highlights">
-            <li><i class="fas fa-check-circle"></i> شهادة رقمية فور إتمام المسار</li>
-            <li><i class="fas fa-qrcode"></i> رمز تحقق ومشاركة آمنة</li>
-            <li><i class="fas fa-shield-halved"></i> هوية أكاديمية سنا الرسمية</li>
+        <div>
+          <h2 class="lasles-section-title">نوفّر ميزات كثيرة يمكنك استخدامها</h2>
+          <p class="lasles-section-lead">استكشف الميزات التي نوفّرها لدعم التشخيص والتطوير المهني وقياس التقدّم.</p>
+          <ul class="lasles-checklist">
+            <li><img src="../../public/img/lasles/check-green.svg" width="24" height="24" alt="">تشخيص تحديات الممارسة الصفية.</li>
+            <li><img src="../../public/img/lasles/check-green.svg" width="24" height="24" alt="">ممارسات وأدوات تطبيقية.</li>
+            <li><img src="../../public/img/lasles/check-green.svg" width="24" height="24" alt="">تحديات لتطوير الأداء المهني.</li>
+            <li><img src="../../public/img/lasles/check-green.svg" width="24" height="24" alt="">قياس واضح لتقدّمك.</li>
           </ul>
         </div>
-        <div class="sana-achieve-box__visual" aria-hidden="true">
-          <div class="sana-cert-mock">
-            <div class="sana-cert-mock__corner sana-cert-mock__corner--tl"></div>
-            <div class="sana-cert-mock__corner sana-cert-mock__corner--tr"></div>
-            <div class="sana-cert-mock__corner sana-cert-mock__corner--bl"></div>
-            <div class="sana-cert-mock__corner sana-cert-mock__corner--br"></div>
-            <div class="sana-cert-mock__seal"><i class="fas fa-star"></i></div>
-            <p class="sana-cert-mock__label">شهادة إتمام</p>
-            <h3 class="sana-cert-mock__brand">Sana</h3>
-            <div class="sana-cert-mock__line"></div>
-            <p class="sana-cert-mock__to">يُمنَح هذه الشهادة لـ</p>
-            <p class="sana-cert-mock__name">الطالب المتميّز</p>
-            <p class="sana-cert-mock__course">لإتمام المسار التعليمي بنجاح</p>
-            <div class="sana-cert-mock__footer">
-              <span><i class="fas fa-qrcode"></i> قابلة للتحقق</span>
-              <span><i class="fas fa-shield-halved"></i> صادرة من المنصة</span>
+      </div>
+    </section>
+
+    <section class="lasles-pricing" id="pricing">
+      <div class="lasles-container">
+        <h2 class="lasles-section-title">اختر باقتك</h2>
+        <p class="lasles-section-lead">اختر الباقة الأنسب لك واستكشف أدوات التطوير المهني بثقة.</p>
+        <div class="lasles-plans">
+          <article class="lasles-plan">
+            <img class="lasles-plan__art" src="../../public/img/lasles/plan-free.svg" width="145" height="165" alt="">
+            <h3 class="lasles-plan__name">باقة مجانية</h3>
+            <ul class="lasles-plan__list">
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">تشخيص أساسي</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">مكتبة ممارسات محدودة</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">بدون سجلات زائدة</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">يعمل على كل الأجهزة</li>
+            </ul>
+            <div class="lasles-plan__footer">
+              <p class="lasles-plan__price">مجاني</p>
+              <a href="#" class="lasles-btn-outline">اختيار</a>
             </div>
-          </div>
+          </article>
+          <article class="lasles-plan">
+            <img class="lasles-plan__art" src="../../public/img/lasles/plan-standard.svg" width="145" height="165" alt="">
+            <h3 class="lasles-plan__name">باقة قياسية</h3>
+            <ul class="lasles-plan__list">
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">تشخيص متقدم</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">ممارسات وأدوات</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">تحديات تطبيقية</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">يعمل على كل الأجهزة</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">متابعة تقدّم</li>
+            </ul>
+            <div class="lasles-plan__footer">
+              <p class="lasles-plan__price"><b>$9</b> <span>/ شهر</span></p>
+              <a href="#" class="lasles-btn-outline">اختيار</a>
+            </div>
+          </article>
+          <article class="lasles-plan is-featured">
+            <img class="lasles-plan__art" src="../../public/img/lasles/plan-premium.svg" width="145" height="165" alt="">
+            <h3 class="lasles-plan__name">باقة مميزة</h3>
+            <ul class="lasles-plan__list">
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">كل ميزات القياسية</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">مكتبة كاملة</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">تحديات متقدمة</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">قياس تقدّم تفصيلي</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">دعم أولوية</li>
+              <li><img src="../../public/img/lasles/check-list.svg" width="20" height="20" alt="">مسارات مخصّصة</li>
+            </ul>
+            <div class="lasles-plan__footer">
+              <p class="lasles-plan__price"><b>$12</b> <span>/ شهر</span></p>
+              <a href="#" class="lasles-btn-primary">اختيار</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="lasles-network" id="network">
+      <div class="lasles-container">
+        <h2 class="lasles-section-title">شبكة واسعة من المعلمين والممارسات</h2>
+        <p class="lasles-section-lead">شاهد كيف تصل تدريس لاب لمعلمين في سياقات مختلفة لتسهيل تطوير الممارسة المهنية.</p>
+        <div class="lasles-network__map">
+          <img src="../../public/img/lasles/map-global.svg" width="900" height="450" alt="">
+        </div>
+        <div class="lasles-sponsors" aria-label="شركاء">
+          <img src="../../public/img/lasles/sponsor-1.png" alt="">
+          <img src="../../public/img/lasles/sponsor-2.png" alt="">
+          <img src="../../public/img/lasles/sponsor-3.png" alt="">
+          <img src="../../public/img/lasles/sponsor-4.png" alt="">
+          <img src="../../public/img/lasles/sponsor-5.png" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="lasles-reviews" id="testimonials">
+      <div class="lasles-container">
+        <h2 class="lasles-section-title">موثوق من آلاف المعلمين السعداء</h2>
+        <p class="lasles-section-lead">هذه قصص معلمين انضموا بثقة واستفادوا من أدوات التشخيص والتطوير.</p>
+        <div class="lasles-reviews__track">
+          <article class="lasles-review is-active">
+            <div class="lasles-review__top">
+              <img src="../../public/img/lasles/avatar-1.png" width="50" height="50" alt="">
+              <div><p class="lasles-review__name">Viezh Robert</p><p class="lasles-review__loc">Warsaw, Poland</p></div>
+              <div class="lasles-review__rating">4.5 <img src="../../public/img/lasles/star.svg" width="14" height="14" alt=""></div>
+            </div>
+            <p class="lasles-review__quote">“تجربة ممتازة في تطوير ممارستي المهنية.”</p>
+          </article>
+          <article class="lasles-review">
+            <div class="lasles-review__top">
+              <img src="../../public/img/lasles/avatar-2.png" width="50" height="50" alt="">
+              <div><p class="lasles-review__name">Yessica Christy</p><p class="lasles-review__loc">Shanxi, China</p></div>
+              <div class="lasles-review__rating">4.5 <img src="../../public/img/lasles/star.svg" width="14" height="14" alt=""></div>
+            </div>
+            <p class="lasles-review__quote">“الأدوات واضحة وتساعدني أقيس تقدّمي.”</p>
+          </article>
+          <article class="lasles-review">
+            <div class="lasles-review__top">
+              <img src="../../public/img/lasles/avatar-3.png" width="50" height="50" alt="">
+              <div><p class="lasles-review__name">Kim Young Jou</p><p class="lasles-review__loc">Seoul, South Korea</p></div>
+              <div class="lasles-review__rating">4.5 <img src="../../public/img/lasles/star.svg" width="14" height="14" alt=""></div>
+            </div>
+            <p class="lasles-review__quote">“التحديات التطبيقية غيّرت طريقتي في الصف.”</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="lasles-container lasles-subscribe-wrap">
+      <div class="lasles-subscribe">
+        <div>
+          <h2 class="lasles-subscribe__title">اشترك الآن واحصل على ميزات خاصة!</h2>
+          <p class="lasles-subscribe__lead">لنستكشف معًا.</p>
+        </div>
+        <a href="#" class="lasles-btn-primary">اشترك الآن</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="lasles-footer" id="help">
+    <div class="lasles-container lasles-footer__grid">
+      <div class="lasles-footer__about">
+        <a href="#" class="lasles-brand">
+          <img src="../../public/img/lasles/logo-mark.png" width="35" height="35" alt="">
+          <span><em>تدريس</em><b> لاب</b></span>
+        </a>
+        <p>تدريس لاب منصة لتطوير الممارسات المهنية للمعلمين؛ تشخيص، أدوات، تحديات، وقياس تقدّم.</p>
+        <p class="lasles-copy">©2026 تدريس لاب</p>
+      </div>
+      <div class="lasles-footer__cols">
+        <div>
+          <h4>المنتج</h4>
+          <a href="#features">الميزات</a>
+          <a href="#pricing">الباقات</a>
+          <a href="#network">الشبكة</a>
+        </div>
+        <div>
+          <h4>تفاعل</h4>
+          <a href="#">FAQ</a>
+          <a href="#">من نحن</a>
+          <a href="#">الخصوصية</a>
+        </div>
+        <div>
+          <h4>شراكات</h4>
+          <a href="#">شركاء</a>
+          <a href="#">كن شريكًا</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ===== FAQ ===== -->
-<section class="sana-section sana-section--white" id="faq">
-  <div class="sana-container">
-    <div class="sana-head sana-reveal">
-      <h2 class="sana-head__title">الأسئلة <span class="hl">الشائعة</span></h2>
-      <span class="sana-head__line"></span>
-    </div>
-    <div class="sana-faq-m sana-reveal">
-      <div class="sana-faq-m__visual">
-        <img src="../../public/img/sanua/landing-hero-boy.png" alt="">
-        <span class="bubble bubble--1">🤔</span>
-        <span class="bubble bubble--2">💡</span>
-      </div>
-      <div class="sana-faq" id="sana-faq">
-        <div class="sana-faq-item is-open">
-          <button type="button" class="sana-faq-q">هل المنصة مناسبة لجميع الأعمار؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">نعم، محتوىنا مصمّم للأطفال من 8 إلى 16 سنة مع مسارات حسب العمر والمستوى.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">كيف أبدأ مع ابني على المنصة؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">احجز تقييم مستوى مجاني — نحدّد معك المعلّم أو الباقة المناسبة قبل أي التزام.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">كيف أتابع تقدّم ابني؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">لوحة وليّ الأمر تعرض التقدّم والحضور والاختبارات بوضوح.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">ما نوع الشهادات التي تُصدَر؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">شهادات إتمام رقمية قابلة للتحقق عبر رابط ورمز فريد — تثبت إنجازك على المنصة.</div>
-        </div>
-        <div class="sana-faq-item">
-          <button type="button" class="sana-faq-q">هل الحصص المباشرة مسجّلة؟ <i class="fas fa-chevron-down"></i></button>
-          <div class="sana-faq-a">نعم، معظم الحصص متاحة للمشاهدة لاحقاً من حساب الطالب.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<!-- ===== footer ===== -->
-<footer class="sana-foot-m">
-  <div class="sana-container">
-    <div class="sana-foot-m__grid">
-      <div class="sana-foot-m__brand">
-        <a href="01-home.html" class="sana-foot-m__logo"><span>SANA</span></a>
-        <p>منصة تعليمية عربية تفاعلية للأطفال والطلاب — تعلّم بمتعة وثقة.</p>
-      </div>
-      <div>
-        <h4>تصفّح</h4>
-        <ul>
-          <li><a href="02-about.html">كيف تعمل سنا؟</a></li>
-          <li><a href="03-courses.html">الكورسات</a></li>
-          <li><a href="09-instructors.html">المعلّمون</a></li>
-          <li><a href="04-pricing.html">الأسعار</a></li>
-          <li><a href="#categories">التصنيفات</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>روابط مهمة</h4>
-        <ul>
-          <li><a href="02-about.html">من نحن</a></li>
-          <li><a href="05-contact.html">اتصل بنا</a></li>
-          <li><a href="#faq">الأسئلة الشائعة</a></li>
-          <li><a href="08-tutor-apply.html">تسجيل معلّم</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>تواصل معنا</h4>
-        <ul>
-          <li><a href="05-contact.html"><i class="fab fa-whatsapp"></i> واتساب</a></li>
-        </ul>
-      </div>
-    </div>
-    <p class="sana-foot-m__copy">&copy; 2026 Sana. جميع الحقوق محفوظة.</p>
-  </div>
-</footer>
-
-<script src="assets/sana-scripts.js"></script>
+  </footer>
 </body>
 </html>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'بوابة الدفع - التقارير المحاسبية - Glottical')
+@section('title', 'بوابة الدفع - التقارير المحاسبية - TADRIS LAB')
 @section('page_title', 'مدفوعات بوابة الدفع')
 
 @section('content')

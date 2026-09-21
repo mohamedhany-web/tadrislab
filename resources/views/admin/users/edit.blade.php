@@ -116,7 +116,6 @@
                                 <option value="instructor" {{ old('role', $user->role) == 'instructor' ? 'selected' : '' }}>معلم</option>
                                 <option value="teacher" {{ old('role', $user->role) == 'teacher' ? 'selected' : '' }}>معلم (مدرس)</option>
                                 <option value="student" {{ old('role', $user->role) == 'student' ? 'selected' : '' }}>{{ __('admin.student_role_label') }}</option>
-                                <option value="parent" {{ old('role', $user->role) == 'parent' ? 'selected' : '' }}>ولي أمر</option>
                                 <option value="employee" {{ old('role', $user->is_employee ? 'employee' : $user->role) == 'employee' ? 'selected' : '' }}>موظف</option>
                             </select>
                             @error('role')<p class="mt-1.5 text-xs font-medium text-danger">{{ $message }}</p>@enderror

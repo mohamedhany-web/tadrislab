@@ -16,7 +16,7 @@
             <p class="mt-1 max-w-2xl text-sm text-muted">إدارة البرامج التعليمية، الدروس، والظهور في المنصة.</p>
         </div>
         <a href="{{ route('admin.advanced-courses.create') }}"
-           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
             <i class="fas fa-plus text-xs"></i>
             إضافة برنامج
         </a>
@@ -77,7 +77,7 @@
                 </select>
             </div>
             <div class="flex items-end gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-filter text-xs"></i> تطبيق
                 </button>
                 @if(request()->hasAny(['search', 'course_category_id', 'delivery_type', 'status']))
@@ -140,7 +140,7 @@
                                         @if($course->hasPromotionalPrice())
                                             <span class="ml-1 text-muted line-through">{{ number_format($course->listPriceAmount()) }}</span>
                                         @endif
-                                        {{ number_format($course->effectivePurchasePrice()) }} USD
+                                        {{ number_format($course->effectivePurchasePrice()) }} {{ platform_currency() }}
                                     </span>
                                 @else
                                     <i class="fas fa-gift w-4 text-emerald-600"></i>
@@ -227,7 +227,7 @@
             <h3 class="mt-4 text-lg font-semibold text-ink">لا توجد برامج</h3>
             <p class="mt-1 text-sm text-muted">لم يُعثر على برامج تطابق الفلاتر. يمكنك إضافة برنامج جديد.</p>
             <a href="{{ route('admin.advanced-courses.create') }}"
-               class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-plus text-xs"></i>
                 إضافة برنامج
             </a>

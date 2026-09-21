@@ -1,12 +1,12 @@
-# Hostinger DNS — create A record for live.glottical.com
+# Hostinger DNS — create A record for live.tadrislab.com
 # Requires API token from https://hpanel.hostinger.com → Account → API
 #
 # Usage (PowerShell):
 #   $env:HOSTINGER_API_TOKEN = "your-token"
-#   .\scripts\hostinger-create-live-glottical-dns.ps1
+#   .\scripts\hostinger-create-live-tadrislab-dns.ps1
 
 param(
-    [string]$Domain = "glottical.com",
+    [string]$Domain = "tadrislab.com",
     [string]$Subdomain = "live",
     [string]$Ip = "187.124.36.228",
     [string]$Token = $env:HOSTINGER_API_TOKEN

@@ -91,7 +91,7 @@
                     @if($enrollment->final_price !== null)
                         <div>
                             <p class="text-xs font-medium text-muted">مبلغ التفعيل</p>
-                            <p class="mt-1 tabular-nums font-semibold text-ink">{{ number_format((float) $enrollment->final_price, 2) }} USD</p>
+                            <p class="mt-1 tabular-nums font-semibold text-ink">{{ number_format((float) $enrollment->final_price, 2) }} {{ platform_currency() }}</p>
                         </div>
                     @endif
                 </div>
@@ -133,7 +133,7 @@
                     @if($enrollment->status === 'pending')
                         <form method="POST" action="{{ route('admin.online-enrollments.activate', $enrollment) }}" onsubmit="return confirm('تفعيل هذا التسجيل؟');">
                             @csrf
-                            <button type="submit" class="btn-press inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                            <button type="submit" class="btn-press inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-medium text-white hover:bg-[#184888]">
                                 <i class="fas fa-check text-xs"></i> تفعيل التسجيل
                             </button>
                         </form>
@@ -147,7 +147,7 @@
                     @elseif($enrollment->status === 'suspended')
                         <form method="POST" action="{{ route('admin.online-enrollments.activate', $enrollment) }}" onsubmit="return confirm('إعادة تفعيل التسجيل وفتح البرنامج للطالب؟');">
                             @csrf
-                            <button type="submit" class="btn-press inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                            <button type="submit" class="btn-press inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-accent text-sm font-medium text-white hover:bg-[#184888]">
                                 <i class="fas fa-redo text-xs"></i> إعادة التفعيل
                             </button>
                         </form>

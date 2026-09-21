@@ -26,7 +26,7 @@ Route::get('/storage/{path}', [\App\Http\Controllers\StorageFileController::clas
 | Instructor panel CSS — عبر Laravel عند فشل خدمة public/css على الاستضافة
 |--------------------------------------------------------------------------
 */
-Route::get('/__glottical/instructor-panel.css', function () {
+Route::get('/__tadrislab/instructor-panel.css', function () {
     $path = public_path('css/instructor-panel.css');
     abort_unless(is_file($path), 404);
 
@@ -47,7 +47,7 @@ Route::post('/webhooks/paypal', [\App\Http\Controllers\Webhooks\PayPalWebhookCon
 
 /*
 |--------------------------------------------------------------------------
-| Glottical Whiteboard (أصول اللوحة) — تمرير عبر Laravel
+| TADRIS LAB Whiteboard (أصول اللوحة) — تمرير عبر Laravel
 | يعمل عندما لا يُخدم public/vendor مباشرة (جذر الموقع ليس public أو قواعد .htaccess)
 |--------------------------------------------------------------------------
 */
@@ -100,7 +100,7 @@ Route::get('/mx-vendor/excalidraw/{path}', function (string $path) {
     ]);
 })->where('path', '.*')->name('mx.vendor.excalidraw')->middleware('web');
 
-// Sitemap Route — Glottical SEO
+// Sitemap Route — TADRIS LAB SEO
 Route::get('/sitemap.xml', function () {
     $xmlEscape = static fn (?string $value): string => htmlspecialchars((string) $value, ENT_XML1 | ENT_QUOTES, 'UTF-8');
     $urls = [];
@@ -394,7 +394,7 @@ Route::get('/js/landing/{file}.js', function (string $file) use ($serveAtheerAss
 Route::get('/img/{folder}/{file}', function (string $folder, string $file) use ($serveAtheerAsset) {
     $folder = basename($folder);
     $file = basename($file);
-    if (! in_array($folder, ['glottical', 'sanua'], true)) {
+    if (! in_array($folder, ['tadrislab', 'sanua'], true)) {
         abort(404);
     }
     if (! preg_match('/^[A-Za-z0-9._\-]+$/', $file) || ! preg_match('/\.(png|jpe?g|webp|gif|svg)$/i', $file)) {
@@ -420,7 +420,7 @@ Route::get('/img/{folder}/{file}', function (string $folder, string $file) use (
         'Content-Type' => $types[$ext] ?? 'application/octet-stream',
         'Cache-Control' => 'public, max-age=86400',
     ]);
-})->where(['folder' => 'glottical|sanua', 'file' => '[A-Za-z0-9._\-]+'])->name('assets.landing.img');
+})->where(['folder' => 'tadrislab|sanua', 'file' => '[A-Za-z0-9._\-]+'])->name('assets.landing.img');
 
 Route::get('/free-trial/slots', [\App\Http\Controllers\Public\FreeTrialBookingController::class, 'slots'])->name('public.free-trial.slots');
 Route::post('/free-trial/book', [\App\Http\Controllers\Public\FreeTrialBookingController::class, 'store'])
@@ -428,7 +428,17 @@ Route::post('/free-trial/book', [\App\Http\Controllers\Public\FreeTrialBookingCo
     ->name('public.free-trial.book');
 
 // الصفحات العامة
-Route::get('/about', [\App\Http\Controllers\Public\PageController::class, 'about'])->name('public.about');
+Route::get('/path', [\App\Http\Controllers\Public\PageController::class, 'path'])->name('public.path');
+
+// TADRIS expandable public IA (config/tadris_nav.php)
+foreach (\App\Support\TadrisPublicNav::routable() as $key => $node) {
+    Route::get($node['uri'], [\App\Http\Controllers\Public\SitePageController::class, 'show'])
+        ->defaults('page', $key)
+        ->name($node['route']);
+}
+Route::get('/about', [\App\Http\Controllers\Public\SitePageController::class, 'show'])
+    ->defaults('page', 'about')
+    ->name('public.about');
 Route::get('/faq', [\App\Http\Controllers\Public\PageController::class, 'faq'])->name('public.faq');
 Route::get('/terms', [\App\Http\Controllers\Public\PageController::class, 'terms'])->name('public.terms');
 Route::get('/privacy', [\App\Http\Controllers\Public\PageController::class, 'privacy'])->name('public.privacy');
@@ -444,12 +454,17 @@ Route::get('/events', [\App\Http\Controllers\Public\PageController::class, 'even
 Route::get('/partners', [\App\Http\Controllers\Public\PageController::class, 'partners'])->name('public.partners');
 
 // صفحة الخدمات (محتوى من لوحة الإدارة)
-Route::get('/services', [\App\Http\Controllers\Public\SiteServiceController::class, 'index'])->name('public.services.index');
-Route::get('/services/{siteService}', [\App\Http\Controllers\Public\SiteServiceController::class, 'show'])->name('public.services.show');
+Route::get('/services', function () {
+    return redirect()->route('public.site.teacher-development', [], 301);
+})->name('public.services.index');
+Route::get('/services/{siteService}', function () {
+    return redirect()->route('public.site.teacher-development', [], 301);
+})->where('siteService', '[A-Za-z0-9\-]+')->name('public.services.show');
+// Legacy CMS controllers retained under app/Http/Controllers/Public/SiteServiceController.php for later restore.
 
 // تم إيقاف مجتمع البيانات والذكاء الاصطناعي (مسابقات، داتاسيت، مجتمع) بالكامل، لذا أزيلت جميع مساراته.
 
-// Glottical Classroom — دخول الضيوف برابط/كود (مقفول للحصص الخاصة)
+// TADRIS LAB Classroom — دخول الضيوف برابط/كود (مقفول للحصص الخاصة)
 Route::get('/classroom/join/{code}', [\App\Http\Controllers\ClassroomJoinController::class, 'show'])->name('classroom.join')->where('code', '[A-Za-z0-9]+');
 Route::post('/classroom/join/{code}/enter', [\App\Http\Controllers\ClassroomJoinController::class, 'enter'])->name('classroom.join.enter')->where('code', '[A-Za-z0-9]+');
 Route::post('/classroom/join/{code}/heartbeat', [\App\Http\Controllers\ClassroomJoinController::class, 'heartbeat'])->name('classroom.join.heartbeat')->where('code', '[A-Za-z0-9]+');
@@ -478,8 +493,10 @@ Route::middleware(['auth'])->get('/classroom/enter/{meeting}', [\App\Http\Contro
     ->name('classroom.secure-enter');
 
 // التواصل
-Route::get('/contact', [\App\Http\Controllers\Public\ContactController::class, 'index'])->name('public.contact');
-Route::post('/contact', [\App\Http\Controllers\Public\ContactController::class, 'store'])->name('public.contact.store');
+Route::get('/contact', [\App\Http\Controllers\Public\SitePageController::class, 'contact'])->name('public.contact');
+Route::post('/contact', [\App\Http\Controllers\Public\SitePageController::class, 'contactStore'])
+    ->middleware('throttle:10,1')
+    ->name('public.contact.store');
 
 // متابعة ولي الأمر — تقارير الطالب برقم الدخول
 Route::get('/parent-progress', [\App\Http\Controllers\Public\ParentProgressController::class, 'show'])
@@ -636,32 +653,63 @@ Route::get('/checkout/paypal/cancel', [\App\Http\Controllers\Public\PayPalChecko
     ->middleware(['auth', 'throttle:30,1'])
     ->name('public.checkout.paypal.cancel');
 
-// روابط قديمة لمنتج المسارات التعليمية (أُزيل) → الكورسات
-Route::redirect('/learning-paths', '/courses', 301);
-Route::get('/learning-path/{slug}', function () {
-    return redirect()->route('public.courses', [], 301);
-})->where('slug', '[a-z0-9-]+');
+// Learning Paths — مسارات تعلم وتطوير مهني (Path → Units → Lessons → Practices)
+Route::get('/learning-paths', [\App\Http\Controllers\Public\LearningPathController::class, 'index'])->name('public.learning-paths.index');
+Route::get('/learning-paths/{slug}', [\App\Http\Controllers\Public\LearningPathController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.learning-paths.show');
+Route::get('/learning-paths/{slug}/checkout', [\App\Http\Controllers\Public\CatalogCheckoutController::class, 'checkoutPath'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.learning-paths.checkout');
+Route::post('/learning-paths/{slug}/checkout', [\App\Http\Controllers\Public\CatalogCheckoutController::class, 'storePath'])
+    ->middleware(['auth', 'throttle:20,1'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.learning-paths.checkout.store');
 
-// صفحة تفاصيل الباقة (للتوافق مع الروابط القديمة)
-Route::get('/package/{slug}', function ($slug) {
-    $package = \App\Models\Package::where('slug', $slug)
-        ->where('is_active', true)
-        ->with(['courses' => function ($query) {
-            $query->where('is_active', true)
-                ->with(['academicSubject', 'academicYear'])
-                ->withCount('lessons');
-        }])
-        ->firstOrFail();
+Route::get('/tools', [\App\Http\Controllers\Public\TeacherToolController::class, 'index'])->name('public.tools.index');
+Route::get('/tools/{slug}', [\App\Http\Controllers\Public\TeacherToolController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.tools.show');
+Route::get('/tools/{slug}/download', [\App\Http\Controllers\Public\TeacherToolController::class, 'download'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.tools.download');
+Route::redirect('/resources', '/tools', 301);
+Route::redirect('/resources/tools', '/tools', 301);
+Route::redirect('/resources/templates', '/tools?type=templates', 301);
+Route::redirect('/resources/materials', '/tools', 301);
+Route::redirect('/teacher-development/resources', '/tools', 301);
 
-    // باقات ذات صلة
-    $relatedPackages = \App\Models\Package::where('is_active', true)
-        ->where('id', '!=', $package->id)
-        ->withCount('courses')
-        ->limit(3)
-        ->get();
+Route::get('/consultations/book', [\App\Http\Controllers\Public\ConsultationBookingController::class, 'index'])
+    ->name('public.consultations.book');
+Route::get('/consultations/book/{slug}', [\App\Http\Controllers\Public\ConsultationBookingController::class, 'showService'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.consultations.book.service');
+Route::post('/consultations/book/{slug}', [\App\Http\Controllers\Public\ConsultationBookingController::class, 'store'])
+    ->middleware(['auth', 'throttle:20,1'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.consultations.book.store');
 
-    return view('package-show', compact('package', 'relatedPackages'));
-})->name('public.package.show');
+Route::get('/institutions/inquiry', [\App\Http\Controllers\Public\InstitutionInquiryController::class, 'create'])
+    ->name('public.institutions.inquiry');
+Route::post('/institutions/inquiry', [\App\Http\Controllers\Public\InstitutionInquiryController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('public.institutions.inquiry.store');
+Route::get('/learning-path/{slug}', function (string $slug) {
+    return redirect()->route('public.learning-paths.show', ['slug' => $slug], 301);
+})->where('slug', '[A-Za-z0-9\-]+');
+Route::redirect('/teacher-development/paths', '/learning-paths', 301);
+
+// باقات تدريس لاب — تفاصيل + شراء (رحلة Buy Package)
+Route::get('/package/{slug}', [\App\Http\Controllers\Public\CatalogCheckoutController::class, 'showPackage'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.package.show');
+Route::get('/packages/{slug}/checkout', [\App\Http\Controllers\Public\CatalogCheckoutController::class, 'checkoutPackage'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.packages.checkout');
+Route::post('/packages/{slug}/checkout', [\App\Http\Controllers\Public\CatalogCheckoutController::class, 'storePackage'])
+    ->middleware(['auth', 'throttle:20,1'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('public.packages.checkout.store');
 
 // مسارات المصادقة - محمية بحيث لا يمكن الوصول إليها إذا كان المستخدم مسجل دخول
 Route::middleware(['guest', 'guest-only'])->group(function () {
@@ -976,6 +1024,33 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         Route::get('/learn', [\App\Http\Controllers\Student\LearnHubController::class, 'index'])->name('student.learn.index');
         Route::get('/learn/teachers/{instructor}', [\App\Http\Controllers\Student\LearnHubController::class, 'teacher'])->name('student.learn.teacher');
 
+        Route::get('/my-learning-paths', [\App\Http\Controllers\Student\LearningPathController::class, 'index'])->name('student.learning-paths.index');
+        Route::get('/my-learning-paths/{slug}', [\App\Http\Controllers\Student\LearningPathController::class, 'show'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('student.learning-paths.show');
+        Route::get('/my-learning-paths/{slug}/lessons/{lesson}', [\App\Http\Controllers\Student\LearningPathController::class, 'showLesson'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('student.learning-paths.lesson');
+        Route::get('/my-learning-paths/{slug}/practices/{practice}', [\App\Http\Controllers\Student\LearningPathController::class, 'showPractice'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('student.learning-paths.practice');
+        Route::post('/my-learning-paths/{slug}/complete', [\App\Http\Controllers\Student\LearningPathController::class, 'completeItem'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('student.learning-paths.complete');
+        Route::get('/my-tools', [\App\Http\Controllers\Student\TeacherToolController::class, 'index'])->name('student.tools.index');
+        Route::get('/my-packages', [\App\Http\Controllers\Student\PackageEntitlementController::class, 'index'])->name('student.packages.index');
+        Route::get('/my-assistant', [\App\Http\Controllers\Student\TeacherAssistantController::class, 'index'])->name('student.teacher-assistant.index');
+        Route::post('/my-assistant', [\App\Http\Controllers\Student\TeacherAssistantController::class, 'generate'])->name('student.teacher-assistant.generate');
+
+        Route::get('/institution', [\App\Http\Controllers\Institution\PortalController::class, 'index'])->name('institution.portal.index');
+        Route::get('/institution/{institution}', [\App\Http\Controllers\Institution\PortalController::class, 'show'])->name('institution.portal.show');
+        Route::post('/institution/{institution}/participants', [\App\Http\Controllers\Institution\PortalController::class, 'storeParticipant'])->name('institution.portal.participants.store');
+        Route::get('/institution/{institution}/programs/{program}', [\App\Http\Controllers\Institution\PortalController::class, 'showProgram'])->name('institution.portal.program');
+        Route::post('/institution/{institution}/programs/{program}/accept', [\App\Http\Controllers\Institution\PortalController::class, 'acceptProposal'])->name('institution.portal.program.accept');
+        Route::post('/institution/{institution}/programs/{program}/reject', [\App\Http\Controllers\Institution\PortalController::class, 'rejectProposal'])->name('institution.portal.program.reject');
+        Route::post('/institution/{institution}/programs/{program}/enroll', [\App\Http\Controllers\Institution\PortalController::class, 'enrollParticipant'])->name('institution.portal.program.enroll');
+        Route::post('/institution/{institution}/programs/{program}/participants/{participant}/progress', [\App\Http\Controllers\Institution\PortalController::class, 'updateParticipantProgress'])->name('institution.portal.program.participant.progress');
+
         Route::get('/one-to-one-sessions', [\App\Http\Controllers\Student\OneToOneSessionController::class, 'index'])->name('student.one-to-one-sessions.index');
         Route::get('/one-to-one-sessions/{oneToOneSession}', [\App\Http\Controllers\Student\OneToOneSessionController::class, 'show'])->name('student.one-to-one-sessions.show');
         Route::post('/one-to-one-sessions/{oneToOneSession}/book', [\App\Http\Controllers\Student\OneToOneSessionController::class, 'book'])->name('student.one-to-one-sessions.book');
@@ -1027,7 +1102,7 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         Route::get('/tutoring-subscriptions/{subscription}', [\App\Http\Controllers\Student\TutoringSubscriptionController::class, 'show'])->name('student.tutoring-subscriptions.show');
         Route::get('/service-entitlements', [\App\Http\Controllers\Student\ServiceEntitlementController::class, 'index'])->name('student.service-entitlements.index');
 
-        // Glottical Classroom — الطالب: دخول الغرفة فقط (بدون إنشاء/إدارة اجتماعات)
+        // TADRIS LAB Classroom — الطالب: دخول الغرفة فقط (بدون إنشاء/إدارة اجتماعات)
         $studentMeetingDenied = 'لا يمكن للطلاب إنشاء أو إدارة اجتماعات مباشرة. انضم من جدولك أو من حصصك/فصولك.';
 
         Route::get('/classroom/room/{meeting}', [\App\Http\Controllers\Student\ClassroomController::class, 'room'])->name('student.classroom.room');
@@ -1285,6 +1360,7 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         // أكاديمية — توصيف المدربين للطلاب وتغطية المجموعات
         Route::get('/academy-instructors', [\App\Http\Controllers\Admin\AcademyInstructorController::class, 'index'])->name('academy-instructors.index');
         Route::get('/academy-instructors/{instructor}', [\App\Http\Controllers\Admin\AcademyInstructorController::class, 'show'])->name('academy-instructors.show');
+        Route::put('/academy-instructors/{instructor}/grants', [\App\Http\Controllers\Admin\AcademyInstructorController::class, 'updateGrants'])->name('academy-instructors.grants.update');
         Route::post('/academy-instructors/assignments', [\App\Http\Controllers\Admin\AcademyInstructorController::class, 'storeAssignment'])->name('academy-instructors.assignments.store');
         Route::patch('/academy-instructors/assignments/{assignment}/status', [\App\Http\Controllers\Admin\AcademyInstructorController::class, 'updateAssignmentStatus'])->name('academy-instructors.assignments.status');
         Route::delete('/academy-instructors/assignments/{assignment}', [\App\Http\Controllers\Admin\AcademyInstructorController::class, 'destroyAssignment'])->name('academy-instructors.assignments.destroy');
@@ -1302,7 +1378,41 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         Route::post('/teachers/{teacher}/sessions/{session}/reassign', [\App\Http\Controllers\Admin\TeacherControlController::class, 'reassignOneToOne'])->name('teachers.sessions.reassign');
         Route::patch('/teachers/{teacher}/bookings/{booking}/status', [\App\Http\Controllers\Admin\TeacherControlController::class, 'updateBookingStatus'])->name('teachers.bookings.status');
 
-        // مسارات الكورسات (تصفية صفحة /courses العامة)
+        // مسارات تعلم وتطوير مهني (Path → Units → Lessons → Practices)
+        Route::get('learning-paths', [\App\Http\Controllers\Admin\LearningPathController::class, 'index'])->name('learning-paths.index');
+        Route::get('learning-paths/create', [\App\Http\Controllers\Admin\LearningPathController::class, 'create'])->name('learning-paths.create');
+        Route::post('learning-paths', [\App\Http\Controllers\Admin\LearningPathController::class, 'store'])->name('learning-paths.store');
+        Route::get('learning-paths/{learningPath}', [\App\Http\Controllers\Admin\LearningPathController::class, 'show'])->name('learning-paths.show');
+        Route::get('learning-paths/{learningPath}/edit', [\App\Http\Controllers\Admin\LearningPathController::class, 'edit'])->name('learning-paths.edit');
+        Route::put('learning-paths/{learningPath}', [\App\Http\Controllers\Admin\LearningPathController::class, 'update'])->name('learning-paths.update');
+        Route::delete('learning-paths/{learningPath}', [\App\Http\Controllers\Admin\LearningPathController::class, 'destroy'])->name('learning-paths.destroy');
+
+        Route::get('teacher-tools', [\App\Http\Controllers\Admin\TeacherToolController::class, 'index'])->name('teacher-tools.index');
+        Route::get('teacher-tools/create', [\App\Http\Controllers\Admin\TeacherToolController::class, 'create'])->name('teacher-tools.create');
+        Route::post('teacher-tools', [\App\Http\Controllers\Admin\TeacherToolController::class, 'store'])->name('teacher-tools.store');
+        Route::get('teacher-tools/{teacherTool}', [\App\Http\Controllers\Admin\TeacherToolController::class, 'show'])->name('teacher-tools.show');
+        Route::get('teacher-tools/{teacherTool}/edit', [\App\Http\Controllers\Admin\TeacherToolController::class, 'edit'])->name('teacher-tools.edit');
+        Route::put('teacher-tools/{teacherTool}', [\App\Http\Controllers\Admin\TeacherToolController::class, 'update'])->name('teacher-tools.update');
+        Route::delete('teacher-tools/{teacherTool}', [\App\Http\Controllers\Admin\TeacherToolController::class, 'destroy'])->name('teacher-tools.destroy');
+
+        Route::post('learning-paths/{learningPath}/units', [\App\Http\Controllers\Admin\LearningPathController::class, 'storeUnit'])->name('learning-paths.units.store');
+        Route::put('learning-path-units/{unit}', [\App\Http\Controllers\Admin\LearningPathController::class, 'updateUnit'])->name('learning-paths.units.update');
+        Route::delete('learning-path-units/{unit}', [\App\Http\Controllers\Admin\LearningPathController::class, 'destroyUnit'])->name('learning-paths.units.destroy');
+
+        Route::post('learning-path-units/{unit}/lessons', [\App\Http\Controllers\Admin\LearningPathController::class, 'storeLesson'])->name('learning-paths.units.lessons.store');
+        Route::put('learning-path-lessons/{lesson}', [\App\Http\Controllers\Admin\LearningPathController::class, 'updateLesson'])->name('learning-paths.lessons.update');
+        Route::delete('learning-path-lessons/{lesson}', [\App\Http\Controllers\Admin\LearningPathController::class, 'destroyLesson'])->name('learning-paths.lessons.destroy');
+
+        Route::post('learning-path-units/{unit}/practices', [\App\Http\Controllers\Admin\LearningPathController::class, 'storePractice'])->name('learning-paths.units.practices.store');
+        Route::put('learning-path-practices/{practice}', [\App\Http\Controllers\Admin\LearningPathController::class, 'updatePractice'])->name('learning-paths.practices.update');
+        Route::delete('learning-path-practices/{practice}', [\App\Http\Controllers\Admin\LearningPathController::class, 'destroyPractice'])->name('learning-paths.practices.destroy');
+
+        Route::post('learning-path-units/{unit}/reorder', [\App\Http\Controllers\Admin\LearningPathController::class, 'reorderUnit'])->name('learning-paths.units.reorder');
+        Route::post('learning-path-lessons/{lesson}/reorder', [\App\Http\Controllers\Admin\LearningPathController::class, 'reorderLesson'])->name('learning-paths.lessons.reorder');
+        Route::post('learning-path-practices/{practice}/reorder', [\App\Http\Controllers\Admin\LearningPathController::class, 'reorderPractice'])->name('learning-paths.practices.reorder');
+        Route::post('learning-paths/{learningPath}/activate-learner', [\App\Http\Controllers\Admin\LearningPathController::class, 'activateForLearner'])->name('learning-paths.activate-learner');
+
+        // مسارات الكورسات (تصفية صفحة /courses العامة — إرث)
         Route::resource('course-categories', \App\Http\Controllers\Admin\CourseCategoryController::class)->except(['show', 'create']);
 
         // مجموعات فردية / جماعية (منفصلة عن الكورسات)
@@ -1454,7 +1564,7 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         Route::get('/statistics/users', [\App\Http\Controllers\Admin\StatisticsController::class, 'users'])->name('statistics.users');
         Route::get('/statistics/courses', [\App\Http\Controllers\Admin\StatisticsController::class, 'courses'])->name('statistics.courses');
 
-        // Glottical CRM
+        // TADRIS CRM
         Route::prefix('crm')->name('crm.')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\CrmDashboardController::class, 'index'])->name('dashboard');
             Route::get('/pipeline', [\App\Http\Controllers\Admin\CrmPipelineController::class, 'index'])->name('pipeline');
@@ -1643,6 +1753,17 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         Route::post('/contact-messages/{contactMessage}/mark-as-read', [\App\Http\Controllers\Admin\ContactMessageController::class, 'markAsRead'])->name('contact-messages.mark-as-read');
         Route::post('/contact-messages/{contactMessage}/mark-as-unread', [\App\Http\Controllers\Admin\ContactMessageController::class, 'markAsUnread'])->name('contact-messages.mark-as-unread');
 
+        Route::get('inquiries', [\App\Http\Controllers\Admin\InquiryController::class, 'index'])->name('inquiries.index');
+        Route::get('inquiries/create', [\App\Http\Controllers\Admin\InquiryController::class, 'create'])->name('inquiries.create');
+        Route::post('inquiries', [\App\Http\Controllers\Admin\InquiryController::class, 'store'])->name('inquiries.store');
+        Route::get('inquiries/{inquiry}', [\App\Http\Controllers\Admin\InquiryController::class, 'show'])->name('inquiries.show');
+        Route::put('inquiries/{inquiry}', [\App\Http\Controllers\Admin\InquiryController::class, 'update'])->name('inquiries.update');
+        Route::delete('inquiries/{inquiry}', [\App\Http\Controllers\Admin\InquiryController::class, 'destroy'])->name('inquiries.destroy');
+
+        Route::get('notification-center', [\App\Http\Controllers\Admin\NotificationCenterController::class, 'index'])->name('notification-center.index');
+        Route::get('notification-center/templates', [\App\Http\Controllers\Admin\NotificationCenterController::class, 'templates'])->name('notification-center.templates');
+        Route::put('notification-center/templates', [\App\Http\Controllers\Admin\NotificationCenterController::class, 'updateTemplates'])->name('notification-center.templates.update');
+
         Route::get('/tutor-applications', [\App\Http\Controllers\Admin\TutorApplicationController::class, 'hub'])->name('tutor-applications.hub');
         Route::get('/tutor-applications/list', [\App\Http\Controllers\Admin\TutorApplicationController::class, 'index'])->name('tutor-applications.index');
         Route::get('/tutor-applications/activated', [\App\Http\Controllers\Admin\TutorApplicationController::class, 'activated'])->name('tutor-applications.activated');
@@ -1721,6 +1842,7 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
 
         // إدارة الأسعار والباقات
         Route::resource('packages', \App\Http\Controllers\Admin\PackageController::class);
+        Route::post('/packages/{package}/activate-learner', [\App\Http\Controllers\Admin\PackageController::class, 'activateForLearner'])->name('packages.activate-learner');
         Route::post('/packages/{course}/update-price', [\App\Http\Controllers\Admin\PackageController::class, 'updatePrice'])->name('packages.update-price');
         Route::post('/packages/bulk-update', [\App\Http\Controllers\Admin\PackageController::class, 'updateBulkPrices'])->name('packages.bulk-update');
 
@@ -1929,12 +2051,43 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         // استشارات المدربين (مدفوعة)
         Route::get('/consultations', [\App\Http\Controllers\Admin\ConsultationController::class, 'index'])->name('consultations.index');
         Route::post('/consultations/settings', [\App\Http\Controllers\Admin\ConsultationController::class, 'updateSettings'])->name('consultations.settings');
+        Route::get('/consultations/services', [\App\Http\Controllers\Admin\ConsultationServiceController::class, 'index'])->name('consultations.services.index');
+        Route::get('/consultations/services/create', [\App\Http\Controllers\Admin\ConsultationServiceController::class, 'create'])->name('consultations.services.create');
+        Route::post('/consultations/services', [\App\Http\Controllers\Admin\ConsultationServiceController::class, 'store'])->name('consultations.services.store');
+        Route::get('/consultations/services/{service}/edit', [\App\Http\Controllers\Admin\ConsultationServiceController::class, 'edit'])->name('consultations.services.edit');
+        Route::put('/consultations/services/{service}', [\App\Http\Controllers\Admin\ConsultationServiceController::class, 'update'])->name('consultations.services.update');
+        Route::delete('/consultations/services/{service}', [\App\Http\Controllers\Admin\ConsultationServiceController::class, 'destroy'])->name('consultations.services.destroy');
         Route::get('/consultations/requests/{consultation}', [\App\Http\Controllers\Admin\ConsultationController::class, 'show'])->name('consultations.show');
         Route::post('/consultations/requests/{consultation}/confirm-payment', [\App\Http\Controllers\Admin\ConsultationController::class, 'confirmPayment'])->name('consultations.confirm-payment');
         Route::post('/consultations/requests/{consultation}/schedule', [\App\Http\Controllers\Admin\ConsultationController::class, 'schedule'])->name('consultations.schedule');
+        Route::post('/consultations/requests/{consultation}/reschedule', [\App\Http\Controllers\Admin\ConsultationController::class, 'reschedule'])->name('consultations.reschedule');
         Route::post('/consultations/requests/{consultation}/notes', [\App\Http\Controllers\Admin\ConsultationController::class, 'updateNotes'])->name('consultations.notes');
+        Route::post('/consultations/requests/{consultation}/outcome', [\App\Http\Controllers\Admin\ConsultationController::class, 'updateOutcome'])->name('consultations.outcome');
         Route::post('/consultations/requests/{consultation}/cancel', [\App\Http\Controllers\Admin\ConsultationController::class, 'cancel'])->name('consultations.cancel');
         Route::post('/consultations/requests/{consultation}/complete', [\App\Http\Controllers\Admin\ConsultationController::class, 'markCompleted'])->name('consultations.complete');
+
+        // المدارس والمؤسسات — محور واحد
+        Route::get('/institutions', [\App\Http\Controllers\Admin\InstitutionController::class, 'index'])->name('institutions.index');
+        Route::get('/institutions/create', [\App\Http\Controllers\Admin\InstitutionController::class, 'create'])->name('institutions.create');
+        Route::post('/institutions', [\App\Http\Controllers\Admin\InstitutionController::class, 'store'])->name('institutions.store');
+        Route::get('/institutions/{institution}', [\App\Http\Controllers\Admin\InstitutionController::class, 'show'])->name('institutions.show');
+        Route::get('/institutions/{institution}/edit', [\App\Http\Controllers\Admin\InstitutionController::class, 'edit'])->name('institutions.edit');
+        Route::put('/institutions/{institution}', [\App\Http\Controllers\Admin\InstitutionController::class, 'update'])->name('institutions.update');
+        Route::delete('/institutions/{institution}', [\App\Http\Controllers\Admin\InstitutionController::class, 'destroy'])->name('institutions.destroy');
+        Route::post('/institutions/{institution}/members', [\App\Http\Controllers\Admin\InstitutionController::class, 'storeMember'])->name('institutions.members.store');
+        Route::delete('/institutions/{institution}/members/{member}', [\App\Http\Controllers\Admin\InstitutionController::class, 'destroyMember'])->name('institutions.members.destroy');
+
+        Route::get('/institution-programs', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'index'])->name('institution-programs.index');
+        Route::get('/institution-programs/create', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'create'])->name('institution-programs.create');
+        Route::post('/institution-programs', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'store'])->name('institution-programs.store');
+        Route::get('/institution-programs/{institutionProgram}', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'show'])->name('institution-programs.show');
+        Route::get('/institution-programs/{institutionProgram}/edit', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'edit'])->name('institution-programs.edit');
+        Route::put('/institution-programs/{institutionProgram}', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'update'])->name('institution-programs.update');
+        Route::post('/institution-programs/{institutionProgram}/status', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'updateStatus'])->name('institution-programs.status');
+        Route::post('/institution-programs/{institutionProgram}/participants', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'storeParticipant'])->name('institution-programs.participants.store');
+        Route::put('/institution-program-participants/{participant}', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'updateParticipant'])->name('institution-programs.participants.update');
+        Route::delete('/institution-program-participants/{participant}', [\App\Http\Controllers\Admin\InstitutionProgramController::class, 'destroyParticipant'])->name('institution-programs.participants.destroy');
+
         Route::get('/placement', [\App\Http\Controllers\Admin\PlacementController::class, 'index'])->name('placement.index');
         Route::get('/placement/create', [\App\Http\Controllers\Admin\PlacementController::class, 'create'])->name('placement.create');
         Route::post('/placement', [\App\Http\Controllers\Admin\PlacementController::class, 'store'])->name('placement.store');
@@ -2268,26 +2421,28 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
 
     // مسارات المدرسين
     Route::prefix('instructor')->name('instructor.')->middleware(['auth', 'role:instructor|teacher', 'instructor.activated'])->group(function () {
+        Route::get('/learning-paths', [\App\Http\Controllers\Instructor\LearningPathController::class, 'index'])->name('learning-paths.index');
+        Route::get('/learning-paths/{learningPath}', [\App\Http\Controllers\Instructor\LearningPathController::class, 'show'])->name('learning-paths.show');
         Route::get('/calendar', [\App\Http\Controllers\Instructor\CalendarController::class, 'index'])->name('calendar');
         Route::get('/api/calendar/events', [\App\Http\Controllers\Instructor\CalendarController::class, 'getEvents'])->name('calendar.events');
         Route::get('/consultations', [\App\Http\Controllers\Instructor\ConsultationController::class, 'index'])->name('consultations.index');
         Route::get('/consultations/{consultation}', [\App\Http\Controllers\Instructor\ConsultationController::class, 'show'])->name('consultations.show');
-        Route::get('/one-to-one-sessions', [\App\Http\Controllers\Instructor\OneToOneSessionController::class, 'index'])->name('one-to-one-sessions.index');
+        Route::get('/one-to-one-sessions', [\App\Http\Controllers\Instructor\OneToOneSessionController::class, 'index'])->name('one-to-one-sessions.index')->middleware('instructor.ui:tutoring');
         Route::get('/one-to-one-availability', [\App\Http\Controllers\Instructor\OneToOneAvailabilityController::class, 'index'])->name('one-to-one-availability.index');
         Route::post('/one-to-one-availability', [\App\Http\Controllers\Instructor\OneToOneAvailabilityController::class, 'update'])->name('one-to-one-availability.update');
-        Route::get('/tutor-work-schedule', [\App\Http\Controllers\Instructor\TutorWorkScheduleController::class, 'index'])->name('tutor-work-schedule.index');
-        Route::post('/tutor-work-schedule', [\App\Http\Controllers\Instructor\TutorWorkScheduleController::class, 'update'])->name('tutor-work-schedule.update');
-        Route::get('/tutoring-bookings', [\App\Http\Controllers\Instructor\TutoringBookingController::class, 'index'])->name('tutoring-bookings.index');
-        Route::get('/tutoring-bookings/{booking}', [\App\Http\Controllers\Instructor\TutoringBookingController::class, 'show'])->name('tutoring-bookings.show');
-        Route::post('/tutoring-bookings/{booking}/complete', [\App\Http\Controllers\Instructor\TutoringBookingController::class, 'complete'])->name('tutoring-bookings.complete');
-        Route::get('/tutoring-cohorts', [\App\Http\Controllers\Instructor\TutoringCohortController::class, 'index'])->name('tutoring-cohorts.index');
-        Route::get('/tutoring-cohorts/{cohort}', [\App\Http\Controllers\Instructor\TutoringCohortController::class, 'show'])->name('tutoring-cohorts.show');
-        Route::get('/tutoring-cohorts/{cohort}/community', [\App\Http\Controllers\Student\ClassFeedController::class, 'index'])->name('tutoring-cohorts.community');
-        Route::post('/tutoring-cohorts/{cohort}/feed', [\App\Http\Controllers\Student\ClassFeedController::class, 'store'])->name('tutoring-cohorts.feed.store');
-        Route::post('/class-feed/{post}/comments', [\App\Http\Controllers\Student\ClassFeedController::class, 'comment'])->name('class-feed.comment');
-        Route::post('/class-feed/{post}/hide', [\App\Http\Controllers\Student\ClassFeedController::class, 'hide'])->name('class-feed.hide');
-        Route::post('/class-feed/{post}/unhide', [\App\Http\Controllers\Student\ClassFeedController::class, 'unhide'])->name('class-feed.unhide');
-        Route::post('/class-feed/{post}/pin', [\App\Http\Controllers\Student\ClassFeedController::class, 'pin'])->name('class-feed.pin');
+        Route::get('/tutor-work-schedule', [\App\Http\Controllers\Instructor\TutorWorkScheduleController::class, 'index'])->name('tutor-work-schedule.index')->middleware('instructor.ui:tutoring');
+        Route::post('/tutor-work-schedule', [\App\Http\Controllers\Instructor\TutorWorkScheduleController::class, 'update'])->name('tutor-work-schedule.update')->middleware('instructor.ui:tutoring');
+        Route::get('/tutoring-bookings', [\App\Http\Controllers\Instructor\TutoringBookingController::class, 'index'])->name('tutoring-bookings.index')->middleware('instructor.ui:tutoring');
+        Route::get('/tutoring-bookings/{booking}', [\App\Http\Controllers\Instructor\TutoringBookingController::class, 'show'])->name('tutoring-bookings.show')->middleware('instructor.ui:tutoring');
+        Route::post('/tutoring-bookings/{booking}/complete', [\App\Http\Controllers\Instructor\TutoringBookingController::class, 'complete'])->name('tutoring-bookings.complete')->middleware('instructor.ui:tutoring');
+        Route::get('/tutoring-cohorts', [\App\Http\Controllers\Instructor\TutoringCohortController::class, 'index'])->name('tutoring-cohorts.index')->middleware('instructor.ui:tutoring');
+        Route::get('/tutoring-cohorts/{cohort}', [\App\Http\Controllers\Instructor\TutoringCohortController::class, 'show'])->name('tutoring-cohorts.show')->middleware('instructor.ui:tutoring');
+        Route::get('/tutoring-cohorts/{cohort}/community', [\App\Http\Controllers\Student\ClassFeedController::class, 'index'])->name('tutoring-cohorts.community')->middleware('instructor.ui:tutoring');
+        Route::post('/tutoring-cohorts/{cohort}/feed', [\App\Http\Controllers\Student\ClassFeedController::class, 'store'])->name('tutoring-cohorts.feed.store')->middleware('instructor.ui:tutoring');
+        Route::post('/class-feed/{post}/comments', [\App\Http\Controllers\Student\ClassFeedController::class, 'comment'])->name('class-feed.comment')->middleware('instructor.ui:tutoring');
+        Route::post('/class-feed/{post}/hide', [\App\Http\Controllers\Student\ClassFeedController::class, 'hide'])->name('class-feed.hide')->middleware('instructor.ui:tutoring');
+        Route::post('/class-feed/{post}/unhide', [\App\Http\Controllers\Student\ClassFeedController::class, 'unhide'])->name('class-feed.unhide')->middleware('instructor.ui:tutoring');
+        Route::post('/class-feed/{post}/pin', [\App\Http\Controllers\Student\ClassFeedController::class, 'pin'])->name('class-feed.pin')->middleware('instructor.ui:tutoring');
 
         Route::get('/private-messages', [\App\Http\Controllers\Instructor\PrivateMessagesController::class, 'index'])->name('private-messages.index');
         Route::get('/private-messages/with/{student}', [\App\Http\Controllers\Instructor\PrivateMessagesController::class, 'openWith'])->name('private-messages.with');
@@ -2333,10 +2488,6 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         Route::get('/lecture-recordings', [\App\Http\Controllers\Instructor\LectureRecordingController::class, 'index'])->name('lecture-recordings.index');
         Route::put('/lecture-recordings/{lecture}', [\App\Http\Controllers\Instructor\LectureRecordingController::class, 'update'])->name('lecture-recordings.update');
         Route::get('/lecture-recordings/{lecture}/preview', [\App\Http\Controllers\Instructor\LectureRecordingController::class, 'preview'])->name('lecture-recordings.preview');
-
-        // تسعير الكورس (EGP / USD)
-        Route::get('/courses/{course}/pricing', [\App\Http\Controllers\Instructor\CoursePricingController::class, 'edit'])->name('courses.pricing.edit');
-        Route::put('/courses/{course}/pricing', [\App\Http\Controllers\Instructor\CoursePricingController::class, 'update'])->name('courses.pricing.update');
 
         Route::get('/one-to-one-sessions/{oneToOneSession}', [\App\Http\Controllers\Instructor\OneToOneSessionController::class, 'show'])->name('one-to-one-sessions.show');
         Route::post('/one-to-one-sessions/{oneToOneSession}/schedule', [\App\Http\Controllers\Instructor\OneToOneSessionController::class, 'schedule'])->name('one-to-one-sessions.schedule');
@@ -2469,7 +2620,7 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
         });
 
         // ===== البث المباشر (Instructor) =====
-        Route::prefix('live-sessions')->name('live-sessions.')->group(function () {
+        Route::prefix('live-sessions')->name('live-sessions.')->middleware('instructor.ui:live')->group(function () {
             Route::get('/', [\App\Http\Controllers\Instructor\LiveSessionController::class, 'index'])->name('index');
             Route::get('/create', [\App\Http\Controllers\Instructor\LiveSessionController::class, 'create'])->name('create');
             Route::post('/', [\App\Http\Controllers\Instructor\LiveSessionController::class, 'store'])->name('store');

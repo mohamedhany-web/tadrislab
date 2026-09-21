@@ -1,7 +1,7 @@
 @php
   $locale = app()->getLocale();
   $isRtl = $locale === 'ar';
-  $brand = config('app.name', 'Glottical');
+  $brand = config('app.name', 'TADRIS LAB');
   $footer = \App\Services\PublicFooterSettings::payload();
   $waUrl = $footer['whatsapp_url'] ?? '#';
   $perMonth = $package->sessionsPerMonth();
@@ -153,7 +153,7 @@
               <li>
                 <span class="gl-co-specs__k"><i class="fas fa-piggy-bank"></i> {{ $isRtl ? 'التوفير' : 'You save' }}</span>
                 <span class="gl-co-specs__v" style="color:#047857">
-                  ${{ number_format($package->savingsAmount(), 2) }} USD ({{ $package->savingsPercent() }}%)
+                  ${{ number_format($package->savingsAmount(), 2) }} {{ platform_currency() }} ({{ $package->savingsPercent() }}%)
                 </span>
               </li>
             @endif

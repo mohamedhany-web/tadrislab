@@ -22,7 +22,7 @@
                 إدارة التصنيفات
             </a>
             <a href="{{ route('admin.question-bank.create') }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-plus text-xs"></i>
                 إضافة سؤال جديد
             </a>
@@ -101,7 +101,7 @@
                 </select>
             </div>
             <div class="flex items-end gap-2">
-                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                <button type="submit" class="btn-press inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-search text-xs"></i> بحث
                 </button>
                 @if(request()->hasAny(['search', 'category_id', 'type', 'difficulty']))
@@ -212,7 +212,7 @@
                     <i class="fas fa-tags text-xs"></i> التصنيفات
                 </a>
                 <a href="{{ route('admin.question-bank.create') }}"
-                   class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                   class="btn-press inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-plus text-xs"></i> إضافة أول سؤال
                 </a>
             </div>

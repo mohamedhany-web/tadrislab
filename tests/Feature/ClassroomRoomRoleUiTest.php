@@ -25,8 +25,8 @@ class ClassroomRoomRoleUiTest extends TestCase
         config([
             'livekit.livekit.api_key' => 'APItestkey',
             'livekit.livekit.api_secret' => 'test-secret-value-1234567890',
-            'livekit.livekit.url' => 'wss://live.glottical.com',
-            'livekit.livekit.host' => 'live.glottical.com',
+            'livekit.livekit.url' => 'wss://live.tadrislab.com',
+            'livekit.livekit.host' => 'live.tadrislab.com',
         ]);
     }
 
@@ -104,7 +104,7 @@ class ClassroomRoomRoleUiTest extends TestCase
             'user_id' => $instructor->id,
             'one_to_one_session_id' => $session->id,
             'code' => 'UI'.strtoupper(substr(uniqid(), -4)),
-            'room_name' => 'Glottical-UI-TEST',
+            'room_name' => 'TADRIS LAB-UI-TEST',
             'title' => 'حصة تسكين',
             'planned_duration_minutes' => 50,
             'max_participants' => 4,

@@ -26,47 +26,58 @@
                 aria-label="إغلاق">
             <i class="fas fa-times text-xs"></i>
         </button>
-        <div class="w-11 h-11 rounded-xl bg-[#F5B800] text-[#072A66] flex items-center justify-center flex-shrink-0 shadow-lg shadow-black/20">
-            <i class="fas fa-language text-lg"></i>
+        <div class="w-11 h-11 rounded-xl bg-[#A88050] text-[#184888] flex items-center justify-center flex-shrink-0 shadow-lg shadow-black/20">
+            <i class="fas fa-chalkboard-teacher text-lg"></i>
         </div>
         <div class="flex-1 min-w-0 relative z-10">
             <h2 class="text-base font-extrabold text-white leading-tight truncate">{{ config('app.name') }}</h2>
-            <p class="text-[11px] text-white/70 font-medium mt-0.5">{{ app()->getLocale() === 'ar' ? 'مدرستي الرقمية' : 'My Digital School' }}</p>
+            <p class="text-[11px] text-white/70 font-medium mt-0.5">{{ app()->getLocale() === 'ar' ? 'لوحة المعلم' : 'Teacher panel' }}</p>
         </div>
     </div>
 
+    @if(student_ui('show_school', false))
     <div class="px-3 py-3 flex-shrink-0">
-        <div class="rounded-2xl border border-[#E8EEF8] dark:border-gray-700 bg-[#F4F7FC] dark:bg-gray-800/80 p-3">
+        <div class="rounded-2xl border border-[#E8EEF6] dark:border-gray-700 bg-[#F7F8FB] dark:bg-gray-800/80 p-3">
             <div class="flex items-center justify-between gap-2 mb-2">
                 <span class="text-[11px] font-bold text-[#5B6577] dark:text-gray-400">{{ app()->getLocale() === 'ar' ? 'مواعيد هذا الأسبوع' : 'This week' }}</span>
-                <span class="text-sm font-black text-[#0B3D91] dark:text-blue-300 tabular-nums">{{ $weekAppts }}</span>
+                <span class="text-sm font-black text-[#1E4E8C] dark:text-blue-300 tabular-nums">{{ $weekAppts }}</span>
             </div>
             <div class="grid grid-cols-2 gap-2 mt-1">
-                <a href="{{ route('dashboard') }}" class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF8] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#F5B800]/50 transition-colors">
+                <a href="{{ route('dashboard') }}" class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF6] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#A88050]/50 transition-colors">
                     <p class="text-lg font-black text-[#8A6A00] tabular-nums leading-none">📅</p>
                     <p class="text-[10px] font-bold text-[#8A94A6] mt-1">{{ app()->getLocale() === 'ar' ? 'تقويمي' : 'Calendar' }}</p>
                 </a>
                 <a href="{{ Route::has('student.classes.index') ? route('student.classes.index') : route('dashboard') }}"
-                   class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF8] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#0B3D91]/30 transition-colors">
-                    <p class="text-lg font-black text-[#0B3D91] dark:text-blue-300 tabular-nums leading-none">{{ $tbUpcoming }}</p>
+                   class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF6] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#1E4E8C]/30 transition-colors">
+                    <p class="text-lg font-black text-[#1E4E8C] dark:text-blue-300 tabular-nums leading-none">{{ $tbUpcoming }}</p>
                     <p class="text-[10px] font-bold text-[#8A94A6] mt-1">{{ app()->getLocale() === 'ar' ? 'حصص قادمة' : 'Upcoming' }}</p>
                 </a>
             </div>
         </div>
     </div>
+    @endif
 
     <nav class="flex-1 overflow-y-auto sidebar-scroll px-0 py-1 space-y-0.5 min-h-0">
         @if($isStudent || ($user && $user->hasAnyPermission('student.view.courses', 'student.view.my-courses', 'student.view.orders', 'student.view.invoices', 'student.view.wallet', 'student.view.certificates', 'student.view.achievements', 'student.view.exams', 'student.view.calendar', 'student.view.notifications', 'student.view.profile', 'student.view.settings')))
 
             <div class="ins-nav-group">
-                <span><i class="fas fa-school text-[9px] opacity-50"></i> {{ app()->getLocale() === 'ar' ? 'مدرستي' : 'My School' }}</span>
+                <span><i class="fas fa-home text-[9px] opacity-50"></i> {{ app()->getLocale() === 'ar' ? 'الرئيسية' : 'Home' }}</span>
             </div>
             <a href="{{ route('dashboard') }}" @click="{{ $closeSidebar }}"
                class="ins-nav {{ request()->routeIs('dashboard') || request()->routeIs('student.school.*') ? 'active' : '' }}">
                 <span class="ins-icon"><i class="fas fa-home"></i></span>
-                <span class="flex-1 truncate">{{ app()->getLocale() === 'ar' ? 'بوابة المدرسة' : 'School Home' }}</span>
+                <span class="flex-1 truncate">{{ app()->getLocale() === 'ar' ? 'نظرة عامة' : 'Overview' }}</span>
             </a>
 
+            @if(student_ui('show_packages', true) && Route::has('student.packages.index'))
+            <a href="{{ route('student.packages.index') }}" @click="{{ $closeSidebar }}"
+               class="ins-nav {{ request()->routeIs('student.packages.*') ? 'active' : '' }}">
+                <span class="ins-icon"><i class="fas fa-box-open"></i></span>
+                <span class="flex-1 truncate">باقاتي</span>
+            </a>
+            @endif
+
+            @if(student_ui('show_school', false))
             <div class="ins-nav-group mt-2">
                 <span><i class="fas fa-book-reader text-[9px] opacity-50"></i> {{ app()->getLocale() === 'ar' ? 'تعلّمي' : 'Learning' }}</span>
             </div>
@@ -92,6 +103,7 @@
                 <span class="ins-icon"><i class="fas fa-coins"></i></span>
                 <span class="flex-1 truncate">رصيد الحصص</span>
             </a>
+            @endif
             @endif
 
             @if(student_ui('show_libraries', true))
@@ -126,6 +138,25 @@
                 <span class="flex-1 truncate">محاضراتي</span>
             </a>
             @endif
+            @endif
+
+            @if(student_ui('show_learning_paths', true) && Route::has('student.learning-paths.index'))
+            <div class="ins-nav-group mt-2"><span>تطويري المهني</span></div>
+            <a href="{{ route('student.learning-paths.index') }}" @click="{{ $closeSidebar }}" class="ins-nav {{ request()->routeIs('student.learning-paths.*') ? 'active' : '' }}"><span class="ins-icon"><i class="fas fa-route"></i></span><span class="flex-1 truncate">المسارات التعليمية</span></a>
+            @if(student_ui('show_tools', true) && Route::has('student.tools.index'))
+            <a href="{{ route('student.tools.index') }}" @click="{{ $closeSidebar }}" class="ins-nav {{ request()->routeIs('student.tools.*') ? 'active' : '' }}"><span class="ins-icon"><i class="fas fa-toolbox"></i></span><span class="flex-1 truncate">أدواتي ومواردي</span></a>
+            @endif
+            @if(student_ui('show_teacher_assistant', true) && Route::has('student.teacher-assistant.index'))
+            <a href="{{ route('student.teacher-assistant.index') }}" @click="{{ $closeSidebar }}" class="ins-nav {{ request()->routeIs('student.teacher-assistant.*') ? 'active' : '' }}"><span class="ins-icon"><i class="fas fa-magic"></i></span><span class="flex-1 truncate">مساعد المعلم</span></a>
+            @endif
+            @endif
+
+            @if(student_ui('show_institution_portal', true) && Route::has('institution.portal.index'))
+            <a href="{{ route('institution.portal.index') }}" @click="{{ $closeSidebar }}" class="ins-nav {{ request()->routeIs('institution.portal.*') ? 'active' : '' }}"><span class="ins-icon"><i class="fas fa-building"></i></span><span class="flex-1 truncate">جهتي</span></a>
+            @endif
+
+            @if(student_ui('show_consultations', true) && Route::has('consultations.index'))
+            <a href="{{ route('consultations.index') }}" @click="{{ $closeSidebar }}" class="ins-nav {{ request()->routeIs('consultations.*') || request()->routeIs('public.consultations.*') ? 'active' : '' }}"><span class="ins-icon"><i class="fas fa-comments"></i></span><span class="flex-1 truncate">استشاراتي</span></a>
             @endif
 
             {{-- أقسام مخفية احتياطياً (البيانات محفوظة) — تُعاد عبر config/student_ui.php --}}
@@ -201,7 +232,7 @@
         @endif
     </nav>
 
-    <div class="px-3 py-3 flex-shrink-0 border-t border-[#E8EEF8] dark:border-gray-700/80">
+    <div class="px-3 py-3 flex-shrink-0 border-t border-[#E8EEF6] dark:border-gray-700/80">
         <div class="ins-user-card flex items-center gap-3">
             <div class="u-avatar flex-shrink-0 w-10 h-10 rounded-xl">
                 @if($user?->profile_image)

@@ -1,0 +1,568 @@
+<?php
+
+return [
+    'nav' => [
+        'home' => 'Home',
+        'about' => 'About',
+        'teacher-development' => 'Teacher Development',
+        'teacher-paths' => 'Training Paths',
+        'teacher-courses' => 'Courses & Workshops',
+        'teacher-resources' => 'Applied Resources & Tools',
+        'consultations' => 'Educational Consultations',
+        'consultations-book' => 'Book a consultation',
+        'consultations-teachers' => 'Teacher Consultations',
+        'consultations-specialized' => 'Specialized Consultations',
+        'institutional' => 'Schools & Institutions',
+        'institutional-inquiry' => 'Request an institutional inquiry',
+        'institutional-schools' => 'Schools & Institutions',
+        'institutional-training' => 'Institutional Training Programs',
+        'institutional-solutions' => 'Institutional Solutions',
+        'packages' => 'Packages',
+        'learning_paths' => 'Learning Paths',
+        'schools_institutions' => 'Schools & Institutions',
+        'tools_resources' => 'Tools & Resources',
+        'services' => 'Services',
+        'workshops' => 'Workshops & Training Courses',
+        'resources' => 'Resources & Tools Library',
+        'resources-materials' => 'Learning Materials',
+        'resources-templates' => 'Templates',
+        'resources-tools' => 'Teacher Tools',
+        'assessment' => 'Assessment & Diagnosis',
+        'assessment-diagnosis' => 'Development Needs Diagnosis',
+        'assessment-recommendations' => 'Recommendations & Paths',
+        'account' => 'Account & Progress',
+        'account-profile' => 'Profile',
+        'account-programs' => 'Enrolled Programs',
+        'account-progress' => 'Progress Tracking',
+        'account-tracking' => 'Progress Tracking',
+        'account-certificates' => 'Certificates & Achievements',
+        'certificates' => 'Certificates & Achievements',
+        'contact' => 'Contact',
+        'path' => 'The Path',
+    ],
+
+    'nav_short' => [
+        'home' => 'Home',
+        'about' => 'About',
+        'services' => 'Services',
+        'courses' => 'Courses',
+        'learning_paths' => 'Paths',
+        'consultations' => 'Consult',
+        'schools_institutions' => 'Schools',
+        'packages' => 'Packages',
+        'tools_resources' => 'Tools',
+        'teacher-development' => 'Teachers',
+        'institutional' => 'Schools',
+        'assessment' => 'Assess',
+        'workshops' => 'Workshops',
+        'resources' => 'Library',
+        'account' => 'Account',
+        'certificates' => 'Certs',
+        'contact' => 'Contact',
+        'path' => 'Path',
+        'overview' => 'Overview',
+    ],
+
+    'cta' => [
+        'start' => 'Get started',
+        'explore' => 'Explore',
+        'explore_catalog' => 'Browse courses',
+        'consult' => 'Request a consultation',
+        'register' => 'Create teacher account',
+        'login' => 'Sign in',
+        'contact' => 'Contact us',
+        'more' => 'Learn more',
+        'packages' => 'Choose your package',
+        'all_packages' => 'View all packages',
+    ],
+
+    'actors' => [
+        'learner_chip' => 'For teachers',
+        'instructor_chip' => 'Delivered by an instructor',
+        'for_learner' => 'Service recipient',
+        'for_instructor' => 'Service provider',
+        'learner_title' => 'You are the teacher — the professional learner',
+        'instructor_title' => 'The instructor describes & delivers',
+        'learner_body' => 'Your platform account is a teacher account for paths, tools, and consultations — you are the professional learner here.',
+        'instructor_body' => 'An activated instructor can teach described courses and/or deliver services within their permissions, linked to packages.',
+        'learner_note' => 'Sign-up creates a teacher (professional learner) account. Instructors are activated separately by admin.',
+        'how_described_label' => 'How is it described?',
+    ],
+
+    'delivery' => [
+        'course' => [
+            'title' => 'Delivered as a described course / path',
+            'body' => 'The instructor builds or teaches content with clear goals, outcomes, activities, and classroom tools.',
+            'how_described' => 'Title + professional description + learning outcomes + applied activities + links to tools/challenges.',
+        ],
+        'consultation' => [
+            'title' => 'Delivered as a consultation session',
+            'body' => 'The instructor/consultant receives teacher or school bookings per package or quote, and documents recommendations.',
+            'how_described' => 'Consultation type + session scope + expected outputs + optional follow-on path or tools.',
+        ],
+        'tools' => [
+            'title' => 'Delivered as tools & resources',
+            'body' => 'Instructors/content team prepare reusable templates and tools; teacher access is unlocked by package.',
+            'how_described' => 'Tool name + use case + application steps + link to a path or classroom challenge.',
+        ],
+        'institutional' => [
+            'title' => 'Delivered as an institutional program',
+            'body' => 'A school coordinator plus activated instructors run training or solutions for multiple participants.',
+            'how_described' => 'Program scope + seats + delivery schedule + basic participation reports.',
+        
+            'audience' => 'For school / institution coordinators',
+            'for_teacher' => 'Participating teachers under the org account get training and tools via seats.',
+            'delivered_by' => 'Activated instructors plus coordination with the org lead.',
+            'loop_step' => 'Institutional development',
+            'package_hint' => 'School & Institution or Custom package — request a quote.',
+            'outcomes' => [
+                    'Collective teacher growth',
+                    'Clear coordinator workflow',
+                    'Trackable impact',
+            ],
+        ],
+    ],
+
+    'sections' => [
+        'explore' => 'Explore sections',
+        'outcomes' => 'What does the teacher gain?',
+        'packages_title' => 'Packages linked to this service',
+        'packages_lead' => 'A package bundles your access to paths, tools, and consultations — pick a tier or request an institutional quote.',
+        'related' => 'Related services & paths',
+        'next_title' => 'Next step',
+        'next_lead' => 'Create a teacher account, choose a package, or contact us for an institutional / consultation quote.',
+    ],
+
+    'pages' => [
+        'about' => [
+            'meta_title' => 'About | TADRIS LAB',
+            'meta_description' => 'TADRIS LAB exists to grow teacher practice: diagnose, apply tools, develop, and measure clear progress.',
+            'kicker' => 'About the platform',
+            'title_before' => 'Built to grow',
+            'title_strong' => 'your professional practice',
+            'lead' => 'A professional-development platform for teachers — we start from real classroom challenges, then offer paths, tools, and consultations you can apply and measure.',
+            'story_kicker' => 'Our story',
+            'story_title' => 'From classroom reality to a clear path',
+            'story_body' => 'Teachers do not need more generic content. They need a precise diagnosis of practice challenges, access to tools they can use, and follow-up that shows progress in the lesson and the school.',
+            'story_points' => [
+                'We address the teacher as a professional learner growing classroom practice.',
+                'Every experience maps to diagnose → access → develop → measure.',
+                'We support individual teachers and coordinated school programs when needed.',
+            ],
+            'why_title' => 'What sets us apart?',
+            'why_lead' => 'The experience is designed around classroom impact — not disconnected courses without application.',
+            'principles' => [
+                [
+                    'title' => 'Diagnose first',
+                    'body' => 'We start with classroom-practice challenges before choosing a path or tool.',
+                ],
+                [
+                    'title' => 'Applied tools',
+                    'body' => 'Templates, checklists, and resources ready for the lesson.',
+                ],
+                [
+                    'title' => 'Continuous growth',
+                    'body' => 'Paths and consultations that build professional performance step by step.',
+                ],
+                [
+                    'title' => 'Clear measurement',
+                    'body' => 'Progress tracking teachers and institutions can rely on.',
+                ],
+            ],
+            'loop_title' => 'How the platform works with you',
+            'loop_lead' => 'The same teacher path you see on the home page — here we explain why it is built this way.',
+            'cta_title' => 'Ready to start your journey?',
+            'cta_lead' => 'Create a teacher account, or explore programs and choose what fits your practice.',
+        ],
+
+        'teacher-development' => [
+            'meta_title' => 'Teacher Development | TADRIS LAB',
+            'meta_description' => 'Training paths, courses, workshops, and applied resources for teacher growth.',
+            'kicker' => 'For teachers',
+            'title' => 'Teacher development',
+            'lead' => 'Training experiences and development solutions that help teachers grow professionally and improve classroom practice.',
+            'sections' => [
+                [
+                    'title' => 'What you will find',
+                    'body' => 'Clear paths, practical courses and workshops, and applied resources that serve diagnose → access → develop → measure.',
+                ],
+            ],
+        
+            'audience' => 'For teachers — the professional learner on the platform',
+            'for_teacher' => 'Explore paths, courses, and resources that grow classroom practice, then track progress.',
+            'delivered_by' => 'Activated instructors deliver described courses and paths inside the platform.',
+            'how_described' => 'Instructors write goals, outcomes, applied activities, and tool links.',
+            'loop_step' => 'Access → Develop → Measure',
+            'package_hint' => 'Individual and Advanced unlock paths/courses; School packages add seats.',
+            'outcomes' => [
+                    'Clear development priorities',
+                    'Applied practices & tools',
+                    'Progress inside your teacher account',
+            ],
+        ],
+        'teacher-paths' => [
+            'kicker' => 'Teacher development',
+            'title' => 'Training paths',
+            'lead' => 'Integrated learning journeys that connect related skills into a clear development path.',
+            'sections' => [
+                ['title' => 'A clear path', 'body' => 'Each path links diagnosis to practices, application, and impact measurement.'],
+            ],
+        
+            'audience' => 'For teachers who want a connected development journey',
+            'for_teacher' => 'Follow diagnose → practice → measure — not a disconnected language course.',
+            'delivered_by' => 'Instructors describe path units and link each to classroom practice.',
+            'how_described' => 'Path name + stages + stage outcomes + included courses/tools.',
+            'loop_step' => 'Diagnose → Access → Develop',
+            'package_hint' => 'Paths sit inside Individual, Advanced, and School packages.',
+            'outcomes' => [
+                    'A clear journey',
+                    'Classroom application',
+                    'Basis for measuring impact',
+            ],
+        ],
+        'teacher-courses' => [
+            'kicker' => 'Teacher development',
+            'title' => 'Courses & workshops',
+            'lead' => 'Practical programs designed to strengthen teaching skills and effective classroom practices.',
+            'sections' => [
+                ['title' => 'Applied learning', 'body' => 'Arabic-first content with classroom activities you can implement immediately.'],
+            ],
+        
+            'audience' => 'For teachers seeking a practical course or workshop',
+            'for_teacher' => 'Pick a professionally described course tied to your teacher account progress.',
+            'delivered_by' => 'Instructors publish course descriptions and teach enrolled teachers.',
+            'how_described' => 'Title + description + level + outcomes + syllabus — shown in the courses catalog.',
+            'loop_step' => 'Access → Develop',
+            'package_hint' => 'Package access unlocks linked courses; or browse the catalog then pick a package.',
+            'outcomes' => [
+                    'Actionable classroom skills',
+                    'Arabic-first content',
+                    'Links to path tools',
+            ],
+        ],
+        'teacher-resources' => [
+            'kicker' => 'Teacher development',
+            'title' => 'Applied resources & tools',
+            'lead' => 'Tools, templates, and resources that support planning, delivery, and practice growth.',
+            'sections' => [
+                ['title' => 'From knowledge to class', 'body' => 'Ready-to-use resources for your school context.'],
+            ],
+        ],
+
+        'consultations' => [
+            'meta_title' => 'Educational Consultations | TADRIS LAB',
+            'meta_description' => 'Professional consultations for teachers and schools: a focused session on a classroom challenge, actionable recommendations, and links to a path or tools.',
+            'kicker' => 'Consultations',
+            'title' => 'Educational consultations',
+            'title_before' => 'A focused session to unpack',
+            'title_strong' => 'one classroom challenge',
+            'lead' => 'Professional guidance for teachers or school coordinators — we start from your need and leave you with recommendations and an action plan you can apply and follow.',
+            'story_title' => 'When do you need a consultation?',
+            'story_body' => 'When the challenge is clearer than a generic path alone — classroom management, planning, assessment, or an institutional decision that needs unpacking with a consultant.',
+            'types_title' => 'Consultation types',
+            'types_lead' => 'Pick the track that fits, then book a session.',
+            'how_title' => 'How a session works',
+            'how' => [
+                ['title' => 'Clarify the need', 'body' => 'Name the classroom or institutional challenge clearly.'],
+                ['title' => 'Guided session', 'body' => 'A consultant unpacks the issue and suggests next steps.'],
+                ['title' => 'Plan & follow-up', 'body' => 'Written recommendations linked to a path or tools.'],
+            ],
+            'cta_title' => 'Ready to request a consultation?',
+            'cta_lead' => 'Book a session, or start a teacher account and choose the right package.',
+            'cta_book' => 'Request a consultation',
+            'cta_register' => 'Start your journey',
+            'audience' => 'For teachers or school coordinators',
+            'for_teacher' => 'Request professional guidance on a specific classroom or institutional challenge.',
+            'delivered_by' => 'An activated instructor/consultant takes bookings per package or quote.',
+            'how_described' => 'Consultation type + session scope + written follow-up outputs.',
+            'loop_step' => 'Diagnose → Develop',
+            'package_hint' => 'Advanced includes sessions; school/custom are quote-based.',
+            'outcomes' => [
+                'Actionable recommendations',
+                'Follow-on path or tools',
+                'Clearer next steps',
+            ],
+            'sections' => [
+                ['title' => 'Consultation with purpose', 'body' => 'We start from your real need, then build actionable recommendations.'],
+            ],
+        ],
+        'consultations-teachers' => [
+            'kicker' => 'Consultations',
+            'title' => 'Teacher consultations',
+            'lead' => 'Professional coaching for teachers around specific classroom challenges and personal growth paths.',
+            'sections' => [
+                ['title' => 'For daily practice', 'body' => 'Classroom management, engagement, planning, assessment, and more.'],
+            ],
+        
+            'audience' => 'For individual teachers',
+            'for_teacher' => 'A session on classroom management, planning, engagement, or assessment.',
+            'delivered_by' => 'An instructor runs the consultation and documents next steps in your teacher account.',
+            'how_described' => 'Session topic + prep questions + recommendation summary.',
+            'loop_step' => 'Diagnose → Access',
+            'package_hint' => 'Usually inside Advanced, or as an add-on to Individual.',
+            'outcomes' => [
+                    'A short action plan',
+                    'Suggested tools',
+                    'A clear next step',
+            ],
+        ],
+        'consultations-specialized' => [
+            'kicker' => 'Consultations',
+            'title' => 'Specialized educational consultations',
+            'lead' => 'Deep consultancy in quality, leadership, curriculum, and educational counseling.',
+            'sections' => [
+                ['title' => 'Field expertise', 'body' => 'Grounded in teaching practice and professional development in institutional contexts.'],
+            ],
+        ],
+
+        'institutional' => [
+            'meta_title' => 'Institutional Development | TADRIS LAB',
+            'meta_description' => 'Coordinated professional-development programs for schools and institutions — from inquiry to delivery and follow-up.',
+            'kicker' => 'For schools & institutions',
+            'title' => 'Institutional development',
+            'title_before' => 'A coordinated program for your team',
+            'title_strong' => 'you can track',
+            'lead' => 'Training, consultancy, and development solutions that help educational institutions build more sustainable quality and performance.',
+            'outcome' => 'Clear outcome: a coordinated training program, trackable progress, and a simple report for leadership.',
+            'story_title' => 'Why institutional development with TADRIS LAB?',
+            'story_body' => 'Schools need more than a one-off workshop: diagnose team needs, run a coordinated program, and follow progress that shows practice impact in classrooms.',
+            'points' => [
+                'Ready-made or customized training for your organization',
+                'Org account with a coordinator and participants',
+                'Follow-up and evaluation after delivery',
+            ],
+            'panel_title' => 'Institution progress panel',
+            'panel_chip' => 'B2B',
+            'how_title' => 'How the partnership works',
+            'how_lead' => 'From inquiry to delivery and follow-up — four clear steps.',
+            'how' => [
+                ['title' => 'Inquiry & diagnosis', 'body' => 'Name the school or team need: training, paths, or institutional solutions.'],
+                ['title' => 'Proposal & coordination', 'body' => 'We scope the program, seats, and schedule with your coordinator.'],
+                ['title' => 'Delivery with the team', 'body' => 'Accredited facilitators deliver the program under the institution account.'],
+                ['title' => 'Follow-up & impact', 'body' => 'Basic participation reports linked to practice-progress measurement.'],
+            ],
+            'types_title' => 'Ways to collaborate',
+            'types_lead' => 'Pick the best entry point for your organization, then request a quote.',
+            'inquiry_lead' => 'Start with an inquiry — we prepare a proposal that fits your needs, then agreement and delivery.',
+            'packages_title' => 'Packages for institutions',
+            'package_hint' => 'Schools package or a custom quote — based on seats and program scope.',
+            'cta_inquiry' => 'Request an institutional inquiry',
+            'cta_title' => 'Ready to develop your team?',
+            'cta_lead' => 'Send an institutional inquiry, or contact us to discuss the need together.',
+            'sections' => [
+                ['title' => 'Institution-level impact', 'body' => 'From team training to quality systems and accreditation readiness.'],
+            ],
+        ],
+        'institutional-inquiry' => [
+            'kicker' => 'Schools & institutions',
+            'title' => 'Request an institutional inquiry',
+            'lead' => 'Start with an inquiry — we prepare a proposal that fits your needs, then agreement and delivery.',
+        ],
+        'institutional-schools' => [
+            'kicker' => 'Institutional development',
+            'title' => 'Developing schools & institutions',
+            'lead' => 'Development partnerships that help schools improve teaching and leadership practices sustainably.',
+            'sections' => [
+                ['title' => 'Partnership, not a one-off', 'body' => 'Plans tied to the school’s reality and team capacity.'],
+            ],
+        ],
+        'institutional-training' => [
+            'kicker' => 'Institutional development',
+            'title' => 'Institutional training programs',
+            'lead' => 'Custom training programs for schools and teams based on real institutional needs.',
+            'sections' => [
+                ['title' => 'Needs-based training', 'body' => 'We design content, duration, and outcomes with school leadership.'],
+            ],
+        ],
+        'institutional-solutions' => [
+            'kicker' => 'Institutional development',
+            'title' => 'Institutional consulting & solutions',
+            'lead' => 'Professional solutions that help institutions address challenges and improve educational and administrative practices.',
+            'sections' => [
+                ['title' => 'From diagnosis to plan', 'body' => 'Assessment, recommendations, and implementation follow-up.'],
+            ],
+        ],
+
+        'workshops' => [
+            'meta_title' => 'Workshops & Training Courses | TADRIS LAB',
+            'kicker' => 'Practical training',
+            'title' => 'Workshops & training courses',
+            'lead' => 'Short, practical workshops and courses focused on skills that transfer immediately to the classroom or team.',
+            'sections' => [
+                ['title' => 'Intensive learning', 'body' => 'Ideal for teachers and education leaders seeking fast application.'],
+            ],
+        
+            'audience' => 'For teachers or school teams',
+            'for_teacher' => 'An intensive workshop that turns into practice within days.',
+            'delivered_by' => 'An instructor delivers a clearly described workshop with applied outcomes.',
+            'how_described' => 'Workshop title + duration + outcomes + participation requirements.',
+            'loop_step' => 'Develop',
+            'package_hint' => 'May be included in a package or requested in an institutional quote.',
+            'outcomes' => [
+                    'Fast application',
+                    'Peer practice',
+                    'Link to a longer path',
+            ],
+        ],
+
+        'resources' => [
+            'meta_title' => 'Resources & Tools Library | TADRIS LAB',
+            'kicker' => 'Library',
+            'title' => 'Resources & tools library',
+            'lead' => 'A growing library of resources, templates, and tools that support teacher planning, delivery, and development.',
+            'sections' => [
+                ['title' => 'Built to expand', 'body' => 'We keep adding resources based on field needs.'],
+            ],
+        
+            'audience' => 'For teachers who need immediate tools',
+            'for_teacher' => 'Use templates and tools in class after package access is unlocked.',
+            'delivered_by' => 'Instructors/content team prepare resources and link them to paths.',
+            'how_described' => 'Resource name + use case + application steps.',
+            'loop_step' => 'Access',
+            'package_hint' => 'Tool access expands with packages that include tools & resources.',
+            'outcomes' => [
+                    'Less prep time',
+                    'Clearer practice',
+                    'Path integration',
+            ],
+        ],
+        'resources-materials' => [
+            'kicker' => 'Library',
+            'title' => 'Learning materials',
+            'lead' => 'Practical educational materials that support understanding and classroom application.',
+            'sections' => [
+                ['title' => 'Practice-ready content', 'body' => 'Carefully selected for professional use.'],
+            ],
+        ],
+        'resources-templates' => [
+            'kicker' => 'Library',
+            'title' => 'Templates',
+            'lead' => 'Ready templates for planning, follow-up, and documentation that save teacher time.',
+            'sections' => [
+                ['title' => 'Ready to adapt', 'body' => 'Use as-is or customize to your context.'],
+            ],
+        ],
+        'resources-tools' => [
+            'kicker' => 'Library',
+            'title' => 'Teacher tools',
+            'lead' => 'Practical tools that support diagnosis, application, and progress measurement.',
+            'sections' => [
+                ['title' => 'Each tool = a clearer step', 'body' => 'Every tool is tied to a clear development goal.'],
+            ],
+        ],
+
+        'assessment' => [
+            'meta_title' => 'Assessment & Diagnosis | TADRIS LAB',
+            'kicker' => 'Diagnosis',
+            'title' => 'Assessment & diagnosis',
+            'lead' => 'A core entry to the teacher development loop: understand challenges and needs before choosing a path or tool.',
+            'sections' => [
+                ['title' => 'Diagnose, then develop', 'body' => 'Without clear diagnosis, training stays generic and unfocused.'],
+            ],
+        
+            'audience' => 'For teachers starting their development journey',
+            'for_teacher' => 'Diagnose practice challenges before choosing a path or package.',
+            'delivered_by' => 'Diagnosis tools from the platform/instructors; consultations interpret results when needed.',
+            'how_described' => 'Prompts/indicators + needs summary + path recommendation.',
+            'loop_step' => 'Diagnose',
+            'package_hint' => 'Free or Individual is a good start, then upgrade.',
+            'outcomes' => [
+                    'Clearer needs',
+                    'Better path choice',
+                    'Basis for later measurement',
+            ],
+        ],
+        'assessment-diagnosis' => [
+            'kicker' => 'Assessment & diagnosis',
+            'title' => 'Development needs diagnosis',
+            'lead' => 'Approaches and tools that help identify professional development needs more accurately.',
+            'sections' => [
+                ['title' => 'Clearer needs', 'body' => 'From classroom challenges to development priorities.'],
+            ],
+        ],
+        'assessment-recommendations' => [
+            'kicker' => 'Assessment & diagnosis',
+            'title' => 'Recommendations & development paths',
+            'lead' => 'After diagnosis: practical recommendations and suggested paths matched to your need.',
+            'sections' => [
+                ['title' => 'Next step', 'body' => 'Direct links to paths, courses, resources, and consultations.'],
+            ],
+        ],
+
+        'account' => [
+            'meta_title' => 'Account & Progress | TADRIS LAB',
+            'kicker' => 'Your account',
+            'title' => 'User account & progress',
+            'lead' => 'The teacher’s space to follow profile, programs, progress, and certificates in one place.',
+            'sections' => [
+                ['title' => 'From learning to impact', 'body' => 'Track what you joined, what you completed, and your next step.'],
+            ],
+            'auth_note' => 'Some features require signing in.',
+        ],
+        'account-profile' => [
+            'kicker' => 'Your account',
+            'title' => 'Profile',
+            'lead' => 'Your professional profile and learning preferences appear here after sign-in.',
+            'sections' => [
+                ['title' => 'Professional identity', 'body' => 'Keep your details updated for better recommendations.'],
+            ],
+        ],
+        'account-programs' => [
+            'kicker' => 'Your account',
+            'title' => 'Enrolled programs',
+            'lead' => 'Programs, paths, and workshops you joined.',
+            'sections' => [
+                ['title' => 'All your programs', 'body' => 'Track status and completion timelines.'],
+            ],
+        ],
+        'account-tracking' => [
+            'kicker' => 'Your account',
+            'title' => 'Progress tracking',
+            'lead' => 'Progress signals that help you see development impact over time.',
+            'sections' => [
+                ['title' => 'Clear measurement', 'body' => 'A core part of the TADRIS LAB loop.'],
+            ],
+        ],
+        'account-certificates' => [
+            'kicker' => 'Your account',
+            'title' => 'Certificates & achievements',
+            'lead' => 'Your certificates and achievements linked to your account, with verification when enabled.',
+            'sections' => [
+                ['title' => 'Documented impact', 'body' => 'Keep a record of your professional achievements.'],
+            ],
+        ],
+
+        'certificates' => [
+            'meta_title' => 'Certificates & Achievements | TADRIS LAB',
+            'kicker' => 'Achievements',
+            'title' => 'Certificates & achievements',
+            'lead' => 'Certified recognition and documented achievements for training programs — with public verification when enabled.',
+            'sections' => [
+                ['title' => 'Trust & transparency', 'body' => 'Achievement is measured and documented, not only announced.'],
+            ],
+        ],
+
+        'contact' => [
+            'meta_title' => 'Contact | TADRIS LAB',
+            'meta_description' => 'Contact TADRIS LAB for training, consultancy, and institutional development.',
+            'kicker' => 'We are here',
+            'title' => 'Contact us',
+            'lead' => 'Whether you are a teacher or representing a school/institution — write to us and we will get back to you.',
+            'email' => 'dr.shaimaabelal44@gmail.com',
+            'phone' => '+974 6667 9656',
+            'region' => 'Qatar & GCC countries',
+            'success' => 'Your message was received. We will get back to you soon.',
+            'fields' => [
+                'name' => 'Name',
+                'email' => 'Email',
+                'phone' => 'Phone',
+                'topic' => 'Topic',
+                'message' => 'Message',
+                'submit' => 'Send message',
+            ],
+            'sections' => [
+                ['title' => 'When to reach out', 'body' => 'Teacher training, consultancy, institutional development, or a general platform question.'],
+            ],
+        ],
+    ],
+];

@@ -1,39 +1,39 @@
 /* Admin shell — مطابقة حرفية لـ site/admin-shell.js + ريسبونسيف ثابت */
 
 body.admin-body {
-  background: #F4F7FC !important;
-  color: #0b1220;
+  background: #F7F8FB !important;
+  color: #152A4A;
   font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif !important;
   margin: 0;
   height: 100%;
   overflow: hidden;
-  --atheer-accent: #0B3D91;
-  --atheer-canvas: #F4F7FC;
-  --admin-accent: #0B3D91;
-  --admin-accent-dark: #072A66;
-  --admin-accent-soft: #E8EEF8;
-  --admin-gold: #F5B800;
-  --admin-gold-soft: #FFF6D6;
+  --atheer-accent: #1E4E8C;
+  --atheer-canvas: #F7F8FB;
+  --admin-accent: #1E4E8C;
+  --admin-accent-dark: #184888;
+  --admin-accent-soft: #E8EEF6;
+  --admin-gold: #A88050;
+  --admin-gold-soft: #F7F1E8;
 }
 
 /* تجاوز توكنات Atheer داخل لوحة الأدمن فقط */
-body.admin-body .bg-accent { background-color: #0B3D91 !important; }
-body.admin-body .bg-accent-soft { background-color: #E8EEF8 !important; }
-body.admin-body .text-accent { color: #0B3D91 !important; }
-body.admin-body .border-accent { border-color: #0B3D91 !important; }
-body.admin-body .hover\:text-accent:hover { color: #0B3D91 !important; }
-body.admin-body .hover\:bg-accent-soft:hover { background-color: #E8EEF8 !important; }
-body.admin-body .hover\:border-accent\/30:hover { border-color: rgba(11, 61, 145, 0.3) !important; }
+body.admin-body .bg-accent { background-color: #1E4E8C !important; }
+body.admin-body .bg-accent-soft { background-color: #E8EEF6 !important; }
+body.admin-body .text-accent { color: #1E4E8C !important; }
+body.admin-body .border-accent { border-color: #1E4E8C !important; }
+body.admin-body .hover\:text-accent:hover { color: #1E4E8C !important; }
+body.admin-body .hover\:bg-accent-soft:hover { background-color: #E8EEF6 !important; }
+body.admin-body .hover\:border-accent\/30:hover { border-color: rgba(30, 78, 140, 0.3) !important; }
 body.admin-body .hover\:bg-accent-soft\/40:hover { background-color: rgba(232, 238, 248, 0.4) !important; }
-body.admin-body .bg-accent\/30 { background-color: rgba(11, 61, 145, 0.3) !important; }
-body.admin-body .bg-accent\/80 { background-color: rgba(11, 61, 145, 0.8) !important; }
-body.admin-body .bg-\[\#f2f5f4\] { background-color: #E8EEF8 !important; }
-body.admin-body .bg-\[\#f7f8fa\] { background-color: #F4F7FC !important; }
+body.admin-body .bg-accent\/30 { background-color: rgba(30, 78, 140, 0.3) !important; }
+body.admin-body .bg-accent\/80 { background-color: rgba(30, 78, 140, 0.8) !important; }
+body.admin-body .bg-\[\#f2f5f4\] { background-color: #E8EEF6 !important; }
+body.admin-body .bg-\[\#f7f8fa\] { background-color: #F7F8FB !important; }
 body.admin-body .ring-accent,
 body.admin-body .focus\:ring-accent:focus,
 body.admin-body .focus\:border-accent:focus {
-  --tw-ring-color: rgba(11, 61, 145, 0.35);
-  border-color: #0B3D91;
+  --tw-ring-color: rgba(30, 78, 140, 0.35);
+  border-color: #1E4E8C;
 }
 
 /* شِل بارتفاع الشاشة: سايدبار ثابت + محتوى يتمرّر منفصلاً */
@@ -62,7 +62,7 @@ body.admin-body .focus\:border-accent:focus {
 
 /* —— سايدبار ثابت 280px — تمرير الروابط داخل الـ nav فقط —— */
 .admin-sidebar {
-  background: #0b1220 !important;
+  background: #152A4A !important;
   color: #fff !important;
   border: none !important;
   box-shadow: none !important;
@@ -140,7 +140,7 @@ body.admin-body .focus\:border-accent:focus {
 }
 .admin-sidebar .sidebar-link.active {
   background: #fff !important;
-  color: #0b1220 !important;
+  color: #152A4A !important;
   font-weight: 600 !important;
 }
 
@@ -158,7 +158,7 @@ body.admin-body .focus\:border-accent:focus {
   flex-shrink: 0 !important;
 }
 .admin-sidebar .sidebar-link.active i {
-  background: #0B3D91 !important;
+  background: #1E4E8C !important;
   color: #fff !important;
 }
 
@@ -245,7 +245,7 @@ body.admin-body .focus\:border-accent:focus {
   color: #fff !important;
 }
 .admin-sidebar .sidebar-sub-link.active {
-  background: rgba(11, 61, 145, 0.4) !important;
+  background: rgba(30, 78, 140, 0.4) !important;
   color: #fff !important;
   font-weight: 600 !important;
 }
@@ -268,8 +268,8 @@ body.admin-body .focus\:border-accent:focus {
   flex-shrink: 0;
 }
 .admin-sidebar .sidebar-link.active .sidebar-badge {
-  background: #E8EEF8 !important;
-  color: #0B3D91 !important;
+  background: #E8EEF6 !important;
+  color: #1E4E8C !important;
 }
 
 .admin-sidebar .border-slate-200,
@@ -328,13 +328,13 @@ body.admin-body .focus\:border-accent:focus {
   background: #f7f8fa;
   padding-inline: 1rem;
   font-size: 0.875rem;
-  color: #0b1220;
+  color: #152A4A;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .admin-topbar-search:focus {
   outline: none;
-  border-color: #0B3D91;
-  box-shadow: 0 0 0 4px rgba(11, 61, 145, 0.15);
+  border-color: #1E4E8C;
+  box-shadow: 0 0 0 4px rgba(30, 78, 140, 0.15);
   background: #fff;
 }
 
@@ -412,4 +412,28 @@ body.admin-body .focus\:border-accent:focus {
   #admin-drawer {
     display: none !important;
   }
+}
+
+
+/* TADRIS LAB — override legacy teal / emerald accent leftovers in admin blades */
+body.admin-body .hover\:bg-\[\#0d4f4a\]:hover,
+body.admin-body .bg-\[\#0d4f4a\],
+body.admin-body .hover\:bg-\[\#0f5c57\]:hover {
+  background-color: #184888 !important;
+}
+body.admin-body .text-\[\#0d4f4a\],
+body.admin-body .text-\[\#0f5c57\] {
+  color: #1E4E8C !important;
+}
+body.admin-body .border-\[\#0d4f4a\] {
+  border-color: #1E4E8C !important;
+}
+body.admin-body .admin-sidebar {
+  background: linear-gradient(180deg, #1A3558 0%, #152A4A 100%) !important;
+}
+body.admin-body .admin-sidebar .sidebar-link.active i {
+  background: #1E4E8C !important;
+}
+body.admin-body .admin-sidebar .sidebar-link.active {
+  color: #152A4A !important;
 }

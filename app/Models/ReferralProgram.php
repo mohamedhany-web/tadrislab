@@ -127,8 +127,8 @@ class ReferralProgram extends Model
         }
 
         return $locale === 'ar'
-            ? 'سجّل في Glottical من رابطي واحصل على رصيد حصص مجاني: {link}'
-            : 'Join Glottical with my link and get free lesson credits: {link}';
+            ? 'سجّل في TADRIS LAB من رابطي واحصل على رصيد حصص مجاني: {link}'
+            : 'Join TADRIS LAB with my link and get free lesson credits: {link}';
     }
 
     // العلاقات

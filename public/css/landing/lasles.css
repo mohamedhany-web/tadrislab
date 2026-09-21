@@ -1,0 +1,5402 @@
+/* TADRIS LAB public home — Lasles Figma freebie (node 643:2318)
+   Desktop artboard target: 1440px content ~1140px
+   Scale refs from Figma preview (676 → 1440 ≈ 2.13×) */
+
+:root {
+  /* Official TADRIS LAB logo palette */
+  --lasles-blue: #1E4E8C;
+  --lasles-blue-deep: #184888;
+  --lasles-blue-soft: #3B7BC4;
+  --lasles-blue-tint: #E8EEF6;
+  --lasles-blue-glow: rgba(59, 123, 196, 0.35);
+  /* Brighter fill for CTAs (logo blue stays for brand marks) */
+  --lasles-cta: #3B7BC4;
+  --lasles-cta-hover: #4A8AD0;
+  --lasles-gold: #A88050;
+  --lasles-gold-soft: #B8956A;
+  --lasles-gold-tint: #F7F1E8;
+  --lasles-gold-glow: rgba(168, 128, 80, 0.28);
+
+  /* Primary actions (legacy aliases → brighter CTA blue) */
+  --lasles-red: var(--lasles-cta);
+  --lasles-red-soft: var(--lasles-blue-soft);
+  --lasles-red-tint: var(--lasles-blue-tint);
+  --lasles-red-glow: var(--lasles-blue-glow);
+
+  --lasles-navy: #152A4A;
+  --lasles-muted: #3F4A5A; /* darker for readable body/card copy */
+  --lasles-border: #D8DEE8;
+  --lasles-bg: #FFFFFF;
+  --lasles-bg-soft: #F7F8FB;
+  --lasles-footer-bg: #EEF1F6;
+  --lasles-max: 1140px;
+  --lasles-gutter: 1.25rem;
+  --lasles-radius: 10px;
+  --lasles-radius-pill: 50px;
+  --lasles-shadow: 0 40px 60px -30px rgba(13, 16, 37, 0.12);
+  --lasles-shadow-card: 0 25px 50px -20px rgba(13, 16, 37, 0.1);
+  --lasles-font: "IBM Plex Sans Arabic", "Lato", "Rubik", system-ui, sans-serif;
+  --lasles-font-ar: "IBM Plex Sans Arabic", "Lato", "Rubik", system-ui, sans-serif;
+  --lasles-font-ar-display: "IBM Plex Sans Arabic", "Lato", "Rubik", system-ui, sans-serif;
+  --lasles-section-y: clamp(3.75rem, 4.5vw, 6rem);
+
+  /* Type + ~12% — premium SaaS readability */
+  --fs-hero: clamp(2rem, 1.25rem + 3vw, 3.375rem);
+  --fs-section: clamp(1.65rem, 1.1rem + 2vw, 2.375rem);
+  --fs-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);     /* ~17–19px */
+  --fs-lead: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);       /* ~18–20px */
+  --fs-card: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);         /* ~16–17px */
+  --fs-stat: clamp(1.3rem, 1.1rem + 0.8vw, 1.75rem);
+  --fs-nav: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --fs-plan: clamp(1.2rem, 1.1rem + 0.35vw, 1.45rem);
+  --fs-price: clamp(1.95rem, 1.55rem + 1.1vw, 2.5rem);
+  --lh-hero: 1.26;
+  --lh-section: 1.32;
+  --lh-body: 1.72;
+  --lh-card: 1.68;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body.lasles-home {
+  margin: 0;
+  font-family: var(--lasles-font);
+  font-size: var(--fs-body);
+  color: var(--lasles-navy);
+  background: var(--lasles-bg);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+html[lang="ar"] body.lasles-home,
+html[dir="rtl"] body.lasles-home {
+  font-family: var(--lasles-font-ar);
+  letter-spacing: 0;
+  word-spacing: 0;
+  font-weight: 500;
+  font-feature-settings: "kern" 1;
+}
+
+html[lang="ar"] body.lasles-home .lasles-hero__brand,
+html[lang="ar"] body.lasles-home .lasles-hero__title,
+html[lang="ar"] body.lasles-home .lasles-section-title,
+html[lang="ar"] body.lasles-home .lasles-path-kicker,
+html[lang="ar"] body.lasles-home .lasles-plan__name,
+html[lang="ar"] body.lasles-home .lasles-pillar h3,
+html[lang="ar"] body.lasles-home .lasles-brand,
+html[lang="ar"] body.lasles-home .lasles-brand span b,
+html[lang="ar"] body.lasles-home .lasles-nav__links > a,
+html[lang="ar"] body.lasles-home .lasles-nav__parent,
+html[lang="ar"] body.lasles-home .lasles-nav__menu a,
+html[lang="ar"] body.lasles-home .lasles-nav__signin,
+html[lang="ar"] body.lasles-home .lasles-drawer__panel a,
+html[lang="ar"] body.lasles-home .lasles-drawer__brand,
+html[dir="rtl"] body.lasles-home .lasles-hero__brand,
+html[dir="rtl"] body.lasles-home .lasles-hero__title,
+html[dir="rtl"] body.lasles-home .lasles-section-title,
+html[dir="rtl"] body.lasles-home .lasles-path-kicker,
+html[dir="rtl"] body.lasles-home .lasles-plan__name,
+html[dir="rtl"] body.lasles-home .lasles-pillar h3,
+html[dir="rtl"] body.lasles-home .lasles-brand,
+html[dir="rtl"] body.lasles-home .lasles-brand span b,
+html[dir="rtl"] body.lasles-home .lasles-nav__links > a,
+html[dir="rtl"] body.lasles-home .lasles-nav__parent,
+html[dir="rtl"] body.lasles-home .lasles-nav__menu a,
+html[dir="rtl"] body.lasles-home .lasles-nav__signin,
+html[dir="rtl"] body.lasles-home .lasles-drawer__panel a,
+html[dir="rtl"] body.lasles-home .lasles-drawer__brand {
+  font-family: var(--lasles-font-ar-display) !important;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+html[lang="ar"] body.lasles-home .lasles-brand,
+html[dir="rtl"] body.lasles-home .lasles-brand {
+  font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+html[lang="ar"] body.lasles-home .lasles-brand span b,
+html[dir="rtl"] body.lasles-home .lasles-brand span b {
+  font-weight: 700;
+}
+
+html[lang="ar"] body.lasles-home .lasles-nav__links > a,
+html[lang="ar"] body.lasles-home .lasles-nav__parent,
+html[dir="rtl"] body.lasles-home .lasles-nav__links > a,
+html[dir="rtl"] body.lasles-home .lasles-nav__parent {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+html[lang="ar"] body.lasles-home .lasles-nav__links > a.is-active,
+html[lang="ar"] body.lasles-home .lasles-nav__parent.is-active,
+html[dir="rtl"] body.lasles-home .lasles-nav__links > a.is-active,
+html[dir="rtl"] body.lasles-home .lasles-nav__parent.is-active {
+  font-weight: 700;
+}
+
+html[lang="ar"] body.lasles-home .lasles-hero__brand {
+  font-size: clamp(2.15rem, 1.4rem + 2.7vw, 3.25rem);
+  font-weight: 700;
+}
+
+html[lang="ar"] body.lasles-home .lasles-hero__title {
+  font-weight: 700;
+}
+
+html[lang="ar"] body.lasles-home .lasles-hero__lead,
+html[lang="ar"] body.lasles-home .lasles-section-lead,
+html[lang="ar"] body.lasles-home .lasles-pillar p,
+html[lang="ar"] body.lasles-home .lasles-stats__label,
+html[dir="rtl"] body.lasles-home .lasles-hero__lead,
+html[dir="rtl"] body.lasles-home .lasles-section-lead,
+html[dir="rtl"] body.lasles-home .lasles-pillar p,
+html[dir="rtl"] body.lasles-home .lasles-stats__label {
+  font-family: var(--lasles-font-ar);
+  line-height: 1.85;
+  font-weight: 600;
+}
+
+html[lang="ar"] body.lasles-home .lasles-stats__num,
+html[dir="rtl"] body.lasles-home .lasles-stats__num {
+  font-family: var(--lasles-font-ar-display);
+  font-weight: 700;
+}
+
+html[lang="ar"] body.lasles-home .lasles-btn-primary,
+html[lang="ar"] body.lasles-home .lasles-btn-outline,
+html[dir="rtl"] body.lasles-home .lasles-btn-primary,
+html[dir="rtl"] body.lasles-home .lasles-btn-outline {
+  font-family: var(--lasles-font-ar-display);
+  font-weight: 700;
+}
+
+body.lasles-home a { color: inherit; text-decoration: none; }
+body.lasles-home img { max-width: 100%; height: auto; display: block; }
+body.lasles-home .lasles-social img,
+body.lasles-home .lasles-footer__ico svg,
+body.lasles-home .lasles-social__btn svg {
+  max-width: none;
+  height: auto;
+}
+body.lasles-home button { font-family: inherit; cursor: pointer; }
+
+.lasles-container {
+  width: min(100% - (var(--lasles-gutter) * 2), var(--lasles-max));
+  margin-inline: auto;
+}
+
+/* ——— Nav ——— */
+.lasles-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(21, 42, 74, 0.08);
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.lasles-nav.is-scrolled {
+  border-bottom-color: rgba(11,19,42,.1);
+  box-shadow: 0 10px 28px -20px rgba(13, 16, 37, 0.4);
+}
+
+/* Utility strip above main nav — 3 clean zones */
+.lasles-topbar {
+  background: linear-gradient(90deg, var(--lasles-blue-deep) 0%, var(--lasles-blue) 55%, #2A5FA0 100%);
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.lasles-topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 2.5rem;
+  padding-block: 0.4rem;
+  padding-inline: 0.35rem;
+  box-sizing: border-box;
+}
+.lasles-topbar__zone {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.lasles-topbar__zone--start,
+.lasles-topbar__zone--end {
+  flex: 1 1 0;
+}
+.lasles-topbar__zone--start { justify-content: flex-start; }
+.lasles-topbar__zone--end { justify-content: flex-end; }
+.lasles-topbar__zone--mid {
+  flex: 0 1 auto;
+  justify-content: center;
+  max-width: 40%;
+}
+.lasles-topbar__contacts {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: nowrap;
+}
+.lasles-topbar__sep {
+  width: 1px;
+  height: 0.85rem;
+  background: rgba(255, 255, 255, 0.28);
+  flex-shrink: 0;
+}
+.lasles-topbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.94);
+  text-decoration: none;
+  white-space: nowrap;
+  line-height: 1;
+  transition: color .2s ease, opacity .2s ease;
+}
+.lasles-topbar__link:hover { color: #fff; }
+.lasles-topbar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  opacity: 0.95;
+}
+.lasles-topbar__icon svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+.lasles-topbar__text {
+  display: inline-block;
+  max-width: 12.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lasles-topbar__mid {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.lasles-topbar__social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.lasles-topbar__social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  transition: background .2s ease, transform .2s ease;
+}
+.lasles-topbar__social-btn:hover {
+  background: rgba(255, 255, 255, 0.26);
+  transform: translateY(-1px);
+}
+.lasles-topbar__social-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Tablet / phone */
+@media (max-width: 899.98px) {
+  .lasles-topbar__zone--mid { display: none; }
+  .lasles-topbar__inner { gap: 0.75rem; }
+  .lasles-topbar__text { max-width: 10.5rem; }
+}
+@media (max-width: 639.98px) {
+  .lasles-topbar { font-size: 0.75rem; }
+  .lasles-topbar__inner {
+    min-height: 2.25rem;
+    gap: 0.5rem;
+    padding-inline: 0.15rem;
+  }
+  .lasles-topbar__contacts { gap: 0.5rem; }
+  .lasles-topbar__sep { height: 0.75rem; }
+  .lasles-topbar__text { max-width: 7.5rem; }
+  .lasles-topbar__social { gap: 0.25rem; }
+  .lasles-topbar__social-btn {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  .lasles-topbar__social-btn svg {
+    width: 11px;
+    height: 11px;
+  }
+  /* Keep topbar to one clean row: hide 5th+ social */
+  .lasles-topbar__social-btn:nth-child(n+5) { display: none; }
+}
+@media (max-width: 399.98px) {
+  /* Ultra-narrow: icons + phone number only */
+  .lasles-topbar__email { display: none; }
+  .lasles-topbar__text { max-width: 6.75rem; }
+  .lasles-topbar__social-btn:nth-child(n+4) { display: none; }
+}
+@media (min-width: 900px) {
+  .lasles-topbar { font-size: 0.84375rem; }
+  .lasles-topbar__mid { font-size: 0.84375rem; }
+  .lasles-topbar__text { max-width: 16rem; }
+  .lasles-topbar__social { gap: 0.4rem; }
+}
+
+.lasles-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 72px;
+}
+.lasles-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--lasles-navy);
+  white-space: nowrap;
+  font-family: inherit;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.lasles-brand img {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 0;
+  object-fit: contain;
+  background: transparent;
+  box-shadow: none;
+}
+.lasles-brand span {
+  display: inline-block;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+.lasles-brand span b { font-weight: 700; color: var(--lasles-blue); font-family: inherit; }
+.lasles-brand span em { font-style: normal; font-weight: 700; color: var(--lasles-gold); font-family: inherit; }
+.lasles-nav__links {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  gap: .35rem;
+  min-width: 0;
+  color: var(--lasles-muted);
+  font-size: var(--fs-nav);
+  font-weight: 500;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.lasles-nav__links > a,
+.lasles-nav__parent {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  padding: .42rem .7rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  color: var(--lasles-muted);
+  background: transparent;
+  box-shadow: none;
+  font-family: inherit;
+  line-height: 1.25;
+  transition: color .22s ease, background .22s ease;
+}
+.lasles-nav__links > a:hover,
+.lasles-nav__parent:hover {
+  color: var(--lasles-blue);
+  background: rgba(30, 78, 140, 0.08);
+}
+.lasles-nav__links > a.is-active,
+.lasles-nav__parent.is-active,
+.lasles-nav__dropdown.is-active > .lasles-nav__parent {
+  color: var(--lasles-blue);
+  font-weight: 700;
+  background: rgba(30, 78, 140, 0.1);
+  box-shadow: none;
+}
+.lasles-nav__links > a.is-active::after,
+.lasles-nav__dropdown.is-active > .lasles-nav__parent::after,
+.lasles-nav__links > a::after,
+.lasles-nav__parent::after {
+  content: none;
+  display: none;
+}
+.lasles-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.lasles-nav__signin {
+  font-weight: 500;
+  font-size: var(--fs-nav);
+  color: var(--lasles-navy);
+  background: none;
+  border: 0;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: .45rem .7rem;
+}
+.lasles-nav__account {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  overflow: hidden;
+  color: var(--lasles-blue);
+  background: var(--lasles-blue-tint);
+  box-shadow: inset 0 0 0 1.5px rgba(30, 78, 140, 0.18);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.lasles-nav__account:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 0 1.5px rgba(168, 128, 80, 0.45), 0 8px 18px -12px rgba(13, 16, 37, 0.35);
+  background: var(--lasles-gold-tint);
+  color: var(--lasles-gold);
+}
+.lasles-nav__avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.lasles-nav__avatar--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.lasles-nav__avatar--icon svg {
+  display: block;
+}
+.lasles-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7.5rem;
+  height: 2.5rem;
+  padding: 0 1.1rem;
+  border-radius: var(--lasles-radius-pill);
+  border: 1.5px solid var(--lasles-blue);
+  color: var(--lasles-blue-deep);
+  background: #fff;
+  font-weight: 600;
+  font-size: var(--fs-nav);
+  transition: .2s ease;
+}
+.lasles-btn-outline:hover {
+  background: var(--lasles-blue-tint);
+  color: var(--lasles-blue-deep);
+  border-color: var(--lasles-blue-deep);
+}
+.lasles-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 9rem;
+  height: 2.85rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: var(--lasles-radius);
+  background: var(--lasles-cta);
+  color: #fff !important;
+  font-weight: 700;
+  font-size: var(--fs-nav);
+  box-shadow: 0 18px 28px -12px var(--lasles-blue-glow);
+  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+}
+body.lasles-home a.lasles-btn-primary,
+a.lasles-btn-primary {
+  color: #fff !important;
+}
+body.lasles-home a.lasles-btn-outline,
+a.lasles-btn-outline {
+  color: var(--lasles-blue-deep);
+}
+.lasles-btn-primary:hover {
+  background: var(--lasles-cta-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 20px 32px -12px rgba(59, 123, 196, 0.42);
+}
+.lasles-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+}
+.lasles-burger {
+  display: inline-flex;
+  width: 2.4rem;
+  height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--lasles-border);
+  border-radius: .7rem;
+  background: #fff;
+  color: var(--lasles-navy);
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.lasles-burger[aria-expanded="true"] {
+  background: var(--lasles-blue-tint);
+  border-color: rgba(30, 78, 140, 0.22);
+  color: var(--lasles-blue);
+}
+
+/* Side drawer — outside .lasles-nav; Arabic opens from the RIGHT */
+.lasles-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  visibility: hidden;
+  pointer-events: none;
+}
+.lasles-drawer.is-open {
+  visibility: visible;
+  pointer-events: auto;
+}
+.lasles-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  background: rgba(15, 28, 48, 0.55);
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+.lasles-drawer.is-open .lasles-drawer__backdrop {
+  opacity: 1;
+}
+.lasles-drawer__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: auto;
+  width: min(82vw, 20.5rem);
+  max-width: 100%;
+  height: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: 12px 0 48px -18px rgba(13, 16, 37, 0.55);
+  transform: translateX(-105%);
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+[dir="rtl"] .lasles-drawer__panel {
+  left: auto;
+  right: 0;
+  box-shadow: -12px 0 48px -18px rgba(13, 16, 37, 0.55);
+  transform: translateX(105%);
+}
+.lasles-drawer.is-open .lasles-drawer__panel,
+[dir="rtl"] .lasles-drawer.is-open .lasles-drawer__panel {
+  transform: translateX(0);
+}
+.lasles-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid rgba(21, 42, 74, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+}
+.lasles-drawer__brand {
+  min-width: 0;
+}
+.lasles-drawer__brand span {
+  font-size: 1.05rem;
+}
+.lasles-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--lasles-border);
+  background: #fff;
+  color: var(--lasles-navy);
+  flex-shrink: 0;
+}
+.lasles-drawer__nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.85rem 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.lasles-drawer__label {
+  margin: 0.95rem 0.35rem 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--lasles-muted);
+}
+.lasles-drawer__link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.85rem;
+  color: var(--lasles-navy);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+}
+.lasles-drawer__link--sub {
+  min-height: 2.45rem;
+  padding-inline-start: 1.15rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--lasles-muted);
+}
+.lasles-drawer__link:hover,
+.lasles-drawer__link.is-active {
+  background: linear-gradient(135deg, rgba(30, 78, 140, 0.1), rgba(168, 128, 80, 0.1));
+  color: var(--lasles-blue);
+}
+.lasles-drawer__link.is-active {
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(30, 78, 140, 0.1);
+}
+.lasles-drawer__foot {
+  padding: 0.95rem 1rem 1.2rem;
+  border-top: 1px solid rgba(21, 42, 74, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.lasles-drawer__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.lasles-drawer__signin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(30, 78, 140, 0.18);
+  color: var(--lasles-navy);
+  font-size: 0.98rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: #fff;
+}
+.lasles-drawer__cta {
+  width: 100%;
+  min-height: 2.85rem;
+  font-size: 1rem;
+  font-weight: 700;
+  justify-content: center;
+}
+.lasles-lang-toggle--mobile {
+  align-self: stretch;
+  justify-content: space-between;
+}
+.lasles-lang-toggle--mobile .lasles-lang-toggle__track {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+body.lasles-drawer-open {
+  overflow: hidden;
+}
+
+/* Language segmented toggle */
+.lasles-lang-toggle {
+  --lang-pad: 0.18rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: var(--lasles-blue);
+  flex-shrink: 0;
+}
+.lasles-lang-toggle__globe {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  color: var(--lasles-blue);
+  background: linear-gradient(145deg, rgba(30, 78, 140, 0.1), rgba(168, 128, 80, 0.12));
+  box-shadow: inset 0 0 0 1px rgba(30, 78, 140, 0.12);
+}
+.lasles-lang-toggle__track {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-width: 5.6rem;
+  height: 2.15rem;
+  padding: var(--lang-pad);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f4f7fb, #e8eef6);
+  box-shadow:
+    inset 0 1px 2px rgba(21, 42, 74, 0.06),
+    inset 0 0 0 1px rgba(30, 78, 140, 0.12);
+}
+.lasles-lang-toggle__thumb {
+  position: absolute;
+  top: var(--lang-pad);
+  bottom: var(--lang-pad);
+  inset-inline-start: var(--lang-pad);
+  width: calc(50% - var(--lang-pad));
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--lasles-blue) 0%, #2A5FA0 55%, var(--lasles-gold-soft) 160%);
+  box-shadow:
+    0 6px 14px -8px rgba(30, 78, 140, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.25) inset;
+  transition: transform .28s cubic-bezier(.22, 1, .36, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+.lasles-lang-toggle[data-active="en"] .lasles-lang-toggle__thumb {
+  transform: translateX(100%);
+}
+[dir="rtl"] .lasles-lang-toggle[data-active="en"] .lasles-lang-toggle__thumb {
+  transform: translateX(-100%);
+}
+[dir="rtl"] .lasles-lang-toggle[data-active="ar"] .lasles-lang-toggle__thumb {
+  transform: translateX(0);
+}
+.lasles-lang-toggle__opt {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--lasles-muted);
+  transition: color .22s ease;
+  user-select: none;
+}
+.lasles-lang-toggle__opt.is-active {
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+}
+.lasles-lang-toggle:hover .lasles-lang-toggle__track {
+  box-shadow:
+    inset 0 1px 2px rgba(21, 42, 74, 0.06),
+    inset 0 0 0 1px rgba(30, 78, 140, 0.2),
+    0 8px 18px -14px rgba(30, 78, 140, 0.35);
+}
+.lasles-lang-toggle:hover .lasles-lang-toggle__globe {
+  color: var(--lasles-gold);
+  background: var(--lasles-gold-tint);
+}
+.lasles-lang-toggle:focus-visible {
+  outline: 2px solid rgba(30, 78, 140, 0.35);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+.lasles-lang-toggle--mobile {
+  align-self: flex-start;
+  margin-block: 0.35rem 0.15rem;
+}
+@media (max-width: 479.98px) {
+  .lasles-lang-toggle__globe { display: none; }
+  .lasles-lang-toggle__track {
+    min-width: 5.1rem;
+    height: 2rem;
+  }
+  .lasles-lang-toggle__opt {
+    font-size: 0.68rem;
+    padding: 0 0.45rem;
+  }
+}
+
+/* ——— Hero ——— */
+.lasles-hero {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(2.25rem, 4vw, 3.75rem) 0 calc(var(--lasles-section-y) * .45);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 55% at 92% 8%, rgba(59, 123, 196, 0.14), transparent 58%),
+    radial-gradient(ellipse 55% 45% at 4% 88%, rgba(168, 128, 80, 0.11), transparent 52%),
+    linear-gradient(165deg, #FFFFFF 0%, #F5F8FC 48%, #FBF8F3 100%);
+}
+.lasles-hero__glow {
+  position: absolute;
+  inset: auto -8% -18% auto;
+  width: min(52vw, 34rem);
+  height: min(52vw, 34rem);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 123, 196, 0.16), transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(8px);
+}
+[dir="rtl"] .lasles-hero__glow {
+  inset: auto auto -18% -8%;
+}
+.lasles-hero__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+.lasles-hero__brand {
+  margin: 0 0 .65rem;
+  font-size: clamp(1.85rem, 1.2rem + 2.4vw, 2.85rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--lasles-blue);
+  text-wrap: balance;
+}
+.lasles-hero__brand::after {
+  content: "";
+  display: block;
+  width: 2.75rem;
+  height: 3px;
+  margin-top: .55rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--lasles-gold), rgba(168, 128, 80, 0.15));
+}
+[dir="rtl"] .lasles-hero__brand::after {
+  background: linear-gradient(270deg, var(--lasles-gold), rgba(168, 128, 80, 0.15));
+}
+.lasles-hero__title {
+  margin: 0 0 .9rem;
+  font-size: clamp(1.45rem, 1.05rem + 1.5vw, 2.05rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--lasles-navy);
+  max-width: 22ch;
+  text-wrap: balance;
+}
+.lasles-hero__title strong { font-weight: 700; color: var(--lasles-blue); }
+.lasles-hero__lead {
+  margin: 0 0 1.65rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  max-width: 34rem;
+  font-weight: 500;
+}
+.lasles-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .85rem;
+  align-items: center;
+}
+.lasles-btn-primary--hero {
+  min-width: 10.5rem;
+  height: 3.05rem;
+  padding: 0 1.55rem;
+  border-radius: 12px;
+  font-size: 1.02rem;
+}
+.lasles-btn-outline--hero {
+  min-width: 10.5rem;
+  height: 3.05rem;
+  padding: 0 1.45rem;
+  border-radius: 12px;
+  border-width: 1.5px;
+  border-color: rgba(30, 78, 140, 0.45);
+  color: var(--lasles-blue-deep) !important;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  font-size: 1.02rem;
+}
+.lasles-btn-outline--hero:hover {
+  background: #fff;
+  border-color: var(--lasles-blue);
+  color: var(--lasles-blue) !important;
+  box-shadow: 0 12px 24px -16px rgba(30, 78, 140, 0.35);
+}
+.lasles-hero__art {
+  justify-self: center;
+  width: min(100%, 560px);
+}
+.lasles-hero__art-frame {
+  position: relative;
+  border-radius: 1.25rem;
+}
+.lasles-hero__art-frame::before {
+  content: "";
+  position: absolute;
+  inset: 12% 8% 4%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 123, 196, 0.18), transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+.lasles-hero__art img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  filter: drop-shadow(0 28px 40px rgba(21, 42, 74, 0.12));
+}
+
+@keyframes lasles-hero-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes lasles-hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lasles-hero__copy {
+    animation: lasles-hero-in .75s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-hero__art-frame {
+    animation: lasles-hero-in .85s .12s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-hero__art img {
+    animation: lasles-hero-float 6.5s ease-in-out 1s infinite;
+  }
+}
+
+/* ——— Stats ——— */
+.lasles-stats-wrap { margin: 0 auto 2.5rem; }
+.lasles-stats {
+  background: linear-gradient(180deg, rgba(255,255,255,.92), #fff);
+  border: 1px solid rgba(30, 78, 140, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 24px 48px -32px rgba(13, 16, 37, 0.28);
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+.lasles-stats__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .9rem;
+  padding: 1.25rem 1rem;
+}
+.lasles-stats__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, var(--lasles-blue-tint), #fff);
+  border: 1px solid rgba(30, 78, 140, 0.12);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+.lasles-stats__icon img {
+  width: 32px;
+  height: 32px;
+  display: block;
+  object-fit: contain;
+}
+.lasles-stats__num {
+  margin: 0;
+  font-size: var(--fs-stat);
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.2;
+}
+.lasles-stats__label {
+  margin: 0;
+  color: var(--lasles-muted);
+  font-size: var(--fs-body);
+}
+.lasles-stats__divider {
+  display: none;
+  width: 2px;
+  background: #EEEFF2;
+  align-self: stretch;
+  margin: 1.25rem 0;
+}
+
+/* ——— Features ——— */
+.lasles-features {
+  padding: calc(var(--lasles-section-y) + .5rem) 0;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(59, 123, 196, 0.12), transparent 42%),
+    radial-gradient(circle at 88% 70%, rgba(168, 128, 80, 0.1), transparent 40%),
+    linear-gradient(180deg, var(--lasles-bg-soft) 0%, #fff 55%, var(--lasles-bg-soft) 100%);
+}
+.lasles-features__grid {
+  display: grid;
+  gap: 2.25rem;
+  align-items: center;
+}
+.lasles-features__art {
+  width: min(100%, 540px);
+  justify-self: center;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--lasles-shadow-card);
+}
+.lasles-features__art img { width: 100%; height: auto; }
+.lasles-section-title {
+  margin: 0 0 .75rem;
+  font-size: var(--fs-section);
+  font-weight: 700;
+  line-height: var(--lh-section);
+  color: var(--lasles-navy);
+}
+.lasles-section-lead {
+  margin: 0 0 1.25rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  max-width: 46ch;
+  font-weight: 400;
+}
+.lasles-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .85rem;
+}
+.lasles-checklist li {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-body);
+}
+.lasles-checklist img { width: 22px; height: 22px; flex-shrink: 0; }
+
+/* ——— Pricing ——— */
+.lasles-pricing {
+  padding: calc(var(--lasles-section-y) + 1rem) 0;
+  text-align: center;
+  background: #fff;
+}
+.lasles-pricing .lasles-section-lead { margin-inline: auto; max-width: 50ch; }
+.lasles-plans {
+  margin-top: 2.75rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  align-items: end;
+  padding-block: .75rem 0.25rem;
+}
+.lasles-plans--4 { gap: 1.25rem; }
+.lasles-plan {
+  position: relative;
+  background: #fff;
+  border: 2px solid var(--lasles-border);
+  border-radius: 16px;
+  padding: 1.65rem 1.35rem 1.45rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: start;
+  min-height: 100%;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.lasles-plan.is-featured {
+  border-color: var(--lasles-gold);
+  border-width: 2.5px;
+  box-shadow: 0 32px 56px -22px rgba(13, 16, 37, 0.22), 0 0 0 1px rgba(168, 128, 80, 0.15);
+  transform: translateY(-12px) scale(1.035);
+  z-index: 2;
+  padding-top: 2.1rem;
+  background: linear-gradient(180deg, #fff 0%, #FFFaf5 100%);
+}
+.lasles-plan__badge {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  font-size: .82rem;
+  font-weight: 700;
+  padding: .4rem .95rem;
+  border-radius: 999px;
+  background: var(--lasles-cta);
+  color: #fff;
+  letter-spacing: .01em;
+  box-shadow: 0 10px 20px -10px var(--lasles-blue-glow);
+  white-space: nowrap;
+}
+.lasles-plan__art {
+  display: none; /* shorten cards; keep visual weight on price + CTA */
+}
+.lasles-plan__type {
+  margin: 0 0 .35rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--lasles-blue-soft);
+  text-transform: none;
+}
+.lasles-plan__name {
+  margin: 0 0 .4rem;
+  font-size: var(--fs-plan);
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.3;
+}
+.lasles-plan__summary,
+.lasles-plan__audience {
+  margin: 0 0 1rem;
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+  color: var(--lasles-muted);
+  font-weight: 400;
+}
+.lasles-plan__price {
+  margin: 0 0 .35rem;
+  font-size: var(--fs-price);
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.lasles-plan__price b { font-weight: 700; }
+.lasles-plan__price .lasles-plan__old,
+.lasles-plan__old {
+  margin-inline-start: .45rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(21, 42, 74, 0.45);
+  text-decoration: line-through;
+}
+.lasles-plan__duration {
+  margin: 0 0 1rem;
+  font-size: .875rem;
+  color: var(--lasles-muted);
+}
+.lasles-plan__meta { display: none; } /* fold into details */
+.lasles-plan__cta-wrap {
+  margin: 0 0 1.1rem;
+}
+.lasles-plan__cta-wrap .lasles-btn-outline,
+.lasles-plan__cta-wrap .lasles-btn-primary {
+  width: 100%;
+  justify-content: center;
+}
+.lasles-plan__list {
+  list-style: none;
+  margin: 0 0 .75rem;
+  padding: 0;
+  width: 100%;
+  text-align: start;
+  display: grid;
+  gap: .55rem;
+}
+.lasles-plan__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+  font-weight: 400;
+}
+.lasles-plan__list img { width: 18px; height: 18px; margin-top: .15rem; flex-shrink: 0; }
+.lasles-plan__more {
+  margin: 0 0 .35rem;
+  border: 0;
+  background: none;
+  color: var(--lasles-blue);
+  font-size: .9rem;
+  font-weight: 600;
+  padding: .25rem 0;
+  text-align: start;
+  cursor: pointer;
+}
+.lasles-plan__more:hover { color: var(--lasles-blue-deep); text-decoration: underline; }
+.lasles-plan__details[hidden] { display: none !important; }
+.lasles-plan__footer {
+  margin-top: auto;
+  display: none; /* CTA moved above benefits */
+}
+.lasles-plan .lasles-btn-outline,
+.lasles-plan .lasles-btn-primary {
+  width: 100%;
+  min-height: 2.85rem;
+  border-radius: var(--lasles-radius-pill);
+  font-size: 0.95rem;
+}
+
+/* ——— Network ——— */
+.lasles-network { padding: var(--lasles-section-y) 0 calc(var(--lasles-section-y) * .45); text-align: center; }
+.lasles-network .lasles-section-lead { margin-inline: auto; }
+.lasles-network__map {
+  margin: 1.75rem auto 0;
+  width: min(100%, 900px);
+}
+.lasles-sponsors {
+  margin: 1.5rem auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 1.75rem;
+}
+.lasles-sponsors img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: .75;
+}
+
+/* ——— Testimonials ——— */
+.lasles-reviews { padding: var(--lasles-section-y) 0; text-align: center; }
+.lasles-reviews .lasles-section-lead { margin-inline: auto; }
+.lasles-reviews__track {
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  text-align: start;
+}
+.lasles-review {
+  border: 2px solid var(--lasles-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  background: #fff;
+  min-height: 210px;
+}
+.lasles-review.is-active { border-color: var(--lasles-gold); }
+.lasles-review__top {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .85rem;
+}
+.lasles-review__top img {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+.lasles-review__name { margin: 0; font-weight: 600; font-size: 1.05rem; }
+.lasles-review__loc { margin: .15rem 0 0; color: var(--lasles-muted); font-size: .9rem; line-height: 1.45; }
+.lasles-review__rating {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  color: var(--lasles-navy);
+  font-size: .9rem;
+}
+.lasles-review__rating img { width: 14px; height: 14px; }
+.lasles-review__quote {
+  margin: 0;
+  color: var(--lasles-navy);
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+}
+.lasles-reviews__controls {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.lasles-dots { display: flex; gap: .4rem; align-items: center; }
+.lasles-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #DDE0E4;
+}
+.lasles-dots span.is-on { width: 28px; background: var(--lasles-gold); }
+.lasles-reviews__arrows { display: flex; gap: .5rem; }
+.lasles-reviews__arrows button {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.lasles-reviews__arrows button img { width: 44px; height: 44px; }
+
+/* ——— Subscribe ——— */
+.lasles-subscribe-wrap {
+  position: relative;
+  z-index: 2;
+  margin: 2rem auto -3.75rem;
+}
+.lasles-subscribe {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.14), transparent 40%),
+    linear-gradient(135deg, var(--lasles-blue-deep) 0%, var(--lasles-cta) 55%, #2A5FA0 100%);
+  border-radius: 18px;
+  box-shadow: 0 36px 60px -24px rgba(30, 78, 140, 0.55);
+  padding: 2.25rem 1.5rem;
+  display: grid;
+  gap: 1.35rem;
+  align-items: center;
+  color: #fff;
+}
+.lasles-subscribe__title {
+  margin: 0 0 .55rem;
+  font-size: var(--fs-section);
+  font-weight: 700;
+  line-height: var(--lh-section);
+  color: #fff;
+}
+.lasles-subscribe__lead {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  max-width: 40rem;
+}
+.lasles-subscribe .lasles-btn-primary {
+  justify-self: start;
+  background: #fff;
+  color: var(--lasles-blue-deep) !important;
+  box-shadow: none;
+}
+body.lasles-home .lasles-subscribe a.lasles-btn-primary,
+.lasles-subscribe a.lasles-btn-primary {
+  color: var(--lasles-blue-deep) !important;
+}
+body.lasles-home .lasles-subscribe a.lasles-btn-primary:hover,
+.lasles-subscribe .lasles-btn-primary:hover {
+  background: var(--lasles-gold-tint);
+  color: var(--lasles-blue-deep) !important;
+}
+body.lasles-home .lasles-subscribe a.lasles-btn-outline,
+.lasles-subscribe .lasles-btn-outline {
+  border-color: rgba(255, 255, 255, 0.85);
+  color: #fff !important;
+  background: transparent;
+}
+body.lasles-home .lasles-subscribe a.lasles-btn-outline:hover,
+.lasles-subscribe .lasles-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff !important;
+  border-color: #fff;
+}
+.lasles-subscribe__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+}
+.lasles-hero__text-link {
+  font-weight: 500;
+  color: var(--lasles-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Services — journey tiles aligned with home sections */
+.lasles-pillars {
+  padding: var(--lasles-section-y) 0;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(59, 123, 196, 0.1), transparent 42%),
+    radial-gradient(circle at 92% 88%, rgba(168, 128, 80, 0.08), transparent 40%),
+    linear-gradient(180deg, #F7F8FB 0%, #fff 55%, #F7F8FB 100%);
+  text-align: start;
+}
+.lasles-pillars__head {
+  max-width: 40rem;
+  margin-inline: auto;
+  text-align: center;
+}
+.lasles-pillars__head .lasles-path-kicker {
+  margin-inline: auto;
+}
+.lasles-pillars__head .lasles-section-title,
+.lasles-pillars__head .lasles-section-lead {
+  text-align: center;
+  margin-inline: auto;
+}
+.lasles-pillars__grid {
+  margin-top: 2.15rem;
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+}
+.lasles-pillar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .55rem;
+  height: 100%;
+  padding: 1.25rem 1.2rem 1.3rem;
+  border: 1px solid rgba(30, 78, 140, 0.1);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fff 0%, #FBFCFF 100%);
+  box-shadow: 0 18px 40px -32px rgba(13, 16, 37, 0.35);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.lasles-pillar:hover {
+  border-color: rgba(168, 128, 80, 0.45);
+  box-shadow: 0 22px 44px -28px rgba(13, 16, 37, 0.42);
+  transform: translateY(-3px);
+}
+.lasles-pillar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  width: 100%;
+  margin-bottom: .15rem;
+}
+.lasles-pillar__icon {
+  width: 3.15rem;
+  height: 3.15rem;
+  border-radius: 14px;
+  background: var(--lasles-blue-tint);
+  border: 1px solid rgba(30, 78, 140, 0.1);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.lasles-pillar__icon img {
+  width: 1.55rem;
+  height: 1.55rem;
+}
+.lasles-pillar__step {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.7rem;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  background: rgba(168, 128, 80, 0.12);
+  color: #7a5a28;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.lasles-pillar h3 {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.35;
+}
+.lasles-pillar p {
+  margin: 0;
+  flex: 1;
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+  color: var(--lasles-muted);
+}
+.lasles-pillar__link {
+  margin-top: .35rem;
+  color: var(--lasles-blue);
+  font-weight: 700;
+  font-size: .92rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+.lasles-pillar__arrow {
+  display: inline-block;
+  width: .55rem;
+  height: .55rem;
+  border-block-end: 2px solid currentColor;
+  border-inline-end: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .2s ease, margin-inline .2s ease;
+}
+[dir="rtl"] .lasles-pillar__arrow {
+  transform: rotate(-135deg);
+}
+.lasles-pillar:hover .lasles-pillar__link { color: var(--lasles-blue-deep); }
+.lasles-pillar:hover .lasles-pillar__arrow {
+  margin-inline-start: .15rem;
+}
+[dir="rtl"] .lasles-pillar:hover .lasles-pillar__arrow {
+  margin-inline-start: 0;
+  margin-inline-end: .15rem;
+}
+
+.lasles-trust {
+  margin: 0 0 1.75rem;
+  text-align: center;
+}
+.lasles-trust__title {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+
+/* Institutions — stronger B2B band */
+.lasles-institutions {
+  padding: calc(var(--lasles-section-y) + .75rem) 0;
+  background:
+    linear-gradient(180deg, #fff 0%, var(--lasles-blue-tint) 48%, #fff 100%);
+}
+.lasles-institutions .lasles-section-title {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+}
+.lasles-institutions__outcome {
+  margin: 0 0 1.25rem;
+  padding: .85rem 1rem;
+  border-inline-start: 4px solid var(--lasles-gold);
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0 12px 12px 0;
+  color: var(--lasles-navy);
+  font-size: var(--fs-lead);
+  font-weight: 600;
+  line-height: 1.55;
+}
+[dir="ltr"] .lasles-institutions__outcome {
+  border-inline-start: 0;
+  border-inline-end: 4px solid var(--lasles-gold);
+  border-radius: 12px 0 0 12px;
+}
+.lasles-institutions__panel {
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  border-radius: 18px;
+  padding: 1.25rem;
+  box-shadow: var(--lasles-shadow-card);
+  display: grid;
+  gap: 1rem;
+}
+.lasles-institutions__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+.lasles-institutions__panel-head p {
+  margin: 0;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-institutions__chip {
+  font-size: .8rem;
+  font-weight: 700;
+  padding: .3rem .65rem;
+  border-radius: 999px;
+  background: var(--lasles-gold-tint);
+  color: var(--lasles-gold);
+}
+.lasles-institutions__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+}
+.lasles-institutions__metric {
+  background: var(--lasles-bg-soft);
+  border-radius: 12px;
+  padding: .85rem .7rem;
+  text-align: center;
+}
+.lasles-institutions__metric strong {
+  display: block;
+  font-size: 1.35rem;
+  color: var(--lasles-blue);
+  line-height: 1.2;
+}
+.lasles-institutions__metric span {
+  display: block;
+  margin-top: .25rem;
+  font-size: .8rem;
+  color: var(--lasles-muted);
+}
+.lasles-institutions__art {
+  border-radius: 12px;
+  overflow: hidden;
+  opacity: .92;
+}
+.lasles-institutions__art img { width: 100%; height: auto; }
+
+/* ——— Footer ——— */
+.lasles-footer {
+  background: var(--lasles-footer-bg);
+  padding: 3.25rem 0 1.35rem;
+  color: var(--lasles-muted);
+  border-top: 1px solid var(--lasles-border);
+  font-family: var(--lasles-font);
+  -webkit-font-smoothing: antialiased;
+}
+.lasles-footer__grid {
+  display: grid;
+  gap: 1.5rem 2rem;
+  align-items: start;
+}
+.lasles-footer__about { max-width: 18.5rem; }
+.lasles-footer__brand {
+  margin-bottom: 0;
+  font-size: 1.05rem;
+}
+.lasles-footer__brand img {
+  width: 30px;
+  height: 30px;
+}
+.lasles-footer__blurb {
+  margin: .45rem 0 .7rem;
+  line-height: 1.55;
+  font-size: .875rem;
+  font-weight: 400;
+  color: var(--lasles-muted);
+}
+.lasles-footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .85rem;
+  margin: 0 0 .7rem;
+}
+.lasles-footer__meta-link {
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--lasles-navy);
+  line-height: 1.3;
+}
+.lasles-footer__meta-link:hover { color: var(--lasles-blue); }
+.lasles-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: 0;
+}
+.lasles-social__btn {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  color: var(--lasles-blue-deep);
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.lasles-social__btn:hover {
+  background: var(--lasles-blue);
+  border-color: var(--lasles-blue);
+  color: #fff;
+}
+.lasles-social__btn svg { display: block; width: 15px; height: 15px; }
+.lasles-footer__bottom {
+  margin-top: 1.15rem;
+  padding-top: .85rem;
+  border-top: 1px solid rgba(13, 16, 37, .06);
+}
+.lasles-copy {
+  margin: 0;
+  font-size: .75rem;
+  font-weight: 400;
+  color: var(--lasles-muted);
+  opacity: .75;
+}
+.lasles-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+.lasles-footer__cols h4 {
+  margin: 0 0 .55rem;
+  color: var(--lasles-navy);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+  line-height: 1.25;
+}
+.lasles-footer__cols a {
+  display: block;
+  margin-bottom: .4rem;
+  font-size: .84rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--lasles-muted);
+  transition: color .15s ease;
+}
+.lasles-footer__cols a:last-child { margin-bottom: 0; }
+.lasles-footer__cols a:hover {
+  color: var(--lasles-blue);
+}
+
+[dir="rtl"] .lasles-plan__list { text-align: start; }
+[dir="rtl"] .lasles-review__rating { margin-inline-start: 0; margin-inline-end: auto; }
+
+/* ========== 320–479: compact phone ========== */
+@media (max-width: 479.98px) {
+  :root { --lasles-gutter: 1rem; }
+  .lasles-nav__signin { display: none; }
+  .lasles-nav__actions > .lasles-btn-primary { display: none; }
+  .lasles-nav__actions { gap: .4rem; }
+  .lasles-btn-outline { min-width: 0; padding: 0 .9rem; height: 2.35rem; font-size: .85rem; }
+  .lasles-hero__title { max-width: none; }
+  .lasles-stats__item { justify-content: flex-start; padding-inline: 1.1rem; }
+  .lasles-sponsors img { height: 22px; }
+  .lasles-footer__cols { grid-template-columns: 1fr; }
+  .lasles-subscribe-wrap { margin-bottom: -2.75rem; }
+}
+
+/* Hide header CTA on all mobile widths — it lives in the drawer */
+@media (max-width: 959.98px) {
+  .lasles-nav__actions > .lasles-btn-primary { display: none; }
+  .lasles-nav__signin { display: none; }
+}
+
+/* ========== 480–767: large phone ========== */
+@media (min-width: 480px) and (max-width: 767.98px) {
+  .lasles-nav__inner { min-height: 70px; }
+  .lasles-hero { padding-top: clamp(1.75rem, 3vw, 2.5rem); }
+  .lasles-stats__item { padding: 1.4rem 1.25rem; }
+}
+
+/* ========== 768–1023: tablet ========== */
+@media (min-width: 768px) {
+  .lasles-pillars__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.15rem; }
+
+  :root { --lasles-gutter: 1.75rem; }
+  .lasles-nav__inner { min-height: 78px; }
+  .lasles-brand { font-size: 1.12rem; }
+  .lasles-brand img { width: 38px; height: 38px; }
+  .lasles-btn-outline { min-width: 9rem; height: 2.75rem; }
+  .lasles-btn-primary { min-width: 10rem; height: 3.05rem; border-radius: var(--lasles-radius); }
+  .lasles-stats {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center;
+  }
+  .lasles-stats__divider { display: block; height: 110px; margin: 1.75rem 0; }
+  .lasles-stats__icon { width: 64px; height: 64px; border-radius: 16px; }
+  .lasles-stats__icon img { width: 40px; height: 40px; }
+  .lasles-stats__item { padding: 1.75rem 1.25rem; justify-content: center; }
+  .lasles-plans { grid-template-columns: repeat(2, 1fr); gap: 1.35rem; }
+  .lasles-plan.is-featured { transform: translateY(-12px) scale(1.04); }
+  .lasles-sponsors img { height: 34px; }
+  .lasles-reviews__arrows button,
+  .lasles-reviews__arrows button img { width: 50px; height: 50px; }
+  .lasles-dots span.is-on { width: 35px; }
+  .lasles-subscribe { padding: 2rem 1.75rem; }
+  .lasles-footer { padding-top: 4.25rem; }
+}
+
+/* ========== 960+: desktop nav ========== */
+@media (min-width: 960px) {
+  .lasles-nav__links { display: flex; }
+  .lasles-burger { display: none; }
+  .lasles-drawer { display: none !important; }
+  .lasles-nav__inner { min-height: 84px; }
+}
+
+/* Laptop / mid desktop — slightly tighter, same 3-zone layout */
+@media (min-width: 960px) and (max-width: 1199px) {
+  .lasles-nav__inner { gap: .75rem; }
+  .lasles-brand { font-size: 1.05rem; gap: .4rem; }
+  .lasles-brand img { width: 36px; height: 36px; }
+  .lasles-nav__links { gap: .2rem; font-size: .95rem; }
+  .lasles-nav__links > a,
+  .lasles-nav__parent { padding: .38rem .55rem; }
+  .lasles-nav__actions { gap: .4rem; }
+  .lasles-nav__actions > .lasles-btn-primary {
+    padding-inline: .95rem;
+    font-size: .92rem;
+  }
+}
+
+/* ========== 1024–1439: laptop ========== */
+@media (min-width: 1024px) {
+  .lasles-hero { padding: clamp(2.25rem, 4vw, 3.75rem) 0 calc(var(--lasles-section-y) * .45); }
+  .lasles-hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    gap: 2.25rem;
+  }
+  .lasles-features__grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+  .lasles-features,
+  .lasles-pricing,
+  .lasles-pillars,
+  .lasles-institutions,
+  .lasles-reviews { padding: var(--lasles-section-y) 0; }
+  .lasles-pillars__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .lasles-pillars__grid > .lasles-pillar {
+    grid-column: span 2;
+  }
+  .lasles-pillars__grid > .lasles-pillar:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+  .lasles-pillars__grid > .lasles-pillar:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+  .lasles-pricing { padding: calc(var(--lasles-section-y) + 1.25rem) 0; }
+
+  .lasles-plans { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .lasles-plans--4 { grid-template-columns: repeat(4, 1fr); gap: 1.15rem; }
+  .lasles-plan.is-featured { grid-column: auto; max-width: none; }
+  .lasles-plan { padding: 1.6rem 1.35rem 1.4rem; }
+  .lasles-reviews__track { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .lasles-subscribe {
+    grid-template-columns: 1fr auto;
+    padding: 2.25rem 2.5rem;
+  }
+  .lasles-subscribe .lasles-btn-primary { justify-self: end; }
+  .lasles-footer__grid {
+    grid-template-columns: minmax(14rem, 18rem) 1fr;
+    gap: 1.75rem 2.5rem;
+  }
+  .lasles-footer__cols { grid-template-columns: repeat(3, 1fr); }
+  .lasles-subscribe-wrap { margin: 1.25rem auto -2.75rem; }
+  .lasles-footer { padding: 4rem 0 1.35rem; }
+}
+
+/* ========== 1440+: Figma desktop ratios ========== */
+@media (min-width: 1440px) {
+  :root {
+    --lasles-max: 1140px;
+    --lasles-gutter: 2rem;
+    --lasles-section-y: 5.5rem; /* 88px */
+    --lasles-section-y: 6rem;
+    --fs-hero: 3.375rem;
+    --fs-section: 2.375rem;
+    --fs-body: 1.1875rem;    /* 19px */
+    --fs-lead: 1.25rem;      /* 20px */
+    --fs-card: 1.0625rem;    /* 17px */
+    --fs-stat: 1.75rem;
+    --fs-nav: 1.125rem;
+    --fs-plan: 1.45rem;
+    --fs-price: 2.5rem;
+  }
+  .lasles-hero { padding: clamp(2.5rem, 4vw, 4rem) 0 calc(var(--lasles-section-y) * .45); }
+  .lasles-hero__grid { gap: 2.75rem; }
+  .lasles-hero__art { width: min(100%, 600px); }
+  .lasles-stats-wrap { margin: 1.5rem auto 2.75rem; }
+  .lasles-stats__divider { height: 125px; }
+  .lasles-features,
+  .lasles-pricing,
+  .lasles-reviews,
+  .lasles-pillars,
+  .lasles-institutions { padding: var(--lasles-section-y) 0; }
+  .lasles-network { padding: var(--lasles-section-y) 0 calc(var(--lasles-section-y) * .45); }
+  .lasles-sponsors { gap: 1.5rem 2.75rem; }
+  .lasles-sponsors img { height: 36px; }
+  .lasles-btn-primary {
+    height: 3.15rem;
+    min-width: 10.5rem;
+    font-size: 1rem;
+  }
+  .lasles-btn-outline {
+    height: 2.85rem;
+    min-width: 9.5rem;
+  }
+}
+
+/* ——— Path (home section + /path page) ——— */
+.lasles-path-kicker {
+  display: inline-flex;
+  margin: 0 0 .85rem;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--lasles-gold-tint);
+  color: var(--lasles-gold);
+  font-weight: 500;
+  font-size: .8rem;
+}
+.lasles-section-title--center,
+.lasles-section-lead--center { text-align: center; }
+.lasles-section-lead--center { margin-inline: auto; }
+
+.lasles-path-home {
+  padding: 2.5rem 0 1.5rem;
+}
+.lasles-path-home__head {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+.lasles-path-home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.lasles-path-grid {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+.lasles-path-card {
+  margin: 0;
+  padding: 1.25rem 1.15rem 1.35rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--lasles-shadow-card);
+}
+.lasles-path-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: .75rem;
+  border-radius: 999px;
+  background: var(--lasles-red-tint);
+  color: var(--lasles-red);
+  font-weight: 700;
+  font-size: .9rem;
+}
+.lasles-path-card__title {
+  margin: 0 0 .45rem;
+  font-size: var(--fs-plan);
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-path-card__body {
+  margin: 0;
+  color: var(--lasles-muted);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+}
+.lasles-path-card__outcome {
+  margin: .85rem 0 0;
+  padding-top: .75rem;
+  border-top: 1px solid #EEE;
+  color: var(--lasles-navy);
+  font-weight: 500;
+  font-size: .88rem;
+}
+
+/* /path page hero */
+.lasles-path-hero {
+  position: relative;
+  padding: 2.25rem 0 2rem;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 80% at 100% 0%, rgba(59, 123, 196, 0.16), transparent 55%),
+    radial-gradient(ellipse 55% 70% at 0% 100%, rgba(168, 128, 80, 0.14), transparent 50%),
+    linear-gradient(180deg, #F4F7FB 0%, #fff 72%);
+}
+.lasles-path-hero__grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+.lasles-path-hero__brand {
+  margin: 0 0 .55rem;
+  font-size: clamp(1.35rem, 1rem + 1.6vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--lasles-blue);
+  line-height: 1.2;
+}
+.lasles-path-hero__title {
+  margin: 0 0 .85rem;
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+  max-width: 16ch;
+}
+.lasles-path-hero__title em {
+  font-style: normal;
+  color: var(--lasles-gold);
+}
+.lasles-path-hero__lead {
+  margin: 0 0 1.35rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  max-width: 38ch;
+}
+.lasles-path-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+.lasles-path-hero__art {
+  justify-self: center;
+  width: min(100%, 34rem);
+}
+.lasles-path-hero__art img {
+  width: 100%;
+  filter: drop-shadow(0 28px 40px rgba(30, 78, 140, 0.12));
+}
+
+/* /path journey steps */
+.lasles-path-steps {
+  padding: 2rem 0 2.75rem;
+  background: #fff;
+}
+.lasles-path-steps__head {
+  margin-bottom: .25rem;
+}
+.lasles-path-journey {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  position: relative;
+}
+.lasles-path-journey__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 1.15rem;
+  padding: 0 0 1.75rem;
+  align-items: start;
+}
+.lasles-path-journey__item:last-child { padding-bottom: 0; }
+.lasles-path-journey__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 1.2rem;
+  top: 2.55rem;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--lasles-blue-soft), var(--lasles-gold-soft));
+  opacity: .45;
+}
+.lasles-path-journey__num {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  background: var(--lasles-blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: .82rem;
+  box-shadow: 0 10px 22px -12px var(--lasles-blue-glow);
+}
+.lasles-path-journey__title {
+  margin: .15rem 0 .4rem;
+  font-size: var(--fs-plan);
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-path-journey__text {
+  margin: 0;
+  color: var(--lasles-muted);
+  line-height: 1.7;
+}
+.lasles-path-journey__outcome {
+  margin: .65rem 0 0;
+  color: var(--lasles-blue-deep);
+  font-weight: 500;
+  font-size: .9rem;
+}
+
+/* /path closing promise */
+.lasles-path-promise { padding: 0 0 3.5rem; }
+.lasles-path-promise__box {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.6rem 1.35rem;
+  border-radius: 18px;
+  border: 1px solid var(--lasles-border);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(59, 123, 196, 0.1), transparent 45%),
+    linear-gradient(180deg, #fff 0%, var(--lasles-bg-soft) 100%);
+  box-shadow: var(--lasles-shadow-card);
+}
+.lasles-path-promise__cta {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  align-items: flex-start;
+  padding: 1.2rem 1.15rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+}
+.lasles-path-promise__cta p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--lasles-navy);
+}
+.lasles-path-promise__login,
+.lasles-path-promise__link {
+  font-weight: 500;
+  font-size: .9rem;
+  color: var(--lasles-blue);
+}
+.lasles-path-promise__login:hover,
+.lasles-path-promise__link:hover {
+  color: var(--lasles-gold);
+}
+
+@media (min-width: 640px) {
+  .lasles-path-grid--home,
+  .lasles-path-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 900px) {
+  .lasles-path-hero__grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    gap: 2.5rem;
+  }
+  .lasles-path-journey {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.35rem;
+  }
+  .lasles-path-journey__item {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+  .lasles-path-journey__item:not(:last-child)::before {
+    inset-inline-start: 1.2rem;
+    inset-inline-end: calc(-1.35rem - 1px);
+    top: 1.15rem;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--lasles-blue-soft), var(--lasles-gold-soft));
+  }
+  [dir="rtl"] .lasles-path-journey__item:not(:last-child)::before {
+    background: linear-gradient(270deg, var(--lasles-blue-soft), var(--lasles-gold-soft));
+  }
+  .lasles-path-journey__num { margin-bottom: .35rem; }
+}
+@media (min-width: 1024px) {
+  .lasles-path-grid { grid-template-columns: repeat(4, 1fr); gap: 1.15rem; }
+  .lasles-path-promise__box {
+    grid-template-columns: 1.45fr .85fr;
+    align-items: center;
+    padding: 2.1rem 2.25rem;
+  }
+  .lasles-path-home { padding: 3.25rem 0 2rem; }
+  .lasles-path-hero { padding: 3rem 0 2.5rem; }
+  .lasles-path-steps { padding: 2.5rem 0 3.25rem; }
+}
+@media (min-width: 1440px) {
+  .lasles-path-home { padding: 3.75rem 0 2.25rem; }
+  .lasles-path-hero { padding: 3.5rem 0 2.75rem; }
+}
+
+/* ——— Motion (subtle; respect reduced-motion) ——— */
+@media (prefers-reduced-motion: no-preference) {
+  .lasles-hero__copy {
+    animation: lasles-rise .7s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-hero__art {
+    animation: lasles-rise .75s .1s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-path-hero__copy {
+    animation: lasles-rise .65s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-path-hero__art {
+    animation: lasles-rise .75s .12s cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  /* Soft rise only — never opacity:0 on whole sections (blank “destroyed” pages). */
+  .lasles-reveal {
+    opacity: 1;
+    transform: translateY(10px);
+    transition: transform .55s cubic-bezier(.22, 1, .36, 1);
+    transition-delay: var(--lasles-delay, 0ms);
+  }
+  .lasles-reveal.is-in {
+    transform: none;
+  }
+  [class*="-hero"].lasles-reveal,
+  .lasles-hero.lasles-reveal {
+    transform: none !important;
+  }
+  .lasles-reveal.is-in .lasles-path-card,
+  .lasles-reveal.is-in .lasles-path-journey__item,
+  .lasles-reveal.is-in .lasles-plan,
+  .lasles-reveal.is-in .lasles-review {
+    animation: lasles-rise .5s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-reveal.is-in .lasles-path-card:nth-child(1),
+  .lasles-reveal.is-in .lasles-path-journey__item:nth-child(1),
+  .lasles-reveal.is-in .lasles-plan:nth-child(1),
+  .lasles-reveal.is-in .lasles-review:nth-child(1) { animation-delay: .04s; }
+  .lasles-reveal.is-in .lasles-path-card:nth-child(2),
+  .lasles-reveal.is-in .lasles-path-journey__item:nth-child(2),
+  .lasles-reveal.is-in .lasles-plan:nth-child(2),
+  .lasles-reveal.is-in .lasles-review:nth-child(2) { animation-delay: .1s; }
+  .lasles-reveal.is-in .lasles-path-card:nth-child(3),
+  .lasles-reveal.is-in .lasles-path-journey__item:nth-child(3),
+  .lasles-reveal.is-in .lasles-plan:nth-child(3),
+  .lasles-reveal.is-in .lasles-review:nth-child(3) { animation-delay: .16s; }
+  .lasles-reveal.is-in .lasles-path-card:nth-child(4),
+  .lasles-reveal.is-in .lasles-path-journey__item:nth-child(4),
+  .lasles-reveal.is-in .lasles-plan:nth-child(4),
+  .lasles-reveal.is-in .lasles-review:nth-child(4) { animation-delay: .22s; }
+
+  .lasles-plan,
+  .lasles-path-card,
+  .lasles-path-journey__item,
+  .lasles-review {
+    transition: transform .25s ease, box-shadow .25s ease, border-color .2s ease;
+  }
+  .lasles-plan:hover,
+  .lasles-path-card:hover,
+  .lasles-review:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 28px 48px -28px rgba(13, 16, 37, 0.18);
+  }
+
+  .lasles-btn-outline {
+    transition: background .2s ease, border-color .2s ease, transform .2s ease;
+  }
+  .lasles-btn-outline:hover { transform: translateY(-1px); }
+
+  .lasles-nav__links a {
+    position: relative;
+    transition: color .2s ease, background .2s ease;
+  }
+  .lasles-nav__links a::after {
+    content: none;
+  }
+}
+
+@keyframes lasles-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes lasles-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .lasles-reveal,
+  .lasles-hero__copy,
+  .lasles-hero__art,
+  .lasles-path-hero__inner,
+  .lasles-path-hero__copy,
+  .lasles-path-hero__art {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Very wide screens: keep content centered, don’t stretch past Figma feel */
+@media (min-width: 1600px) {
+  :root { --lasles-max: 1140px; }
+}
+
+/* ——— Expandable site pages + nav dropdowns ——— */
+.lasles-nav__dropdown { position: relative; }
+.lasles-nav__parent {
+  font: inherit;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+}
+.lasles-nav__caret { font-size: .65rem; opacity: .7; }
+.lasles-nav__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + .55rem);
+  inset-inline-start: 0;
+  min-width: 15rem;
+  padding: .45rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--lasles-shadow-card);
+  z-index: 60;
+}
+.lasles-nav__menu a {
+  display: block;
+  padding: .55rem .7rem;
+  border-radius: 8px;
+  color: var(--lasles-navy) !important;
+  font-size: .9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.lasles-nav__menu a::after { content: none !important; }
+.lasles-nav__menu a:hover,
+.lasles-nav__menu a.is-active {
+  background: var(--lasles-blue-tint) !important;
+  color: var(--lasles-blue) !important;
+}
+.lasles-nav__dropdown:hover .lasles-nav__menu,
+.lasles-nav__dropdown:focus-within .lasles-nav__menu { display: block; }
+.lasles-mobile__group,
+.lasles-mobile__child {
+  /* legacy aliases kept empty — drawer uses lasles-drawer__* */
+}
+
+.lasles-site-hero { padding: 2.5rem 0 1.5rem; }
+.lasles-site-hero__inner { max-width: 46rem; }
+.lasles-site-hero__title {
+  margin: 0 0 .75rem;
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+}
+.lasles-site-hero__lead {
+  margin: 0 0 1.25rem;
+  color: var(--lasles-muted);
+  line-height: var(--lh-body);
+  max-width: 46ch;
+}
+.lasles-site-breadcrumb {
+  display: flex; flex-wrap: wrap; gap: .35rem; align-items: center;
+  margin: 0 0 .85rem; color: var(--lasles-muted); font-size: .85rem;
+}
+.lasles-site-breadcrumb a { color: var(--lasles-blue); font-weight: 500; }
+.lasles-site-actors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: 0 0 1.15rem;
+}
+.lasles-site-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.85rem;
+  padding: .2rem .7rem;
+  border-radius: 999px;
+  border: 1px solid var(--lasles-border);
+  background: #fff;
+  color: var(--lasles-navy);
+  font-size: .78rem;
+  font-weight: 600;
+}
+.lasles-site-chip--gold {
+  border-color: var(--lasles-gold);
+  color: var(--lasles-gold);
+  background: var(--lasles-gold-tint);
+}
+
+.lasles-site-roles { padding: 0 0 2rem; }
+.lasles-site-roles__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+.lasles-site-role {
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: var(--lasles-radius);
+  background: #fff;
+}
+.lasles-site-role--instructor {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(168, 128, 80, 0.12), transparent 45%),
+    #fff;
+}
+.lasles-site-role__eyebrow {
+  margin: 0 0 .35rem;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--lasles-blue-soft);
+}
+.lasles-site-role h2 {
+  margin: 0 0 .55rem;
+  font-size: 1.15rem;
+  color: var(--lasles-navy);
+}
+.lasles-site-role p {
+  margin: 0;
+  color: var(--lasles-muted);
+  line-height: 1.7;
+  font-size: .95rem;
+}
+.lasles-site-role__meta {
+  margin-top: .85rem !important;
+  padding-top: .85rem;
+  border-top: 1px solid var(--lasles-border);
+  font-size: .88rem !important;
+}
+.lasles-site-role__meta strong {
+  display: block;
+  margin-bottom: .25rem;
+  color: var(--lasles-navy);
+}
+
+.lasles-site-outcomes {
+  margin-top: 1.75rem;
+  padding: 1.25rem 1.35rem;
+  border-radius: var(--lasles-radius);
+  background: var(--lasles-blue-tint);
+}
+.lasles-site-outcomes ul {
+  margin: .85rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .55rem;
+}
+.lasles-site-outcomes li {
+  position: relative;
+  padding-inline-start: 1.15rem;
+  color: var(--lasles-navy);
+  line-height: 1.55;
+  font-weight: 500;
+}
+.lasles-site-outcomes li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: .55rem;
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: var(--lasles-gold);
+}
+
+.lasles-site-packages { padding: 1rem 0 2.5rem; }
+.lasles-site-packages--empty { text-align: start; }
+.lasles-site-packages__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  margin: 1.25rem 0 1.5rem;
+}
+.lasles-site-package {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  padding: 1.2rem 1.25rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: var(--lasles-radius);
+  background: #fff;
+}
+.lasles-site-package__type {
+  margin: 0;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--lasles-blue-soft);
+}
+.lasles-site-package h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--lasles-navy);
+}
+.lasles-site-package p { margin: 0; color: var(--lasles-muted); font-size: .9rem; line-height: 1.55; }
+.lasles-site-package__price {
+  font-weight: 700 !important;
+  color: var(--lasles-navy) !important;
+  font-size: 1.05rem !important;
+}
+.lasles-site-package .lasles-btn-outline {
+  margin-top: .5rem;
+  align-self: flex-start;
+}
+.lasles-site-packages__all { margin: 0; }
+
+.lasles-site-related { padding: 0 0 2rem; }
+
+@media (min-width: 768px) {
+  .lasles-site-roles__grid { grid-template-columns: 1fr 1fr; }
+  .lasles-site-packages__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1100px) {
+  .lasles-site-packages__grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+
+.lasles-site-cards { padding: 1rem 0 2.5rem; }
+.lasles-site-grid {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+.lasles-site-card {
+  display: block;
+  padding: 1.25rem 1.2rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--lasles-shadow-card);
+  transition: transform .2s ease, border-color .2s ease;
+}
+.lasles-site-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--lasles-gold);
+}
+.lasles-site-card h3 {
+  margin: 0 0 .45rem;
+  font-size: 1.15rem;
+  color: var(--lasles-blue);
+  font-weight: 700;
+}
+.lasles-site-card p {
+  margin: 0 0 .75rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+}
+.lasles-site-card span {
+  color: var(--lasles-blue);
+  font-weight: 600;
+  font-size: .95rem;
+}
+
+.lasles-site-sections { padding: 0 0 2.5rem; }
+.lasles-site-sections__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+.lasles-site-block {
+  padding: 1.2rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--lasles-border);
+  background: linear-gradient(180deg, #fff, var(--lasles-bg-soft));
+}
+.lasles-site-block h2,
+.lasles-site-block h3 {
+  margin: 0 0 .45rem;
+  color: var(--lasles-navy);
+  font-size: 1.1rem;
+}
+.lasles-site-block p {
+  margin: 0;
+  color: var(--lasles-muted);
+  line-height: 1.7;
+}
+
+.lasles-site-contact { padding: 0 0 3.5rem; }
+.lasles-site-contact__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+.lasles-site-contact__info p { color: var(--lasles-muted); line-height: 1.7; }
+.lasles-site-form-card {
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: var(--lasles-shadow);
+}
+.lasles-site-field { margin-bottom: .9rem; }
+.lasles-site-field label {
+  display: block; margin-bottom: .35rem;
+  font-weight: 500; font-size: .82rem; color: var(--lasles-navy);
+}
+.lasles-site-input {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: var(--lasles-radius);
+  padding: .75rem 1rem;
+  background: var(--lasles-bg-soft);
+  font: 400 .95rem/1.5 var(--lasles-font);
+  color: var(--lasles-navy);
+  outline: none;
+}
+.lasles-site-input:focus {
+  border-color: var(--lasles-blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(30, 78, 140, 0.12);
+}
+.lasles-site-alert {
+  margin: 0 0 .85rem; padding: .7rem .85rem; border-radius: 10px; font-size: .85rem;
+}
+.lasles-site-alert--ok { background: #ECFDF5; color: #047857; }
+.lasles-site-alert--err { background: #FEF2F2; color: #B91C1C; }
+
+@media (min-width: 768px) {
+  .lasles-site-grid { grid-template-columns: 1fr 1fr; }
+  .lasles-site-sections__grid { grid-template-columns: 1fr 1fr; }
+  .lasles-site-contact__grid { grid-template-columns: .9fr 1.1fr; align-items: start; }
+}
+@media (min-width: 1024px) {
+  .lasles-site-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ——— Learning Paths catalog (/learning-paths) ——— */
+.lasles-paths-hero {
+  padding: clamp(2rem, 3.5vw, 3.25rem) 0 clamp(1.75rem, 2.5vw, 2.5rem);
+  background:
+    radial-gradient(ellipse 70% 80% at 100% 0%, rgba(59, 123, 196, 0.12), transparent 55%),
+    radial-gradient(ellipse 50% 60% at 0% 100%, rgba(168, 128, 80, 0.1), transparent 50%),
+    linear-gradient(180deg, #F4F7FB 0%, #fff 78%);
+}
+.lasles-paths-hero__grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+.lasles-paths-hero__brand {
+  margin: 0 0 .25rem;
+  font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem);
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-paths-hero__title {
+  margin: 0 0 .85rem;
+  font-size: clamp(1.85rem, 1.2rem + 2.4vw, 2.85rem);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+}
+.lasles-paths-hero__title em {
+  font-style: normal;
+  color: var(--lasles-gold);
+}
+.lasles-paths-hero__lead {
+  margin: 0 0 .75rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  max-width: 36rem;
+}
+.lasles-paths-hero__note,
+.lasles-paths-hero__skill {
+  margin: 0 0 1.35rem;
+  display: inline-block;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--lasles-gold-tint);
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--lasles-gold);
+}
+.lasles-paths-hero__art img {
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  height: auto;
+}
+
+.lasles-paths-guide {
+  padding: var(--lasles-section-y) 0;
+  background: #fff;
+}
+.lasles-paths-guide__head { margin-bottom: .35rem; }
+.lasles-paths-guide__grid {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+}
+.lasles-paths-guide__item {
+  padding: 1.25rem 1.15rem 1.35rem;
+  border-radius: 14px;
+  background: var(--lasles-blue-tint);
+}
+.lasles-paths-guide__num {
+  display: inline-block;
+  margin-bottom: .5rem;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--lasles-gold);
+}
+.lasles-paths-guide__item h3 {
+  margin: 0 0 .35rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-paths-guide__item p {
+  margin: 0;
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+  color: var(--lasles-muted);
+}
+
+.lasles-paths-catalog {
+  padding: var(--lasles-section-y) 0;
+  background: var(--lasles-bg-soft);
+}
+.lasles-paths-catalog__head {
+  margin-bottom: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: end;
+  justify-content: space-between;
+}
+.lasles-paths-catalog__head .lasles-section-lead { margin-bottom: 0; }
+.lasles-paths-catalog__count {
+  margin: 0;
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--lasles-blue);
+  white-space: nowrap;
+}
+.lasles-paths-grid {
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+}
+.lasles-path-tile {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  padding: 1.35rem 1.25rem 1.2rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--lasles-shadow-card);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+.lasles-path-tile.has-media {
+  padding: 0;
+  gap: 0;
+}
+.lasles-path-tile__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e4e8c, #163a68);
+}
+.lasles-path-tile__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .45s ease;
+}
+.lasles-path-tile:hover .lasles-path-tile__media img {
+  transform: scale(1.06);
+}
+.lasles-path-tile__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13, 24, 42, 0.05) 20%, rgba(13, 24, 42, 0.55) 100%);
+  pointer-events: none;
+}
+.lasles-path-tile__index--on-media {
+  position: absolute;
+  inset-inline-start: .85rem;
+  bottom: .75rem;
+  width: auto;
+  height: auto;
+  background: transparent;
+  color: #fff;
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  box-shadow: none;
+}
+.lasles-path-tile__body {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  padding: 1.1rem 1.2rem 1.15rem;
+  flex: 1;
+}
+.lasles-path-tile.has-media .lasles-path-tile__body {
+  padding-top: 1rem;
+}
+.lasles-path-tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--lasles-blue-soft);
+  box-shadow: var(--lasles-shadow);
+}
+.lasles-path-tile__top {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  margin-bottom: .15rem;
+}
+.lasles-path-tile__index {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: .75rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--lasles-blue);
+}
+.lasles-path-tile__skill {
+  display: inline-block;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--lasles-gold-tint);
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--lasles-gold);
+}
+.lasles-path-tile__title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.35;
+}
+.lasles-path-tile__summary {
+  margin: 0;
+  color: var(--lasles-muted);
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+}
+.lasles-path-tile__meta {
+  margin-top: .2rem;
+  font-size: .82rem;
+  color: var(--lasles-muted);
+}
+.lasles-path-tile__cta {
+  margin-top: auto;
+  padding-top: .85rem;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--lasles-blue);
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+}
+.lasles-path-tile:hover .lasles-path-tile__cta {
+  gap: .55rem;
+  color: var(--lasles-blue-deep);
+}
+.lasles-paths-empty {
+  padding: 2.25rem 1.25rem;
+  text-align: center;
+  border: 1px dashed var(--lasles-border);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--lasles-muted);
+}
+.lasles-paths-empty h3 { margin: 0 0 .5rem; color: var(--lasles-navy); }
+.lasles-paths-empty .lasles-btn-outline { margin-top: 1rem; display: inline-flex; }
+.lasles-paths-cta { margin-bottom: 2.5rem; }
+
+.lasles-path-outline { padding: 0 0 3.5rem; }
+.lasles-path-unit {
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.15rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: 14px;
+  background: #fff;
+}
+.lasles-path-unit__head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .9rem;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+.lasles-path-unit__index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  background: var(--lasles-blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: .82rem;
+}
+.lasles-path-unit__title {
+  margin: 0 0 .25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-path-unit__summary {
+  margin: 0;
+  color: var(--lasles-muted);
+  font-size: .9rem;
+}
+.lasles-path-unit__cols {
+  display: grid;
+  gap: 1rem;
+}
+.lasles-path-unit__label {
+  margin: 0 0 .45rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--lasles-gold);
+  text-transform: uppercase;
+}
+.lasles-path-unit__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .4rem;
+}
+.lasles-path-unit__list li {
+  padding: .45rem .65rem;
+  border-radius: 8px;
+  background: var(--lasles-bg-soft);
+  color: var(--lasles-navy);
+  font-size: .9rem;
+}
+.lasles-path-unit__type {
+  display: inline-block;
+  margin-inline-end: .35rem;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--lasles-blue-soft);
+}
+.lasles-path-unit__empty {
+  margin: 0;
+  font-size: .88rem;
+  color: var(--lasles-muted);
+}
+@media (min-width: 640px) {
+  .lasles-paths-grid { grid-template-columns: 1fr 1fr; }
+  .lasles-path-unit__cols { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 768px) {
+  .lasles-paths-hero__grid {
+    grid-template-columns: 1.05fr .95fr;
+    gap: 2.25rem;
+  }
+  .lasles-paths-guide__grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+}
+@media (min-width: 1024px) {
+  .lasles-paths-grid { grid-template-columns: repeat(3, 1fr); }
+  .lasles-paths-hero { padding: 3rem 0 2.5rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lasles-paths-hero__copy {
+    animation: lasles-rise .7s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-paths-hero__art {
+    animation: lasles-rise .75s .1s cubic-bezier(.22, 1, .36, 1) both;
+  }
+}
+
+/* ——— About page ——— */
+.lasles-about-hero {
+  padding: clamp(2rem, 3.5vw, 3.25rem) 0 clamp(1.75rem, 2.5vw, 2.5rem);
+}
+.lasles-about-hero__grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+.lasles-about-hero__brand {
+  margin: 0 0 .25rem;
+  font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem);
+  font-weight: 700;
+  color: var(--lasles-blue);
+  letter-spacing: .01em;
+}
+.lasles-about-hero__title {
+  margin: 0 0 .85rem;
+  font-size: clamp(1.85rem, 1.2rem + 2.4vw, 2.85rem);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+}
+.lasles-about-hero__title em {
+  font-style: normal;
+  color: var(--lasles-gold);
+  display: inline;
+}
+.lasles-about-hero__lead {
+  margin: 0 0 1.5rem;
+  max-width: 36rem;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--lasles-muted);
+}
+.lasles-about-hero__art img {
+  width: 100%;
+  max-width: 508px;
+  margin-inline: auto;
+  height: auto;
+}
+
+.lasles-about-story {
+  padding: var(--lasles-section-y) 0;
+  background:
+    linear-gradient(180deg, var(--lasles-bg-soft) 0%, #fff 55%, #fff 100%);
+}
+.lasles-about-story__grid {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+.lasles-about-story__copy .lasles-section-lead {
+  max-width: 38rem;
+}
+.lasles-about-story__panel {
+  border-radius: 16px;
+  padding: 1.35rem 1.4rem 1.5rem;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  box-shadow: var(--lasles-shadow-card);
+  width: 100%;
+  max-width: 22rem;
+  justify-self: start;
+}
+[dir="ltr"] .lasles-about-story__panel { justify-self: end; }
+.lasles-about-story__panel-label {
+  margin: 0 0 1rem;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--lasles-gold);
+}
+.lasles-about-story__loop {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .75rem;
+}
+.lasles-about-story__loop li {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-weight: 600;
+  color: var(--lasles-navy);
+  font-size: var(--fs-card);
+}
+.lasles-about-story__loop span {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: .8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--lasles-blue);
+}
+
+.lasles-about-why {
+  padding: var(--lasles-section-y) 0;
+  background: #fff;
+}
+.lasles-about-why__head {
+  margin-bottom: .5rem;
+}
+.lasles-about-why__grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+.lasles-about-principle {
+  padding: 1.25rem 1.15rem 1.35rem;
+  border-radius: 14px;
+  background: var(--lasles-blue-tint);
+  border: 0;
+}
+.lasles-about-principle__num {
+  display: inline-block;
+  margin-bottom: .55rem;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--lasles-gold);
+}
+.lasles-about-principle h3 {
+  margin: 0 0 .4rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.3;
+}
+.lasles-about-principle p {
+  margin: 0;
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+  color: var(--lasles-muted);
+}
+
+.lasles-about-loop {
+  padding: var(--lasles-section-y) 0;
+  background: var(--lasles-bg-soft);
+}
+.lasles-about-loop__head {
+  margin-bottom: .25rem;
+}
+.lasles-about-cta {
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .lasles-about-hero__grid {
+    grid-template-columns: 1.05fr .95fr;
+    gap: 2.5rem;
+  }
+  .lasles-about-story__grid {
+    grid-template-columns: 1.35fr .85fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .lasles-about-why__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.35rem;
+  }
+}
+@media (min-width: 1024px) {
+  .lasles-about-hero { padding: 3.25rem 0 2.75rem; }
+  .lasles-about-why__grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.15rem;
+  }
+  .lasles-about-principle { padding: 1.4rem 1.2rem 1.5rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lasles-about-hero__copy {
+    animation: lasles-rise .7s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-about-hero__art {
+    animation: lasles-rise .75s .1s cubic-bezier(.22, 1, .36, 1) both;
+  }
+}
+
+/* ——— Shared page art variants (isolated, like home hero) ——— */
+.lasles-page-art {
+  width: 100%;
+  justify-self: center;
+}
+.lasles-page-art--person,
+.lasles-page-art--features,
+.lasles-page-art--map,
+.lasles-page-art--tools {
+  width: min(100%, 520px);
+  margin-inline: auto;
+}
+.lasles-page-art img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.lasles-page-art--person img { max-width: 560px; margin-inline: auto; }
+.lasles-page-art--features img,
+.lasles-page-art--tools img { max-width: 508px; margin-inline: auto; }
+.lasles-page-art--map img { max-width: 508px; margin-inline: auto; }
+
+/* Tools page */
+.lasles-tools-hero {
+  padding: clamp(2rem, 3.5vw, 3.25rem) 0 clamp(1.75rem, 2.5vw, 2.5rem);
+  background:
+    radial-gradient(ellipse 60% 70% at 0% 0%, rgba(168,128,80,.12), transparent 55%),
+    linear-gradient(180deg, #F7F8FB 0%, #fff 80%);
+}
+.lasles-tools-hero__grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+.lasles-tools-hero__brand {
+  margin: 0 0 .25rem;
+  font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem);
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-tools-hero__title {
+  margin: 0 0 .85rem;
+  font-size: clamp(1.85rem, 1.2rem + 2.4vw, 2.85rem);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+}
+.lasles-tools-hero__title em {
+  font-style: normal;
+  color: var(--lasles-gold);
+}
+.lasles-tools-hero__lead {
+  margin: 0 0 .75rem;
+  max-width: 36rem;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--lasles-muted);
+}
+.lasles-tools-hero__note {
+  margin: 0 0 1.35rem;
+  display: inline-block;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  background: var(--lasles-gold-tint);
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--lasles-gold);
+}
+.lasles-tools-catalog {
+  padding: var(--lasles-section-y) 0;
+  background: var(--lasles-bg-soft);
+}
+.lasles-tools-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: 0 0 1.5rem;
+}
+.lasles-tools-filter {
+  display: inline-flex;
+  align-items: center;
+  padding: .4rem .85rem;
+  border-radius: 999px;
+  border: 1px solid var(--lasles-border);
+  background: #fff;
+  color: var(--lasles-navy);
+  font-size: .88rem;
+  font-weight: 600;
+  transition: .15s ease;
+}
+.lasles-tools-filter:hover,
+.lasles-tools-filter.is-active {
+  border-color: var(--lasles-blue);
+  background: var(--lasles-blue-tint);
+  color: var(--lasles-blue-deep);
+}
+.lasles-tools-cta { margin-bottom: 2.5rem; }
+
+/* Consultations page */
+.lasles-consult-hero {
+  padding: clamp(2rem, 3.5vw, 3.25rem) 0 clamp(1.75rem, 2.5vw, 2.5rem);
+  background:
+    radial-gradient(ellipse 55% 65% at 100% 10%, rgba(59,123,196,.14), transparent 55%),
+    linear-gradient(180deg, #F4F7FB 0%, #fff 78%);
+}
+.lasles-consult-hero__grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+.lasles-consult-hero__brand {
+  margin: 0 0 .25rem;
+  font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem);
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-consult-hero__title {
+  margin: 0 0 .85rem;
+  font-size: clamp(1.85rem, 1.2rem + 2.4vw, 2.85rem);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+}
+.lasles-consult-hero__title em {
+  font-style: normal;
+  color: var(--lasles-gold);
+}
+.lasles-consult-hero__lead {
+  margin: 0 0 1.35rem;
+  max-width: 36rem;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--lasles-muted);
+}
+.lasles-consult-story {
+  padding: 0 0 var(--lasles-section-y);
+}
+.lasles-consult-story__inner {
+  max-width: 44rem;
+  padding: 1.5rem 1.35rem;
+  border-radius: 16px;
+  background: var(--lasles-blue-tint);
+}
+.lasles-consult-types {
+  padding: 0 0 var(--lasles-section-y);
+  background: var(--lasles-bg-soft);
+  padding-block: var(--lasles-section-y);
+}
+.lasles-consult-types__grid {
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+}
+.lasles-consult-type {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  padding: 1.35rem 1.25rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  box-shadow: var(--lasles-shadow-card);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.lasles-consult-type:hover {
+  transform: translateY(-2px);
+  border-color: var(--lasles-blue-soft);
+}
+.lasles-consult-type h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-consult-type p {
+  margin: 0;
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+  color: var(--lasles-muted);
+}
+.lasles-consult-type span {
+  margin-top: auto;
+  padding-top: .55rem;
+  font-weight: 600;
+  color: var(--lasles-blue);
+}
+.lasles-consult-cta { margin-bottom: 2.5rem; }
+
+@media (min-width: 768px) {
+  .lasles-tools-hero__grid,
+  .lasles-consult-hero__grid {
+    grid-template-columns: 1.05fr .95fr;
+    gap: 2.25rem;
+  }
+  .lasles-consult-types__grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lasles-tools-hero__copy,
+  .lasles-consult-hero__copy {
+    animation: lasles-rise .7s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-tools-hero__art,
+  .lasles-consult-hero__art {
+    animation: lasles-rise .75s .1s cubic-bezier(.22, 1, .36, 1) both;
+  }
+}
+
+/* --- Institutional page --- */
+.lasles-inst-hero {
+  padding: clamp(2rem, 3.5vw, 3.25rem) 0 clamp(1.75rem, 2.5vw, 2.5rem);
+  background: linear-gradient(180deg, #F7F8FB 0%, #fff 82%);
+}
+.lasles-inst-hero__grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+.lasles-inst-hero__brand {
+  margin: 0 0 .25rem;
+  font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem);
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-inst-hero__title {
+  margin: 0 0 .85rem;
+  font-size: clamp(1.85rem, 1.2rem + 2.4vw, 2.85rem);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+}
+.lasles-inst-hero__title em {
+  font-style: normal;
+  color: var(--lasles-gold);
+}
+.lasles-inst-hero__lead {
+  margin: 0 0 .65rem;
+  max-width: 36rem;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--lasles-muted);
+}
+.lasles-inst-hero__outcome {
+  margin: 0 0 1.35rem;
+  display: inline-block;
+  max-width: 36rem;
+  padding: .45rem .8rem;
+  border-radius: 12px;
+  background: var(--lasles-gold-tint);
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--lasles-gold);
+}
+.lasles-inst-hero__art {
+  justify-self: center;
+  width: min(100%, 520px);
+}
+.lasles-inst-story {
+  padding: var(--lasles-section-y) 0;
+  background: #fff;
+}
+.lasles-inst-story__grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+}
+.lasles-inst-story__list { margin-top: 1.15rem; }
+.lasles-inst-panel {
+  padding: 1.25rem 1.15rem 1.35rem;
+  border-radius: 18px;
+  background: linear-gradient(165deg, #fff 0%, var(--lasles-blue-tint) 100%);
+  border: 1px solid var(--lasles-border);
+  box-shadow: var(--lasles-shadow-card);
+}
+.lasles-inst-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+.lasles-inst-panel__head p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-inst-panel__head span {
+  display: inline-flex;
+  padding: .25rem .65rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-inst-panel__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+}
+.lasles-inst-panel__metrics strong {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+  line-height: 1.2;
+}
+.lasles-inst-panel__metrics span {
+  display: block;
+  margin-top: .2rem;
+  font-size: .78rem;
+  color: var(--lasles-muted);
+  line-height: 1.35;
+}
+.lasles-inst-guide { background: var(--lasles-bg-soft); }
+.lasles-inst-types {
+  padding: var(--lasles-section-y) 0;
+  background: #fff;
+}
+.lasles-inst-types__grid {
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+}
+.lasles-inst-type {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  padding: 1.35rem 1.25rem;
+  border-radius: 14px;
+  background: var(--lasles-bg-soft);
+  border: 1px solid var(--lasles-border);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.lasles-inst-type.is-featured {
+  background: #fff;
+  border-color: rgba(59, 123, 196, .35);
+  box-shadow: var(--lasles-shadow-card);
+}
+.lasles-inst-type:hover {
+  transform: translateY(-2px);
+  border-color: var(--lasles-blue-soft);
+  background: #fff;
+}
+.lasles-inst-type h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-inst-type p {
+  margin: 0;
+  font-size: var(--fs-card);
+  line-height: var(--lh-card);
+  color: var(--lasles-muted);
+}
+.lasles-inst-type span {
+  margin-top: auto;
+  padding-top: .5rem;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--lasles-blue);
+}
+.lasles-inst-packages {
+  padding: 0 0 var(--lasles-section-y);
+  background: var(--lasles-bg-soft);
+  padding-block: var(--lasles-section-y);
+}
+.lasles-inst-packages__grid {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1.15rem;
+}
+.lasles-inst-package {
+  padding: 1.35rem 1.25rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  box-shadow: var(--lasles-shadow-card);
+}
+.lasles-inst-package__type {
+  margin: 0 0 .35rem;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--lasles-gold);
+}
+.lasles-inst-package h3 {
+  margin: 0 0 .4rem;
+  font-size: 1.15rem;
+  color: var(--lasles-navy);
+}
+.lasles-inst-package p {
+  margin: 0 0 .65rem;
+  font-size: .9rem;
+  line-height: 1.5;
+  color: var(--lasles-muted);
+}
+.lasles-inst-package__price {
+  margin: 0 0 1rem !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--lasles-navy) !important;
+}
+.lasles-inst-packages__all {
+  margin: 1.5rem 0 0;
+  text-align: center;
+}
+.lasles-inst-cta { margin-bottom: 2.5rem; }
+
+@media (min-width: 768px) {
+  .lasles-inst-hero__grid,
+  .lasles-inst-story__grid {
+    grid-template-columns: 1.05fr .95fr;
+    gap: 2.25rem;
+  }
+  .lasles-inst-types__grid { grid-template-columns: repeat(2, 1fr); }
+  .lasles-inst-packages__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .lasles-inst-types__grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lasles-inst-hero__copy {
+    animation: lasles-rise .7s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .lasles-inst-hero__art {
+    animation: lasles-rise .75s .1s cubic-bezier(.22, 1, .36, 1) both;
+  }
+}
+
+/* ========== Home showcase: paths + courses ========== */
+.lasles-showcase {
+  padding: var(--lasles-section-y) 0;
+  position: relative;
+}
+.lasles-showcase--paths {
+  background:
+    radial-gradient(ellipse 70% 55% at 100% 0%, rgba(30, 78, 140, 0.1), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 0% 100%, rgba(168, 128, 80, 0.1), transparent 50%),
+    linear-gradient(180deg, #f7f9fc 0%, #fff 48%, #f7f9fc 100%);
+}
+.lasles-showcase--courses {
+  background: #fff;
+}
+.lasles-showcase__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.75rem;
+}
+.lasles-showcase__intro { max-width: 38rem; }
+.lasles-showcase__intro .lasles-section-title { margin-bottom: .45rem; }
+.lasles-showcase__intro .lasles-section-lead { margin: 0; }
+.lasles-showcase__more {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+.lasles-showcase__more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+  text-decoration: none;
+  font-size: 1rem;
+}
+.lasles-showcase__more-link:hover { color: var(--lasles-gold); }
+.lasles-showcase__foot {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+.lasles-showcase__empty {
+  padding: 2rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px dashed rgba(30, 78, 140, 0.22);
+  background: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.lasles-showcase__empty p {
+  margin: 0;
+  color: var(--lasles-muted);
+  max-width: 28rem;
+}
+.lasles-showcase__grid {
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+}
+.lasles-path-card-pro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.08);
+  box-shadow: 0 18px 40px -28px rgba(13, 16, 37, 0.45);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .28s cubic-bezier(.22, 1, .36, 1), box-shadow .28s ease, border-color .28s ease;
+}
+.lasles-path-card-pro:hover {
+  transform: translateY(-6px);
+  border-color: rgba(30, 78, 140, 0.22);
+  box-shadow: 0 28px 56px -24px rgba(13, 16, 37, 0.4);
+}
+.lasles-path-card-pro.is-featured {
+  border-color: rgba(168, 128, 80, 0.28);
+}
+.lasles-path-card-pro__glow {
+  position: absolute;
+  inset: auto -20% -40% auto;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30, 78, 140, 0.14), transparent 70%);
+  pointer-events: none;
+}
+.lasles-path-card-pro.is-featured .lasles-path-card-pro__glow {
+  background: radial-gradient(circle, rgba(168, 128, 80, 0.2), transparent 70%);
+}
+.lasles-path-card-pro__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  min-height: 11.5rem;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, #1e4e8c 0%, #163a68 55%, #a88050 130%),
+    var(--path-cover, none);
+  background-size: cover;
+  background-position: center;
+}
+.lasles-path-card-pro__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1);
+}
+.lasles-path-card-pro:hover .lasles-path-card-pro__media img {
+  transform: scale(1.08);
+}
+.lasles-path-card-pro__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 20, 36, 0.08) 10%, rgba(10, 20, 36, 0.62) 100%),
+    linear-gradient(90deg, rgba(30, 78, 140, 0.22), transparent 55%);
+  pointer-events: none;
+}
+.lasles-path-card-pro__media--accent {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 1.1rem 1.2rem;
+  min-height: 11.5rem;
+  aspect-ratio: auto;
+}
+.lasles-path-card-pro__index {
+  font-size: clamp(2.4rem, 6vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: -0.03em;
+}
+.lasles-path-card-pro__index--on-media {
+  position: absolute;
+  inset-inline-start: 1rem;
+  bottom: .85rem;
+  z-index: 2;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.lasles-path-card-pro__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  padding: 1.15rem 1.2rem 1.25rem;
+  flex: 1;
+}
+.lasles-path-card-pro__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem .75rem;
+}
+.lasles-path-card-pro__skill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.55rem;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  background: rgba(30, 78, 140, 0.1);
+  color: var(--lasles-blue);
+  font-size: .72rem;
+  font-weight: 700;
+}
+.lasles-path-card-pro__meta {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-path-card-pro__title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--lasles-navy);
+}
+.lasles-path-card-pro__summary {
+  margin: 0;
+  color: var(--lasles-muted);
+  font-size: .92rem;
+  line-height: 1.55;
+  flex: 1;
+}
+.lasles-path-card-pro__cta {
+  margin-top: .35rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-path-card-pro:hover .lasles-path-card-pro__cta {
+  color: var(--lasles-gold);
+}
+@media (min-width: 640px) {
+  .lasles-showcase__grid--paths { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lasles-showcase__more { display: inline-flex; }
+  .lasles-showcase__foot { display: none; }
+}
+@media (max-width: 639.98px) {
+  .lasles-showcase__more { display: none; }
+}
+@media (min-width: 1024px) {
+  .lasles-showcase__grid--paths { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lasles-path-card-pro.is-featured {
+    grid-column: span 1;
+  }
+}
+
+/* ========== Learning path detail (/learning-paths/{slug}) ========== */
+.lasles-path-detail-page,
+.lasles-path-detail-page * {
+  font-family: var(--lasles-font);
+}
+.lasles-path-detail-hero {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  padding: clamp(2.25rem, 4.5vw, 4rem) 0 clamp(2.75rem, 5vw, 4.25rem);
+  font-family: var(--lasles-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+.lasles-path-detail-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: var(--path-cover);
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.04);
+}
+.lasles-path-detail-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, rgba(10, 24, 46, 0.96) 0%, rgba(14, 34, 64, 0.9) 52%, rgba(16, 40, 74, 0.78) 100%),
+    linear-gradient(180deg, rgba(8, 16, 30, 0.2), rgba(8, 16, 30, 0.55));
+}
+.lasles-path-detail-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: start;
+}
+.lasles-path-detail-hero__crumb {
+  margin: 0 0 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .5rem;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  font-size: .875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: start;
+}
+.lasles-path-detail-hero__crumb a {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-weight: 600;
+}
+.lasles-path-detail-hero__crumb a:hover { color: #fff; }
+.lasles-path-detail-hero__copy {
+  width: min(100%, 40rem);
+  max-width: 40rem;
+  margin-inline: 0;
+  text-align: start;
+}
+.lasles-path-detail-hero__kicker {
+  margin: 0 0 .55rem;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #e8c68c;
+  text-align: start;
+}
+.lasles-path-detail-hero__title {
+  margin: 0 0 .85rem;
+  font-size: clamp(2.15rem, 1.35rem + 2.8vw, 3.35rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
+  text-align: start;
+}
+.lasles-path-detail-hero__lead {
+  margin: 0 0 1.25rem;
+  max-width: 36rem;
+  font-size: clamp(1.05rem, .95rem + .4vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.28);
+  text-align: start;
+}
+.lasles-path-detail-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: .95rem;
+  justify-content: flex-start;
+}
+.lasles-path-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: .25rem .8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: .84rem;
+  font-weight: 600;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.lasles-path-chip--gold {
+  background: rgba(168, 128, 80, 0.34);
+  border-color: rgba(232, 198, 140, 0.5);
+  color: #ffe9c4;
+}
+.lasles-path-chip--blue {
+  background: rgba(59, 123, 196, 0.36);
+  border-color: rgba(160, 205, 245, 0.45);
+  color: #eaf5ff;
+}
+.lasles-path-detail-hero__promise {
+  margin: 0 0 1.35rem;
+  font-size: .98rem;
+  font-weight: 600;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+  text-align: start;
+}
+.lasles-path-detail-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+.lasles-btn-outline--on-dark {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.78) !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+.lasles-btn-outline--on-dark:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: #fff !important;
+  color: #fff !important;
+}
+
+.lasles-path-detail-body {
+  padding: clamp(2.25rem, 4vw, 3.5rem) 0 clamp(3rem, 5vw, 4.25rem);
+  background:
+    radial-gradient(ellipse 55% 40% at 100% 0%, rgba(30, 78, 140, 0.06), transparent 60%),
+    linear-gradient(180deg, #fff 0%, #f5f7fb 100%);
+  text-align: start;
+}
+.lasles-path-detail-body__grid {
+  display: grid;
+  gap: 1.75rem;
+}
+.lasles-path-detail-body__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.35rem;
+}
+.lasles-path-detail-about {
+  margin: 0;
+  padding: 1.25rem 1.3rem 1.35rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.08);
+  box-shadow: 0 14px 32px -26px rgba(13, 16, 37, 0.35);
+  text-align: start;
+}
+.lasles-path-detail-about__title {
+  margin: 0 0 .55rem;
+  font-size: clamp(1.35rem, 1.1rem + .8vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--lasles-navy);
+  text-align: start;
+}
+.lasles-path-detail-about__text {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--lasles-muted);
+  text-align: start;
+}
+.lasles-path-detail-body__head {
+  margin: 0;
+  text-align: start;
+}
+.lasles-path-detail-body__title {
+  margin: 0 0 .45rem;
+  font-size: clamp(1.45rem, 1.15rem + .9vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--lasles-navy);
+  text-align: start;
+}
+.lasles-path-detail-body__lead {
+  margin: 0;
+  max-width: 36rem;
+  font-size: .98rem;
+  line-height: 1.6;
+  color: var(--lasles-muted);
+  text-align: start;
+}
+.lasles-path-unit-card {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 1.05rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.09);
+  box-shadow: 0 18px 40px -30px rgba(13, 16, 37, 0.42);
+}
+.lasles-path-unit-card__head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .95rem;
+  align-items: start;
+  padding: 1.2rem 1.25rem 1.05rem;
+  background: linear-gradient(180deg, #f8fafd 0%, #fff 100%);
+  border-bottom: 1px solid rgba(21, 42, 74, 0.06);
+}
+.lasles-path-unit-card__index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.65rem;
+  height: 2.65rem;
+  border-radius: .85rem;
+  background: linear-gradient(145deg, #1e4e8c, #163a68);
+  color: #fff;
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .02em;
+  box-shadow: 0 10px 22px -12px rgba(30, 78, 140, 0.7);
+}
+.lasles-path-unit-card__intro { min-width: 0; }
+.lasles-path-unit-card__title {
+  margin: 0 0 .35rem;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.35;
+}
+.lasles-path-unit-card__summary {
+  margin: 0 0 .55rem;
+  color: var(--lasles-muted);
+  font-size: .92rem;
+  line-height: 1.55;
+}
+.lasles-path-unit-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem .45rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--lasles-blue);
+}
+.lasles-path-unit-card__cols {
+  display: grid;
+  gap: 0;
+  padding: .35rem;
+}
+.lasles-path-unit-card__col {
+  padding: .95rem 1rem 1.05rem;
+  border-radius: .85rem;
+  background: transparent;
+}
+.lasles-path-unit-card__col + .lasles-path-unit-card__col {
+  border-top: 1px dashed rgba(21, 42, 74, 0.1);
+}
+.lasles-path-unit-card__label {
+  margin: 0 0 .65rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--lasles-gold);
+}
+.lasles-path-unit-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .45rem;
+}
+.lasles-path-unit-card__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: .55rem .65rem;
+  border-radius: .65rem;
+  background: var(--lasles-bg-soft);
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--lasles-navy);
+  line-height: 1.45;
+}
+.lasles-path-unit-card__dot {
+  width: .42rem;
+  height: .42rem;
+  margin-top: .45rem;
+  border-radius: 999px;
+  background: var(--lasles-blue);
+  flex-shrink: 0;
+}
+.lasles-path-unit-card__type {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.3rem;
+  padding: 0 .45rem;
+  border-radius: 999px;
+  background: rgba(30, 78, 140, 0.1);
+  color: var(--lasles-blue);
+  font-size: .68rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.lasles-path-unit-card__empty {
+  margin: 0;
+  padding: .65rem .7rem;
+  border-radius: .65rem;
+  background: var(--lasles-bg-soft);
+  font-size: .88rem;
+  color: var(--lasles-muted);
+}
+
+.lasles-path-detail-side__card {
+  position: sticky;
+  top: 6.5rem;
+  padding: 1.35rem 1.25rem 1.4rem;
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(165deg, rgba(232, 238, 246, 0.65) 0%, #fff 42%),
+    #fff;
+  border: 1px solid rgba(21, 42, 74, 0.1);
+  box-shadow: 0 22px 48px -30px rgba(13, 16, 37, 0.5);
+  text-align: start;
+}
+.lasles-path-detail-side__kicker {
+  margin: 0 0 .4rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--lasles-gold);
+}
+.lasles-path-detail-side__card h3 {
+  margin: 0 0 .45rem;
+  font-size: 1.18rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--lasles-navy);
+}
+.lasles-path-detail-side__card > p {
+  margin: 0 0 1.05rem;
+  color: var(--lasles-muted);
+  font-size: .92rem;
+  line-height: 1.55;
+}
+.lasles-path-detail-side__steps {
+  margin: 0 0 1.2rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .6rem;
+  counter-reset: path-side;
+}
+.lasles-path-detail-side__steps li {
+  position: relative;
+  padding-block: .65rem;
+  padding-inline: 2.45rem .75rem;
+  border-radius: .75rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(21, 42, 74, 0.07);
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--lasles-navy);
+  line-height: 1.45;
+  counter-increment: path-side;
+}
+.lasles-path-detail-side__steps li::before {
+  content: counter(path-side, decimal-leading-zero);
+  position: absolute;
+  inset-inline-start: .55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: .5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lasles-blue);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 700;
+}
+.lasles-path-detail-side__cta {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: .7rem;
+}
+.lasles-path-detail-side__link {
+  display: block;
+  text-align: center;
+  font-weight: 700;
+  color: var(--lasles-blue);
+  text-decoration: none;
+  font-size: .95rem;
+}
+.lasles-path-detail-side__link:hover { color: var(--lasles-gold); }
+
+.lasles-path-detail-related {
+  padding: var(--lasles-section-y) 0;
+  background: #fff;
+}
+.lasles-path-detail-cta {
+  padding: 2.5rem 0 3.25rem;
+  background:
+    radial-gradient(ellipse 60% 80% at 100% 0%, rgba(30, 78, 140, 0.1), transparent 55%),
+    var(--lasles-bg-soft);
+}
+.lasles-path-detail-cta__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 1.75rem;
+  align-items: center;
+  justify-content: space-between;
+  text-align: start;
+}
+.lasles-path-detail-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+}
+
+@media (min-width: 768px) {
+  .lasles-path-unit-card__cols {
+    grid-template-columns: 1fr 1fr;
+    gap: .35rem;
+  }
+  .lasles-path-unit-card__col + .lasles-path-unit-card__col {
+    border-top: 0;
+    border-inline-start: 1px dashed rgba(21, 42, 74, 0.1);
+  }
+}
+@media (min-width: 1024px) {
+  .lasles-path-detail-body__grid {
+    grid-template-columns: minmax(0, 1fr) 19.5rem;
+    gap: 2.15rem;
+    align-items: start;
+  }
+}
+
+/* ========== Course detail (/course/{id}) ========== */
+.lasles-course-detail-page,
+.lasles-course-detail-page * {
+  font-family: var(--lasles-font);
+}
+.lasles-course-flash-wrap {
+  padding-top: 1rem;
+}
+.lasles-course-flash {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  margin-bottom: .65rem;
+  padding: .75rem .9rem;
+  border-radius: .85rem;
+  border: 1px solid rgba(21, 42, 74, 0.1);
+  background: #fff;
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--lasles-navy);
+}
+.lasles-course-flash p { margin: 0; flex: 1; }
+.lasles-course-flash button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--lasles-muted);
+  line-height: 1;
+}
+.lasles-course-flash--ok { background: #ecfdf5; border-color: #a7f3d0; }
+.lasles-course-flash--info { background: var(--lasles-blue-tint); border-color: #c5d4f0; }
+.lasles-course-flash--err { background: #fef2f2; border-color: #fecaca; }
+
+.lasles-course-detail-hero {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  padding: clamp(2.25rem, 4.5vw, 4rem) 0 clamp(2.75rem, 5vw, 4.25rem);
+  -webkit-font-smoothing: antialiased;
+}
+.lasles-course-detail-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: var(--course-cover);
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.04);
+}
+.lasles-course-detail-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, rgba(10, 24, 46, 0.96) 0%, rgba(14, 34, 64, 0.9) 52%, rgba(16, 40, 74, 0.78) 100%),
+    linear-gradient(180deg, rgba(8, 16, 30, 0.2), rgba(8, 16, 30, 0.55));
+}
+.lasles-course-detail-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: start;
+}
+.lasles-course-detail-hero__crumb {
+  margin: 0 0 1.15rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .5rem;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: .875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+}
+.lasles-course-detail-hero__crumb a {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-weight: 600;
+}
+.lasles-course-detail-hero__crumb a:hover { color: #fff; }
+.lasles-course-detail-hero__copy {
+  width: min(100%, 42rem);
+  margin-inline: 0;
+  text-align: start;
+}
+.lasles-course-detail-hero__kicker {
+  margin: 0 0 .55rem;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #e8c68c;
+}
+.lasles-course-detail-hero__title {
+  margin: 0 0 .85rem;
+  font-size: clamp(2rem, 1.3rem + 2.6vw, 3.15rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
+}
+.lasles-course-detail-hero__lead {
+  margin: 0 0 1.15rem;
+  max-width: 36rem;
+  font-size: clamp(1.02rem, .92rem + .35vw, 1.15rem);
+  font-weight: 500;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.94);
+}
+.lasles-course-detail-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: .95rem;
+  justify-content: flex-start;
+}
+.lasles-course-detail-hero__promise {
+  margin: 0 0 1.25rem;
+  font-size: .98rem;
+  font-weight: 600;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+}
+.lasles-course-detail-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.lasles-course-detail-body {
+  padding: clamp(2.25rem, 4vw, 3.5rem) 0 clamp(3rem, 5vw, 4.25rem);
+  background:
+    radial-gradient(ellipse 55% 40% at 100% 0%, rgba(30, 78, 140, 0.06), transparent 60%),
+    linear-gradient(180deg, #fff 0%, #f5f7fb 100%);
+  text-align: start;
+}
+.lasles-course-detail-body__grid {
+  display: grid;
+  gap: 1.75rem;
+}
+.lasles-course-detail-body__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.lasles-course-detail-media { text-align: start; }
+.lasles-course-detail-media__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.05rem;
+  aspect-ratio: 16 / 9;
+  background: #0b1220;
+  border: 1px solid rgba(21, 42, 74, 0.08);
+  box-shadow: 0 18px 40px -30px rgba(13, 16, 37, 0.45);
+}
+.lasles-course-detail-media__frame iframe,
+.lasles-course-detail-media__frame video,
+.lasles-course-detail-media__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+  display: block;
+}
+.lasles-course-detail-media__frame video { object-fit: contain; background: #0b1220; }
+
+.lasles-course-detail-about {
+  padding: 1.25rem 1.3rem 1.35rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.08);
+  box-shadow: 0 14px 32px -26px rgba(13, 16, 37, 0.35);
+  text-align: start;
+}
+.lasles-course-detail-about__title {
+  margin: 0 0 .55rem;
+  font-size: clamp(1.3rem, 1.05rem + .7vw, 1.7rem);
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-course-detail-about__text {
+  margin: 0 0 1rem;
+  max-width: 42rem;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--lasles-muted);
+  white-space: pre-line;
+}
+.lasles-course-detail-delivery {
+  padding: .85rem .95rem;
+  border-radius: .85rem;
+  background: var(--lasles-blue-tint);
+  border: 1px solid rgba(30, 78, 140, 0.14);
+}
+.lasles-course-detail-delivery.is-solo {
+  background: var(--lasles-gold-tint);
+  border-color: rgba(168, 128, 80, 0.28);
+}
+.lasles-course-detail-delivery strong {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: .92rem;
+  color: var(--lasles-blue);
+}
+.lasles-course-detail-delivery.is-solo strong { color: var(--lasles-gold); }
+.lasles-course-detail-delivery p {
+  margin: 0;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--lasles-muted);
+}
+.lasles-course-detail-delivery b { color: var(--lasles-navy); }
+
+.lasles-course-detail-block {
+  padding: 1.2rem 1.25rem 1.3rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.08);
+  box-shadow: 0 14px 32px -28px rgba(13, 16, 37, 0.38);
+  text-align: start;
+}
+.lasles-course-detail-block h2 {
+  margin: 0 0 .75rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-course-detail-block__box {
+  margin: 0;
+  padding: .85rem .95rem;
+  border-radius: .75rem;
+  background: var(--lasles-bg-soft);
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--lasles-muted);
+  white-space: pre-line;
+}
+.lasles-course-detail-learn {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .5rem;
+}
+.lasles-course-detail-learn li {
+  display: flex;
+  gap: .55rem;
+  align-items: flex-start;
+  padding: .6rem .7rem;
+  border-radius: .65rem;
+  background: var(--lasles-bg-soft);
+  font-size: .94rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--lasles-navy);
+}
+.lasles-course-detail-learn li span {
+  width: .45rem;
+  height: .45rem;
+  margin-top: .45rem;
+  border-radius: 999px;
+  background: var(--lasles-blue);
+  flex-shrink: 0;
+}
+.lasles-course-detail-facts {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+.lasles-course-detail-facts > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 38%) 1fr;
+  gap: .75rem;
+  padding: .7rem 0;
+  border-bottom: 1px solid rgba(21, 42, 74, 0.08);
+}
+.lasles-course-detail-facts > div:last-child { border-bottom: 0; }
+.lasles-course-detail-facts dt {
+  margin: 0;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-course-detail-facts dd {
+  margin: 0;
+  font-size: .92rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-course-detail-facts a {
+  color: var(--lasles-blue);
+  text-decoration: none;
+  font-weight: 700;
+}
+.lasles-course-detail-facts a:hover { color: var(--lasles-gold); }
+
+.lasles-course-detail-side__card {
+  position: sticky;
+  top: 6.5rem;
+  padding: 1.35rem 1.25rem 1.4rem;
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(165deg, rgba(232, 238, 246, 0.65) 0%, #fff 42%),
+    #fff;
+  border: 1px solid rgba(21, 42, 74, 0.1);
+  box-shadow: 0 22px 48px -30px rgba(13, 16, 37, 0.5);
+  text-align: start;
+}
+.lasles-course-detail-side__kicker {
+  margin: 0 0 .35rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--lasles-gold);
+}
+.lasles-course-detail-side__card h2 {
+  margin: 0 0 .45rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-course-detail-side__tutor {
+  margin: 0 0 1rem;
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--lasles-blue);
+}
+.lasles-course-detail-side__tutor a {
+  color: inherit;
+  text-decoration: none;
+}
+.lasles-course-detail-side__tutor a:hover { color: var(--lasles-gold); }
+.lasles-course-detail-side__price {
+  margin-bottom: 1rem;
+  padding: .9rem .95rem;
+  border-radius: .85rem;
+  background: #fff;
+  border: 1px solid rgba(30, 78, 140, 0.14);
+}
+.lasles-course-detail-side__amount {
+  margin: 0;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+  line-height: 1.2;
+}
+.lasles-course-detail-side__amount.is-free { color: #047857; }
+.lasles-course-detail-side__amount small {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-course-detail-side__old {
+  margin: .3rem 0 0;
+  font-size: .92rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+.lasles-course-detail-side__save {
+  display: inline-flex;
+  margin-top: .4rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: #d1fae5;
+  color: #047857;
+  font-size: .75rem;
+  font-weight: 700;
+}
+.lasles-course-detail-side__access {
+  margin: .55rem 0 0;
+  font-size: .84rem;
+  font-weight: 600;
+  color: #047857;
+}
+.lasles-course-detail-side__specs {
+  margin: 0 0 1.1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+.lasles-course-detail-side__specs > div {
+  padding: .55rem .6rem;
+  border-radius: .65rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(21, 42, 74, 0.07);
+}
+.lasles-course-detail-side__specs dt {
+  margin: 0;
+  font-size: .68rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-course-detail-side__specs dd {
+  margin: .15rem 0 0;
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-course-detail-side__actions {
+  display: grid;
+  gap: .55rem;
+  margin-bottom: 1rem;
+}
+.lasles-course-detail-side__cta {
+  width: 100%;
+  justify-content: center;
+}
+.lasles-course-detail-side__actions form { display: grid; }
+.lasles-course-detail-side__wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: .55rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(21, 42, 74, 0.14);
+  background: #fff;
+  color: var(--lasles-navy);
+  font-weight: 700;
+  text-decoration: none;
+}
+.lasles-course-detail-side__wa:hover {
+  border-color: var(--lasles-blue);
+  color: var(--lasles-blue);
+}
+.lasles-course-detail-side__link {
+  display: block;
+  text-align: center;
+  font-weight: 700;
+  color: var(--lasles-blue);
+  text-decoration: none;
+  font-size: .95rem;
+}
+.lasles-course-detail-side__link:hover { color: var(--lasles-gold); }
+.lasles-course-detail-trust {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .4rem;
+}
+.lasles-course-detail-trust div {
+  padding: .5rem .35rem;
+  border-radius: .65rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(21, 42, 74, 0.07);
+  text-align: center;
+}
+.lasles-course-detail-trust strong {
+  display: block;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.35;
+}
+
+.lasles-course-detail-related {
+  padding: var(--lasles-section-y) 0;
+  background: #fff;
+}
+
+@media (min-width: 1024px) {
+  .lasles-course-detail-body__grid {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 2.15rem;
+    align-items: start;
+  }
+}
+
+/* ========== Course checkout (/course/{id}/checkout) ========== */
+.lasles-checkout-page,
+.lasles-checkout-page * { font-family: var(--lasles-font); }
+.lasles-checkout-hero {
+  padding: clamp(2rem, 4vw, 3.25rem) 0 clamp(2.25rem, 4vw, 3rem);
+  background:
+    radial-gradient(ellipse 55% 70% at 100% 0%, rgba(30, 78, 140, 0.16), transparent 55%),
+    linear-gradient(165deg, #0f2748 0%, #163a68 48%, #1e4e8c 100%);
+  color: #fff;
+  text-align: start;
+}
+.lasles-checkout-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.lasles-checkout-hero__crumb {
+  margin: 0 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .5rem;
+  font-size: .875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+}
+.lasles-checkout-hero__crumb a {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-weight: 600;
+}
+.lasles-checkout-hero__crumb a:hover { color: #fff; }
+.lasles-checkout-hero__kicker {
+  margin: 0 0 .45rem;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: #e8c68c;
+}
+.lasles-checkout-hero__title {
+  margin: 0 0 .55rem;
+  font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+.lasles-checkout-hero__lead {
+  margin: 0 0 1.15rem;
+  max-width: 36rem;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+}
+.lasles-checkout-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.lasles-checkout-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 2.1rem;
+  padding: .3rem .8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: .8rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+}
+.lasles-checkout-steps li span {
+  font-size: .72rem;
+  opacity: .85;
+}
+.lasles-checkout-steps li.is-done {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+.lasles-checkout-steps li.is-on {
+  background: var(--lasles-gold);
+  border-color: transparent;
+  color: #163a68;
+}
+
+.lasles-checkout-body {
+  padding: clamp(1.75rem, 3.5vw, 2.75rem) 0 clamp(3rem, 5vw, 4rem);
+  background: linear-gradient(180deg, #fff 0%, #f5f7fb 100%);
+  text-align: start;
+}
+.lasles-checkout-body__grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.lasles-checkout-main { min-width: 0; }
+.lasles-checkout-card,
+.lasles-checkout-side__card {
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.09);
+  border-radius: 1.05rem;
+  box-shadow: 0 18px 40px -30px rgba(13, 16, 37, 0.42);
+  padding: 1.25rem 1.25rem 1.4rem;
+}
+.lasles-checkout-card h2,
+.lasles-checkout-side__card h3 {
+  margin: 0 0 .35rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-card__sub {
+  margin: 0 0 1.1rem;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-alert {
+  display: flex;
+  gap: .65rem;
+  margin-bottom: .9rem;
+  padding: .8rem .9rem;
+  border-radius: .85rem;
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.lasles-checkout-alert p,
+.lasles-checkout-alert ul { margin: 0; }
+.lasles-checkout-alert ul { padding-inline-start: 1.1rem; }
+.lasles-checkout-alert strong { display: block; margin-bottom: .2rem; }
+.lasles-checkout-alert--err { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+.lasles-checkout-alert--ok { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+.lasles-checkout-alert--info { background: var(--lasles-gold-tint); border: 1px solid rgba(168, 128, 80, 0.28); color: #7a5a28; }
+.lasles-checkout-alert--sky { background: var(--lasles-blue-tint); border: 1px solid rgba(30, 78, 140, 0.18); color: #163a68; }
+.lasles-checkout-alert--compact { padding: .55rem .7rem; font-size: .84rem; }
+
+.lasles-checkout-panel {
+  margin-bottom: 1.15rem;
+  padding: 1rem 1.05rem;
+  border-radius: .9rem;
+  background: var(--lasles-bg-soft);
+  border: 1px solid rgba(21, 42, 74, 0.08);
+}
+.lasles-checkout-panel h3 {
+  margin: 0 0 .35rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-panel__hint {
+  margin: 0 0 .85rem;
+  font-size: .86rem;
+  line-height: 1.5;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-check {
+  display: flex;
+  gap: .65rem;
+  align-items: flex-start;
+  margin-bottom: .85rem;
+  padding: .7rem .8rem;
+  border-radius: .75rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.08);
+  cursor: pointer;
+}
+.lasles-checkout-check input { margin-top: .2rem; }
+.lasles-checkout-check strong {
+  display: block;
+  font-size: .9rem;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-check em {
+  display: block;
+  margin-top: .15rem;
+  font-style: normal;
+  font-size: .8rem;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-balance {
+  margin: 0 0 .75rem;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-checkout-fields {
+  display: grid;
+  gap: .75rem;
+}
+.lasles-checkout-fields.is-split { grid-template-columns: 1fr; }
+.lasles-checkout-field { margin-bottom: .85rem; }
+.lasles-checkout-field label {
+  display: block;
+  margin: 0 0 .35rem;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-input {
+  width: 100%;
+  border-radius: .75rem;
+  border: 1.5px solid rgba(21, 42, 74, 0.12);
+  background: #fff;
+  color: var(--lasles-navy);
+  padding: .75rem .9rem;
+  font: 600 .95rem var(--lasles-font);
+}
+.lasles-checkout-input:focus {
+  outline: none;
+  border-color: var(--lasles-blue);
+  box-shadow: 0 0 0 3px rgba(30, 78, 140, 0.12);
+}
+.lasles-checkout-input--file { padding: .55rem .75rem; }
+.lasles-checkout-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  align-items: center;
+  margin-top: .85rem;
+}
+.lasles-checkout-msg { font-size: .85rem; font-weight: 700; color: #059669; }
+.lasles-checkout-loading {
+  margin-bottom: 1rem;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-methods {
+  display: grid;
+  gap: .55rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  margin-bottom: 1rem;
+}
+.lasles-checkout-iframe {
+  min-height: 480px;
+  width: 100%;
+  border-radius: .9rem;
+  border: 1.5px solid rgba(21, 42, 74, 0.1);
+  background: #fff;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.lasles-checkout-or {
+  margin: 1.1rem 0 .7rem;
+  text-align: center;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-submit {
+  width: 100%;
+  justify-content: center;
+}
+.lasles-checkout-submit--paypal { background: #003087 !important; }
+.lasles-checkout-submit--kashier { background: #00b0b5 !important; }
+.lasles-checkout-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+.lasles-checkout-form__actions .lasles-btn-primary { flex: 1; min-width: 10rem; justify-content: center; }
+
+.lasles-checkout-side__card { position: sticky; top: 6.5rem; }
+.lasles-checkout-item {
+  display: flex;
+  gap: .85rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(21, 42, 74, 0.08);
+}
+.lasles-checkout-item img,
+.lasles-checkout-item__ph {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: .85rem;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--lasles-blue-tint);
+}
+.lasles-checkout-item__ph {
+  display: grid;
+  place-items: center;
+  color: var(--lasles-blue);
+  font-size: 1.2rem;
+}
+.lasles-checkout-item h2 {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-item p {
+  margin: .3rem 0 0;
+  font-size: .84rem;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-sum-row {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  margin: .4rem 0;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-sum-row strong,
+.lasles-checkout-sum-row #sum-original { color: var(--lasles-blue); font-weight: 700; }
+.lasles-checkout-sum-row small { font-size: .75rem; font-weight: 600; color: #8a94a6; }
+.lasles-checkout-sum-row.is-green { color: #059669; }
+.lasles-checkout-sum-row.is-blue { color: var(--lasles-blue); }
+.lasles-checkout-sum-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .75rem;
+  margin-top: .65rem;
+  padding-top: .75rem;
+  border-top: 1px solid rgba(21, 42, 74, 0.08);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-sum-total #sum-final {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+.lasles-checkout-sum-total small { font-size: .8rem; font-weight: 600; color: #8a94a6; }
+
+.lasles-checkout-payset {
+  margin: 0 0 1.1rem;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+.lasles-checkout-payset legend {
+  margin: 0 0 .65rem;
+  padding: 0;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-payopts {
+  display: grid;
+  gap: .65rem;
+}
+.lasles-checkout-payopt {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  margin: 0;
+  padding: .9rem 1rem;
+  border-radius: .9rem;
+  border: 1.5px solid rgba(21, 42, 74, 0.1);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.lasles-checkout-payopt:hover {
+  border-color: rgba(30, 78, 140, 0.28);
+}
+.lasles-checkout-payopt:has(input:checked) {
+  border-color: var(--lasles-blue);
+  background: var(--lasles-blue-tint);
+  box-shadow: 0 0 0 3px rgba(30, 78, 140, 0.1);
+}
+.lasles-checkout-payopt input {
+  margin-top: .2rem;
+  accent-color: var(--lasles-blue);
+}
+.lasles-checkout-payopt__body {
+  display: grid;
+  gap: .2rem;
+  min-width: 0;
+}
+.lasles-checkout-payopt__body strong {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-payopt__body em {
+  font-style: normal;
+  font-size: .82rem;
+  line-height: 1.45;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-field__hint {
+  margin: .4rem 0 0;
+  font-size: .8rem;
+  line-height: 1.45;
+  color: rgba(15, 39, 68, 0.55);
+}
+
+.lasles-checkout-benefits {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: .45rem;
+}
+.lasles-checkout-benefits li {
+  position: relative;
+  padding-inline-start: 1.15rem;
+  font-size: .86rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-benefits li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: .45rem;
+  width: .45rem;
+  height: .45rem;
+  border-radius: 999px;
+  background: #059669;
+}
+.lasles-checkout-trust {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .4rem;
+  margin-top: 1.1rem;
+}
+.lasles-checkout-trust span {
+  display: block;
+  padding: .5rem .3rem;
+  border-radius: .65rem;
+  background: var(--lasles-bg-soft);
+  border: 1px solid rgba(21, 42, 74, 0.07);
+  text-align: center;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+  line-height: 1.35;
+}
+.hidden { display: none !important; }
+
+@media (min-width: 640px) {
+  .lasles-checkout-fields.is-split { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .lasles-checkout-body__grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 22rem);
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+/* Checkout coupon ask + modal */
+.lasles-checkout-coupon-ask__q {
+  margin: 0 0 .85rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-coupon-ask__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+.lasles-checkout-coupon-applied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .65rem;
+  margin-bottom: .75rem;
+  padding: .85rem .95rem;
+  border-radius: .85rem;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+.lasles-checkout-coupon-applied__label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #065f46;
+}
+.lasles-checkout-coupon-applied strong {
+  font-size: 1rem;
+  color: #047857;
+  letter-spacing: .04em;
+}
+.lasles-checkout-coupon-applied__actions {
+  display: flex;
+  gap: .65rem;
+}
+.lasles-checkout-coupon-declined {
+  margin-bottom: .75rem;
+  padding: .75rem .85rem;
+  border-radius: .75rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.08);
+}
+.lasles-checkout-coupon-declined p {
+  margin: 0 0 .35rem;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-linkbtn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  font: 700 .88rem var(--lasles-font);
+  color: var(--lasles-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lasles-checkout-linkbtn.is-muted { color: var(--lasles-muted); }
+.lasles-checkout-wallet-block {
+  margin-top: .85rem;
+  padding-top: .85rem;
+  border-top: 1px dashed rgba(21, 42, 74, 0.12);
+}
+.lasles-checkout-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.lasles-checkout-modal.hidden { display: none !important; }
+.lasles-checkout-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(10, 24, 46, 0.55);
+  cursor: pointer;
+}
+.lasles-checkout-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 26rem);
+  padding: 1.35rem 1.3rem 1.4rem;
+  border-radius: 1.05rem;
+  background: #fff;
+  border: 1px solid rgba(21, 42, 74, 0.1);
+  box-shadow: 0 28px 60px -28px rgba(13, 16, 37, 0.55);
+  text-align: start;
+}
+.lasles-checkout-modal__panel h3 {
+  margin: 0 0 .4rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-checkout-modal__lead {
+  margin: 0 0 1rem;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--lasles-muted);
+}
+.lasles-checkout-modal__error {
+  margin: 0 0 .85rem;
+  font-size: .88rem;
+  font-weight: 700;
+  color: #991b1b;
+}
+.lasles-checkout-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+.lasles-checkout-modal__actions .lasles-btn-primary,
+.lasles-checkout-modal__actions .lasles-btn-outline {
+  flex: 1;
+  min-width: 7rem;
+  justify-content: center;
+}
+body.lasles-checkout-modal-open { overflow: hidden; }

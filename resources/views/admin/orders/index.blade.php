@@ -162,7 +162,15 @@
                                 <p class="mt-0.5 text-[11px] text-muted">{{ $order->user->email ?? $order->user->phone ?? '—' }}</p>
                             </td>
                             <td class="px-4 py-3">
-                                @if($order->order_type === \App\Models\Order::TYPE_CUSTOM_SERVICE_PACKAGE)
+                                @if($order->order_type === \App\Models\Order::TYPE_CONSULTATION || $order->isConsultationOrder())
+                                    @php $cMeta = $order->custom_package_data ?? []; @endphp
+                                    <p class="font-medium text-ink">{{ $cMeta['consultation_title'] ?? 'استشارة مهنية' }}</p>
+                                    <p class="text-[11px] text-muted">حجز استشارة
+                                        @if(!empty($cMeta['consultation_request_id']))
+                                            · <a href="{{ route('admin.consultations.show', $cMeta['consultation_request_id']) }}" class="text-accent underline">#{{ $cMeta['consultation_request_id'] }}</a>
+                                        @endif
+                                    </p>
+                                @elseif($order->order_type === \App\Models\Order::TYPE_CUSTOM_SERVICE_PACKAGE)
                                     @php $custom = $order->custom_package_data ?? []; @endphp
                                     <p class="font-medium text-ink">{{ $custom['name'] ?? 'باقة مخصصة' }}</p>
                                     <p class="text-[11px] text-muted">{{ $custom['sessions'] ?? '—' }} حصة · {{ $custom['session_minutes'] ?? '—' }} دقيقة</p>

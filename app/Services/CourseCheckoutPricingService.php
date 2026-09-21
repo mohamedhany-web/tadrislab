@@ -14,9 +14,9 @@ class CourseCheckoutPricingService
      *
      * @return array{ok: bool, message?: string, original_amount: float, coupon_id: ?int, discount_amount: float, wallet_credit_amount: float, final_amount: float, coupon: ?Coupon}
      */
-    public static function resolve(User $user, AdvancedCourse $course, ?string $couponCode, float $walletCreditRequested, ?string $billingMode = null, string $currency = 'USD'): array
+    public static function resolve(User $user, AdvancedCourse $course, ?string $couponCode, float $walletCreditRequested, ?string $billingMode = null, ?string $currency = null): array
     {
-        $currency = strtoupper($currency) === 'EGP' ? 'EGP' : 'USD';
+        $currency = normalize_currency($currency);
         $billingMode = $billingMode ?? ($course->isMonthlyBilling()
             ? \App\Services\CourseSubscriptionService::BILLING_MONTHLY
             : \App\Services\CourseSubscriptionService::BILLING_ONE_TIME);

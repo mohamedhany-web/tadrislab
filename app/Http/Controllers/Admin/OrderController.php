@@ -595,6 +595,22 @@ class OrderController extends Controller
 
                 OrderWalletAndCouponFinalizer::run($order->fresh());
 
+                if (\App\Services\CatalogOrderFulfillmentService::isCatalogOrder($order)) {
+                    try {
+                        \App\Services\CatalogOrderFulfillmentService::fulfill($order->fresh(), auth()->user());
+                    } catch (\Throwable $e) {
+                        Log::error('Catalog fulfill failed during order approval: '.$e->getMessage(), ['order_id' => $order->id]);
+                    }
+                }
+
+                if (\App\Services\ConsultationOrderFulfillmentService::isConsultationOrder($order)) {
+                    try {
+                        \App\Services\ConsultationOrderFulfillmentService::fulfill($order->fresh(), auth()->user());
+                    } catch (\Throwable $e) {
+                        Log::error('Consultation fulfill failed during order approval: '.$e->getMessage(), ['order_id' => $order->id]);
+                    }
+                }
+
                 // الـ commit أولاً حتى لا يعطل سجل النشاط استجابة الموافقة
                 Log::info('Order approve: before DB::commit', ['order_id' => $order->id]);
                 DB::commit();
@@ -637,6 +653,25 @@ class OrderController extends Controller
                     'invoice_number' => $invoice->invoice_number ?? null,
                     'payment_number' => $payment->payment_number ?? null,
                 ]);
+
+                try {
+                    $fresh = $order->fresh(['user']);
+                    event(new \App\Events\PaymentSuccessful($fresh, $payment ?? null));
+                    event(new \App\Events\OrderStatusChanged($fresh, Order::STATUS_PENDING, Order::STATUS_APPROVED));
+                    if ($fresh?->user && $order->advanced_course_id) {
+                        event(new \App\Events\AccessSubscriptionActivated(
+                            $fresh->user,
+                            (string) ($order->course?->title ?? 'كورس / مسار'),
+                            'تم التفعيل بعد موافقة الإدارة',
+                            $fresh->id
+                        ));
+                    }
+                } catch (\Throwable $e) {
+                    Log::warning('Order approve notification dispatch failed', [
+                        'order_id' => $order->id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
 
                 if (in_array($order->order_type, [Order::TYPE_SERVICE_PACKAGE, Order::TYPE_CUSTOM_SERVICE_PACKAGE], true)) {
                     $successMessage = 'تمت الموافقة وتفعيل رصيد حصص الطالب وربطه بالطلب. الفاتورة: '.$invoice->invoice_number.'، والمدفوعات: '.$payment->payment_number;
@@ -783,6 +818,20 @@ class OrderController extends Controller
 
             DB::commit();
             RateLimiter::clear($key);
+
+            try {
+                event(new \App\Events\OrderStatusChanged(
+                    $order->fresh(['user']),
+                    Order::STATUS_PENDING,
+                    Order::STATUS_REJECTED,
+                    $rejectionReason !== '' ? 'سبب الرفض: '.$rejectionReason : ''
+                ));
+            } catch (\Throwable $e) {
+                Log::warning('Order reject notification dispatch failed', [
+                    'order_id' => $order->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
 
             // تسجيل النشاط بعد الـ commit (إدراج مباشر كما في الموافقة)
             try {

@@ -59,18 +59,6 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        // إنشاء ولي أمر تجريبي
-        User::firstOrCreate(
-            ['phone' => '0500000003'],
-            [
-                'name' => 'محمد أحمد',
-                'email' => 'parent@learningplatform.com',
-                'password' => Hash::make('password123'),
-                'role' => 'parent',
-                'is_active' => true,
-            ]
-        );
-
         // إنشاء مدرسة تجريبية
         School::firstOrCreate(
             ['name' => 'مدرسة النور الابتدائية'],

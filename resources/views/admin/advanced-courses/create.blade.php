@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 
 @section('title', 'إضافة برنامج جديد - ' . config('app.name'))
 @section('page_title', 'إضافة برنامج')
@@ -91,14 +91,14 @@
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-ink">السعر بالدولار (USD)</label>
+                                    <label class="block text-sm font-semibold text-ink">السعر ({{ platform_currency() }})</label>
                                     <input type="number" name="price_usd" value="{{ old('price_usd', 0) }}" min="0" step="0.01"
                                            class="w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-accent focus:ring-2 focus:ring-accent/20 transition"
                                            placeholder="0 للمجاني">
                                     @error('price_usd') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-ink">بعد الخصم (USD)</label>
+                                    <label class="block text-sm font-semibold text-ink">بعد الخصم ({{ platform_currency() }})</label>
                                     <input type="number" name="price_usd_after_discount" value="{{ old('price_usd_after_discount') }}" min="0" step="0.01"
                                            class="w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink focus:border-accent focus:ring-2 focus:ring-accent/20 transition"
                                            placeholder="اتركه فارغاً إن لم يكن هناك عرض">
@@ -122,7 +122,7 @@
                                     </select>
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-semibold text-ink">سعر الاشتراك الشهري (USD)</label>
+                                    <label class="block text-sm font-semibold text-ink">سعر الاشتراك الشهري ({{ platform_currency() }})</label>
                                     <input type="number" name="monthly_price" value="{{ old('monthly_price') }}" min="0" step="0.01"
                                            class="w-full rounded-xl border border-line bg-surface px-4 py-3 text-ink">
                                 </div>
@@ -185,7 +185,7 @@
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <input id="customSkill" type="text" class="flex-1 rounded-xl border border-line bg-surface px-4 py-2 text-sm text-ink focus:border-accent focus:ring-2 focus:ring-accent/20 transition" placeholder="اكتب مهارة جديدة">
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-xl btn-press bg-accent hover:bg-[#0d4f4a] text-white px-4 py-2 text-sm font-semibold transition"
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-xl btn-press bg-accent hover:bg-[#184888] text-white px-4 py-2 text-sm font-semibold transition"
                                             @click="addSkill(document.getElementById('customSkill').value); document.getElementById('customSkill').value='';">
                                         <i class="fas fa-plus"></i>
                                         إضافة
@@ -195,7 +195,7 @@
                                     <template x-for="(skill, index) in selectedSkills" :key="skill">
                                         <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-semibold">
                                             <span x-text="skill"></span>
-                                            <button type="button" class="text-accent hover:text-[#0d4f4a]" @click="removeSkill(index)">
+                                            <button type="button" class="text-accent hover:text-[#184888]" @click="removeSkill(index)">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                             <input type="hidden" name="skills[]" :value="skill">
@@ -285,7 +285,7 @@
 
                     <div class="rounded-2xl border border-line bg-surface shadow-soft">
                         <div class="p-6 sm:p-8 space-y-3">
-                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-xl btn-press bg-accent hover:bg-[#0d4f4a] text-white px-6 py-3 text-sm font-semibold transition">
+                            <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-xl btn-press bg-accent hover:bg-[#184888] text-white px-6 py-3 text-sm font-semibold transition">
                                 <i class="fas fa-save"></i>
                                 حفظ البرنامج
                             </button>

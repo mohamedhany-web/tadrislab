@@ -3,331 +3,106 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  <title>استكشف الدورات — Sana</title>
-  <meta name="theme-color" content="#5B21B6">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@800;900&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- CSS مستخرج من landing/sana: theme + courses-catalog-theme -->
-  <link rel="stylesheet" href="assets/sana-theme.css">
-  <link rel="stylesheet" href="assets/sana-courses-catalog-theme.css">
+  <title>الكورسات — تدريس لاب (مرآة تصميم)</title>
+  <meta name="theme-color" content="#1E4E8C">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/lasles-theme.css">
+  <link rel="stylesheet" href="assets/lasles-courses.css">
   <style>
-    .design-mirror-badge {
-      position: fixed; z-index: 99999; bottom: 12px; inset-inline-start: 12px;
-      background: #1e1b4b; color: #fff; font: 700 .72rem/1 Tajawal,sans-serif;
-      padding: .45rem .7rem; border-radius: 999px; opacity: .85; pointer-events: none;
-    }
+    .mirror-note{margin:0;padding:.55rem 1rem;background:#152A4A;color:#fff;font:500 .8rem Rubik,sans-serif}
   </style>
 </head>
-<body class="sana-home sana-courses-page">
-<div class="design-mirror-badge">مرآة تصميم الإنتاج · courses.blade.php</div>
-<div id="sana-scroll-progress"></div>
+<body class="lasles-home lasles-courses-page">
+  <p class="mirror-note">مرآة تصميم — الإنتاج: <code>public/courses/index</code> + <code>lasles-courses.css</code> + <code>partials/landing/lasles/course-card</code></p>
 
-<header id="sana-nav" class="sana-nav sana-nav--hero">
-  <div class="sana-container">
-    <div class="sana-nav__inner">
-      <a href="01-home.html" class="sana-nav__brand"><span class="sana-nav__logo-text">SANA</span></a>
-      <nav class="sana-nav__links" aria-label="القائمة">
+  <header class="lasles-nav">
+    <div class="lasles-container lasles-nav__inner">
+      <a href="01-home.html" class="lasles-brand"><span><b>تدريس لاب</b></span></a>
+      <nav class="lasles-nav__links" aria-label="القائمة">
         <a href="01-home.html">الرئيسية</a>
-        <a href="03-courses.html" class="sana-nav__path sana-nav__path--family is-active">للطلاب وأولياء الأمور</a>
-        <a href="02-about.html">كيف تعمل سنا؟</a>
-        <a href="05-contact.html">تواصل معنا</a>
+        <a href="02-about.html">عنّا</a>
+        <a href="#" class="is-active">كورسات</a>
+        <a href="05-contact.html">تواصل</a>
       </nav>
-      <div class="sana-nav__actions">
-        <a href="06-auth-login.html" class="sana-nav__login">تسجيل الدخول</a>
-        <a href="05-contact.html" class="sana-nav__signup">احجز تقييم مستوى</a>
-      </div>
-      <button type="button" id="sana-mobile-toggle" class="sana-nav__burger" aria-expanded="false" aria-controls="sana-mobile-menu" aria-label="فتح القائمة">
-        <i class="fas fa-bars" aria-hidden="true"></i>
-      </button>
     </div>
-    <div id="sana-mobile-menu" class="sana-nav__mobile" aria-hidden="true">
-      <a href="01-home.html">الرئيسية</a>
-      <a href="03-courses.html" class="sana-nav__path sana-nav__path--family is-active">للطلاب وأولياء الأمور</a>
-      <a href="02-about.html">كيف تعمل سنا؟</a>
-      <a href="05-contact.html">تواصل معنا</a>
-      <a href="06-auth-login.html">تسجيل الدخول</a>
-      <a href="05-contact.html" class="sana-nav__signup sana-nav__signup--block">احجز تقييم مستوى</a>
-      <a href="05-contact.html" class="sana-nav__signup sana-nav__signup--block sana-nav__signup--wa">تواصل عبر واتساب</a>
-    </div>
-  </div>
-</header>
-<div id="sana-mobile-backdrop" class="sana-nav__backdrop" aria-hidden="true"></div>
+  </header>
 
-<main class="sana-cat-page">
-
-<section class="sana-cat-hero" id="cat-hero">
-  <div class="sana-cat-hero__dots"></div>
-  <div class="sana-container sana-cat-hero__inner">
-    <nav class="sana-cat-hero__breadcrumb" aria-label="مسار التنقل">
-      <a href="01-home.html">الرئيسية</a>
-      <i class="fas fa-chevron-left" style="font-size:0.6rem;opacity:0.5"></i>
-      <span>استكشف الدورات</span>
-    </nav>
-    <h1 class="sana-cat-hero__title">استكشف <span class="hl">الدورات</span></h1>
-    <p class="sana-cat-hero__desc">اكتشف دورات تعليمية ممتعة ومنظّمة — ابحث حسب المادة، المرحلة، أو المعلّم وابدأ رحلتك فوراً.</p>
-    <div class="sana-cat-hero__stats">
-      <span class="sana-cat-hero__stat"><i class="fas fa-book-open"></i> <span>2</span> دورة متاحة</span>
-      <span class="sana-cat-hero__stat"><i class="fas fa-star"></i> <span>1</span> دورة مميزة</span>
-    </div>
-    <div class="sana-cat-search sana-reveal">
-      <div class="sana-cat-search__row">
-        <div class="sana-cat-search__input-wrap">
-          <i class="fas fa-search"></i>
-          <input type="search" class="sana-cat-search__input" placeholder="ابحث بالاسم، المادة، أو المعلّم..." aria-label="بحث الدورات">
+  <main>
+    <section class="lasles-courses-hero">
+      <div class="lasles-container lasles-courses-hero__inner">
+        <h1 class="lasles-courses-hero__title">كورسات تطوير الممارسة المهنية</h1>
+        <p class="lasles-courses-hero__lead">استكشف كورسات ومسارات التطوير المهني للمعلمين: ممارسات، أدوات، وتطبيق داخل الصف.</p>
+        <div class="lasles-courses-hero__meta">
+          <span class="lasles-courses-chip">12 نتيجة</span>
+          <span class="lasles-courses-chip">مسارات تعليمية</span>
         </div>
-        <button type="button" class="sana-cat-search__btn"><i class="fas fa-search"></i> بحث</button>
       </div>
-      <div class="sana-cat-search__filters">
-        <select class="sana-cat-search__select" aria-label="التصنيف"><option value="">كل التصنيفات</option><option>رياضيات</option><option>علوم</option></select>
-        <select class="sana-cat-search__select" aria-label="المرحلة"><option value="">كل المراحل</option><option>الابتدائية</option><option>المتوسطة</option></select>
-        <select class="sana-cat-search__select" aria-label="المادة"><option value="">كل المواد</option><option>رياضيات</option><option>لغة عربية</option></select>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="sana-cat-categories">
-  <div class="sana-container">
-    <div class="sana-head sana-reveal" style="margin-bottom:24px">
-      <h2 class="sana-head__title">تصفّح <span class="hl">التصنيفات</span></h2>
-      <span class="sana-head__line"></span>
-    </div>
-    <div class="sana-cat-categories__scroll sana-reveal">
-      <button type="button" class="sana-cat-category is-active" style="background:#F0EBFF">
-        <span class="sana-cat-category__icon">📐</span>
-        <span class="sana-cat-category__name">رياضيات</span>
-        <span class="sana-cat-category__count">1 دورة</span>
-      </button>
-      <button type="button" class="sana-cat-category" style="background:#E8EEFB">
-        <span class="sana-cat-category__icon">🔬</span>
-        <span class="sana-cat-category__name">علوم</span>
-        <span class="sana-cat-category__count">1 دورة</span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<section class="sana-cat-featured">
-  <div class="sana-container">
-    <div class="sana-head-row sana-reveal" style="margin-bottom:28px">
-      <div class="sana-head">
-        <h2 class="sana-head__title">دورات <span class="hl">مميزة</span></h2>
-        <span class="sana-head__line"></span>
+    <section class="lasles-container lasles-courses-toolbar">
+      <form class="lasles-courses-search">
+        <input type="search" placeholder="ابحث عن كورس أو مهارة أو موضوع…">
+        <button type="button" class="lasles-btn-primary">بحث</button>
+      </form>
+      <div class="lasles-courses-filters">
+        <a href="#" class="is-on">الكل</a>
+        <a href="#">مميز</a>
+        <a href="#">إدارة الصف</a>
+        <a href="#">التخطيط</a>
       </div>
-    </div>
-    <div class="sana-cat-featured__grid">
-      <article class="sana-course-card sana-course-card--featured">
-        <div class="sana-course-card__media">
-          <a href="#" class="sana-course-card__img-link" tabindex="-1" aria-hidden="true">
-            <img src="../../public/img/sanua/landing-hero-boy.png" alt="أساسيات الرياضيات" loading="lazy">
-          </a>
-          <div class="sana-course-card__shine" aria-hidden="true"></div>
-          <div class="sana-course-card__badges">
-            <span class="sana-course-card__badge sana-course-card__badge--subject">رياضيات</span>
-            <span class="sana-course-card__badge sana-course-card__badge--level">مبتدئ</span>
-            <span class="sana-course-card__badge sana-course-card__badge--featured">مميز</span>
-          </div>
-          <button type="button" class="sana-course-card__fav" aria-label="حفظ"><i class="far fa-heart"></i></button>
-        </div>
-        <div class="sana-course-card__body">
-          <h3 class="sana-course-card__title"><a href="#">أساسيات الرياضيات للمرحلة الابتدائية</a></h3>
-          <p class="sana-course-card__desc">دورة تعليمية تفاعلية مصمّمة لتجربة تعلّم ممتعة وفعّالة.</p>
-          <div class="sana-course-card__instructor">
-            <span class="sana-course-card__avatar sana-course-card__avatar--initial">ن</span>
-            <div class="sana-course-card__instructor-info">
-              <span class="sana-course-card__instructor-label">المعلّم</span>
-              <span class="sana-course-card__instructor-name">نورة العتيبي</span>
+    </section>
+
+    <section class="lasles-container">
+      <div class="lasles-courses-grid">
+        <a href="#" class="lasles-course-card">
+          <div class="lasles-course-card__media"><span class="lasles-course-card__badge lasles-course-card__badge--gold">مميز</span></div>
+          <div class="lasles-course-card__body">
+            <p class="lasles-course-card__cat">إدارة الصف</p>
+            <h3 class="lasles-course-card__title">إدارة الصف بثقة</h3>
+            <p class="lasles-course-card__excerpt">ممارسات وأدوات لتثبيت النظام والتفاعل الإيجابي داخل الحصة.</p>
+            <div class="lasles-course-card__foot">
+              <p class="lasles-course-card__price">حسب الباقة</p>
+              <span class="lasles-course-card__cta">التفاصيل →</span>
             </div>
           </div>
-          <div class="sana-course-card__stats">
-            <span class="sana-course-card__stat"><i class="far fa-clock"></i><span>12 ساعة</span></span>
-            <span class="sana-course-card__stat"><i class="fas fa-layer-group"></i><span>18 محاضرة</span></span>
+        </a>
+        <a href="#" class="lasles-course-card">
+          <div class="lasles-course-card__media"><span class="lasles-course-card__badge">مجاني</span></div>
+          <div class="lasles-course-card__body">
+            <p class="lasles-course-card__cat">التخطيط للدرس</p>
+            <h3 class="lasles-course-card__title">تخطيط درس تطبيقي</h3>
+            <p class="lasles-course-card__excerpt">من التهيئة إلى التقويم — خطوات واضحة لكل حصة.</p>
+            <div class="lasles-course-card__foot">
+              <p class="lasles-course-card__price">مجاني</p>
+              <span class="lasles-course-card__cta">التفاصيل →</span>
+            </div>
           </div>
-        </div>
-        <div class="sana-course-card__footer">
-          <div class="sana-course-card__actions">
-            <div class="sana-course-card__price-wrap">
-              <span class="sana-course-card__price sana-course-card__price--free"><i class="fas fa-gift"></i> مجاني</span>
+        </a>
+        <a href="#" class="lasles-course-card">
+          <div class="lasles-course-card__media"></div>
+          <div class="lasles-course-card__body">
+            <p class="lasles-course-card__cat">التقويم</p>
+            <h3 class="lasles-course-card__title">تقويم وقياس التعلم</h3>
+            <p class="lasles-course-card__excerpt">أسئلة تحقق وأدوات قياس تساعد المعلم يرى أثر الممارسة.</p>
+            <div class="lasles-course-card__foot">
+              <p class="lasles-course-card__price">حسب الباقة</p>
+              <span class="lasles-course-card__cta">التفاصيل →</span>
             </div>
-            <a href="#" class="sana-course-card__cta"><span>ابدأ الآن</span><i class="fas fa-arrow-left"></i></a>
           </div>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
+        </a>
+      </div>
 
-<section class="sana-cat-catalog" id="all-courses">
-  <div class="sana-container">
-    <div class="sana-head sana-reveal" style="margin-bottom:32px">
-      <h2 class="sana-head__title">جميع <span class="hl">الدورات</span></h2>
-      <span class="sana-head__line"></span>
-    </div>
-    <div class="sana-cat-layout">
-      <aside class="sana-cat-sidebar">
-        <h3 class="sana-cat-sidebar__title"><i class="fas fa-sliders"></i> تصفية النتائج</h3>
-        <div class="sana-cat-filter-group">
-          <span class="sana-cat-filter-group__label">التصنيف</span>
-          <button type="button" class="sana-cat-filter-opt is-active"><span>جميع التصنيفات</span><span class="count">2</span></button>
-          <button type="button" class="sana-cat-filter-opt"><span>رياضيات</span><span class="count">1</span></button>
-          <button type="button" class="sana-cat-filter-opt"><span>علوم</span><span class="count">1</span></button>
+      <div class="lasles-courses-cta">
+        <div>
+          <h2>جاهز تختار كورسك؟</h2>
+          <p>أنشئ حساب معلم وابدأ مسار التطوير، أو تواصل معنا لباقة مؤسسات.</p>
         </div>
-        <div class="sana-cat-filter-group">
-          <span class="sana-cat-filter-group__label">المستوى</span>
-          <button type="button" class="sana-cat-filter-opt is-active"><span>الكل</span></button>
-          <button type="button" class="sana-cat-filter-opt"><span>مبتدئ</span></button>
-          <button type="button" class="sana-cat-filter-opt"><span>متوسط</span></button>
-          <button type="button" class="sana-cat-filter-opt"><span>متقدم</span></button>
-        </div>
-        <div class="sana-cat-filter-group">
-          <span class="sana-cat-filter-group__label">السعر</span>
-          <label class="sana-cat-filter-check"><input type="radio" name="priceFilter" value="all" checked> <span>الكل</span></label>
-          <label class="sana-cat-filter-check"><input type="radio" name="priceFilter" value="free"> <span>مجاني</span></label>
-          <label class="sana-cat-filter-check"><input type="radio" name="priceFilter" value="paid"> <span>مدفوع</span></label>
-        </div>
-        <button type="button" class="sana-cat-reset"><i class="fas fa-rotate-left"></i> إعادة تعيين</button>
-      </aside>
-
-      <div class="sana-cat-results">
-        <div class="sana-cat-results__toolbar">
-          <p class="sana-cat-results__count"><strong>2</strong> دورة</p>
-          <button type="button" class="sana-btn sana-btn--purple-outline sana-cat-filter-mobile-btn" style="padding:10px 16px;font-size:0.85rem;min-height:44px">
-            <i class="fas fa-sliders"></i> فلترة
-          </button>
-        </div>
-        <div class="sana-cat-grid">
-          <article class="sana-course-card sana-course-card--featured">
-            <div class="sana-course-card__media">
-              <a href="#" class="sana-course-card__img-link" tabindex="-1" aria-hidden="true">
-                <img src="../../public/img/sanua/landing-hero-boy.png" alt="أساسيات الرياضيات" loading="lazy">
-              </a>
-              <div class="sana-course-card__shine" aria-hidden="true"></div>
-              <div class="sana-course-card__badges">
-                <span class="sana-course-card__badge sana-course-card__badge--subject">رياضيات</span>
-                <span class="sana-course-card__badge sana-course-card__badge--level">مبتدئ</span>
-                <span class="sana-course-card__badge sana-course-card__badge--featured">مميز</span>
-              </div>
-              <button type="button" class="sana-course-card__fav" aria-label="حفظ"><i class="far fa-heart"></i></button>
-            </div>
-            <div class="sana-course-card__body">
-              <h3 class="sana-course-card__title"><a href="#">أساسيات الرياضيات للمرحلة الابتدائية</a></h3>
-              <p class="sana-course-card__desc">دورة تعليمية تفاعلية مصمّمة لتجربة تعلّم ممتعة وفعّالة.</p>
-              <div class="sana-course-card__instructor">
-                <span class="sana-course-card__avatar sana-course-card__avatar--initial">ن</span>
-                <div class="sana-course-card__instructor-info">
-                  <span class="sana-course-card__instructor-label">المعلّم</span>
-                  <span class="sana-course-card__instructor-name">نورة العتيبي</span>
-                </div>
-              </div>
-              <div class="sana-course-card__stats">
-                <span class="sana-course-card__stat"><i class="far fa-clock"></i><span>12 ساعة</span></span>
-                <span class="sana-course-card__stat"><i class="fas fa-layer-group"></i><span>18 محاضرة</span></span>
-              </div>
-            </div>
-            <div class="sana-course-card__footer">
-              <div class="sana-course-card__actions">
-                <div class="sana-course-card__price-wrap">
-                  <span class="sana-course-card__price sana-course-card__price--free"><i class="fas fa-gift"></i> مجاني</span>
-                </div>
-                <a href="#" class="sana-course-card__cta"><span>ابدأ الآن</span><i class="fas fa-arrow-left"></i></a>
-              </div>
-            </div>
-          </article>
-
-          <article class="sana-course-card">
-            <div class="sana-course-card__media">
-              <a href="#" class="sana-course-card__img-link" tabindex="-1" aria-hidden="true">
-                <img src="../../public/img/sanua/hero-boy.png" alt="مقدمة في العلوم" loading="lazy">
-              </a>
-              <div class="sana-course-card__shine" aria-hidden="true"></div>
-              <div class="sana-course-card__badges">
-                <span class="sana-course-card__badge sana-course-card__badge--subject">علوم</span>
-                <span class="sana-course-card__badge sana-course-card__badge--level">متوسط</span>
-              </div>
-              <button type="button" class="sana-course-card__fav" aria-label="حفظ"><i class="far fa-heart"></i></button>
-            </div>
-            <div class="sana-course-card__body">
-              <h3 class="sana-course-card__title"><a href="#">مقدمة في العلوم — تجارب ممتعة</a></h3>
-              <p class="sana-course-card__desc">دورة تعليمية تفاعلية مصمّمة لتجربة تعلّم ممتعة وفعّالة.</p>
-              <div class="sana-course-card__instructor">
-                <span class="sana-course-card__avatar sana-course-card__avatar--initial">خ</span>
-                <div class="sana-course-card__instructor-info">
-                  <span class="sana-course-card__instructor-label">المعلّم</span>
-                  <span class="sana-course-card__instructor-name">خالد الشمري</span>
-                </div>
-              </div>
-              <div class="sana-course-card__stats">
-                <span class="sana-course-card__stat"><i class="far fa-clock"></i><span>8 ساعة</span></span>
-                <span class="sana-course-card__stat"><i class="fas fa-layer-group"></i><span>10 محاضرة</span></span>
-              </div>
-            </div>
-            <div class="sana-course-card__footer">
-              <div class="sana-course-card__actions">
-                <div class="sana-course-card__price-wrap">
-                  <span class="sana-course-card__price sana-course-card__price--contact"><i class="fab fa-whatsapp"></i> تواصل للسعر</span>
-                </div>
-                <a href="#" class="sana-course-card__cta"><span>ابدأ الآن</span><i class="fas fa-arrow-left"></i></a>
-              </div>
-            </div>
-          </article>
+        <div class="lasles-courses-cta__actions">
+          <a href="07-auth-register.html" class="lasles-btn-primary">إنشاء حساب معلم</a>
+          <a href="05-contact.html" class="lasles-btn-outline">تواصل معنا</a>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="sana-cat-cta">
-  <div class="sana-container">
-    <div class="sana-cat-cta__inner">
-      <div>
-        <h2>لم تجد الدورة المناسبة؟</h2>
-        <p>احجز حصة مباشرة مع معلّم مختص أو استعرض باقات Sana لأولياء الأمور.</p>
-      </div>
-      <div class="sana-cat-cta__actions">
-        <a href="07-auth-register.html" class="sana-btn sana-btn--yellow">احجز حصة</a>
-        <a href="04-pricing.html" class="sana-btn sana-btn--white-outline">الباقات</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="sana-foot-m">
-  <div class="sana-container">
-    <div class="sana-foot-m__grid">
-      <div class="sana-foot-m__brand">
-        <a href="01-home.html" class="sana-foot-m__logo"><span>SANA</span></a>
-        <p>منصة تعليمية عربية تفاعلية للأطفال والطلاب — تعلّم بمتعة وثقة.</p>
-      </div>
-      <div>
-        <h4>تصفّح</h4>
-        <ul>
-          <li><a href="02-about.html">كيف تعمل سنا؟</a></li>
-          <li><a href="03-courses.html">الكورسات</a></li>
-          <li><a href="09-instructors.html">المعلّمون</a></li>
-          <li><a href="04-pricing.html">الأسعار</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>روابط مهمة</h4>
-        <ul>
-          <li><a href="02-about.html">من نحن</a></li>
-          <li><a href="05-contact.html">اتصل بنا</a></li>
-          <li><a href="08-tutor-apply.html">تسجيل معلّم</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>تواصل معنا</h4>
-        <ul><li><a href="05-contact.html"><i class="fab fa-whatsapp"></i> واتساب</a></li></ul>
-      </div>
-    </div>
-    <p class="sana-foot-m__copy">&copy; 2026 Sana. جميع الحقوق محفوظة.</p>
-  </div>
-</footer>
-
-<script src="assets/sana-scripts.js"></script>
+    </section>
+  </main>
 </body>
 </html>

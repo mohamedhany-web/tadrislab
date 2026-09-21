@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $libraryVideo->title)
 @section('page_title', $libraryVideo->title)

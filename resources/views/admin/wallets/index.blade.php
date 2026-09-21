@@ -99,7 +99,7 @@
                         <option value="">اختر محفظة المصدر</option>
                         @foreach(($transferWallets ?? collect()) as $walletOption)
                             <option value="{{ $walletOption->id }}" {{ (string) old('from_wallet_id') === (string) $walletOption->id ? 'selected' : '' }}>
-                                {{ $walletOption->name }} ({{ number_format($walletOption->balance, 2) }} {{ $walletOption->currency ?? 'USD' }})
+                                {{ $walletOption->name }} ({{ number_format($walletOption->balance, 2) }} {{ $walletOption->currency ?? platform_currency() }})
                             </option>
                         @endforeach
                     </select>
@@ -114,7 +114,7 @@
                         <option value="">اختر محفظة الوجهة</option>
                         @foreach(($transferWallets ?? collect()) as $walletOption)
                             <option value="{{ $walletOption->id }}" {{ (string) old('to_wallet_id') === (string) $walletOption->id ? 'selected' : '' }}>
-                                {{ $walletOption->name }} ({{ number_format($walletOption->balance, 2) }} {{ $walletOption->currency ?? 'USD' }})
+                                {{ $walletOption->name }} ({{ number_format($walletOption->balance, 2) }} {{ $walletOption->currency ?? platform_currency() }})
                             </option>
                         @endforeach
                     </select>

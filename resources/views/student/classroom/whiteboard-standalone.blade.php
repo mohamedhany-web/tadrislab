@@ -1,7 +1,7 @@
 @extends(!empty($useInstructorRoutes) ? 'layouts.app' : 'layouts.student-timeline')
 
-@section('title', 'Glottical Whiteboard')
-@section('header', 'Glottical Whiteboard')
+@section('title', 'TADRIS LAB Whiteboard')
+@section('header', 'TADRIS LAB Whiteboard')
 
 @push('styles')
 <style>
@@ -27,7 +27,7 @@
         --color-surface-lowest: #0f172a;
         height: 100% !important;
     }
-    /* Glottical Whiteboard: مكتبة + روابط وخدمات خارجية */
+    /* TADRIS LAB Whiteboard: مكتبة + روابط وخدمات خارجية */
     .mx-muallimx-whiteboard .excalidraw .layer-ui__library,
     .mx-muallimx-whiteboard .excalidraw .layer-ui__library-message,
     .mx-muallimx-whiteboard .excalidraw .library-menu,
@@ -107,10 +107,10 @@
 
 @section('content')
 <div class="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-4">
-    <p class="text-sm text-slate-600 dark:text-slate-400">لوحة مستقلة خارج الاجتماع — يمكنك التصدير من قائمة Glottical Whiteboard (PNG/SVG).</p>
+    <p class="text-sm text-slate-600 dark:text-slate-400">لوحة مستقلة خارج الاجتماع — يمكنك التصدير من قائمة TADRIS LAB Whiteboard (PNG/SVG).</p>
     <div class="mx-standalone-excalidraw-wrap bg-slate-900">
         <div id="mx-standalone-excalidraw-root" class="mx-muallimx-whiteboard" data-lang="ar"></div>
-        <div id="mx-standalone-loading">جاري تحميل Glottical Whiteboard…</div>
+        <div id="mx-standalone-loading">جاري تحميل TADRIS LAB Whiteboard…</div>
     </div>
 </div>
 @endsection
@@ -235,7 +235,7 @@
                 var RD = window.ReactDOM;
                 var Excalidraw = Lib.Excalidraw;
                 if (Excalidraw == null || (typeof Excalidraw !== 'function' && typeof Excalidraw !== 'object')) {
-                    throw new Error('مكوّن Glottical Whiteboard غير متاح');
+                    throw new Error('مكوّن TADRIS LAB Whiteboard غير متاح');
                 }
                 if (typeof RD.createRoot !== 'function') {
                     throw new Error('ReactDOM.createRoot غير متاح');

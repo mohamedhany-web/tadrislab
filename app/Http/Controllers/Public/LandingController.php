@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\AdvancedCourse;
 use App\Models\Certificate;
+use App\Models\LearningPath;
 use App\Models\PopupAd;
 use App\Models\SiteTestimonial;
 use App\Models\SiteService;
@@ -40,11 +41,18 @@ class LandingController extends Controller
         $buildHomePayload = function () {
             $featuredCourses = AdvancedCourse::query()
                 ->where('is_active', true)
-                ->with(['instructor:id,name', 'courseCategory:id,name'])
+                ->with(['instructor:id,name', 'courseCategory:id,name', 'academicSubject:id,name'])
                 ->withCount('lessons')
                 ->orderByDesc('is_featured')
                 ->orderByDesc('created_at')
-                ->limit(12)
+                ->limit(6)
+                ->get();
+
+            $featuredPaths = LearningPath::query()
+                ->published()
+                ->withCount(['units' => fn ($q) => $q->where('is_active', true)])
+                ->ordered()
+                ->limit(6)
                 ->get();
 
             $oneToOneCourses = AdvancedCourse::query()
@@ -108,6 +116,7 @@ class LandingController extends Controller
 
             return compact(
                 'featuredCourses',
+                'featuredPaths',
                 'oneToOneCourses',
                 'homeCategories',
                 'homeTestimonials',
@@ -121,7 +130,7 @@ class LandingController extends Controller
         // في وضع التطوير: بدون كاش حتى تظهر تحديثات التصميم فوراً
         $payload = config('app.debug')
             ? $buildHomePayload()
-            : Cache::remember('landing.home.v14.'.$locale, 180, $buildHomePayload);
+            : Cache::remember('landing.home.v15.'.$locale, 180, $buildHomePayload);
 
         return view('welcome', array_merge($payload, compact('popupAd')));
     }

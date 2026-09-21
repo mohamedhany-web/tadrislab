@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $liveSession->title)
 @section('page_title', $liveSession->title)

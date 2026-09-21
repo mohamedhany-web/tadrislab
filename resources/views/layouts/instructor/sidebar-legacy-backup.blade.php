@@ -32,7 +32,7 @@
                 aria-label="إغلاق">
             <i class="fas fa-times text-xs"></i>
         </button>
-        <div class="w-11 h-11 rounded-xl bg-[#F5B800] text-[#072A66] flex items-center justify-center flex-shrink-0 shadow-lg shadow-black/20">
+        <div class="w-11 h-11 rounded-xl bg-[#A88050] text-[#184888] flex items-center justify-center flex-shrink-0 shadow-lg shadow-black/20">
             <i class="fas fa-chalkboard-teacher text-lg"></i>
         </div>
         <div class="flex-1 min-w-0 relative z-10">
@@ -42,28 +42,28 @@
     </div>
 
     <div class="px-3 py-3 flex-shrink-0">
-        <div class="rounded-2xl border border-[#E8EEF8] dark:border-gray-700 bg-[#F4F7FC] dark:bg-gray-800/80 p-3">
+        <div class="rounded-2xl border border-[#E8EEF6] dark:border-gray-700 bg-[#F7F8FB] dark:bg-gray-800/80 p-3">
             <div class="grid grid-cols-2 gap-2">
                 @if($hasTeachingCourses)
-                <a href="{{ route('instructor.courses.index') }}" class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF8] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#0B3D91]/30 transition-colors">
-                    <p class="text-lg font-black text-[#0B3D91] dark:text-blue-300 tabular-nums leading-none">{{ $myCoursesCount }}</p>
+                <a href="{{ route('instructor.courses.index') }}" class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF6] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#1E4E8C]/30 transition-colors">
+                    <p class="text-lg font-black text-[#1E4E8C] dark:text-blue-300 tabular-nums leading-none">{{ $myCoursesCount }}</p>
                     <p class="text-[10px] font-bold text-[#8A94A6] mt-1">{{ __('instructor.courses') }}</p>
                 </a>
                 @else
-                <div class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF8] dark:border-gray-700 px-2.5 py-2 text-center">
-                    <p class="text-lg font-black text-[#0B3D91] dark:text-blue-300 tabular-nums leading-none">{{ $totalStudents }}</p>
+                <div class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF6] dark:border-gray-700 px-2.5 py-2 text-center">
+                    <p class="text-lg font-black text-[#1E4E8C] dark:text-blue-300 tabular-nums leading-none">{{ $totalStudents }}</p>
                     <p class="text-[10px] font-bold text-[#8A94A6] mt-1">{{ __('instructor.students') }}</p>
                 </div>
                 @endif
                 <a href="{{ Route::has('instructor.tutoring-bookings.index') ? route('instructor.tutoring-bookings.index') : route('dashboard') }}"
-                   class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF8] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#F5B800]/50 transition-colors">
+                   class="rounded-xl bg-white dark:bg-gray-900 border border-[#E8EEF6] dark:border-gray-700 px-2.5 py-2 text-center hover:border-[#A88050]/50 transition-colors">
                     <p class="text-lg font-black text-[#8A6A00] tabular-nums leading-none">{{ $tbUpcoming }}</p>
                     <p class="text-[10px] font-bold text-[#8A94A6] mt-1">حصص قادمة</p>
                 </a>
             </div>
             @if($hasTeachingCourses)
             <p class="mt-2.5 text-[11px] text-[#5B6577] dark:text-gray-400 text-center">
-                <span class="font-black text-[#0B3D91] dark:text-blue-300 tabular-nums">{{ $totalStudents }}</span>
+                <span class="font-black text-[#1E4E8C] dark:text-blue-300 tabular-nums">{{ $totalStudents }}</span>
                 {{ __('instructor.students') }}
             </p>
             @endif
@@ -311,7 +311,7 @@
         @endif
     </nav>
 
-    <div class="px-3 py-3 flex-shrink-0 border-t border-[#E8EEF8] dark:border-gray-700/80">
+    <div class="px-3 py-3 flex-shrink-0 border-t border-[#E8EEF6] dark:border-gray-700/80">
         <div class="ins-user-card flex items-center gap-3">
             <div class="u-avatar flex-shrink-0 w-10 h-10 rounded-xl">
                 @if($user->profile_image)

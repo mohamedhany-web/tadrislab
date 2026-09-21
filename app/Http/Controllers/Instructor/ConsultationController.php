@@ -15,13 +15,35 @@ class ConsultationController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
+
+        abort_unless(
+            ! $user->hasGrantedServices() || $user->canDeliverService('consultations'),
+            403,
+            'لم تُسند لك خدمة الاستشارات بعد.'
+        );
+
         $requests = ConsultationRequest::query()
-            ->where('instructor_id', Auth::id())
-            ->with(['student', 'classroomMeeting'])
+            ->where('instructor_id', $user->id)
+            ->with(['student', 'classroomMeeting', 'service'])
             ->latest()
             ->paginate(20);
 
-        return view('instructor.consultations.index', compact('requests'));
+        $upcoming = ConsultationRequest::query()
+            ->where('instructor_id', $user->id)
+            ->whereNotNull('preferred_slot_at')
+            ->where('preferred_slot_at', '>=', now())
+            ->whereIn('status', [
+                ConsultationRequest::STATUS_NEW,
+                ConsultationRequest::STATUS_CONFIRMED,
+                ConsultationRequest::STATUS_RESCHEDULED,
+                ConsultationRequest::STATUS_SCHEDULED,
+            ])
+            ->orderBy('preferred_slot_at')
+            ->limit(8)
+            ->get();
+
+        return view('instructor.consultations.index', compact('requests', 'upcoming'));
     }
 
     public function show(ConsultationRequest $consultation)
@@ -30,7 +52,7 @@ class ConsultationController extends Controller
             abort(403);
         }
 
-        $consultation->load(['student', 'classroomMeeting']);
+        $consultation->load(['student', 'classroomMeeting', 'service']);
 
         return view('instructor.consultations.show', compact('consultation'));
     }

@@ -105,7 +105,7 @@
                             <p class="text-sm text-muted">{{ $action['body'] }}</p>
                         </div>
                         @if(!empty($action['url']) && !empty($action['cta']))
-                            <a href="{{ $action['url'] }}" class="btn-press inline-flex h-9 shrink-0 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                            <a href="{{ $action['url'] }}" class="btn-press inline-flex h-9 shrink-0 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                                 {{ $action['cta'] }}
                             </a>
                         @endif
@@ -271,7 +271,7 @@
             actionsList.innerHTML = data.actions.map((a) => {
                 const b = priorityBadge(a.priority);
                 const btn = (a.url && a.cta)
-                    ? '<a href="' + esc(a.url) + '" class="btn-press inline-flex h-9 shrink-0 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">' + esc(a.cta) + '</a>'
+                    ? '<a href="' + esc(a.url) + '" class="btn-press inline-flex h-9 shrink-0 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">' + esc(a.cta) + '</a>'
                     : '';
                 return '<article class="rounded-2xl border border-line bg-surface p-4 shadow-soft flex flex-col sm:flex-row sm:items-center gap-3">'
                     + '<div class="flex-1 min-w-0"><div class="flex flex-wrap items-center gap-2 mb-1.5">'

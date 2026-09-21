@@ -121,7 +121,7 @@ class ConsultationController extends Controller
             'duration_minutes' => $durationMinutes,
             'student_message' => $data['student_message'] ?? null,
             'payment_reference' => $data['payment_reference'] ?? null,
-            'status' => ConsultationRequest::STATUS_PAYMENT_REPORTED,
+            'status' => ConsultationRequest::STATUS_NEW,
             'payment_reported_at' => now(),
             'platform_wallet_id' => in_array($data['payment_method'], ['bank_transfer', 'other'], true)
                 ? ($data['wallet_id'] ?? null)
@@ -133,13 +133,13 @@ class ConsultationController extends Controller
 
         return redirect()
             ->route('consultations.show', $consultation)
-            ->with('success', 'تم إرسال طلب الاستشارة مع إيصال الدفع. ستُراجع الإدارة الطلب ثم تُحدَّد الجلسة بعد تأكيد استلام المبلغ.');
+            ->with('success', 'تم إرسال طلب الاستشارة (New). ستُراجع الإدارة الدفع ثم تؤكد الموعد.');
     }
 
     public function show(ConsultationRequest $consultation)
     {
         $this->authorizeStudent($consultation);
-        $consultation->load(['instructor', 'classroomMeeting', 'paidConfirmedBy', 'platformWallet']);
+        $consultation->load(['instructor', 'classroomMeeting', 'paidConfirmedBy', 'platformWallet', 'order', 'service']);
         $settings = ConsultationSetting::current();
 
         return view('student.consultations.show', compact('consultation', 'settings'));
@@ -179,6 +179,7 @@ class ConsultationController extends Controller
             ->where('student_id', $studentId)
             ->where('instructor_id', $instructorId)
             ->whereIn('status', [
+                ConsultationRequest::STATUS_NEW,
                 ConsultationRequest::STATUS_PENDING,
                 ConsultationRequest::STATUS_PAYMENT_REPORTED,
                 ConsultationRequest::STATUS_AWAITING_VERIFICATION,

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.instructor-timeline')
 
 @section('title', $mode === 'create' ? __('instructor.lib_videos_form_create') : __('instructor.lib_videos_form_edit'))
 @section('page_title', $mode === 'create' ? __('instructor.lib_videos_form_create') : __('instructor.lib_videos_form_edit'))

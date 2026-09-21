@@ -11,11 +11,14 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'institution_id',
         'advanced_course_id',
         'tutoring_group_id',
         'tutoring_group_package_id',
         'tutoring_group_cohort_id',
         'service_package_id',
+        'package_id',
+        'learning_path_id',
         'custom_package_data',
         'order_type',
         'academic_year_id',
@@ -53,6 +56,15 @@ class Order extends Model
 
     public const TYPE_CUSTOM_SERVICE_PACKAGE = 'custom_service_package';
 
+    /** TADRIS LAB admin-managed package (Brief V3) */
+    public const TYPE_PACKAGE = 'package';
+
+    /** Standalone learning path purchase */
+    public const TYPE_LEARNING_PATH = 'learning_path';
+
+    /** Paid consultation booking (links via consultation_requests.order_id) */
+    public const TYPE_CONSULTATION = 'consultation';
+
     protected $casts = [
         'amount' => 'decimal:2',
         'original_amount' => 'decimal:2',
@@ -73,6 +85,21 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class);
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
+    }
+
+    public function learningPath()
+    {
+        return $this->belongsTo(LearningPath::class);
     }
 
     public function course()
@@ -122,6 +149,12 @@ class Order extends Model
             || $this->service_package_id !== null;
     }
 
+    public function isConsultationOrder(): bool
+    {
+        return $this->order_type === self::TYPE_CONSULTATION
+            || filled(data_get($this->custom_package_data, 'consultation_request_id'));
+    }
+
     public function currencyCode(): string
     {
         if (filled($this->currency)) {
@@ -131,19 +164,19 @@ class Order extends Model
         if ($this->order_type === self::TYPE_CUSTOM_SERVICE_PACKAGE) {
             $fromQuote = strtoupper((string) ($this->custom_package_data['currency'] ?? ''));
 
-            return in_array($fromQuote, ['EGP', 'USD'], true)
+            return in_array($fromQuote, platform_currencies(), true)
                 ? $fromQuote
-                : strtoupper((string) config('currency.code', 'USD'));
+                : platform_currency();
         }
 
         if ($this->servicePackage) {
             return $this->servicePackage->currencyCode();
         }
 
-        return 'USD';
+        return platform_currency();
     }
 
-    public function learningPath()
+    public function academicYear()
     {
         return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }

@@ -89,8 +89,8 @@ class SecureClassroomJoinTest extends TestCase
         config([
             'livekit.livekit.api_key' => 'APItestkey',
             'livekit.livekit.api_secret' => 'test-secret-value-1234567890',
-            'livekit.livekit.url' => 'wss://live.glottical.com',
-            'livekit.livekit.host' => 'live.glottical.com',
+            'livekit.livekit.url' => 'wss://live.tadrislab.com',
+            'livekit.livekit.host' => 'live.tadrislab.com',
         ]);
     }
 
@@ -125,7 +125,7 @@ class SecureClassroomJoinTest extends TestCase
             'user_id' => $instructor->id,
             'one_to_one_session_id' => $session->id,
             'code' => 'PRIV1234',
-            'room_name' => 'Glottical-PRIV1234',
+            'room_name' => 'TADRIS LAB-PRIV1234',
             'title' => 'حصة خاصة',
             'max_participants' => 4,
             'settings' => ['allow_guest_join' => false, 'private_lesson' => true],
@@ -163,7 +163,7 @@ class SecureClassroomJoinTest extends TestCase
         $meeting = ClassroomMeeting::create([
             'user_id' => $host->id,
             'code' => 'OPEN9999',
-            'room_name' => 'Glottical-OPEN9999',
+            'room_name' => 'TADRIS LAB-OPEN9999',
             'title' => 'اجتماع مفتوح',
             'started_at' => now(),
             'max_participants' => 10,

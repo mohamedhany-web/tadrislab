@@ -95,7 +95,7 @@ while ($table = $tablesStmt->fetchColumn()) {
 
 $header = <<<SQL
 -- ============================================
--- Glottical Platform - Complete Database Schema
+-- TADRIS LAB Platform - Complete Database Schema
 -- ============================================
 -- Auto-generated on: %s
 -- ============================================

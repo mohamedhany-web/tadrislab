@@ -22,7 +22,7 @@
             <p class="mt-1 max-w-2xl text-sm text-muted">إرسال إشعارات مخصصة للموظفين ومتابعة حالة القراءة.</p>
         </div>
         <a href="{{ route('admin.employee-notifications.create') }}"
-           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
             <i class="fas fa-paper-plane text-xs"></i>
             إرسال إشعار جديد
         </a>
@@ -67,7 +67,7 @@
                     </select>
                 </div>
                 <div class="flex items-end">
-                    <button type="submit" class="btn-press inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                    <button type="submit" class="btn-press inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                         <i class="fas fa-filter text-xs"></i>
                         فلترة
                     </button>
@@ -160,7 +160,7 @@
                     <p class="mt-1 text-xs text-muted">لم يتم إرسال أي إشعارات للموظفين بعد</p>
                 </div>
                 <a href="{{ route('admin.employee-notifications.create') }}"
-                   class="btn-press mt-2 inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+                   class="btn-press mt-2 inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-6 text-sm font-medium text-white hover:bg-[#184888]">
                     <i class="fas fa-paper-plane text-xs"></i>
                     إرسال إشعار جديد
                 </a>

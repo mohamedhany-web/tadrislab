@@ -3,7 +3,7 @@
  * الإصدارات القديمة كانت تخزّن HTML بنمط cache-first فتظهر صفحات قديمة
  * حتى بعد تحديث السيرفر — لذلك نزيل الكاش ونلغي التسجيل تلقائياً.
  */
-const CACHE_PREFIX = 'glottical-shell';
+const CACHE_PREFIX = 'tadrislab-shell';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -14,7 +14,7 @@ self.addEventListener('activate', (event) => {
     const keys = await caches.keys();
     await Promise.all(
       keys
-        .filter((key) => key.startsWith(CACHE_PREFIX) || key.includes('glottical') || key.includes('muallimx'))
+        .filter((key) => key.startsWith(CACHE_PREFIX) || key.includes('tadrislab') || key.includes('muallimx'))
         .map((key) => caches.delete(key))
     );
     await self.registration.unregister();

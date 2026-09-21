@@ -31,8 +31,8 @@ class ClassroomPrivateLessonSmokeTest extends TestCase
             'livekit.provider' => 'livekit',
             'livekit.livekit.api_key' => 'APItestkey',
             'livekit.livekit.api_secret' => 'test-secret-value-1234567890',
-            'livekit.livekit.url' => 'wss://live.glottical.com',
-            'livekit.livekit.host' => 'live.glottical.com',
+            'livekit.livekit.url' => 'wss://live.tadrislab.com',
+            'livekit.livekit.host' => 'live.tadrislab.com',
             'livekit.livekit.token_ttl' => 3600,
         ]);
     }
@@ -93,8 +93,8 @@ class ClassroomPrivateLessonSmokeTest extends TestCase
     protected function seedMeeting(): array
     {
         LiveServer::query()->create([
-            'name' => 'Glottical LiveKit',
-            'domain' => 'live.glottical.com',
+            'name' => 'TADRIS LAB LiveKit',
+            'domain' => 'live.tadrislab.com',
             'provider' => 'livekit',
             'status' => 'active',
         ]);
@@ -121,7 +121,7 @@ class ClassroomPrivateLessonSmokeTest extends TestCase
             'user_id' => $instructor->id,
             'one_to_one_session_id' => $session->id,
             'code' => 'SMK'.strtoupper(substr(uniqid(), -4)),
-            'room_name' => 'Glottical-Smoke',
+            'room_name' => 'TADRIS LAB-Smoke',
             'title' => 'حصة اختبار دخان',
             'started_at' => now()->subMinutes(2),
             'settings' => [

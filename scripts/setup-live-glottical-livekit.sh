@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# إعداد نطاق live.glottical.com → LiveKit على نفس VPS مع الإبقاء على live.muallimx.com (Jitsi)
-# التشغيل على السيرفر: sudo bash setup-live-glottical-livekit.sh
+# إعداد نطاق live.tadrislab.com → LiveKit على نفس VPS مع الإبقاء على live.muallimx.com (Jitsi)
+# التشغيل على السيرفر: sudo bash setup-live-tadrislab-livekit.sh
 set -euo pipefail
 
-DOMAIN="live.glottical.com"
+DOMAIN="live.tadrislab.com"
 VPS_IP="187.124.36.228"
 LIVEKIT_PORT="${LIVEKIT_PORT:-7880}"
 API_KEY="${LIVEKIT_API_KEY:-}"
 API_SECRET="${LIVEKIT_API_SECRET:-}"
-EMAIL="${LETSENCRYPT_EMAIL:-info@glottical.com}"
+EMAIL="${LETSENCRYPT_EMAIL:-info@tadrislab.com}"
 
 if [[ -z "${API_KEY}" || -z "${API_SECRET}" ]]; then
   echo "Set LIVEKIT_API_KEY and LIVEKIT_API_SECRET before running this script."
@@ -28,7 +28,7 @@ echo
 
 NGINX_SITE="/etc/nginx/sites-available/${DOMAIN}.conf"
 cat >"${NGINX_SITE}" <<EOF
-# Glottical LiveKit — لا تعدّل live.muallimx.com من هنا
+# TADRIS LAB LiveKit — لا تعدّل live.muallimx.com من هنا
 server {
     listen 80;
     listen [::]:80;
@@ -103,7 +103,7 @@ fi
 
 nginx -t && systemctl reload nginx
 
-# محاولة إضافة مفتاح Glottical إلى إعداد LiveKit دون حذف مفاتيح Muallimx
+# محاولة إضافة مفتاح TADRIS LAB إلى إعداد LiveKit دون حذف مفاتيح Muallimx
 for CFG in /etc/livekit.yaml /opt/livekit/livekit.yaml /root/livekit.yaml /etc/livekit/config.yaml; do
   if [[ -f "${CFG}" ]]; then
     echo "==> تحديث مفاتيح LiveKit في ${CFG}"

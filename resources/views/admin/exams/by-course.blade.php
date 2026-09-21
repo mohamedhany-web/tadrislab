@@ -24,7 +24,7 @@
                 كل البرامج
             </a>
             <a href="{{ route('admin.exams.create', ['course_id' => $course->id]) }}"
-               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-plus text-xs"></i>
                 إضافة امتحان
             </a>
@@ -117,7 +117,7 @@
             <h3 class="mt-4 text-lg font-semibold text-ink">لا توجد امتحانات في هذا البرنامج</h3>
             <p class="mt-1 text-sm text-muted">يمكنك إضافة أول امتحان لهذا البرنامج.</p>
             <a href="{{ route('admin.exams.create', ['course_id' => $course->id]) }}"
-               class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+               class="btn-press mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
                 <i class="fas fa-plus text-xs"></i>
                 إضافة امتحان
             </a>

@@ -52,6 +52,22 @@ class CourseShowController extends Controller
             $from = $course->isOneToOne() ? 'one_to_one' : 'groups';
         }
 
-        return view('course-show', compact('course', 'relatedCourses', 'isEnrolled', 'from'));
+        $isRtl = app()->getLocale() === 'ar';
+        $brand = $isRtl ? 'تدريس لاب' : config('app.name', 'TADRIS LAB');
+        $pageTitle = ($course->title ?? __('public.course_detail_title')).' — '.$brand;
+        $pageDescription = \Illuminate\Support\Str::limit(strip_tags((string) ($course->description ?? '')), 160);
+        $bodyClass = 'lasles-course-detail-page';
+        $laslesNavActive = 'courses';
+
+        return view('course-show', compact(
+            'course',
+            'relatedCourses',
+            'isEnrolled',
+            'from',
+            'pageTitle',
+            'pageDescription',
+            'bodyClass',
+            'laslesNavActive'
+        ));
     }
 }

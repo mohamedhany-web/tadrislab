@@ -1,0 +1,22 @@
+{
+  "name": "TADRIS LAB | تدريس لاب",
+  "short_name": "TADRIS LAB",
+  "description": "منصة للتدريب والتطوير التعليمي",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#1B4879",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/__l5e/assets-v1/a953670a-11bc-4e2d-a9ba-2e1b49509c94/tadris-lab-logo.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

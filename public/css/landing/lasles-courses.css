@@ -1,0 +1,312 @@
+/* TADRIS LAB — public courses catalog (Lasles) */
+
+.lasles-courses-hero {
+  padding: 2.5rem 0 1.25rem;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(59, 123, 196, 0.14), transparent 42%),
+    radial-gradient(circle at 88% 0%, rgba(168, 128, 80, 0.12), transparent 36%),
+    linear-gradient(180deg, #F7F8FB 0%, #fff 100%);
+}
+.lasles-courses-hero__inner { max-width: 46rem; }
+.lasles-courses-hero__title {
+  margin: 0 0 .75rem;
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: var(--lh-hero);
+  color: var(--lasles-navy);
+}
+.lasles-courses-hero__lead {
+  margin: 0 0 1.15rem;
+  color: var(--lasles-muted);
+  font-size: var(--fs-lead);
+  line-height: 1.7;
+  max-width: 40rem;
+}
+.lasles-courses-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+.lasles-courses-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 2rem;
+  padding: .25rem .75rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  color: var(--lasles-navy);
+  font-size: .82rem;
+  font-weight: 500;
+}
+
+.lasles-courses-toolbar {
+  padding: 1rem 0 1.75rem;
+}
+.lasles-courses-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .65rem;
+  margin-bottom: .85rem;
+}
+.lasles-courses-search input {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--lasles-border);
+  border-radius: var(--lasles-radius);
+  padding: 0 1rem;
+  font: 500 1rem/1 var(--lasles-font);
+  color: var(--lasles-navy);
+  background: #fff;
+}
+.lasles-courses-search input:focus {
+  outline: none;
+  border-color: var(--lasles-blue-soft);
+  box-shadow: 0 0 0 3px rgba(59, 123, 196, 0.16);
+}
+.lasles-courses-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  align-items: center;
+}
+.lasles-courses-filters a,
+.lasles-courses-filters button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.15rem;
+  padding: .3rem .85rem;
+  border-radius: 999px;
+  border: 1px solid var(--lasles-border);
+  background: #fff;
+  color: var(--lasles-navy);
+  font: 500 .82rem/1 var(--lasles-font);
+  text-decoration: none;
+  cursor: pointer;
+}
+.lasles-courses-filters a:hover,
+.lasles-courses-filters button:hover {
+  border-color: var(--lasles-blue-soft);
+  color: var(--lasles-blue);
+}
+.lasles-courses-filters a.is-on,
+.lasles-courses-filters button.is-on {
+  background: var(--lasles-cta);
+  border-color: var(--lasles-cta);
+  color: #fff;
+}
+.lasles-courses-clear {
+  color: var(--lasles-gold) !important;
+  border-color: rgba(168, 128, 80, 0.45) !important;
+  background: var(--lasles-gold-tint) !important;
+}
+
+.lasles-courses-grid {
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+  padding-bottom: 2.5rem;
+}
+.lasles-course-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border: 1px solid var(--lasles-border);
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.lasles-course-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(59, 123, 196, 0.35);
+  box-shadow: var(--lasles-shadow-card);
+}
+.lasles-course-card__media {
+  aspect-ratio: 16 / 10;
+  min-height: 11rem;
+  background: linear-gradient(135deg, #1e4e8c, #163a68);
+  overflow: hidden;
+  position: relative;
+}
+.lasles-course-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(10, 20, 36, 0.45) 100%);
+  pointer-events: none;
+}
+.lasles-course-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+.lasles-course-card:hover .lasles-course-card__media img {
+  transform: scale(1.07);
+}
+.lasles-course-card__badge {
+  position: absolute;
+  top: .7rem;
+  inset-inline-start: .7rem;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: rgba(26, 53, 88, 0.88);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+}
+.lasles-course-card__badge--gold {
+  background: var(--lasles-gold);
+  color: #fff;
+}
+.lasles-course-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+  padding: 1rem 1.05rem 1.15rem;
+  flex: 1;
+}
+.lasles-course-card__cat {
+  margin: 0;
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--lasles-blue);
+}
+.lasles-course-card__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--lasles-navy);
+}
+.lasles-course-card__excerpt {
+  margin: 0;
+  color: var(--lasles-muted);
+  font-size: .9rem;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.lasles-course-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem .75rem;
+  margin-top: auto;
+  padding-top: .35rem;
+  font-size: .8rem;
+  color: var(--lasles-muted);
+}
+.lasles-course-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-top: .35rem;
+  padding-top: .65rem;
+  border-top: 1px solid var(--lasles-border);
+}
+.lasles-course-card__price {
+  margin: 0;
+  font-weight: 700;
+  color: var(--lasles-navy);
+}
+.lasles-course-card__price s {
+  margin-inline-end: .35rem;
+  color: var(--lasles-muted);
+  font-weight: 500;
+}
+.lasles-course-card__cta {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--lasles-blue);
+}
+
+.lasles-courses-empty {
+  text-align: center;
+  padding: 2.5rem 1rem 3rem;
+  color: var(--lasles-muted);
+}
+.lasles-courses-empty h2 {
+  margin: 0 0 .5rem;
+  color: var(--lasles-navy);
+  font-size: 1.35rem;
+}
+.lasles-courses-pager {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 3rem;
+}
+.lasles-courses-pager nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.lasles-courses-cta {
+  margin: 0 0 3rem;
+  padding: 1.75rem 1.35rem;
+  border-radius: 14px;
+  background: var(--lasles-blue-tint);
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+}
+.lasles-courses-cta h2 {
+  margin: 0 0 .35rem;
+  color: var(--lasles-navy);
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.6rem);
+}
+.lasles-courses-cta p {
+  margin: 0;
+  color: var(--lasles-muted);
+}
+.lasles-courses-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+.lasles-courses-pager nav span,
+.lasles-courses-pager nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0 .55rem;
+  border-radius: 8px;
+  border: 1px solid var(--lasles-border);
+  color: var(--lasles-navy);
+  font-size: .85rem;
+  text-decoration: none;
+  background: #fff;
+}
+.lasles-courses-pager nav a:hover { border-color: var(--lasles-blue-soft); color: var(--lasles-blue); }
+.lasles-courses-pager nav span[aria-current="page"],
+.lasles-courses-pager nav .active span {
+  background: var(--lasles-cta);
+  border-color: var(--lasles-cta);
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .lasles-courses-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .lasles-courses-hero { padding: 3.25rem 0 1.75rem; }
+  .lasles-courses-grid { grid-template-columns: repeat(3, 1fr); gap: 1.35rem; }
+  .lasles-courses-cta {
+    grid-template-columns: 1fr auto;
+    padding: 2rem 1.75rem;
+  }
+}
+@media (max-width: 520px) {
+  .lasles-courses-search { grid-template-columns: 1fr; }
+  .lasles-courses-search .lasles-btn-primary { width: 100%; }
+}

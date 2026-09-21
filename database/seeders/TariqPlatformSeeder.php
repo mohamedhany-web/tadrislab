@@ -101,27 +101,6 @@ class TariqPlatformSeeder extends Seeder
             );
         }
 
-        // أولياء أمور
-        $parents = [
-            ['name' => 'سعد بن محمد العتيبي', 'phone' => '0509999999'],
-            ['name' => 'أحمد بن عبدالله المطيري', 'phone' => '0500000001'],
-            ['name' => 'محمد بن فهد القحطاني', 'phone' => '0500000002'],
-        ];
-
-        foreach ($parents as $parentData) {
-            User::firstOrCreate(
-                ['phone' => $parentData['phone']],
-                [
-                    'name' => $parentData['name'],
-                    'email' => null,
-                    'password' => Hash::make('parent2024'),
-                    'role' => 'parent',
-                    'is_active' => true,
-                    'bio' => 'ولي أمر',
-                ]
-            );
-        }
-
         // إنشاء المواد الدراسية
         echo "📚 إنشاء المواد الدراسية...\n";
 

@@ -8,26 +8,15 @@
     $brandLogoFallback = \App\Services\AdminPanelBranding::inlineFallbackDataUri();
 
     $navItems = [
-        ['route' => 'dashboard', 'match' => ['dashboard', 'student.school.*'], 'label' => __('student_timeline.nav_home'), 'icon' => 'home.svg'],
-        ['route' => 'student.learn.index', 'match' => ['student.learn.*'], 'label' => __('student_timeline.nav_learn'), 'icon' => 'lessons.svg', 'ui' => 'show_private_lessons'],
-        ['route' => 'student.classes.index', 'match' => ['student.classes.*'], 'label' => __('student_timeline.nav_classes'), 'icon' => 'classes.svg', 'ui' => 'show_classes'],
-        ['route' => 'calendar', 'match' => ['calendar', 'calendar.events'], 'label' => __('student_timeline.calendar'), 'fa' => 'fas fa-calendar-alt'],
-        ['route' => 'student.live-sessions.index', 'match' => ['student.live-sessions.*', 'student.live-recordings.*'], 'label' => __('student_timeline.nav_live_sessions'), 'fa' => 'fas fa-broadcast-tower', 'ui' => 'show_live_broadcast'],
-        ['route' => 'student.private-messages.index', 'match' => ['student.private-messages.*'], 'label' => __('student_timeline.nav_feed'), 'icon' => 'community.svg'],
-        ['route' => 'student.private-lectures.index', 'match' => ['student.private-lectures.*', 'student.one-to-one-sessions.*'], 'label' => __('student_timeline.nav_lessons'), 'icon' => 'lessons.svg', 'ui' => 'show_private_lessons'],
-        ['route' => 'student.service-entitlements.index', 'match' => ['student.service-entitlements.*'], 'label' => __('student_timeline.nav_progress'), 'icon' => 'credits.svg', 'ui' => 'show_entitlements'],
-        ['route' => 'referrals.index', 'match' => ['referrals.*'], 'label' => __('student_timeline.nav_referrals'), 'fa' => 'fas fa-user-friends', 'ui' => 'show_referrals'],
-        ['route' => 'student.library.files', 'match' => ['student.library.home', 'student.library.files', 'student.library.materials'], 'label' => __('student_timeline.lib_files_title'), 'fa' => 'fas fa-folder-open', 'ui' => 'show_libraries'],
-        ['route' => 'student.library.curriculum', 'match' => ['student.library.curriculum', 'curriculum-library.*'], 'label' => __('student_timeline.nav_library_curriculum'), 'fa' => 'fas fa-sitemap', 'ui' => 'show_libraries'],
-        ['route' => 'student.library.videos', 'match' => ['student.library.videos'], 'label' => __('student_timeline.nav_library_videos'), 'fa' => 'fas fa-film', 'ui' => 'show_libraries'],
-        ['route' => 'student.assignments.index', 'match' => ['student.assignments.*'], 'label' => __('student_timeline.nav_assignments'), 'fa' => 'fas fa-tasks', 'ui' => 'show_assignments', 'needs_libraries' => true],
-        ['route' => 'student.lectures.index', 'match' => ['student.lectures.*'], 'label' => __('student_timeline.nav_lectures'), 'fa' => 'fas fa-chalkboard', 'ui' => 'show_libraries'],
+        ['route' => 'dashboard', 'match' => ['dashboard'], 'label' => __('student_timeline.nav_home'), 'icon' => 'home.svg'],
+        ['route' => 'student.packages.index', 'match' => ['student.packages.*'], 'label' => __('student_timeline.nav_packages'), 'fa' => 'fas fa-box-open', 'ui' => 'show_packages'],
+        ['route' => 'student.learning-paths.index', 'match' => ['student.learning-paths.*'], 'label' => __('student_timeline.nav_paths'), 'fa' => 'fas fa-route', 'ui' => 'show_learning_paths'],
+        ['route' => 'student.tools.index', 'match' => ['student.tools.*'], 'label' => __('student_timeline.nav_tools'), 'fa' => 'fas fa-toolbox', 'ui' => 'show_tools'],
+        ['route' => 'student.teacher-assistant.index', 'match' => ['student.teacher-assistant.*'], 'label' => 'مساعد المعلم', 'fa' => 'fas fa-magic', 'ui' => 'show_teacher_assistant'],
+        ['route' => 'consultations.index', 'match' => ['consultations.*', 'public.consultations.*'], 'label' => __('student_timeline.nav_consultations'), 'fa' => 'fas fa-comments', 'ui' => 'show_consultations'],
+        ['route' => 'institution.portal.index', 'match' => ['institution.portal.*'], 'label' => 'جهتي', 'fa' => 'fas fa-building', 'ui' => 'show_institution_portal'],
+        ['route' => 'public.pricing', 'match' => ['public.pricing', 'public.packages.*', 'public.package.*'], 'label' => 'الباقات', 'fa' => 'fas fa-tags', 'ui' => 'show_pricing'],
         ['route' => 'orders.index', 'match' => ['orders.*'], 'label' => __('student_timeline.nav_orders'), 'fa' => 'fas fa-receipt', 'ui' => 'show_orders'],
-        // أقسام نظام الكورسات — مخفية افتراضياً عبر config/student_ui.php
-        ['route' => 'student.exams.index', 'match' => ['student.exams.*'], 'label' => __('student_timeline.nav_exams'), 'fa' => 'fas fa-file-alt', 'ui' => 'show_exams'],
-        ['route' => 'student.invoices.index', 'match' => ['student.invoices.*'], 'label' => __('student_timeline.nav_invoices'), 'fa' => 'fas fa-file-invoice-dollar', 'ui' => 'show_invoices'],
-        ['route' => 'student.wallet.index', 'match' => ['student.wallet.*'], 'label' => __('student_timeline.nav_wallet'), 'fa' => 'fas fa-wallet', 'ui' => 'show_wallet'],
-        ['route' => 'student.certificates.index', 'match' => ['student.certificates.*'], 'label' => __('student_timeline.nav_certificates'), 'fa' => 'fas fa-certificate', 'ui' => 'show_certificates'],
         ['route' => 'student.support.index', 'match' => ['student.support.*'], 'label' => __('student_timeline.nav_support'), 'fa' => 'fas fa-headset', 'ui' => 'show_support'],
         ['route' => 'notifications', 'match' => ['notifications*'], 'label' => __('student_timeline.nav_messages'), 'icon' => 'notifications.svg', 'ui' => 'show_notifications'],
         ['route' => 'settings', 'match' => ['settings'], 'label' => __('student_timeline.nav_settings'), 'icon' => 'settings.svg', 'ui' => 'show_settings'],
@@ -52,10 +41,10 @@
     @include('partials.favicon-links')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Lato:wght@400;700;900&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ route('assets.student-timeline.css') }}?v=st-cal-1">
+    <link rel="stylesheet" href="{{ route('assets.student-timeline.css') }}?v=st-inst-1">
     <script>
         (function () {
             try {
@@ -120,7 +109,7 @@
             <img src="{{ $avatarUrl }}" alt="" class="st-rail__avatar" width="40" height="40">
             <div class="st-rail__who">
                 <span class="st-rail__name">{{ $firstName }}</span>
-                <span class="st-rail__role">{{ __('student_timeline.student_role') }}</span>
+                <span class="st-rail__role">{{ \App\Support\TadrisRoles::labelAr($user) }}</span>
             </div>
         </a>
 

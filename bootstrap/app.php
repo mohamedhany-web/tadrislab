@@ -54,6 +54,12 @@ return Application::configure(basePath: dirname(__DIR__))
                  ->withoutOverlapping()
                  ->runInBackground();
 
+        // تذكير حجوزات الاستشارات (Notification Layer — Booking Reminder)
+        $schedule->command('bookings:send-reminders')
+                 ->everyFiveMinutes()
+                 ->withoutOverlapping()
+                 ->runInBackground();
+
         // تذكير بمواعيد الحصص الخاصة والجماعية قبل 30 دقيقة
         $schedule->command('student:send-schedule-reminders')
                  ->everyMinute()
@@ -112,9 +118,19 @@ return Application::configure(basePath: dirname(__DIR__))
             'employee.can' => \App\Http\Middleware\EnsureEmployeeCan::class,
             'rbac.strict.admin' => \App\Http\Middleware\RestrictRbacEmployeeAdminRoutes::class,
             'instructor.activated' => \App\Http\Middleware\EnsureInstructorPanelAccess::class,
+            'instructor.ui' => \App\Http\Middleware\EnsureInstructorUiFeature::class,
             'curriculum.viewer' => \App\Http\Middleware\EnsureCurriculumLibraryViewer::class,
             'student.no-meeting-host' => \App\Http\Middleware\PreventStudentMeetingHost::class,
+            'module' => \App\Http\Middleware\EnsureModuleEnabled::class,
         ]);
+
+        // Soft-close surplus Glottical surfaces (404) without deleting code.
+        // Global + before Authenticate so disabled admin URLs return 404 (not login redirect).
+        $middleware->prepend(\App\Http\Middleware\AbortIfPlatformModuleDisabled::class);
+        $middleware->prependToPriorityList(
+            \Illuminate\Auth\Middleware\Authenticate::class,
+            \App\Http\Middleware\AbortIfPlatformModuleDisabled::class,
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // عدم تسجيل استثناء "غير مصادق" كخطأ (سلوك متوقع عند زيارة صفحة محمية دون تسجيل الدخول)

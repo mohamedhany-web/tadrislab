@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'منشئ نموذج التوظيف - Glottical')
+@section('title', 'منشئ نموذج التوظيف - TADRIS LAB')
 @section('page_title', 'منشئ نموذج التقديم')
 
 @section('content')

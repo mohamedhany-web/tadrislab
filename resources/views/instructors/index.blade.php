@@ -1,7 +1,7 @@
 @php
     $locale = app()->getLocale();
     $isRtl = $locale === 'ar';
-    $brand = config('app.name', 'Glottical');
+    $brand = config('app.name', 'TADRIS LAB');
     $profiles = $profiles ?? collect();
     $featuredCourses = $featuredCourses ?? collect();
     $footer = \App\Services\PublicFooterSettings::payload();

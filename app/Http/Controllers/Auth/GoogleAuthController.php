@@ -63,7 +63,7 @@ class GoogleAuthController extends Controller
                 'email' => $email,
                 'password' => Hash::make(Str::random(64)),
                 'google_id' => $googleId,
-                'role' => 'student',
+                'role' => 'student', // runtime individual teacher (product: individual_user)
                 'is_active' => true,
             ];
             if (Schema::hasColumn('users', 'email_verified_at')) {
@@ -94,28 +94,11 @@ class GoogleAuthController extends Controller
             $user->update(['last_login_at' => now()]);
         }
 
-        $intended = session('url.intended');
-
-        if ($user->isEmployee()) {
-            return redirect()->intended(route('employee.dashboard'));
-        }
-        if ($user->role === 'super_admin' || $user->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard'));
-        }
-        if ($user->isInstructor()) {
-            if (! $user->canAccessInstructorPanel()) {
-                return redirect()->route('public.tutor.apply.profile');
-            }
-
-            return redirect()->intended(route('dashboard'));
+        $home = \App\Support\TadrisRoles::homeRouteName($user);
+        if ($home === 'public.tutor.apply.profile') {
+            return redirect()->route($home);
         }
 
-        if ($intended && str_contains($intended, 'community') && $user->is_community_contributor) {
-            session()->forget('url.intended');
-
-            return redirect()->route('community.contributor.dashboard');
-        }
-
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route($home));
     }
 }

@@ -10,9 +10,9 @@ return [
 
     'livekit' => [
         // عنوان WebSocket العام للمتصفح (بعد DNS + SSL على الـ VPS)
-        'url' => env('LIVEKIT_URL', 'wss://live.glottical.com'),
+        'url' => env('LIVEKIT_URL', 'wss://live.tadrislab.com'),
         // النطاق العام بدون بروتوكول (للوحة الإدارة واختبار الاتصال)
-        'host' => env('LIVEKIT_PUBLIC_HOST', 'live.glottical.com'),
+        'host' => env('LIVEKIT_PUBLIC_HOST', 'live.tadrislab.com'),
         'api_key' => env('LIVEKIT_API_KEY'),
         'api_secret' => env('LIVEKIT_API_SECRET'),
         // مدة صلاحية توكن الانضمام بالثواني

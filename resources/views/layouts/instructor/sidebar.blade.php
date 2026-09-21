@@ -1,4 +1,4 @@
-﻿@php
+@php
     $user = auth()->user();
     $isInstructor = $user && ($user->isInstructor() || $user->isTeacher() || in_array(strtolower((string) $user->role), ['teacher', 'instructor'], true));
     $closeSidebar = 'if (isNarrow) setTimeout(() => { sidebarOpen = false }, 50)';
@@ -7,6 +7,11 @@
     $myCoursesCount = $teachingCourseIds->count();
     $showCourses = instructor_ui('show_courses', false);
     $hasTeachingCourses = $showCourses && $myCoursesCount > 0;
+    $showLearningPaths = instructor_ui('show_learning_paths', true);
+    $myPathCount = $showLearningPaths ? $user->teachingLearningPathIds()->count() : 0;
+    $showConsultations = instructor_ui('show_consultations', true);
+    $showTutoring = instructor_ui('show_tutoring', false);
+    $showLive = instructor_ui('show_live_broadcast', false);
     $canAccessCurriculumLibrary = instructor_ui('show_libraries', true) && $user->isAcademyWorkingInstructor();
     $totalStudents = (! $showCourses || $teachingCourseIds->isEmpty())
         ? 0
@@ -72,11 +77,17 @@
             <span class="su-link__dot"></span>
             <span class="su-link__txt">{{ __('instructor.overview') }}</span>
         </a>
-        @if(Route::has('instructor.tutoring-bookings.index'))
+        @if($showTutoring && Route::has('instructor.tutoring-bookings.index'))
         <a href="{{ route('instructor.tutoring-bookings.index') }}" @click="{{ $closeSidebar }}"
            class="su-link su-link--fav {{ request()->routeIs('instructor.tutoring-bookings.*') ? 'is-active' : '' }}">
             <span class="su-link__dot"></span>
             <span class="su-link__txt">{{ __('instructor.group_bookings') }}</span>
+        </a>
+        @elseif($showConsultations && Route::has('instructor.consultations.index'))
+        <a href="{{ route('instructor.consultations.index') }}" @click="{{ $closeSidebar }}"
+           class="su-link su-link--fav {{ request()->routeIs('instructor.consultations.*') ? 'is-active' : '' }}">
+            <span class="su-link__dot"></span>
+            <span class="su-link__txt">استشاراتي</span>
         </a>
         @endif
     </div>
@@ -100,7 +111,22 @@
             <span class="su-link__badge">{{ $myCoursesCount }}</span>
         </a>
         @endif
-        @if(instructor_ui('show_tutoring', true) && Route::has('instructor.tutoring-bookings.index'))
+        @if($showLearningPaths && Route::has('instructor.learning-paths.index'))
+        <a href="{{ route('instructor.learning-paths.index') }}" @click="{{ $closeSidebar }}"
+           class="su-link {{ request()->routeIs('instructor.learning-paths.*') ? 'is-active' : '' }}">
+            <span class="su-link__ico"><i class="fas fa-route"></i></span>
+            <span class="su-link__txt">مساراتي المسندة</span>
+            @if($myPathCount > 0)<span class="su-link__badge">{{ $myPathCount }}</span>@endif
+        </a>
+        @endif
+        @if($showConsultations && Route::has('instructor.consultations.index'))
+        <a href="{{ route('instructor.consultations.index') }}" @click="{{ $closeSidebar }}"
+           class="su-link {{ request()->routeIs('instructor.consultations.*') ? 'is-active' : '' }}">
+            <span class="su-link__ico"><i class="fas fa-comments-dollar"></i></span>
+            <span class="su-link__txt">استشاراتي</span>
+        </a>
+        @endif
+        @if($showTutoring && Route::has('instructor.tutoring-bookings.index'))
         <a href="{{ route('instructor.tutoring-bookings.index') }}" @click="{{ $closeSidebar }}"
            class="su-link {{ request()->routeIs('instructor.tutoring-bookings.*') ? 'is-active' : '' }}">
             <span class="su-link__ico"><i class="fas fa-calendar-check"></i></span>
@@ -108,7 +134,7 @@
             @if($tbUpcoming > 0)<span class="su-link__badge">{{ $tbUpcoming }}</span>@endif
         </a>
         @endif
-        @if(instructor_ui('show_live_broadcast', true) && Route::has('instructor.live-sessions.index'))
+        @if($showLive && Route::has('instructor.live-sessions.index'))
         <a href="{{ route('instructor.live-sessions.index') }}" @click="{{ $closeSidebar }}"
            class="su-link {{ request()->routeIs('instructor.live-sessions.*') ? 'is-active' : '' }}">
             <span class="su-link__ico"><i class="fas fa-broadcast-tower"></i></span>
@@ -119,7 +145,7 @@
 
         <div class="su-sec">{{ __('instructor.nav_pages') }}</div>
 
-        @if(Route::has('instructor.tutoring-cohorts.index'))
+        @if($showTutoring && Route::has('instructor.tutoring-cohorts.index'))
         <a href="{{ route('instructor.tutoring-cohorts.index') }}" @click="{{ $closeSidebar }}"
            class="su-link {{ request()->routeIs('instructor.tutoring-cohorts.*') ? 'is-active' : '' }}">
             <span class="su-link__ico"><i class="fas fa-layer-group"></i></span>
@@ -140,32 +166,25 @@
             <span class="su-link__txt">{{ __('instructor.notifications') }}</span>
         </a>
         @endif
-        @if(Route::has('instructor.tutor-work-schedule.index'))
+        @if($showTutoring && Route::has('instructor.tutor-work-schedule.index'))
         <a href="{{ route('instructor.tutor-work-schedule.index') }}" @click="{{ $closeSidebar }}"
            class="su-link {{ request()->routeIs('instructor.tutor-work-schedule.*') ? 'is-active' : '' }}">
             <span class="su-link__ico"><i class="fas fa-users"></i></span>
             <span class="su-link__txt">{{ __('instructor.group_work_schedule') }}</span>
         </a>
         @endif
-        @if(Route::has('instructor.one-to-one-sessions.index'))
+        @if($showTutoring && Route::has('instructor.one-to-one-sessions.index'))
         <a href="{{ route('instructor.one-to-one-sessions.index') }}" @click="{{ $closeSidebar }}"
            class="su-link {{ request()->routeIs('instructor.one-to-one-sessions.*') ? 'is-active' : '' }}">
             <span class="su-link__ico"><i class="fas fa-chalkboard-teacher"></i></span>
             <span class="su-link__txt">{{ __('instructor.private_lessons') }}</span>
         </a>
         @endif
-        @if(Route::has('instructor.one-to-one-availability.index'))
+        @if(($showTutoring || $showConsultations) && Route::has('instructor.one-to-one-availability.index'))
         <a href="{{ route('instructor.one-to-one-availability.index') }}" @click="{{ $closeSidebar }}"
            class="su-link {{ request()->routeIs('instructor.one-to-one-availability.*') ? 'is-active' : '' }}">
             <span class="su-link__ico"><i class="fas fa-calendar-week"></i></span>
-            <span class="su-link__txt">{{ __('student.one_to_one_availability_title') }}</span>
-        </a>
-        @endif
-        @if(Route::has('instructor.consultations.index'))
-        <a href="{{ route('instructor.consultations.index') }}" @click="{{ $closeSidebar }}"
-           class="su-link {{ request()->routeIs('instructor.consultations.*') ? 'is-active' : '' }}">
-            <span class="su-link__ico"><i class="fas fa-comments-dollar"></i></span>
-            <span class="su-link__txt">{{ __('instructor.student_consultations') }}</span>
+            <span class="su-link__txt">نوافذ المواعيد</span>
         </a>
         @endif
 

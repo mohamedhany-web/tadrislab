@@ -77,8 +77,8 @@ class CloudflareR2
     {
         $list = [
             rtrim((string) config('app.url'), '/'),
-            'https://glottical.com',
-            'https://www.glottical.com',
+            'https://tadrislab.com',
+            'https://www.tadrislab.com',
         ];
         if (is_array($extra)) {
             $list = array_merge($list, $extra);

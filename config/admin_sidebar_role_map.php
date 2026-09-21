@@ -21,6 +21,7 @@ return [
                 ['label' => 'لوحة التحكم', 'permissions' => ['view.dashboard', 'admin.access']],
                 ['label' => 'الملف الشخصي', 'permissions' => ['view.dashboard', 'admin.access']],
                 ['label' => 'وارد الإشعارات', 'permissions' => ['manage.notifications'], 'note' => 'للموظف RBAC: يظهر إن وُجدت الصلاحية'],
+                ['label' => 'الاستفسارات', 'permissions' => ['manage.contact-messages']],
                 ['label' => 'رسائل التواصل', 'permissions' => ['manage.contact-messages']],
                 ['label' => 'الحصة المجانية', 'permissions' => ['manage.free-trial-bookings']],
                 ['label' => 'خدمات الموقع', 'permissions' => ['manage.site-services']],

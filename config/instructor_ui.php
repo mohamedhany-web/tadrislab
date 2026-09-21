@@ -1,16 +1,15 @@
 <?php
 
 /**
- * واجهة المعلم — إخفاء احتياطي لنظام الكورسات المسجّلة بدون حذف بيانات.
- * غيّر أي قيمة إلى true لإعادة إظهار القسم في السايدبار/اللوحة.
+ * واجهة المدرب — تدريس لاب.
+ * إخفاء حصص خصوصي / بث إرث؛ الإبقاء على المسارات والاستشارات المعيّنة.
  */
 return [
-    // نظام الكورسات المسجّلة (كورساتي / محاضرات / واجبات / اختبارات / بنوك / حضور / تسجيلات)
-    'show_courses' => false,
-
-    // أقسام نشطة (التدريس المباشر / المدرسة)
-    'show_tutoring' => true,
-    'show_live_broadcast' => true,
+    'show_courses' => true,
+    'show_learning_paths' => true,
+    'show_consultations' => true,
+    'show_tutoring' => false,
+    'show_live_broadcast' => false,
     'show_libraries' => true,
     'show_calendar' => true,
 ];

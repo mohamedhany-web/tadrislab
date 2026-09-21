@@ -26,7 +26,7 @@
             <p class="mt-1 max-w-2xl text-sm text-muted">إعلان نصي يظهر كـ Pop-up على الصفحة الرئيسية. حدد المدة وعدد مرات الظهور لكل زائر.</p>
         </div>
         <a href="{{ route('admin.popup-ads.create') }}"
-           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+           class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
             <i class="fas fa-plus text-xs"></i>
             إعلان جديد
         </a>

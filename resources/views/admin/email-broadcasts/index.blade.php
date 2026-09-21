@@ -18,7 +18,7 @@
             <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">إشعارات البريد (Gmail)</h2>
             <p class="mt-1 text-sm text-muted">الجمهور الحالي: {{ $audienceLabel }}</p>
         </div>
-        <a href="{{ route('admin.email-broadcasts.create', $audience) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#0d4f4a]">
+        <a href="{{ route('admin.email-broadcasts.create', $audience) }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white hover:bg-[#184888]">
             <i class="fas fa-paper-plane text-xs"></i>
             إرسال بريد جديد
         </a>
