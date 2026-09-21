@@ -2,7 +2,7 @@
     use App\Support\TadrisPublicNav;
     use App\Services\PublicFooterSettings;
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
     $langSwitch = $langSwitch ?? fn (string $lang) => request()->fullUrlWithQuery(array_merge(request()->query(), ['lang' => $lang]));
     $services = TadrisPublicNav::services();
     $servicesActive = TadrisPublicNav::serviceIsActive();

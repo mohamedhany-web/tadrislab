@@ -59,11 +59,19 @@ if (! function_exists('storage_base_url')) {
 
 if (! function_exists('lasles_img')) {
     /**
-     * صورة Lasles ثابتة بمسار نسبي آمن (لا يعتمد على APP_URL الخاطئ).
+     * صورة Lasles عبر بروكسي Laravel (على Hostinger الملفات الثابتة تحت /img/* ترجع 404).
      */
     function lasles_img(string $file): string
     {
-        return versioned_asset('img/lasles/'.ltrim($file, '/'));
+        $file = ltrim($file, '/');
+        $full = public_path('img/lasles/'.$file);
+        $version = is_file($full) ? (string) filemtime($full) : (string) time();
+
+        if (\Illuminate\Support\Facades\Route::has('assets.landing.img')) {
+            return route('assets.landing.img', ['folder' => 'lasles', 'file' => $file]).'?v='.$version;
+        }
+
+        return versioned_asset('img/lasles/'.$file);
     }
 }
 

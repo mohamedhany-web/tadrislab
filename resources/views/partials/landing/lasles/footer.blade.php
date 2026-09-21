@@ -4,7 +4,7 @@
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
     $brand = 'TADRIS LAB';
     $brandAr = 'تدريس لاب';
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
     $services = TadrisPublicNav::services();
     $footer = PublicFooterSettings::payload();
     $whatsapp = $footer['whatsapp_url'] ?? '';

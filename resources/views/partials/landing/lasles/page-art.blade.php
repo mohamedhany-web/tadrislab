@@ -1,6 +1,6 @@
 {{-- Shared page art: isolated Lasles illustrations (home-style), different asset per page --}}
 @php
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
     $variant = $variant ?? 'person'; // person | features | map | tools
 @endphp
 @if($variant === 'person')

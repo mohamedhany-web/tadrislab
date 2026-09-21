@@ -3,7 +3,7 @@
 @section('content')
 @php
     $isRtl = app()->getLocale() === 'ar';
-    $img = fn (string $file) => asset('img/lasles/'.$file);
+    $img = fn (string $file) => lasles_img($file);
     $steps = [
         ['num' => '01', 'key' => 'diagnose'],
         ['num' => '02', 'key' => 'access'],

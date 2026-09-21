@@ -68,12 +68,12 @@ class AdminPanelBranding
             // TADRIS LAB public brand mark (Lasles) before inherited Glottical site/logo.png
             $publicMark = public_path('img/lasles/logo-mark.png');
             if (is_file($publicMark)) {
-                return versioned_asset('img/lasles/logo-mark.png');
+                return lasles_img('logo-mark.png');
             }
 
             $publicSvg = public_path('img/lasles/logo-mark.svg');
             if (is_file($publicSvg)) {
-                return versioned_asset('img/lasles/logo-mark.svg');
+                return lasles_img('logo-mark.svg');
             }
 
             $defaultPath = \App\Providers\AppServiceProvider::SITE_LOGO_STORAGE_PATH;

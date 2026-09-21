@@ -1,5 +1,5 @@
 @php
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
 @endphp
 <section class="lasles-path-promise" aria-labelledby="path-promise-title">
   <div class="lasles-container">

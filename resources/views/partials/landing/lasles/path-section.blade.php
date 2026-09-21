@@ -1,6 +1,6 @@
 @php
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
     $steps = [
         ['num' => '01', 'key' => 'diagnose'],
         ['num' => '02', 'key' => 'access'],

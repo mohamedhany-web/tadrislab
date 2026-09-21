@@ -3,7 +3,7 @@
 @section('content')
 @php
   $isRtl = app()->getLocale() === 'ar';
-  $img = fn (string $file) => asset('img/lasles/'.$file);
+  $img = fn (string $file) => lasles_img($file);
   $accessLabels = \App\Models\TeacherTool::accessModeLabels();
   $activeType = request('type');
   $guide = __('landing.tools.guide');

@@ -71,7 +71,7 @@ return new class extends Migration
                 $table->boolean('is_active')->default(true);
                 $table->timestamps();
 
-                $table->index(['learning_path_unit_id', 'sort_order']);
+                $table->index(['learning_path_unit_id', 'sort_order'], 'lp_lessons_unit_sort_idx');
             });
         }
 
@@ -93,7 +93,7 @@ return new class extends Migration
                 $table->boolean('is_active')->default(true);
                 $table->timestamps();
 
-                $table->index(['learning_path_unit_id', 'sort_order']);
+                $table->index(['learning_path_unit_id', 'sort_order'], 'lp_practices_unit_sort_idx');
             });
         }
 

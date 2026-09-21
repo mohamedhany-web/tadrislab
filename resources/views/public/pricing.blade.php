@@ -9,7 +9,7 @@
   $packages = $packages ?? collect();
   $img = function (string $file) {
       $path = public_path('img/lasles/'.$file);
-      $url = asset('img/lasles/'.$file);
+      $url = lasles_img($file);
 
       return is_file($path) ? $url.'?v='.filemtime($path) : $url;
   };

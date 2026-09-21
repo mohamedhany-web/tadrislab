@@ -1,6 +1,6 @@
 @php
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
 @endphp
 <section class="lasles-path-hero" aria-labelledby="path-hero-title">
   <div class="lasles-container lasles-path-hero__grid">

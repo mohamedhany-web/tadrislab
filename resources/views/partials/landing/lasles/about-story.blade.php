@@ -1,5 +1,5 @@
 @php
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
     $content = $content ?? [];
     $points = $content['story_points'] ?? [];
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');

@@ -1,6 +1,6 @@
 @php
   /** @var \App\Models\Package $package */
-  $img = $img ?? (fn (string $file) => asset('img/lasles/'.$file));
+  $img = $img ?? (fn (string $file) => lasles_img($file));
   $featured = $package->is_popular || $package->is_featured;
   $features = array_values(array_filter(is_array($package->features) ? $package->features : []));
   $tools = array_values(array_filter(is_array($package->tools_resources) ? $package->tools_resources : []));

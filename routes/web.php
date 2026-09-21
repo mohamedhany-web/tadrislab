@@ -394,7 +394,7 @@ Route::get('/js/landing/{file}.js', function (string $file) use ($serveAtheerAss
 Route::get('/img/{folder}/{file}', function (string $folder, string $file) use ($serveAtheerAsset) {
     $folder = basename($folder);
     $file = basename($file);
-    if (! in_array($folder, ['tadrislab', 'sanua'], true)) {
+    if (! in_array($folder, ['tadrislab', 'sanua', 'lasles'], true)) {
         abort(404);
     }
     if (! preg_match('/^[A-Za-z0-9._\-]+$/', $file) || ! preg_match('/\.(png|jpe?g|webp|gif|svg)$/i', $file)) {
@@ -420,7 +420,7 @@ Route::get('/img/{folder}/{file}', function (string $folder, string $file) use (
         'Content-Type' => $types[$ext] ?? 'application/octet-stream',
         'Cache-Control' => 'public, max-age=86400',
     ]);
-})->where(['folder' => 'tadrislab|sanua', 'file' => '[A-Za-z0-9._\-]+'])->name('assets.landing.img');
+})->where(['folder' => 'tadrislab|sanua|lasles', 'file' => '[A-Za-z0-9._\-]+'])->name('assets.landing.img');
 
 Route::get('/free-trial/slots', [\App\Http\Controllers\Public\FreeTrialBookingController::class, 'slots'])->name('public.free-trial.slots');
 Route::post('/free-trial/book', [\App\Http\Controllers\Public\FreeTrialBookingController::class, 'store'])

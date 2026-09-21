@@ -5,7 +5,7 @@
     $isRtl = app()->getLocale() === 'ar';
     $thumb = filled($path->thumbnail)
         ? (str_starts_with((string) $path->thumbnail, 'http') ? $path->thumbnail : asset('storage/'.$path->thumbnail))
-        : asset('img/lasles/features-illustration.png');
+        : lasles_img('features-illustration.png');
     $unitsCount = $path->units->count();
     $lessonsCount = $path->units->sum(fn ($u) => $u->lessons->count());
     $practicesCount = $path->units->sum(fn ($u) => $u->practices->count());

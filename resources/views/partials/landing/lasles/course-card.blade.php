@@ -1,7 +1,7 @@
 @php
   $isRtl = app()->getLocale() === 'ar';
   $thumb = $course->thumbnail_url
-    ?: asset('img/lasles/features-illustration.png');
+    ?: lasles_img('features-illustration.png');
   $list = (float) ($course->price ?? 0);
   $pay = (float) ($course->price_after_discount ?? $list);
   if ($pay <= 0) {

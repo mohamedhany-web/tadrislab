@@ -96,8 +96,16 @@ return new class extends Migration
                 $table->unsignedTinyInteger('progress_percent')->default(0);
                 $table->text('notes')->nullable();
                 $table->timestamps();
-                $table->index(['institution_program_id', 'status']);
+                $table->index(['institution_program_id', 'status'], 'ipp_program_status_idx');
             });
+        } elseif (Schema::hasTable('institution_program_participants')) {
+            try {
+                Schema::table('institution_program_participants', function (Blueprint $table) {
+                    $table->index(['institution_program_id', 'status'], 'ipp_program_status_idx');
+                });
+            } catch (\Throwable) {
+                // Index already present
+            }
         }
     }
 

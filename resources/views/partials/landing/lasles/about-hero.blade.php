@@ -1,6 +1,6 @@
 @php
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
-    $img = $img ?? fn (string $file) => asset('img/lasles/'.$file);
+    $img = $img ?? fn (string $file) => lasles_img($file);
     $content = $content ?? [];
 @endphp
 <section class="lasles-about-hero" aria-labelledby="about-hero-title">
