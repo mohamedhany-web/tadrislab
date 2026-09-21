@@ -8,23 +8,23 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
-class TADRIS LABAcademyUserSeeder extends Seeder
+class TadrisAcademyUserSeeder extends Seeder
 {
     /**
      * بيانات مستخدمي منصة تدريس لاب — تأهيل المعلمين للعمل أونلاين
      */
     public function run(): void
     {
-        if (!Schema::hasTable('users')) {
+        if (! Schema::hasTable('users')) {
             $this->command->warn('⚠️  جدول users غير موجود. يرجى تشغيل migrations أولاً.');
+
             return;
         }
 
         $password = Hash::make('password123');
 
-        // ─── مدير المنصة (Super Admin) ───
         User::firstOrCreate(
-            ['email' => 'admin@TADRIS LAB.com'],
+            ['email' => 'admin@tadrislab.com'],
             [
                 'name' => 'مدير منصة تدريس لاب',
                 'phone' => '0500000000',
@@ -35,9 +35,8 @@ class TADRIS LABAcademyUserSeeder extends Seeder
             ]
         );
 
-        // ─── مدير أكاديمي (Super Admin ثاني — صلاحيات إدارية)
         User::firstOrCreate(
-            ['email' => 'academy@TADRIS LAB.com'],
+            ['email' => 'academy@tadrislab.com'],
             [
                 'name' => 'سارة المديرة الأكاديمية',
                 'phone' => '0500000001',
@@ -48,28 +47,27 @@ class TADRIS LABAcademyUserSeeder extends Seeder
             ]
         );
 
-        // ─── مدربون (Instructors) ───
         $instructors = [
             [
-                'email' => 'instructor1@TADRIS LAB.com',
+                'email' => 'instructor1@tadrislab.com',
                 'phone' => '0500000010',
                 'name' => 'د. أحمد الشمري',
                 'bio' => 'مدرب معتمد في التدريس أونلاين — خبرة 12 سنة. متخصص في تصميم الحصص التفاعلية واستخدام أدوات التعلم الرقمي.',
             ],
             [
-                'email' => 'instructor2@TADRIS LAB.com',
+                'email' => 'instructor2@tadrislab.com',
                 'phone' => '0500000011',
                 'name' => 'نورة العتيبي',
                 'bio' => 'معلمة لغة عربية أونلاين — تدريب المعلمين على تقديم حصص افتراضية احترافية وبناء البروفايل المهني.',
             ],
             [
-                'email' => 'instructor3@TADRIS LAB.com',
+                'email' => 'instructor3@tadrislab.com',
                 'phone' => '0500000012',
                 'name' => 'محمد المنصوري',
                 'bio' => 'خبير في أدوات الذكاء الاصطناعي للمعلمين — ورش عملية على تحضير الدروس والأنشطة باستخدام AI.',
             ],
             [
-                'email' => 'instructor4@TADRIS LAB.com',
+                'email' => 'instructor4@tadrislab.com',
                 'phone' => '0500000013',
                 'name' => 'هدى الكويتية',
                 'bio' => 'مدربة في التسويق للمعلمين والعمل بالدولار — مسارات تعلم للوصول لفرص عمل دولية.',
@@ -89,8 +87,7 @@ class TADRIS LABAcademyUserSeeder extends Seeder
                 ]
             );
 
-            // إنشاء ملف تعريفي للمدرب إذا كان الجدول موجوداً
-            if (Schema::hasTable('instructor_profiles') && !$user->instructorProfile) {
+            if (Schema::hasTable('instructor_profiles') && ! $user->instructorProfile) {
                 InstructorProfile::firstOrCreate(
                     ['user_id' => $user->id],
                     [
@@ -106,14 +103,13 @@ class TADRIS LABAcademyUserSeeder extends Seeder
             }
         }
 
-        // ─── طلاب / معلمون متدربون (Students) ───
         $students = [
-            ['email' => 'student1@TADRIS LAB.com', 'phone' => '0500000020', 'name' => 'فاطمة الزهراء'],
-            ['email' => 'student2@TADRIS LAB.com', 'phone' => '0500000021', 'name' => 'عمر الطالب'],
-            ['email' => 'student3@TADRIS LAB.com', 'phone' => '0500000022', 'name' => 'مريم المعلمة المتدربة'],
-            ['email' => 'student4@TADRIS LAB.com', 'phone' => '0500000023', 'name' => 'خالد السعيد'],
-            ['email' => 'student5@TADRIS LAB.com', 'phone' => '0500000024', 'name' => 'لينا أحمد'],
-            ['email' => 'student6@TADRIS LAB.com', 'phone' => '0500000025', 'name' => 'يوسف المعلم'],
+            ['email' => 'student1@tadrislab.com', 'phone' => '0500000020', 'name' => 'فاطمة الزهراء'],
+            ['email' => 'student2@tadrislab.com', 'phone' => '0500000021', 'name' => 'عمر الطالب'],
+            ['email' => 'student3@tadrislab.com', 'phone' => '0500000022', 'name' => 'مريم المعلمة المتدربة'],
+            ['email' => 'student4@tadrislab.com', 'phone' => '0500000023', 'name' => 'خالد السعيد'],
+            ['email' => 'student5@tadrislab.com', 'phone' => '0500000024', 'name' => 'لينا أحمد'],
+            ['email' => 'student6@tadrislab.com', 'phone' => '0500000025', 'name' => 'يوسف المعلم'],
         ];
 
         foreach ($students as $data) {
@@ -133,10 +129,10 @@ class TADRIS LABAcademyUserSeeder extends Seeder
         $this->command->newLine();
         $this->command->info('📋 بيانات الدخول (كلمة المرور لجميع الحسابات: password123)');
         $this->command->info('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-        $this->command->info('👨‍💼 مدير المنصة:     admin@TADRIS LAB.com     — 0500000000');
-        $this->command->info('👩‍💼 مديرة أكاديمية: academy@TADRIS LAB.com   — 0500000001');
-        $this->command->info('👨‍🏫 مدربون:          instructor1@TADRIS LAB.com … instructor4@TADRIS LAB.com');
-        $this->command->info('👩‍🎓 طلاب:            student1@TADRIS LAB.com … student6@TADRIS LAB.com');
+        $this->command->info('👨‍💼 مدير المنصة:     admin@tadrislab.com     — 0500000000');
+        $this->command->info('👩‍💼 مديرة أكاديمية: academy@tadrislab.com   — 0500000001');
+        $this->command->info('👨‍🏫 مدربون:          instructor1@tadrislab.com … instructor4@tadrislab.com');
+        $this->command->info('👩‍🎓 طلاب:            student1@tadrislab.com … student6@tadrislab.com');
         $this->command->info('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     }
 }
