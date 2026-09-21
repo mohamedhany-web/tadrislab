@@ -121,7 +121,7 @@ return [
     | public = storage/app/public + /storage/...
     | r2     = Cloudflare R2 (AWS_* ويفضّل R2_PUBLIC_URL أو AWS_URL للرابط المباشر)
     */
-    'public_media_disk' => env('PUBLIC_MEDIA_DISK', 'r2'),
+    'public_media_disk' => env('PUBLIC_MEDIA_DISK', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -183,7 +183,7 @@ return [
     | r2     = Cloudflare R2 (افتراضي — يتبع PUBLIC_MEDIA_DISK إن تُرك فارغاً)
     | public = تخزين محلي للتطوير فقط
     */
-    'lecture_materials_disk' => env('LECTURE_MATERIALS_DISK') ?: env('PUBLIC_MEDIA_DISK', 'r2'),
+    'lecture_materials_disk' => env('LECTURE_MATERIALS_DISK') ?: env('PUBLIC_MEDIA_DISK', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -192,7 +192,7 @@ return [
     | r2     = Cloudflare R2 (افتراضي)
     | public = تخزين محلي للتطوير فقط عند غياب مفاتيح AWS_*
     */
-    'curriculum_library_disk' => env('CURRICULUM_LIBRARY_DISK', 'r2'),
+    'curriculum_library_disk' => env('CURRICULUM_LIBRARY_DISK', env('PUBLIC_MEDIA_DISK', 'public')),
 
     /*
     |--------------------------------------------------------------------------

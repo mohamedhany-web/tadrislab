@@ -57,6 +57,16 @@ if (! function_exists('storage_base_url')) {
     }
 }
 
+if (! function_exists('lasles_img')) {
+    /**
+     * صورة Lasles ثابتة بمسار نسبي آمن (لا يعتمد على APP_URL الخاطئ).
+     */
+    function lasles_img(string $file): string
+    {
+        return versioned_asset('img/lasles/'.ltrim($file, '/'));
+    }
+}
+
 if (! function_exists('versioned_asset')) {
     /**
      * رابط أصل ثابت مع بصمة تعديل الملف — يكسر كاش المتصفح تلقائياً عند كل تحديث.

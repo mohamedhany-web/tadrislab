@@ -1,7 +1,7 @@
 {{-- أيقونة التبويب: شعار لوحة التحكم إن وُجد، وإلا لوجو تدريس لاب الرسمي --}}
 @php
     $brandIcon = \App\Services\AdminPanelBranding::logoPublicUrl();
-    $fallbackIcon = asset('img/lasles/logo-mark.png');
+    $fallbackIcon = lasles_img('logo-mark.png');
     $icon = $brandIcon ?: $fallbackIcon;
 @endphp
 <link rel="icon" href="{{ $icon }}" sizes="any">

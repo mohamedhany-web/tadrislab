@@ -12,7 +12,7 @@ class AdminPanelBranding
 {
     public const SETTING_KEY = 'admin_panel_logo_path';
 
-    private const LOGO_URL_CACHE_KEY = 'branding.admin_panel_logo_url_v3';
+    private const LOGO_URL_CACHE_KEY = 'branding.admin_panel_logo_url_v4';
 
     /**
      * قرص التخزين: public محلي، أو r2 لـ Cloudflare R2.
@@ -68,12 +68,12 @@ class AdminPanelBranding
             // TADRIS LAB public brand mark (Lasles) before inherited Glottical site/logo.png
             $publicMark = public_path('img/lasles/logo-mark.png');
             if (is_file($publicMark)) {
-                return asset('img/lasles/logo-mark.png');
+                return versioned_asset('img/lasles/logo-mark.png');
             }
 
             $publicSvg = public_path('img/lasles/logo-mark.svg');
             if (is_file($publicSvg)) {
-                return asset('img/lasles/logo-mark.svg');
+                return versioned_asset('img/lasles/logo-mark.svg');
             }
 
             $defaultPath = \App\Providers\AppServiceProvider::SITE_LOGO_STORAGE_PATH;

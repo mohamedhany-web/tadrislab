@@ -33,8 +33,24 @@ return new class extends Migration
                 $table->unsignedInteger('sort_order')->default(0);
                 $table->foreignId('default_instructor_id')->nullable()->constrained('users')->nullOnDelete();
                 $table->timestamps();
-                $table->index(['consultation_type', 'is_active', 'is_published']);
+                // Short name: MySQL identifier limit is 64 chars
+                $table->index(
+                    ['consultation_type', 'is_active', 'is_published'],
+                    'cs_type_active_pub_idx'
+                );
             });
+        } elseif (Schema::hasTable('consultation_services')) {
+            // Previous failed run may have created the table without the index.
+            try {
+                Schema::table('consultation_services', function (Blueprint $table) {
+                    $table->index(
+                        ['consultation_type', 'is_active', 'is_published'],
+                        'cs_type_active_pub_idx'
+                    );
+                });
+            } catch (\Throwable) {
+                // Index already present — ignore.
+            }
         }
 
         if (Schema::hasTable('consultation_requests')) {

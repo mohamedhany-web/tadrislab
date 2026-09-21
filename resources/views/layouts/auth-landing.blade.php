@@ -4,7 +4,7 @@
     $langSwitch = fn (string $lang) => request()->fullUrlWithQuery(array_merge(request()->query(), ['lang' => $lang]));
     $authCss = public_path('css/landing/lasles-auth.css');
     $authVer = is_file($authCss) ? (string) filemtime($authCss) : (string) time();
-    $logo = asset('img/lasles/logo-mark.png');
+    $logo = lasles_img('logo-mark.png');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">

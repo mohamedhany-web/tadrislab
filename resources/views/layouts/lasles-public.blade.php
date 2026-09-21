@@ -6,13 +6,7 @@
     $brand = 'TADRIS LAB';
     $brandAr = 'تدريس لاب';
     $img = function (string $file) {
-        $path = public_path('img/lasles/'.$file);
-        $url = asset('img/lasles/'.$file);
-        if (is_file($path)) {
-            $url .= '?v='.filemtime($path);
-        }
-
-        return $url;
+        return lasles_img($file);
     };
     $langSwitch = fn (string $lang) => request()->fullUrlWithQuery(array_merge(request()->query(), ['lang' => $lang]));
     $laslesNavActive = $laslesNavActive ?? '';

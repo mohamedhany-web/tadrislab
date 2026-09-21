@@ -2,7 +2,7 @@
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
     $brand = 'TADRIS LAB';
     $brandAr = 'تدريس لاب';
-    $img = fn (string $file) => asset('img/lasles/'.$file);
+    $img = fn (string $file) => lasles_img($file);
     $langSwitch = fn (string $lang) => request()->fullUrlWithQuery(array_merge(request()->query(), ['lang' => $lang]));
 @endphp
 
