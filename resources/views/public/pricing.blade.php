@@ -2,7 +2,7 @@
   $isRtl = app()->getLocale() === 'ar';
   $pricingCss = public_path('css/landing/lasles-pricing.css');
   $pricingVer = is_file($pricingCss) ? (string) filemtime($pricingCss) : (string) time();
-  $pageTitle = __('public.pricing_page_title').' — '.($isRtl ? 'تدريس لاب' : 'TADRIS LAB');
+  $pageTitle = __('public.pricing_page_title').' — '.('TADRIS LAB');
   $pageDescription = __('public.pricing_meta_description');
   $bodyClass = 'lasles-pricing-page';
   $laslesNavActive = 'pricing';

@@ -7,7 +7,7 @@
   <div class="lasles-container lasles-about-hero__grid">
     <div class="lasles-about-hero__copy">
       <p class="lasles-path-kicker">{{ $content['kicker'] ?? '' }}</p>
-      <p class="lasles-about-hero__brand">{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}</p>
+      <p class="lasles-about-hero__brand">{{ 'TADRIS LAB' }}</p>
       <h1 id="about-hero-title" class="lasles-about-hero__title">
         {{ $content['title_before'] ?? '' }}
         <em>{{ $content['title_strong'] ?? '' }}</em>

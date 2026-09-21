@@ -31,7 +31,7 @@
       <nav class="lasles-auth-nav">
         <a href="{{ route('home') }}" class="lasles-auth-logo">
           <img src="{{ $logo }}" width="32" height="32" alt="">
-          <span>@if($isRtl)<b>تدريس لاب</b>@else<b>TADRIS</b> <em>LAB</em>@endif</span>
+          <span><b>TADRIS</b> <em>LAB</em></span>
         </a>
         <div class="lasles-auth-nav__actions">
           <div class="lasles-auth-lang" role="group" aria-label="{{ $isRtl ? 'اللغة' : 'Language' }}">

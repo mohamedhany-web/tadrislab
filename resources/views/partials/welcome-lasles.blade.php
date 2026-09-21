@@ -1,7 +1,7 @@
 @php
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
     $brand = 'TADRIS LAB';
-    $brandAr = 'تدريس لاب';
+    $brandAr = 'TADRIS LAB';
     $img = fn (string $file) => lasles_img($file);
     $langSwitch = fn (string $lang) => request()->fullUrlWithQuery(array_merge(request()->query(), ['lang' => $lang]));
 @endphp

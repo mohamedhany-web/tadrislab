@@ -5,7 +5,7 @@
 
 <section class="lasles-paths-hero lasles-paths-hero--detail">
   <div class="lasles-container lasles-paths-hero__inner">
-    <p class="lasles-paths-hero__brand">{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}</p>
+    <p class="lasles-paths-hero__brand">{{ 'TADRIS LAB' }}</p>
     <h1 class="lasles-paths-hero__title">{{ $isRtl ? 'المدارس والمؤسسات' : 'Schools & Institutions' }}</h1>
     <p class="lasles-paths-hero__lead">
       {{ $isRtl

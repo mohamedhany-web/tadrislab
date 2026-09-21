@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'app_name' => 'تدريس لاب',
+    'app_name' => 'TADRIS LAB',
     'save' => 'حفظ',
     'cancel' => 'إلغاء',
     'edit' => 'تعديل',

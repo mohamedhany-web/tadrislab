@@ -16,7 +16,7 @@
   <div class="lasles-container lasles-consult-hero__grid">
     <div class="lasles-consult-hero__copy">
       <p class="lasles-path-kicker">{{ $content['kicker'] ?? '' }}</p>
-      <p class="lasles-consult-hero__brand">{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}</p>
+      <p class="lasles-consult-hero__brand">{{ 'TADRIS LAB' }}</p>
       <h1 id="consult-hero-title" class="lasles-consult-hero__title">
         {{ $content['title_before'] ?? ($content['title'] ?? '') }}
         @if(!empty($content['title_strong']))

@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
-        $seoTitle = trim($__env->yieldContent('title')) ?: ($brand.' — '.($publicRtl ? 'تدريس لاب' : 'TADRIS LAB'));
+        $seoTitle = trim($__env->yieldContent('title')) ?: ($brand.' — '.('TADRIS LAB'));
         $seoDescription = trim($__env->yieldContent('meta_description')) ?: __('landing.meta.description');
         $seoKeywords = trim($__env->yieldContent('meta_keywords')) ?: __('landing.meta.keywords');
         $seoImage = trim($__env->yieldContent('meta_image')) ?: \App\Services\SeoAssets::ogImageUrl();

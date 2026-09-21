@@ -4,13 +4,13 @@
     $laslesCss = public_path('css/landing/lasles.css');
     $laslesVer = is_file($laslesCss) ? (string) filemtime($laslesCss) : (string) time();
     $brand = 'TADRIS LAB';
-    $brandAr = 'تدريس لاب';
+    $brandAr = 'TADRIS LAB';
     $img = function (string $file) {
         return lasles_img($file);
     };
     $langSwitch = fn (string $lang) => request()->fullUrlWithQuery(array_merge(request()->query(), ['lang' => $lang]));
     $laslesNavActive = $laslesNavActive ?? '';
-    $pageTitle = $pageTitle ?? ($isRtl ? $brandAr : $brand);
+    $pageTitle = $pageTitle ?? ($brand);
     $pageDescription = $pageDescription ?? __('landing.meta.description');
 @endphp
 <!DOCTYPE html>

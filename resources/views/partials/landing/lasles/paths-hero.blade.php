@@ -6,7 +6,7 @@
   <div class="lasles-container lasles-paths-hero__grid">
     <div class="lasles-paths-hero__copy">
       <p class="lasles-path-kicker">{{ __('landing.learning_paths.kicker') }}</p>
-      <p class="lasles-paths-hero__brand">{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}</p>
+      <p class="lasles-paths-hero__brand">{{ 'TADRIS LAB' }}</p>
       <h1 id="paths-hero-title" class="lasles-paths-hero__title">
         {{ __('landing.learning_paths.hero_title_before') }}
         <em>{{ __('landing.learning_paths.hero_title_strong') }}</em>

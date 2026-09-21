@@ -83,8 +83,8 @@
 
   <div class="lasles-container lasles-nav__inner">
     <a href="{{ route('home') }}" class="lasles-brand">
-      <img src="{{ $img('logo-mark.png') }}" width="40" height="40" alt="{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}">
-      <span>@if($isRtl)<b>تدريس لاب</b>@else<b>TADRIS</b> <em>LAB</em>@endif</span>
+      <img src="{{ $img('logo-mark.png') }}" width="40" height="40" alt="TADRIS LAB">
+      <span><b>TADRIS</b> <em>LAB</em></span>
     </a>
 
     <nav class="lasles-nav__links" aria-label="{{ $isRtl ? 'القائمة' : 'Main' }}">
@@ -172,8 +172,8 @@
   <aside class="lasles-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="lasles-drawer-title">
     <div class="lasles-drawer__head">
       <a href="{{ route('home') }}" class="lasles-brand lasles-drawer__brand" id="lasles-drawer-title">
-        <img src="{{ $img('logo-mark.png') }}" width="36" height="36" alt="{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}">
-        <span>@if($isRtl)<b>تدريس لاب</b>@else<b>TADRIS</b> <em>LAB</em>@endif</span>
+        <img src="{{ $img('logo-mark.png') }}" width="36" height="36" alt="{{ 'TADRIS LAB' }}">
+        <span><b>TADRIS</b> <em>LAB</em></span>
       </a>
       <button type="button" class="lasles-drawer__close" id="lasles-drawer-close" aria-label="{{ $isRtl ? 'إغلاق' : 'Close' }}">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">

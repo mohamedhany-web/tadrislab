@@ -33,7 +33,7 @@
         ? ($isRtl ? 'فردي 1:1' : '1:1 private')
         : ($isRtl ? 'جماعي' : 'Group');
     $heroCover = $thumbUrl ?: lasles_img('features-illustration.png');
-    $pageTitle = ($course->title ?? __('public.course_detail_title')).' — '.($isRtl ? 'تدريس لاب' : $brand);
+    $pageTitle = ($course->title ?? __('public.course_detail_title')).' — '.($brand);
     $pageDescription = \Illuminate\Support\Str::limit(strip_tags($course->description ?? ''), 160);
     $bodyClass = 'lasles-course-detail-page';
     $laslesNavActive = 'courses';

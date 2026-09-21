@@ -61,7 +61,7 @@
 @if($program->proposal_notes || $program->price)
 <section class="st-panel st-inst-proposal">
     <div class="st-section-head">
-        <h2>{{ $isRtl ? 'عرض تدريس لاب' : 'TADRIS LAB proposal' }}</h2>
+        <h2>{{ $isRtl ? 'عرض TADRIS LAB' : 'TADRIS LAB proposal' }}</h2>
         <p>{{ $isRtl ? 'راجع العرض ثم اقبل أو ارفض كمنسّق.' : 'Review the proposal, then accept or reject as coordinator.' }}</p>
     </div>
     @if($program->price)

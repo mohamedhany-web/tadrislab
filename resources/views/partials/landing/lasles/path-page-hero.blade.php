@@ -5,7 +5,7 @@
 <section class="lasles-path-hero" aria-labelledby="path-hero-title">
   <div class="lasles-container lasles-path-hero__grid">
     <div class="lasles-path-hero__copy">
-      <p class="lasles-path-hero__brand">{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}</p>
+      <p class="lasles-path-hero__brand">{{ 'TADRIS LAB' }}</p>
       <h1 id="path-hero-title" class="lasles-path-hero__title">{!! __('landing.path.title_html') !!}</h1>
       <p class="lasles-path-hero__lead">{{ __('landing.path.lead') }}</p>
       <div class="lasles-path-hero__actions">

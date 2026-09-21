@@ -14,7 +14,7 @@
   <div class="lasles-container lasles-tools-hero__grid">
     <div class="lasles-tools-hero__copy">
       <p class="lasles-path-kicker">{{ __('landing.tools.kicker') }}</p>
-      <p class="lasles-tools-hero__brand">{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}</p>
+      <p class="lasles-tools-hero__brand">{{ 'TADRIS LAB' }}</p>
       <h1 id="tools-hero-title" class="lasles-tools-hero__title">
         {{ __('landing.tools.hero_title_before') }}
         <em>{{ __('landing.tools.hero_title_strong') }}</em>

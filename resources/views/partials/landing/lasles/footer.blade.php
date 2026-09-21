@@ -3,7 +3,7 @@
     use App\Services\PublicFooterSettings;
     $isRtl = $isRtl ?? (app()->getLocale() === 'ar');
     $brand = 'TADRIS LAB';
-    $brandAr = 'تدريس لاب';
+    $brandAr = 'TADRIS LAB';
     $img = $img ?? fn (string $file) => lasles_img($file);
     $services = TadrisPublicNav::services();
     $footer = PublicFooterSettings::payload();
@@ -31,8 +31,8 @@
   <div class="lasles-container lasles-footer__grid">
     <div class="lasles-footer__about">
       <a href="{{ route('home') }}" class="lasles-brand lasles-footer__brand">
-        <img src="{{ $img('logo-mark.png') }}" width="36" height="36" alt="{{ $isRtl ? 'تدريس لاب' : 'TADRIS LAB' }}">
-        <span>@if($isRtl)<b>تدريس لاب</b>@else<b>TADRIS</b> <em>LAB</em>@endif</span>
+        <img src="{{ $img('logo-mark.png') }}" width="36" height="36" alt="{{ 'TADRIS LAB' }}">
+        <span><b>TADRIS</b> <em>LAB</em></span>
       </a>
       <p class="lasles-footer__blurb">{{ $tagline }}</p>
 
@@ -86,6 +86,6 @@
     </nav>
   </div>
   <div class="lasles-container lasles-footer__bottom">
-    <p class="lasles-copy">©{{ date('Y') }} {{ $isRtl ? $brandAr : $brand }}</p>
+    <p class="lasles-copy">©{{ date('Y') }} {{ $brand }}</p>
   </div>
 </footer>

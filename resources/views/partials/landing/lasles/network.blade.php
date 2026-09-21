@@ -5,7 +5,7 @@
     </h2>
     <p class="lasles-section-lead">
       @if($isRtl)
-        شاهد كيف تصل {{ $brandAr }} لمعلمين في سياقات مختلفة لتسهيل تطوير الممارسة المهنية.
+        شاهد كيف تصل {{ $brand }} لمعلمين في سياقات مختلفة لتسهيل تطوير الممارسة المهنية.
       @else
         See <strong>{{ $brand }}</strong> everywhere to make it easier for you when you move locations.
       @endif
