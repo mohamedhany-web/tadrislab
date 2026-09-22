@@ -42,6 +42,7 @@
         <h2 class="st-join-hero__title">{{ $institution->name() }}</h2>
         <p class="st-join-hero__meta">
             {{ $isRtl ? 'عضويتك' : 'Your role' }}: {{ $member->roleLabel() }}
+            · {{ $institution->engagementModeLabel() }}
             @if($isCoordinator)
                 · {{ $isRtl ? 'يمكنك إدارة المشاركين والبرامج' : 'You can manage participants & programs' }}
             @endif
@@ -49,8 +50,8 @@
     </div>
     <div class="st-join-hero__actions">
         <a href="{{ route('dashboard') }}" class="st-pill st-pill--outline">{{ $isRtl ? 'لوحة التحكم' : 'Dashboard' }}</a>
-        @if(Route::has('public.institutions.inquiry'))
-            <a href="{{ route('public.institutions.inquiry') }}" class="st-pill st-pill--solid">{{ $isRtl ? 'استفسار جديد' : 'New inquiry' }}</a>
+        @if($isCoordinator)
+            <a href="{{ route('institution.portal.report', $institution) }}" class="st-pill st-pill--solid">{{ $isRtl ? 'تقرير المتابعة' : 'Progress report' }}</a>
         @endif
     </div>
 </section>
@@ -62,16 +63,19 @@
         <p class="st-stat-card__hint">{{ $isRtl ? 'نشط منها' : 'Active' }}: {{ $activePrograms }}</p>
     </article>
     <article class="st-stat-card">
-        <p class="st-stat-card__label">{{ $isRtl ? 'الأعضاء' : 'Members' }}</p>
-        <p class="st-stat-card__value">{{ $membersCount }}</p>
+        <p class="st-stat-card__label">{{ $isRtl ? 'المشاركون المفعّلون' : 'Activated participants' }}</p>
+        <p class="st-stat-card__value">{{ $report['participants'] ?? $membersCount }}</p>
+        @if(($report['seat_cap'] ?? null) !== null)
+            <p class="st-stat-card__hint">{{ $isRtl ? 'المقاعد' : 'Seats' }}: {{ $report['seats_used'] }}/{{ $report['seat_cap'] }}</p>
+        @endif
     </article>
     <article class="st-stat-card">
         <p class="st-stat-card__label">{{ $isRtl ? 'متوسط التقدّم' : 'Avg. progress' }}</p>
-        <p class="st-stat-card__value">{{ $avgProgress }}%</p>
+        <p class="st-stat-card__value">{{ $report['avg_progress'] ?? $avgProgress }}%</p>
     </article>
     <article class="st-stat-card">
-        <p class="st-stat-card__label">{{ $isRtl ? 'دورك' : 'Your role' }}</p>
-        <p class="st-stat-card__value st-stat-card__value--text">{{ $member->roleLabel() }}</p>
+        <p class="st-stat-card__label">{{ $isRtl ? 'مسار التعاقد' : 'Engagement' }}</p>
+        <p class="st-stat-card__value st-stat-card__value--text">{{ $institution->isDirectDeliveryDefault() ? ($isRtl ? 'مباشر' : 'Direct') : ($isRtl ? 'منصة' : 'Platform') }}</p>
     </article>
 </section>
 
@@ -97,7 +101,11 @@
                     <h3>{{ $program->title_ar ?? $program->title() ?? $program->name ?? ('برنامج #'.$program->id) }}</h3>
                     <p>
                         {{ $program->kindLabel() }}
+                        · {{ $program->engagementModeLabel() }}
                         · {{ $program->statusLabel() }}
+                        @if($program->instructor)
+                            · {{ $isRtl ? 'المدرب' : 'Coach' }}: {{ $program->instructor->name }}
+                        @endif
                     </p>
                 </div>
                 <div class="st-session-row__actions">
@@ -134,7 +142,13 @@
 <section class="st-panel st-inst-form-panel" style="margin-top:1.25rem">
     <div class="st-section-head">
         <h2>{{ $isRtl ? 'إضافة مشارك' : 'Add participant' }}</h2>
-        <p>{{ $isRtl ? 'أضف معلمًا مشاركًا تحت حساب الجهة.' : 'Add a teacher participant under this institution.' }}</p>
+        <p>
+            @if($institution->isDirectDeliveryDefault())
+                {{ $isRtl ? 'التعاقد المباشر لا يعتمد على مقاعد — المشاركون اختياريون للمتابعة الداخلية.' : 'Direct contracts do not require seats — participants are optional for internal tracking.' }}
+            @else
+                {{ $isRtl ? 'تعاقد منصة: أضف معلمًا ضمن حد المقاعد ثم فعّله في البرامج.' : 'Platform contract: add a teacher within seat limits, then enroll them in programs.' }}
+            @endif
+        </p>
     </div>
     <form method="POST" action="{{ route('institution.portal.participants.store', $institution) }}" class="st-profile-form">
         @csrf

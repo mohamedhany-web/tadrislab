@@ -27,11 +27,14 @@
     if ($showPaths && Route::has('instructor.learning-paths.index')) {
         $navItems[] = ['route' => 'instructor.learning-paths.index', 'match' => ['instructor.learning-paths.*'], 'label' => 'مساراتي المسندة', 'fa' => 'fas fa-route'];
     }
+    if (Route::has('instructor.institution-delivery.index')) {
+        $navItems[] = ['route' => 'instructor.institution-delivery.index', 'match' => ['instructor.institution-delivery.*'], 'label' => 'تعاقدات الجهات', 'fa' => 'fas fa-handshake'];
+    }
     if ($showConsultations && Route::has('instructor.consultations.index')) {
         $navItems[] = ['route' => 'instructor.consultations.index', 'match' => ['instructor.consultations.*'], 'label' => 'استشاراتي', 'fa' => 'fas fa-comments'];
     }
     if ($hasCourses && Route::has('instructor.courses.index')) {
-        $navItems[] = ['route' => 'instructor.courses.index', 'match' => ['instructor.courses.*'], 'label' => __('instructor.my_courses'), 'fa' => 'fas fa-book-open'];
+        $navItems[] = ['route' => 'instructor.courses.index', 'match' => ['instructor.courses.*'], 'label' => 'كورساتي المسندة', 'fa' => 'fas fa-book-open'];
     }
     if ($showTutoring && Route::has('instructor.tutoring-bookings.index')) {
         $navItems[] = ['route' => 'instructor.tutoring-bookings.index', 'match' => ['instructor.tutoring-bookings.*'], 'label' => __('instructor.group_bookings'), 'fa' => 'fas fa-users'];

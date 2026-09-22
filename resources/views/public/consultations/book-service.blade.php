@@ -4,7 +4,7 @@
 @php
   $isRtl = app()->getLocale() === 'ar';
   $field = 'width:100%;padding:.65rem .85rem;border:1px solid #ddd;border-radius:10px;font-size:.95rem';
-  $wallets = \App\Models\Wallet::where('is_active', true)->whereIn('type', ['vodafone_cash','instapay','bank_transfer'])->orderBy('type')->get();
+  $wallets = \App\Services\PlatformPaymentAccountService::activeAccounts();
   $remainingSessions = (int) ($remainingSessions ?? 0);
   $isFree = (float) $service->price < 0.01;
   $defaultUsePackage = ! $isFree && $remainingSessions > 0 && (string) old('use_package_session', '1') === '1';
@@ -177,7 +177,7 @@
             <select name="wallet_id" style="{{ $field }};margin-bottom:.75rem">
               <option value="">{{ $isRtl ? 'حساب التحويل' : 'Transfer account' }}</option>
               @foreach($wallets as $w)
-                <option value="{{ $w->id }}" @selected(old('wallet_id')==$w->id)>{{ $w->name ?: $w->type }} {{ $w->account_number }}</option>
+                <option value="{{ $w->id }}" @selected(old('wallet_id')==$w->id)>{{ $w->checkoutLabel() }}</option>
               @endforeach
             </select>
           @endif

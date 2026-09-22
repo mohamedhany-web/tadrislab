@@ -152,7 +152,7 @@
             @endif
 
             @if(student_ui('show_institution_portal', true) && Route::has('institution.portal.index'))
-            <a href="{{ route('institution.portal.index') }}" @click="{{ $closeSidebar }}" class="ins-nav {{ request()->routeIs('institution.portal.*') ? 'active' : '' }}"><span class="ins-icon"><i class="fas fa-building"></i></span><span class="flex-1 truncate">جهتي</span></a>
+            <a href="{{ route('institution.portal.index') }}" @click="{{ $closeSidebar }}" class="ins-nav {{ request()->routeIs('institution.portal.*') ? 'active' : '' }}"><span class="ins-icon"><i class="fas fa-building"></i></span><span class="flex-1 truncate">لوحة جهتي</span></a>
             @endif
 
             @if(student_ui('show_consultations', true) && Route::has('consultations.index'))

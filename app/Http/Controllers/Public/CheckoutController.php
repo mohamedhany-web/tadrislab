@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class CheckoutController extends Controller
 {
@@ -72,17 +71,8 @@ class CheckoutController extends Controller
             }
         }
 
-        // جلب المحافظ الإلكترونية النشطة
-        $wallets = \App\Models\Wallet::where('is_active', true)
-            ->whereNotNull('type')
-            ->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer'])
-            ->where(function ($query) {
-                $query->whereNotNull('account_number')
-                    ->orWhereNotNull('name');
-            })
-            ->orderBy('type')
-            ->orderBy('name')
-            ->get();
+        // حسابات التحويل اليدوي للمنصة
+        $wallets = \App\Services\PlatformPaymentAccountService::activeAccounts();
 
         $fawaterakGatewayOn = PaymentGatewaySettings::isFawaterakEnabled();
         $fawaterakApi = app(FawaterakApiService::class);
@@ -1350,28 +1340,23 @@ class CheckoutController extends Controller
 
         $proofRequired = $pricing['final_amount'] > 0.009;
 
-        // التحقق من صحة البيانات (حساب الاستلام على المنصة إلزامي للتحويل حتى يُسجَّل الإيداع عند الموافقة)
-        $validated = $request->validate([
+        $manualRules = \App\Services\PlatformPaymentAccountService::manualPaymentRules(requireProof: $proofRequired);
+        $validated = $request->validate(array_merge([
             'payment_method' => 'required|in:bank_transfer,wallet,cash,other',
-            'wallet_id' => [
-                'nullable',
-                'required_if:payment_method,bank_transfer',
-                'required_if:payment_method,wallet',
-                Rule::exists('wallets', 'id')->where('is_active', true)->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer']),
-            ],
-            'payment_proof' => ($proofRequired ? 'required|' : 'nullable|').'image|mimes:jpeg,png,jpg|max:'.config('upload_limits.max_upload_kb'),
             'notes' => 'nullable|string|max:1000',
-        ], [
+        ], in_array($request->input('payment_method'), ['bank_transfer', 'wallet'], true)
+            ? $manualRules
+            : [
+                'wallet_id' => ['nullable'],
+                'payment_proof' => $proofRequired
+                    ? ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120']
+                    : ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
+            ]
+        ), array_merge(\App\Services\PlatformPaymentAccountService::manualPaymentMessages(), [
             'payment_method.required' => 'طريقة الدفع مطلوبة',
             'payment_method.in' => 'طريقة الدفع غير صحيحة',
-            'wallet_id.required_if' => 'يجب اختيار حساب التحويل على المنصة حتى يُسجَّل المبلغ على المحفظة الصحيحة عند الموافقة.',
-            'wallet_id.exists' => 'المحفظة المختارة غير صالحة أو غير متاحة. يرجى اختيار محفظة من القائمة.',
-            'payment_proof.required' => 'صورة إيصال الدفع مطلوبة',
-            'payment_proof.image' => 'يجب أن يكون الملف صورة',
-            'payment_proof.mimes' => 'يجب أن تكون الصورة بصيغة jpeg, png أو jpg',
-            'payment_proof.max' => 'حجم الصورة يجب ألا يتجاوز 2 ميجابايت',
             'notes.max' => 'الملاحظات يجب ألا تتجاوز 1000 حرف',
-        ]);
+        ]));
 
         DB::beginTransaction();
         try {

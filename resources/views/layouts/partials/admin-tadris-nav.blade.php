@@ -12,6 +12,9 @@
         <i class="fas fa-chevron-down chevron" :class="open ? 'rotate-180' : ''"></i>
     </button>
     <ul x-show="open" x-cloak class="mt-1 mr-3 space-y-0.5 border-r border-white/10 pr-3">
+        @if(! empty($section['note']))
+            <li class="px-2 pb-1 text-[10px] leading-snug text-white/45">{{ $section['note'] }}</li>
+        @endif
         @foreach($section['items'] as $item)
             <li>
                 <a href="{{ $item['url'] }}" class="sidebar-sub-link {{ $item['active'] ? 'active' : '' }}">

@@ -6,7 +6,7 @@ return [
     'overview' => 'Overview',
     'courses' => 'Courses',
     'students' => 'Students',
-    'my_courses' => 'My Courses',
+    'my_courses' => 'Assigned recorded courses',
     'course' => 'course',
     'my_offline_courses' => 'My Offline Courses',
     'offline_course' => 'offline course',

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تقارير المحفظة')
-@section('page_title', 'تقارير المحفظة')
+@section('title', 'تقارير الحساب')
+@section('page_title', 'تقارير الحساب')
 
 @section('content')
 @php
@@ -23,8 +23,8 @@
 <div class="space-y-5">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">المالية · المحافظ · التقارير</p>
-            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ $wallet->name ?? 'محفظة بدون اسم' }}</h2>
+            <p class="text-xs font-medium text-muted">المالية · الحسابات · التقارير</p>
+            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ $wallet->name ?? 'حساب بدون اسم' }}</h2>
             <p class="mt-1 text-sm text-muted">
                 <i class="fas fa-user-circle text-xs"></i>
                 {{ $wallet->user?->name ?? 'غير مرتبط بمستخدم' }}
@@ -53,7 +53,7 @@
     <article class="overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
         <div class="border-b border-line px-4 py-4 sm:px-5">
             <h3 class="text-base font-semibold text-ink">إنشاء تقرير جديد</h3>
-            <p class="mt-0.5 text-xs text-muted">حدد نطاق التاريخ ثم أنشئ تقريراً مفصلاً للمحفظة</p>
+            <p class="mt-0.5 text-xs text-muted">حدد نطاق التاريخ ثم أنشئ تقريراً مفصلاً للحساب</p>
         </div>
         <form action="{{ route('admin.wallets.generate-report', $wallet) }}" method="POST" class="flex flex-col gap-4 p-4 sm:flex-row sm:flex-wrap sm:items-end sm:p-5">
             @csrf
@@ -76,7 +76,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-4 sm:px-5">
             <div>
                 <h3 class="text-base font-semibold text-ink">التقارير المحفوظة</h3>
-                <p class="mt-0.5 text-xs text-muted">سجل التقارير المالية السابقة للمحفظة</p>
+                <p class="mt-0.5 text-xs text-muted">سجل التقارير المالية السابقة للحساب</p>
             </div>
             <span class="inline-flex rounded-lg bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">{{ $reports->count() }} تقرير</span>
         </div>

@@ -58,8 +58,8 @@
 
     <article class="rounded-2xl border border-accent/20 bg-accent-soft/30 p-5 shadow-soft">
         <div class="mb-4">
-            <h3 class="text-base font-semibold text-ink">تفعيل المدرب · مسارات · كورسات · خدمات</h3>
-            <p class="mt-1 text-sm text-muted">حدّد ما يقدّمه المدرب للمعلمين. خدمة «المسارات التعليمية» تُفعَّل تلقائيًا عند منح مسارات محددة.</p>
+            <h3 class="text-base font-semibold text-ink">تفعيل المدرب · مسارات مسندة · كورسات مسجّلة · خدمات</h3>
+            <p class="mt-1 text-sm text-muted">إسناد مسار يفعّل خدمة «المسارات التعليمية» تلقائيًا؛ إسناد كورس مسجّل يفعّل خدمة «الكورسات». المدرب يرى التوصيف/المنهج حسب الإسناد.</p>
         </div>
         <form method="POST" action="{{ route('admin.academy-instructors.grants.update', $instructor) }}" class="space-y-5">
             @csrf
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div>
-                    <p class="mb-2 text-xs font-semibold text-muted">المسارات التعليمية المسموحة</p>
+                    <p class="mb-2 text-xs font-semibold text-muted">مسارات تعليمية مسندة</p>
                     <div class="max-h-64 space-y-1 overflow-y-auto rounded-xl border border-line bg-surface p-3">
                         @forelse($allLearningPaths as $path)
                             <label class="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-canvas">
@@ -113,7 +113,7 @@
                     </div>
                 </div>
                 <div>
-                    <p class="mb-2 text-xs font-semibold text-muted">الكورسات المسموحة</p>
+                    <p class="mb-2 text-xs font-semibold text-muted">كورسات مسجّلة مسندة</p>
                     <div class="max-h-64 space-y-1 overflow-y-auto rounded-xl border border-line bg-surface p-3">
                         @forelse($allCourses as $course)
                             <label class="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-canvas">

@@ -88,8 +88,8 @@ class AbortIfPlatformModuleDisabled
             'admin/crm' => 'crm_sales',
             'admin/sales/leads' => 'crm_sales',
 
-            // Admin — legacy finance (keep invoices/payments/transactions)
-            'admin/wallets' => 'legacy_finance',
+            // Admin — receiving accounts (manual payment) stay with payments; salaries/installments remain legacy
+            'admin/wallets' => 'payments',
             'admin/salaries' => 'legacy_finance',
             'admin/installments' => 'legacy_finance',
             'admin/instructor-accounts' => 'legacy_finance',

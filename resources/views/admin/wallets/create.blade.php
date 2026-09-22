@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'إضافة محفظة جديدة - ' . config('app.name'))
-@section('page_title', 'إضافة محفظة جديدة')
+@section('title', 'إضافة حساب - ' . config('app.name'))
+@section('page_title', 'إضافة حساب')
 
 @section('content')
 @php
@@ -13,22 +13,22 @@
 <div class="space-y-5">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">المالية · المحافظ · إنشاء</p>
-            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">إضافة محفظة جديدة</h2>
-            <p class="mt-1 text-sm text-muted">إعداد محفظة للدفع أو التحويل (فودافون كاش، إنستا باي، تحويل بنكي، إلخ).</p>
+            <p class="text-xs font-medium text-muted">المالية · الحسابات · إنشاء</p>
+            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">إضافة حساب</h2>
+            <p class="mt-1 text-sm text-muted">بيانات الحساب الذي سيحوّل عليه المعلمون (فودافون كاش، إنستا باي، تحويل بنكي) وتظهر في صفحات الدفع اليدوي.</p>
         </div>
         <div class="admin-hero-actions flex flex-wrap gap-2">
             <a href="{{ route('admin.wallets.index') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl border border-line bg-surface px-4 text-sm font-medium text-ink-soft transition hover:border-accent/30 hover:text-accent">
                 <i class="fas fa-arrow-right text-xs"></i>
-                العودة للمحافظ
+                العودة للحسابات
             </a>
         </div>
     </section>
 
     <article class="overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
         <div class="border-b border-line px-4 py-4 sm:px-5">
-            <h3 class="text-base font-semibold text-ink">بيانات المحفظة</h3>
-            <p class="mt-0.5 text-xs text-muted">أدخل معلومات المحفظة والرصيد الابتدائي</p>
+            <h3 class="text-base font-semibold text-ink">بيانات الحساب</h3>
+            <p class="mt-0.5 text-xs text-muted">أدخل اسم الحساب ورقم التحويل وصاحب الحساب</p>
         </div>
 
         <form action="{{ route('admin.wallets.store') }}" method="POST" class="space-y-6 p-4 sm:p-5">
@@ -36,7 +36,7 @@
 
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <label class="{{ $labelClass }}" for="name">اسم المحفظة <span class="text-rose-500">*</span></label>
+                    <label class="{{ $labelClass }}" for="name">اسم الحساب <span class="text-rose-500">*</span></label>
                     <input id="name" type="text" name="name" value="{{ old('name') }}" required maxlength="255" class="{{ $fieldClass }}" placeholder="مثال: فودافون كاش - 01000000000">
                     @error('name')
                         <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div>
-                    <label class="{{ $labelClass }}" for="wallet-type">نوع المحفظة <span class="text-rose-500">*</span></label>
+                    <label class="{{ $labelClass }}" for="wallet-type">نوع الحساب <span class="text-rose-500">*</span></label>
                     <select name="type" id="wallet-type" required class="{{ $fieldClass }}">
                         <option value="">اختر النوع</option>
                         <option value="vodafone_cash" {{ old('type') == 'vodafone_cash' ? 'selected' : '' }}>فودافون كاش</option>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div>
-                    <label class="{{ $labelClass }}" for="account_number">رقم الحساب / المحفظة</label>
+                    <label class="{{ $labelClass }}" for="account_number">رقم الحساب</label>
                     <input id="account_number" type="text" name="account_number" value="{{ old('account_number') }}" maxlength="100" class="{{ $fieldClass }}" placeholder="مثال: 01000000000">
                     @error('account_number')
                         <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
@@ -93,7 +93,7 @@
 
             <div>
                 <label class="{{ $labelClass }}" for="notes">ملاحظات</label>
-                <textarea id="notes" name="notes" rows="3" maxlength="1000" class="{{ $areaClass }} resize-none" placeholder="أي تفاصيل إضافية عن المحفظة">{{ old('notes') }}</textarea>
+                <textarea id="notes" name="notes" rows="3" maxlength="1000" class="{{ $areaClass }} resize-none" placeholder="أي تفاصيل إضافية عن الحساب">{{ old('notes') }}</textarea>
                 @error('notes')
                     <p class="mt-1 text-xs text-rose-600">{{ $message }}</p>
                 @enderror
@@ -101,7 +101,7 @@
 
             <div class="flex items-center gap-3 rounded-xl border border-line bg-canvas/40 px-4 py-3">
                 <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }} class="size-4 rounded border-line text-accent focus:ring-accent/20">
-                <label for="is_active" class="text-sm font-medium text-ink">المحفظة نشطة</label>
+                <label for="is_active" class="text-sm font-medium text-ink">الحساب نشط</label>
             </div>
 
             <div class="flex flex-wrap items-center justify-end gap-2 border-t border-line pt-4">
@@ -110,7 +110,7 @@
                 </a>
                 <button type="submit" class="btn-press inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-5 text-sm font-medium text-white">
                     <i class="fas fa-save text-xs"></i>
-                    حفظ المحفظة
+                    حفظ الحساب
                 </button>
             </div>
         </form>

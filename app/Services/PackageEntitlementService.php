@@ -11,12 +11,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * تفعيل باقة تدريس لاب: مسارات + جلسات استشارة + أدوات/مقاعد.
+ * تفعيل باقة تدريس لاب: مسارات + كورسات مسجّلة + جلسات استشارة + أدوات/مقاعد.
  */
 class PackageEntitlementService
 {
     /**
-     * @return array{entitlement: ?UserPackageEntitlement, path_enrollments: list}
+     * @return array{
+     *   entitlement: ?UserPackageEntitlement,
+     *   path_enrollments: list,
+     *   course_enrollments: list
+     * }
      */
     public static function activateForUser(
         Package $package,
@@ -34,8 +38,13 @@ class PackageEntitlementService
         DB::transaction(function () use ($package, $user, $order, $activatedBy, $expiresAt, &$entitlement) {
             if (Schema::hasTable('user_package_entitlements')) {
                 $sessions = (int) ($package->consultation_sessions ?? 0);
-                $includesTools = (bool) $package->includes_tools
-                    || (method_exists($package, 'teacherTools') && $package->teacherTools()->exists());
+                $includesTools = (bool) $package->includes_tools;
+                if (! $includesTools
+                    && method_exists($package, 'teacherTools')
+                    && Schema::hasTable('teacher_tools')
+                    && Schema::hasTable('package_teacher_tool')) {
+                    $includesTools = $package->teacherTools()->exists();
+                }
 
                 $entitlement = UserPackageEntitlement::query()->updateOrCreate(
                     [
@@ -65,12 +74,22 @@ class PackageEntitlementService
             $activatedBy
         );
 
+        $courseEnrollments = CourseSubscriptionService::activatePackageCoursesForUser(
+            $package,
+            $user,
+            $order,
+            $activatedBy
+        );
+
         try {
+            $summary = count($pathEnrollments).' مسار · '.
+                count($courseEnrollments).' كورس مسجّل · '.
+                ((int) ($package->consultation_sessions ?? 0)).' جلسة استشارة';
+
             event(new \App\Events\AccessSubscriptionActivated(
                 $user,
                 'باقة: '.($package->name ?: ('#'.$package->id)),
-                count($pathEnrollments).' مسار · '.
-                ((int) ($package->consultation_sessions ?? 0)).' جلسة استشارة',
+                $summary,
                 $order?->id
             ));
         } catch (\Throwable $e) {
@@ -80,6 +99,7 @@ class PackageEntitlementService
         return [
             'entitlement' => $entitlement,
             'path_enrollments' => $pathEnrollments,
+            'course_enrollments' => $courseEnrollments,
         ];
     }
 

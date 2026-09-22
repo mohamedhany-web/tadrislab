@@ -12,7 +12,10 @@
         <div>
             <p class="text-xs text-muted"><a href="{{ route('admin.institutions.index') }}" class="hover:text-accent">الجهات</a></p>
             <h2 class="mt-1 text-2xl font-semibold text-ink">{{ $institution->name_ar }}</h2>
-            <p class="mt-1 text-sm text-muted">{{ $orgTypes[$institution->org_type] ?? '' }} · {{ $institution->city }} {{ $institution->country }}</p>
+            <p class="mt-1 text-sm text-muted">{{ $orgTypes[$institution->org_type] ?? '' }} · {{ $institution->engagementModeLabel() }} · {{ $institution->city }} {{ $institution->country }}</p>
+            @if($institution->seat_limit)
+                <p class="mt-1 text-xs text-muted">حد مقاعد المنصة: {{ $institution->seat_limit }}</p>
+            @endif
         </div>
         <div class="flex flex-wrap gap-2">
             <a href="{{ route('admin.institution-programs.create', ['institution_id' => $institution->id]) }}" class="btn-press inline-flex h-9 items-center rounded-xl bg-accent px-4 text-sm font-medium text-white">برنامج جديد</a>

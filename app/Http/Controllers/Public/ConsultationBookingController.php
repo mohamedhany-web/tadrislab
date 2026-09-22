@@ -124,7 +124,7 @@ class ConsultationBookingController extends Controller
             && ! $isFree
             && $availableWallets->isNotEmpty()
             && $request->input('payment_method') === 'bank_transfer') {
-            $walletRules = ['required', 'integer', 'exists:wallets,id'];
+            $walletRules = \App\Services\PlatformPaymentAccountService::manualPaymentRules(requireProof: false)['wallet_id'];
         }
 
         $needsGatewayPayment = ! $usePackageSession && ! $isFree;
@@ -149,15 +149,14 @@ class ConsultationBookingController extends Controller
             ],
             'payment_reference' => ['nullable', 'string', 'max:500'],
             'use_package_session' => ['nullable', 'boolean'],
-        ], [
+        ], array_merge(\App\Services\PlatformPaymentAccountService::manualPaymentMessages(), [
             'instructor_id.required' => 'اختر المستشار/المدرب.',
             'contact_name.required' => 'الاسم مطلوب.',
             'contact_phone.required' => 'رقم واتساب مطلوب لإرسال تفاصيل الموعد.',
             'contact_email.required' => 'البريد مطلوب.',
             'organization_name.required' => 'اسم الجهة مطلوب لاستشارات المؤسسات.',
             'payment_method.required' => 'اختر طريقة الدفع.',
-            'payment_proof.required' => 'أرفق إيصال التحويل.',
-        ]);
+        ]));
 
         $instructorId = $data['instructor_id'] ?? $service->default_instructor_id;
         if ($service->requires_instructor && ! $instructorId) {
@@ -413,9 +412,8 @@ class ConsultationBookingController extends Controller
 
     private function platformWalletsQuery()
     {
-        return Wallet::where('is_active', true)
-            ->whereNotNull('type')
-            ->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer'])
+        return \App\Services\PlatformPaymentAccountService::query()
+            ->where('is_active', true)
             ->where(function ($query) {
                 $query->whereNotNull('account_number')
                     ->orWhereNotNull('name');

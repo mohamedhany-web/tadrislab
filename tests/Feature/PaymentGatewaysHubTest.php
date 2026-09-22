@@ -42,7 +42,7 @@ class PaymentGatewaysHubTest extends TestCase
         $this->assertSame('secret-value', KashierSettings::secret());
         $this->assertNotSame('secret-value', Setting::getValue(KashierSettings::SECRET_KEY));
         $this->assertNotSame('api-key-test', Setting::getValue(KashierSettings::API_KEY_KEY));
-        $this->assertTrue(PaymentGatewaySettings::blocksManualCheckout());
+        $this->assertFalse(PaymentGatewaySettings::blocksManualCheckout());
         $this->assertTrue(PaymentGatewaySettings::paidMatchesOrder(100.5, 'EGP', 100.50, 'egp'));
         $this->assertFalse(PaymentGatewaySettings::paidMatchesOrder(100.5, 'EGP', 1.00, 'USD'));
     }

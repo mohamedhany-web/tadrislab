@@ -187,6 +187,8 @@ class InstitutionController extends Controller
             'name_en' => ['nullable', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255', 'alpha_dash', Rule::unique('institutions', 'slug')->ignore($ignoreId)],
             'org_type' => ['required', Rule::in(Institution::ORG_TYPES)],
+            'default_engagement_mode' => ['required', Rule::in([Institution::ENGAGEMENT_DIRECT, Institution::ENGAGEMENT_PLATFORM])],
+            'seat_limit' => ['nullable', 'integer', 'min:1', 'max:100000'],
             'country' => ['nullable', 'string', 'max:80'],
             'city' => ['nullable', 'string', 'max:80'],
             'contact_name' => ['nullable', 'string', 'max:255'],

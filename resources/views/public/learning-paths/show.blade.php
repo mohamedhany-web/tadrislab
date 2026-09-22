@@ -81,6 +81,14 @@
         </div>
       @endif
 
+      @if($path->skillFocus())
+        <div class="lasles-path-detail-about" style="margin-top:1.5rem">
+          <p class="lasles-path-kicker">{{ $isRtl ? 'ماذا ستتعلم' : 'What you will learn' }}</p>
+          <h2 class="lasles-path-detail-about__title">{{ $isRtl ? 'المهارة المستهدفة' : 'Target skill' }}</h2>
+          <p class="lasles-path-detail-about__text">{{ $path->skillFocus() }}</p>
+        </div>
+      @endif
+
       <div class="lasles-path-detail-body__head">
         <p class="lasles-path-kicker">{{ __('landing.learning_paths.outline_kicker') }}</p>
         <h2 id="path-outline-title" class="lasles-path-detail-body__title">{{ __('landing.learning_paths.outline_title') }}</h2>

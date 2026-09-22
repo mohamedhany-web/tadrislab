@@ -21,6 +21,25 @@
         </select>
         <p class="mt-1 text-[11px] text-muted">تصنيف عرض فقط — المحور التجاري واحد للجميع.</p>
     </div>
+    <div class="sm:col-span-2 rounded-xl border border-accent/20 bg-accent-soft/20 p-4">
+        <p class="mb-2 text-xs font-semibold text-accent">مسار التعاقد الافتراضي</p>
+        <div class="grid gap-3 sm:grid-cols-2">
+            <div>
+                <label class="mb-1.5 block text-xs font-medium text-muted">نوع التعاقد *</label>
+                <select name="default_engagement_mode" required class="{{ $field }}">
+                    @foreach(\App\Models\Institution::engagementModeLabels() as $key => $label)
+                        <option value="{{ $key }}" @selected(old('default_engagement_mode', $i->default_engagement_mode ?? 'platform_access') === $key)>{{ $label }}</option>
+                    @endforeach
+                </select>
+                <p class="mt-1 text-[11px] text-muted">تعاقد منصة = مقاعد + لوحة منسق · تعاقد مباشر = مدرب ينفّذ للجهة</p>
+            </div>
+            <div>
+                <label class="mb-1.5 block text-xs font-medium text-muted">حد مقاعد المنصة (للجهة)</label>
+                <input type="number" name="seat_limit" min="1" value="{{ old('seat_limit', $i->seat_limit ?? '') }}" class="{{ $field }}" placeholder="اختياري — لتعاقد المنصة">
+                <p class="mt-1 text-[11px] text-muted">يُطبَّق عند إضافة مشاركين إن لم يُحدد حد لكل برنامج.</p>
+            </div>
+        </div>
+    </div>
     <div>
         <label class="mb-1.5 block text-xs font-medium text-muted">الدولة</label>
         <input type="text" name="country" value="{{ old('country', $i->country ?? '') }}" class="{{ $field }}">

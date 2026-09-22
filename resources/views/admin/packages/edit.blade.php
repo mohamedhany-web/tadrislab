@@ -175,7 +175,8 @@
         </article>
 
         <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
-            <label class="{{ $labelClass }}">البرامج في الباقة <span class="text-muted font-normal">(اختياري)</span></label>
+            <label class="{{ $labelClass }}">الكورسات المسجّلة في الباقة <span class="text-muted font-normal">(اختياري)</span></label>
+            <p class="mb-2 text-xs text-muted">تفعيل الباقة يفتح هذه الكورسات المسجّلة تلقائيًا للمتعلم.</p>
             <div class="mt-2 max-h-72 space-y-1 overflow-y-auto rounded-xl border border-line p-3">
                 @forelse($courses as $course)
                     <label class="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-[#f8faf9]">
@@ -194,14 +195,14 @@
                         </span>
                     </label>
                 @empty
-                    <p class="py-6 text-center text-sm text-muted">لا توجد برامج نشطة</p>
+                    <p class="py-6 text-center text-sm text-muted">لا توجد كورسات مسجّلة نشطة</p>
                 @endforelse
             </div>
         </article>
 
         <article class="rounded-2xl border border-accent/20 bg-accent-soft/20 p-5 shadow-soft">
-            <label class="{{ $labelClass }}">المسارات التعليمية في الباقة</label>
-            <p class="mb-2 text-xs text-muted">تفعيل الباقة للمعلم يفتح هذه المسارات تلقائيًا.</p>
+            <label class="{{ $labelClass }}">المسارات التعليمية في الباقة <span class="text-muted font-normal">(اختياري)</span></label>
+            <p class="mb-2 text-xs text-muted">تفعيل الباقة للمعلم يفتح هذه المسارات تلقائيًا (منفصل عن الكورسات المسجّلة).</p>
             <div class="mt-2 max-h-72 space-y-1 overflow-y-auto rounded-xl border border-line bg-surface p-3">
                 @forelse(($learningPaths ?? collect()) as $path)
                     <label class="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 hover:bg-[#f8faf9]">

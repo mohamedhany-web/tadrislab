@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'تفاصيل المحفظة')
-@section('page_title', 'تفاصيل المحفظة')
+@section('title', 'تفاصيل الحساب')
+@section('page_title', 'تفاصيل الحساب')
 
 @section('content')
 @php
     $kpis = [
         ['label' => 'الرصيد الحالي', 'value' => number_format($wallet->balance, 2), 'icon' => 'fa-coins', 'tone' => 'accent', 'note' => 'الرصيد المتاح حالياً بعد آخر حركة', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
-        ['label' => 'إجمالي الإيداعات', 'value' => number_format($metrics['total_deposits'] ?? 0, 2), 'icon' => 'fa-arrow-down', 'tone' => 'accent', 'note' => 'جميع المبالغ المضافة منذ إنشاء المحفظة', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
-        ['label' => 'إجمالي السحوبات', 'value' => number_format($metrics['total_withdrawals'] ?? 0, 2), 'icon' => 'fa-arrow-up', 'tone' => 'muted', 'note' => 'جميع المبالغ المسحوبة من المحفظة', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
+        ['label' => 'إجمالي الإيداعات', 'value' => number_format($metrics['total_deposits'] ?? 0, 2), 'icon' => 'fa-arrow-down', 'tone' => 'accent', 'note' => 'جميع المبالغ المضافة منذ إنشاء الحساب', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
+        ['label' => 'إجمالي السحوبات', 'value' => number_format($metrics['total_withdrawals'] ?? 0, 2), 'icon' => 'fa-arrow-up', 'tone' => 'muted', 'note' => 'جميع المبالغ المسحوبة من الحساب', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
         ['label' => 'صافي التدفقات', 'value' => number_format($metrics['net_flow'] ?? 0, 2), 'icon' => 'fa-balance-scale', 'tone' => 'metal', 'note' => 'الفرق بين الإيداعات والسحوبات', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
     ];
     $toneClass = [
@@ -21,9 +21,9 @@
 <div class="space-y-5">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">المالية · المحافظ · تفاصيل</p>
+            <p class="text-xs font-medium text-muted">المالية · الحسابات · تفاصيل</p>
             <div class="mt-1 flex flex-wrap items-center gap-2">
-                <h2 class="text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ $wallet->name ?? 'محفظة بدون اسم' }}</h2>
+                <h2 class="text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ $wallet->name ?? 'حساب بدون اسم' }}</h2>
                 <span class="inline-flex items-center gap-1.5 rounded-lg bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">
                     <i class="fas fa-tag text-[10px]"></i>
                     {{ $wallet->type_name }}
@@ -65,12 +65,12 @@
                 <i class="fas fa-edit text-xs"></i>
                 تعديل البيانات
             </a>
-            <form action="{{ route('admin.wallets.destroy', $wallet) }}" method="POST" class="inline" onsubmit="return confirm('هل أنت متأكد من إزالة هذه المحفظة؟ سيتم حذف المحفظة نهائياً.');">
+            <form action="{{ route('admin.wallets.destroy', $wallet) }}" method="POST" class="inline" onsubmit="return confirm('هل أنت متأكد من إزالة هذا الحساب؟ سيتم حذف المحفظة نهائياً.');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl border border-line px-4 text-sm font-medium text-rose-600 transition hover:border-rose-300 hover:bg-rose-50">
                     <i class="fas fa-trash text-xs"></i>
-                    إزالة المحفظة
+                    إزالة الحساب
                 </button>
             </form>
         </div>
@@ -126,7 +126,7 @@
 
             <article class="overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
                 <div class="border-b border-line px-4 py-4 sm:px-5">
-                    <h3 class="text-base font-semibold text-ink">تفاصيل المحفظة</h3>
+                    <h3 class="text-base font-semibold text-ink">تفاصيل الحساب</h3>
                     <p class="mt-0.5 text-xs text-muted">بيانات الحساب والرصيد المعلق</p>
                 </div>
                 <dl class="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 sm:p-5">
@@ -135,7 +135,7 @@
                         <dd class="mt-1 text-sm font-semibold text-ink">{{ $wallet->account_holder ?? $wallet->user?->name ?? 'غير محدد' }}</dd>
                     </div>
                     <div>
-                        <dt class="text-xs font-medium text-muted">رقم الحساب / المحفظة</dt>
+                        <dt class="text-xs font-medium text-muted">رقم الحساب</dt>
                         <dd class="mt-1 text-sm font-semibold text-ink">{{ $wallet->account_number ?? 'غير متوفر' }}</dd>
                     </div>
                     <div>
@@ -199,7 +199,7 @@
                             <i class="fas fa-inbox"></i>
                         </div>
                         <p class="text-sm font-medium text-ink">لا توجد معاملات مسجلة</p>
-                        <p class="mt-1 text-xs text-muted">لا توجد معاملات مسجلة لهذه المحفظة حتى الآن.</p>
+                        <p class="mt-1 text-xs text-muted">لا توجد معاملات مسجلة لهذا الحساب حتى الآن.</p>
                     </div>
                 @endforelse
             </div>

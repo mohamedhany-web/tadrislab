@@ -137,7 +137,7 @@
                         @hasPermission('manage.wallets')
                         <li><a href="{{ route('admin.wallets.index') }}" class="flex items-center gap-2 px-4 py-2 text-sm rounded-lg hover:bg-gradient-to-r hover:from-sky-50 hover:to-slate-50 dark:hover:from-gray-700 dark:hover:to-gray-800 transition-all duration-300 text-gray-600 dark:text-gray-400 hover:text-sky-700 dark:hover:text-sky-300 {{ request()->routeIs('admin.wallets.*') ? 'bg-gradient-to-r from-sky-100 to-slate-100 dark:from-sky-900/30 dark:to-slate-900/30 text-sky-700 dark:text-sky-300 font-semibold' : '' }}">
                             <i class="fas fa-wallet w-4"></i>
-                            <span>المحافظ</span>
+                            <span>الحسابات</span>
                         </a></li>
                         @endhasPermission
                         @hasPermission('manage.expenses')
@@ -389,12 +389,12 @@
             @endhasAnyPermission
 
             @hasPermission('view.wallets')
-                <!-- إدارة المحافظ الذكية -->
+                <!-- إدارة الحسابات (تحويل يدوي) -->
                 <li>
                     <a href="{{ route('admin.wallets.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative overflow-hidden group {{ request()->routeIs('admin.wallets.*') ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-lg shadow-sky-500/30' : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-sky-50 hover:to-slate-50 dark:hover:from-gray-700 dark:hover:to-gray-800' }}">
                         <div class="absolute inset-0 bg-gradient-to-r from-sky-400 to-slate-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-                        <i class="fas fa-wallet w-5 relative z-10 {{ request()->routeIs('admin.wallets.*') ? 'text-white' : 'text-sky-600 dark:text-sky-400 group-hover:text-sky-600 dark:group-hover:text-sky-400' }}"></i>
-                        <span class="relative z-10 font-semibold">المحافظ الذكية</span>
+                        <i class="fas fa-university w-5 relative z-10 {{ request()->routeIs('admin.wallets.*') ? 'text-white' : 'text-sky-600 dark:text-sky-400 group-hover:text-sky-600 dark:group-hover:text-sky-400' }}"></i>
+                        <span class="relative z-10 font-semibold">الحسابات</span>
                         @if(request()->routeIs('admin.wallets.*'))
                             <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-sky-400 to-slate-400 rounded-r"></div>
                         @endif

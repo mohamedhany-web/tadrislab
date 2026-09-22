@@ -354,7 +354,21 @@ class TadrisModulesWiringAndSidebarTest extends TestCase
 
         $sectionKeys = collect($hubs)->flatMap(fn ($h) => collect($h['sections'])->pluck('key'))->all();
         $this->assertContains('crm', $sectionKeys);
+        $this->assertContains('accounting', $sectionKeys);
+        $accountingItems = collect($hubs)
+            ->flatMap(fn ($h) => $h['sections'])
+            ->firstWhere('key', 'accounting')['items'] ?? [];
+        $accountingLabels = collect($accountingItems)->pluck('label')->all();
+        $this->assertContains('الحسابات', $accountingLabels);
+        $this->assertContains('الفواتير', $accountingLabels);
+        $this->assertContains('المعاملات', $accountingLabels);
+        $this->assertContains('المدفوعات', $accountingLabels);
+        $this->assertContains('المصروفات', $accountingLabels);
+        $this->assertContains('تقارير المحاسبة', $accountingLabels);
         $this->assertContains('learning_paths', $sectionKeys);
+        $this->assertContains('institution_accounts', $sectionKeys);
+        $this->assertContains('institution_platform_access', $sectionKeys);
+        $this->assertContains('institution_direct_delivery', $sectionKeys);
         $this->assertContains('inquiries', $sectionKeys);
         $this->assertFalse((bool) config('admin_nav.show_legacy_ops'));
     }
@@ -374,8 +388,10 @@ class TadrisModulesWiringAndSidebarTest extends TestCase
 
         $itemLabels = collect($hubs)->flatMap(fn ($h) => collect($h['sections'])->flatMap(fn ($s) => collect($s['items'])->pluck('label')))->all();
         $this->assertContains('Manage packages', $itemLabels);
-        $this->assertContains('CRM dashboard', $itemLabels);
+        $this->assertContains('Sales dashboard', $itemLabels);
         $this->assertContains('Notification center', $itemLabels);
+        $this->assertContains('Platform contract · seats & tracking', collect($hubs)->flatMap(fn ($h) => collect($h['sections'])->pluck('label'))->all());
+        $this->assertContains('Direct contract · coach delivery', collect($hubs)->flatMap(fn ($h) => collect($h['sections'])->pluck('label'))->all());
     }
 
     public function test_teacher_can_read_lesson_practice_and_complete(): void
@@ -556,7 +572,7 @@ class TadrisModulesWiringAndSidebarTest extends TestCase
             ->get(route('admin.packages.index'))
             ->assertOk()
             ->assertSee('١ · المنتجات والمحتوى', false)
-            ->assertSee('CRM المؤسسات والمعلمين', false)
+            ->assertSee('مسار البيع والفرص', false)
             ->assertDontSee('تشغيل داخلي (إرث)', false);
     }
 
@@ -568,8 +584,8 @@ class TadrisModulesWiringAndSidebarTest extends TestCase
             ->get(route('admin.packages.index', ['lang' => 'en']))
             ->assertOk()
             ->assertSee('1 · Products & Content')
-            ->assertSee('Institution & teacher CRM')
+            ->assertSee('Sales pipeline & leads')
             ->assertSee('العربية', false)
-            ->assertSee('Pricing and Packages');
+            ->assertSee('Manage packages');
     }
 }

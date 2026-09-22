@@ -26,10 +26,10 @@ class PaymentGatewaySettings
         return KashierSettings::isEnabled();
     }
 
-    /** أي بوابة أونلاين مفعّلة تمنع الدفع اليدوي من صفحة إتمام الطلب. */
+    /** الدفع اليدوي عبر «الحسابات» يبقى متاحًا بجانب البوابات الأونلاين. */
     public static function blocksManualCheckout(): bool
     {
-        return self::isFawaterakEnabled() || PayPalSettings::isEnabled() || KashierSettings::isEnabled();
+        return false;
     }
 
     /**

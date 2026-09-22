@@ -131,11 +131,7 @@ class OrderController extends Controller
             'tutoringGroupBookings.classroomMeeting:id,code',
         ]);
 
-        $platformWallets = Wallet::where('is_active', true)
-            ->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer'])
-            ->orderBy('type')
-            ->orderBy('name')
-            ->get();
+        $platformWallets = \App\Services\PlatformPaymentAccountService::activeAccounts();
 
         $salesEmployees = User::query()
             ->where('is_employee', true)
@@ -245,18 +241,12 @@ class OrderController extends Controller
         }
 
         $validated = $request->validate([
-            'wallet_id' => [
-                'required',
-                Rule::exists('wallets', 'id')->where('is_active', true)->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer']),
-            ],
-        ], [
-            'wallet_id.required' => 'اختر حساب الاستلام على المنصة.',
-            'wallet_id.exists' => 'الحساب غير صالح أو غير مفعّل.',
-        ]);
+            'wallet_id' => \App\Services\PlatformPaymentAccountService::manualPaymentRules(requireProof: false)['wallet_id'],
+        ], \App\Services\PlatformPaymentAccountService::manualPaymentMessages());
 
         $order->update(['wallet_id' => $validated['wallet_id']]);
 
-        return back()->with('success', 'تم حفظ حساب الاستلام. عند الموافقة سيُسجَّل المبلغ على هذه المحفظة وفي سجل المعاملات.');
+        return back()->with('success', 'تم حفظ حساب الاستلام. عند الموافقة سيُسجَّل المبلغ على هذا الحساب وفي سجل المعاملات.');
     }
 
     /**

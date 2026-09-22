@@ -214,7 +214,7 @@
             </article>
 
             <article class="rounded-2xl border border-line bg-surface p-5 shadow-soft">
-                <h3 class="text-sm font-semibold text-ink">البرامج في الباقة ({{ $package->courses->count() }})</h3>
+                <h3 class="text-sm font-semibold text-ink">الكورسات المسجّلة في الباقة ({{ $package->courses->count() }})</h3>
                 @if($package->courses->count() > 0)
                     <div class="mt-4 grid gap-3 sm:grid-cols-2">
                         @foreach($package->courses as $course)
@@ -236,7 +236,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="mt-4 text-center text-sm text-muted py-6">لا توجد برامج في هذه الباقة</p>
+                    <p class="mt-4 text-center text-sm text-muted py-6">لا كورسات مسجّلة مربوطة بهذه الباقة</p>
                 @endif
             </article>
         </div>

@@ -9,10 +9,25 @@
     <p style="font-size:1.4rem;font-weight:700;margin:1rem 0">{{ $package->formattedPrice(2) }}</p>
 
     @if($package->learningPaths->isNotEmpty())
-      <h2 class="lasles-section-title" style="font-size:1.15rem">المسارات المشمولة</h2>
+      <h2 class="lasles-section-title" style="font-size:1.15rem">المسارات التعليمية المشمولة</h2>
       <ul>
         @foreach($package->learningPaths as $path)
           <li><a href="{{ route('public.learning-paths.show', $path->slug) }}">{{ $path->title() }}</a></li>
+        @endforeach
+      </ul>
+    @endif
+
+    @if($package->courses->isNotEmpty())
+      <h2 class="lasles-section-title" style="font-size:1.15rem;margin-top:1.5rem">الكورسات المسجّلة المشمولة</h2>
+      <ul>
+        @foreach($package->courses as $course)
+          <li>
+            @if(Route::has('public.course.show'))
+              <a href="{{ route('public.course.show', $course->id) }}">{{ $course->title }}</a>
+            @else
+              {{ $course->title }}
+            @endif
+          </li>
         @endforeach
       </ul>
     @endif

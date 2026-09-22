@@ -127,9 +127,24 @@
               </div>
             </fieldset>
 
+            <div class="lasles-checkout-field" data-bank-fields>
+              <label for="wallet_id">{{ __('landing.checkout.account_label') }}</label>
+              <select id="wallet_id" name="wallet_id" class="lasles-checkout-input">
+                <option value="">{{ __('landing.checkout.account_placeholder') }}</option>
+                @forelse(($platformAccounts ?? collect()) as $account)
+                  <option value="{{ $account->id }}" @selected((string) old('wallet_id') === (string) $account->id)>
+                    {{ $account->checkoutLabel() }}
+                  </option>
+                @empty
+                  <option value="" disabled>{{ __('landing.checkout.accounts_empty') }}</option>
+                @endforelse
+              </select>
+              <p class="lasles-checkout-field__hint">{{ __('landing.checkout.account_hint') }}</p>
+            </div>
+
             <div class="lasles-checkout-field" data-bank-proof>
               <label for="payment_proof">{{ __('landing.checkout.catalog_proof_label') }}</label>
-              <input id="payment_proof" type="file" name="payment_proof" accept=".jpg,.jpeg,.png,.pdf" class="lasles-checkout-input lasles-checkout-input--file">
+              <input id="payment_proof" type="file" name="payment_proof" accept=".jpg,.jpeg,.png,.pdf,image/*" class="lasles-checkout-input lasles-checkout-input--file">
               <p class="lasles-checkout-field__hint">{{ __('landing.checkout.catalog_proof_hint') }}</p>
             </div>
 
@@ -207,11 +222,17 @@
   var form = document.getElementById('catalog-checkout-form');
   if (!form) return;
   var proof = form.querySelector('[data-bank-proof]');
+  var fields = form.querySelector('[data-bank-fields]');
+  var wallet = form.querySelector('#wallet_id');
+  var proofInput = form.querySelector('#payment_proof');
   var inputs = form.querySelectorAll('input[name="payment_method"]');
   function sync() {
     var checked = form.querySelector('input[name="payment_method"]:checked');
     var isBank = checked && checked.value === 'bank_transfer';
     if (proof) proof.hidden = !isBank;
+    if (fields) fields.hidden = !isBank;
+    if (wallet) wallet.required = !!isBank;
+    if (proofInput) proofInput.required = !!isBank;
   }
   inputs.forEach(function (el) { el.addEventListener('change', sync); });
   sync();

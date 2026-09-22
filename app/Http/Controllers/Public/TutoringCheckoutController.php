@@ -7,7 +7,7 @@ use App\Models\Order;
 use App\Models\TutoringGroup;
 use App\Models\TutoringGroupCohort;
 use App\Models\TutoringGroupPackage;
-use App\Models\Wallet;
+use App\Services\PlatformPaymentAccountService;
 use App\Services\TutoringGroupCheckoutService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -48,11 +48,6 @@ class TutoringCheckoutController extends Controller
                 ->with('error', 'اختر باقة أو دفعة أولاً.');
         }
 
-        $wallets = Wallet::where('is_active', true)
-            ->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer'])
-            ->orderBy('type')
-            ->get();
-
         $amount = $package
             ? (float) $package->price
             : (float) ($group->price ?? 0);
@@ -61,7 +56,7 @@ class TutoringCheckoutController extends Controller
             'group' => $group,
             'package' => $package,
             'cohort' => $cohort,
-            'wallets' => $wallets,
+            'wallets' => PlatformPaymentAccountService::activeAccounts(),
             'amount' => $amount,
             'startsAt' => $request->input('starts_at'),
         ]);
@@ -75,13 +70,33 @@ class TutoringCheckoutController extends Controller
 
         $group = TutoringGroup::query()->active()->where('slug', $slug)->firstOrFail();
 
-        $data = $request->validate([
+        $isManual = in_array($request->input('payment_method'), ['wallet_transfer', 'admin_review', 'bank_transfer'], true);
+        $amountHint = 0.0;
+        if ($request->filled('package_id')) {
+            $pkg = TutoringGroupPackage::query()->find($request->integer('package_id'));
+            $amountHint = $pkg ? (float) $pkg->price : 0.0;
+        } else {
+            $amountHint = (float) ($group->price ?? 0);
+        }
+        $requireProof = $isManual && $amountHint > 0.009;
+
+        $data = $request->validate(array_merge([
             'package_id' => ['nullable', 'integer', 'exists:tutoring_group_packages,id'],
             'cohort_id' => ['nullable', 'integer', 'exists:tutoring_group_cohorts,id'],
             'starts_at' => ['nullable', 'date'],
-            'payment_method' => ['required', 'in:online,wallet_transfer,admin_review'],
-            'wallet_id' => ['nullable', 'integer', 'exists:wallets,id'],
-        ]);
+            'payment_method' => ['required', 'in:online,wallet_transfer,admin_review,bank_transfer'],
+        ], $isManual
+            ? PlatformPaymentAccountService::manualPaymentRules(requireProof: $requireProof)
+            : [
+                'wallet_id' => ['nullable'],
+                'payment_proof' => ['nullable'],
+            ]
+        ), PlatformPaymentAccountService::manualPaymentMessages());
+
+        $paymentMethod = match ($data['payment_method']) {
+            'admin_review', 'bank_transfer', 'wallet_transfer' => 'bank_transfer',
+            default => $data['payment_method'],
+        };
 
         try {
             if (! empty($data['package_id'])) {
@@ -95,8 +110,8 @@ class TutoringCheckoutController extends Controller
                     Auth::user(),
                     $group,
                     $package,
-                    $data['payment_method'] === 'admin_review' ? 'manual' : $data['payment_method'],
-                    $data['wallet_id'] ?? null
+                    $paymentMethod,
+                    $isManual ? (int) $data['wallet_id'] : null
                 );
 
                 if (! empty($data['starts_at'])) {
@@ -116,8 +131,8 @@ class TutoringCheckoutController extends Controller
                     Auth::user(),
                     $group,
                     $cohort,
-                    $data['payment_method'] === 'admin_review' ? 'manual' : $data['payment_method'],
-                    $data['wallet_id'] ?? null,
+                    $paymentMethod,
+                    $isManual ? (int) $data['wallet_id'] : null,
                     $startsAt
                 );
             } else {
@@ -127,26 +142,30 @@ class TutoringCheckoutController extends Controller
             return back()->withInput()->withErrors(['payment_method' => $e->getMessage()]);
         }
 
-        // Zero amount or admin review: leave pending for admin; online: try course checkout pattern via order page
-        if ((float) $order->amount <= 0 || $data['payment_method'] === 'admin_review') {
-            if ((float) $order->amount <= 0) {
-                $order->update(['status' => Order::STATUS_APPROVED, 'approved_at' => now()]);
-                TutoringGroupCheckoutService::fulfillApprovedOrder(
-                    $order->fresh(),
-                    ! empty($data['starts_at']) ? Carbon::parse($data['starts_at']) : null
-                );
-
-                return redirect()
-                    ->route('student.tutoring-subscriptions.index')
-                    ->with('success', 'تم تفعيل الاشتراك.');
-            }
-
-            return redirect()
-                ->route('orders.index')
-                ->with('success', 'تم إنشاء الطلب وبانتظار مراجعة الإدارة.');
+        if ($isManual && $request->hasFile('payment_proof')) {
+            $order->update([
+                'payment_proof' => $request->file('payment_proof')->store('payment-proofs', 'public'),
+            ]);
         }
 
-        // For online payment, redirect to student orders — admin/gateway approval will fulfill
+        if ((float) $order->amount <= 0) {
+            $order->update(['status' => Order::STATUS_APPROVED, 'approved_at' => now()]);
+            TutoringGroupCheckoutService::fulfillApprovedOrder(
+                $order->fresh(),
+                ! empty($data['starts_at']) ? Carbon::parse($data['starts_at']) : null
+            );
+
+            return redirect()
+                ->route('student.tutoring-subscriptions.index')
+                ->with('success', 'تم تفعيل الاشتراك.');
+        }
+
+        if ($isManual) {
+            return redirect()
+                ->route('orders.show', $order)
+                ->with('success', 'تم تسجيل الطلب على الحساب المختار مع إثبات التحويل. سنفعّل الاشتراك بعد المراجعة.');
+        }
+
         return redirect()
             ->route('orders.index')
             ->with('success', 'تم إنشاء طلب الاشتراك #'.$order->id.' — أكمل الدفع أو انتظر التأكيد.');

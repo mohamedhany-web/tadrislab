@@ -9,13 +9,14 @@ use App\Models\InstitutionMember;
 use App\Models\InstitutionProgram;
 use App\Models\InstitutionProgramParticipant;
 use App\Models\User;
+use App\Services\InstitutionEngagementService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 /**
- * Basic self-service portal for institution coordinators (MVP).
+ * لوحة منسق الجهة — تعاقد منصة (مقاعد/تقدّم/تقارير) + متابعة تعاقد مباشر.
  */
 class PortalController extends Controller
 {
@@ -45,19 +46,40 @@ class PortalController extends Controller
 
         $institution->load([
             'members' => fn ($q) => $q->where('is_active', true)->orderBy('member_role')->orderBy('name'),
-            'programs' => fn ($q) => $q->latest()->limit(20),
+            'programs' => fn ($q) => $q->with('instructor:id,name')->latest()->limit(40),
         ]);
+
+        $report = InstitutionEngagementService::coordinatorReport($institution);
 
         return view('institution.portal.show', [
             'institution' => $institution,
             'member' => $member,
             'isCoordinator' => $member->member_role === InstitutionMember::ROLE_COORDINATOR,
+            'report' => $report,
+            'engagementModes' => InstitutionEngagementService::modes(),
+        ]);
+    }
+
+    public function report(Request $request, Institution $institution): View
+    {
+        $member = $this->authorizeMembership($request, $institution, requireCoordinator: true);
+        $report = InstitutionEngagementService::coordinatorReport($institution);
+
+        return view('institution.portal.report', [
+            'institution' => $institution,
+            'member' => $member,
+            'report' => $report,
         ]);
     }
 
     public function storeParticipant(Request $request, Institution $institution): RedirectResponse
     {
         $this->authorizeMembership($request, $institution, requireCoordinator: true);
+
+        if ($institution->isPlatformAccessDefault()
+            && ! InstitutionEngagementService::canAddOrgParticipant($institution)) {
+            return back()->with('error', 'تم بلوغ حد مقاعد المنصة لهذه الجهة. زد الحد من الإدارة أو أوقف مشاركين.');
+        }
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -91,7 +113,7 @@ class PortalController extends Controller
         $member = $this->authorizeMembership($request, $institution);
         abort_unless((int) $program->institution_id === (int) $institution->id, 404);
 
-        $program->load(['participants' => fn ($q) => $q->orderBy('name')]);
+        $program->load(['participants' => fn ($q) => $q->orderBy('name'), 'instructor:id,name']);
         $orgMembers = $institution->members()
             ->where('is_active', true)
             ->orderBy('name')
@@ -103,6 +125,10 @@ class PortalController extends Controller
             'member' => $member,
             'isCoordinator' => $member->member_role === InstitutionMember::ROLE_COORDINATOR,
             'orgMembers' => $orgMembers,
+            'isPlatform' => $program->isPlatformAccess(),
+            'isDirect' => $program->isDirectDelivery(),
+            'seatsRemaining' => $program->seatsRemaining(),
+            'seatCap' => InstitutionEngagementService::seatCap($program),
         ]);
     }
 
@@ -120,7 +146,11 @@ class PortalController extends Controller
 
         $this->fireStatusChanged($program, $previous, InstitutionProgram::STATUS_APPROVED);
 
-        return back()->with('success', 'تم قبول العرض. سيتواصل فريق تدريس لاب لجدولة التنفيذ.');
+        $hint = $program->isDirectDelivery()
+            ? 'تم قبول العرض. سيُنفَّذ عبر المدرب المعيَّن.'
+            : 'تم قبول العرض. يمكنك تفعيل المشاركين ضمن المقاعد المتاحة.';
+
+        return back()->with('success', $hint);
     }
 
     public function rejectProposal(Request $request, Institution $institution, InstitutionProgram $program): RedirectResponse
@@ -145,6 +175,14 @@ class PortalController extends Controller
         $this->authorizeMembership($request, $institution, requireCoordinator: true);
         abort_unless((int) $program->institution_id === (int) $institution->id, 404);
         abort_unless($program->isDeliverable() || $program->status === InstitutionProgram::STATUS_APPROVED, 403);
+
+        if ($program->isDirectDelivery()) {
+            return back()->with('error', 'هذا البرنامج تعاقد مباشر — التنفيذ عبر المدرب، وليس بتفعيل مقاعد مشاركين.');
+        }
+
+        if (! InstitutionEngagementService::canEnrollMore($program)) {
+            return back()->with('error', 'لا مقاعد متبقية في هذا البرنامج. راجع حد المقاعد مع الإدارة.');
+        }
 
         $data = $request->validate([
             'institution_member_id' => [
@@ -173,7 +211,7 @@ class PortalController extends Controller
 
         $program->recalculateProgress();
 
-        return back()->with('success', 'تم تسجيل المشارك في البرنامج.');
+        return back()->with('success', 'تم تفعيل المشارك على مقعد البرنامج.');
     }
 
     public function updateParticipantProgress(
@@ -185,6 +223,10 @@ class PortalController extends Controller
         $this->authorizeMembership($request, $institution, requireCoordinator: true);
         abort_unless((int) $program->institution_id === (int) $institution->id, 404);
         abort_unless((int) $participant->institution_program_id === (int) $program->id, 404);
+
+        if ($program->isDirectDelivery()) {
+            return back()->with('error', 'تقدّم التعاقد المباشر يحدّثه المدرب المنفّذ.');
+        }
 
         $data = $request->validate([
             'progress_percent' => ['required', 'integer', 'min:0', 'max:100'],

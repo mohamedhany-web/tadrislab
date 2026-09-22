@@ -107,7 +107,7 @@
         <a href="{{ route('instructor.courses.index') }}" @click="{{ $closeSidebar }}"
            class="su-link {{ request()->routeIs('instructor.courses.*') ? 'is-active' : '' }}">
             <span class="su-link__ico"><i class="fas fa-book-open"></i></span>
-            <span class="su-link__txt">{{ __('instructor.my_courses') }}</span>
+            <span class="su-link__txt">كورساتي المسندة</span>
             <span class="su-link__badge">{{ $myCoursesCount }}</span>
         </a>
         @endif
@@ -117,6 +117,13 @@
             <span class="su-link__ico"><i class="fas fa-route"></i></span>
             <span class="su-link__txt">مساراتي المسندة</span>
             @if($myPathCount > 0)<span class="su-link__badge">{{ $myPathCount }}</span>@endif
+        </a>
+        @endif
+        @if(Route::has('instructor.institution-delivery.index'))
+        <a href="{{ route('instructor.institution-delivery.index') }}" @click="{{ $closeSidebar }}"
+           class="su-link {{ request()->routeIs('instructor.institution-delivery.*') ? 'is-active' : '' }}">
+            <span class="su-link__ico"><i class="fas fa-handshake"></i></span>
+            <span class="su-link__txt">تعاقدات الجهات</span>
         </a>
         @endif
         @if($showConsultations && Route::has('instructor.consultations.index'))

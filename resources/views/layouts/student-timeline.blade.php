@@ -14,7 +14,7 @@
         ['route' => 'student.tools.index', 'match' => ['student.tools.*'], 'label' => __('student_timeline.nav_tools'), 'fa' => 'fas fa-toolbox', 'ui' => 'show_tools'],
         ['route' => 'student.teacher-assistant.index', 'match' => ['student.teacher-assistant.*'], 'label' => 'مساعد المعلم', 'fa' => 'fas fa-magic', 'ui' => 'show_teacher_assistant'],
         ['route' => 'consultations.index', 'match' => ['consultations.*', 'public.consultations.*'], 'label' => __('student_timeline.nav_consultations'), 'fa' => 'fas fa-comments', 'ui' => 'show_consultations'],
-        ['route' => 'institution.portal.index', 'match' => ['institution.portal.*'], 'label' => 'جهتي', 'fa' => 'fas fa-building', 'ui' => 'show_institution_portal'],
+        ['route' => 'institution.portal.index', 'match' => ['institution.portal.*'], 'label' => 'لوحة جهتي', 'fa' => 'fas fa-building', 'ui' => 'show_institution_portal'],
         ['route' => 'public.pricing', 'match' => ['public.pricing', 'public.packages.*', 'public.package.*'], 'label' => 'الباقات', 'fa' => 'fas fa-tags', 'ui' => 'show_pricing'],
         ['route' => 'orders.index', 'match' => ['orders.*'], 'label' => __('student_timeline.nav_orders'), 'fa' => 'fas fa-receipt', 'ui' => 'show_orders'],
         ['route' => 'student.support.index', 'match' => ['student.support.*'], 'label' => __('student_timeline.nav_support'), 'fa' => 'fas fa-headset', 'ui' => 'show_support'],

@@ -26,17 +26,8 @@ class CourseController extends Controller
         // التحقق من التسجيل في الكورس (يشمل انتهاء الاشتراك الشهري)
         $isEnrolled = auth()->check() && auth()->user()->isEnrolledIn($advancedCourse->id);
 
-        // جلب المحافظ الإلكترونية النشطة المتاحة للتحويل
-        $availableWallets = \App\Models\Wallet::where('is_active', true)
-            ->whereNotNull('type')
-            ->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer'])
-            ->where(function($query) {
-                $query->whereNotNull('account_number')
-                      ->orWhereNotNull('name');
-            })
-            ->orderBy('type')
-            ->orderBy('name')
-            ->get();
+        // حسابات التحويل اليدوي للمنصة
+        $availableWallets = \App\Services\PlatformPaymentAccountService::activeAccounts();
 
         return view('student.courses.show', compact('advancedCourse', 'existingOrder', 'isEnrolled', 'availableWallets'));
     }

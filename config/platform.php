@@ -187,6 +187,27 @@ return [
             'institutional_development' => ['en' => 'Institutional Development', 'ar' => 'التطوير المؤسسي'],
             'followup_evaluation' => ['en' => 'Follow-up & Evaluation', 'ar' => 'المتابعة والتقييم'],
         ],
+        /*
+        | مساران للتعاقد ضمن نفس الركيزة (لا فرع مدارس vs مؤسسات):
+        | 1) direct_delivery — تعاقد مباشر: المنصة تعيّن مدربًا/منفّذًا يقدّم الخدمة للجهة
+        | 2) platform_access — تعاقد منصة: مقاعد للمشاركين + لوحة منسق الجهة (تفعيل/تقدّم/تقارير)
+        */
+        'engagement_modes' => [
+            'direct_delivery' => [
+                'key' => 'direct_delivery',
+                'label_ar' => 'تعاقد مباشر (تنفيذ عبر مدرب)',
+                'label_en' => 'Direct delivery (coach-led)',
+                'admin_focus' => ['academy_instructors', 'consultations', 'crm_leads'],
+                'note_ar' => 'الجهة تتعاقد عبر المنصة؛ التنفيذ يتم بواسطة مدرب/منفّذ معيَّن — بدون لوحة مقاعد للمشاركين بالضرورة.',
+            ],
+            'platform_access' => [
+                'key' => 'platform_access',
+                'label_ar' => 'تعاقد منصة (مقاعد + متابعة الجهة)',
+                'label_en' => 'Platform access (seats + org portal)',
+                'admin_focus' => ['institutions', 'programs', 'participants', 'progress', 'reports'],
+                'note_ar' => 'الجهة تحصل على حساب ومنسق ولوحة ترى المشاركين المفعّلين وتقدّمهم وتقاريرهم.',
+            ],
+        ],
         'training_program_statuses' => [
             'inquiry', 'proposal', 'approved', 'scheduled', 'in_progress', 'completed',
         ],
@@ -324,14 +345,23 @@ return [
     |--------------------------------------------------------------------------
     */
     'admin_sections' => [
+        // 1 · المنتجات
         'learning_paths',
+        'recorded_courses',
         'content_tools',
         'packages_products',
-        'schools_institutions',
+        // 2 · المدارس والمؤسسات (مساران: منصة | مباشر)
+        'institution_accounts',
+        'institution_platform_access',
+        'institution_direct_delivery',
+        // 3 · الاستشارات
         'consultations_bookings',
+        // 4 · التشغيل التجاري
         'orders',
+        'accounting',
         'crm',
         'inquiries',
+        // 5 · التواصل والإعدادات
         'users',
         'notifications',
         'analytics',
@@ -509,6 +539,11 @@ return [
             'label_ar' => 'الباقات',
             'label_en' => 'Packages',
         ],
+        'courses' => [
+            'enabled' => true,
+            'label_ar' => 'الكورسات المسجّلة',
+            'label_en' => 'Recorded Courses',
+        ],
         'tools_resources' => [
             'enabled' => true,
             'label_ar' => 'الأدوات والموارد',
@@ -564,8 +599,8 @@ return [
         ],
         'crm_sales' => [
             'enabled' => true,
-            'label_ar' => 'CRM المؤسسات والمعلمين',
-            'label_en' => 'Institution & teacher CRM',
+            'label_ar' => 'مسار البيع والفرص',
+            'label_en' => 'Sales pipeline & leads',
         ],
         'tutor_hiring' => [
             'enabled' => false,
@@ -604,8 +639,8 @@ return [
         ],
         'legacy_finance' => [
             'enabled' => false,
-            'label_ar' => 'محافظ / رواتب مدربين / تقسيط (إرث)',
-            'label_en' => 'Legacy wallets / salaries / installments',
+            'label_ar' => 'رواتب مدربين / تقسيط (إرث) — حسابات التحويل اليدوي تحت الدفع',
+            'label_en' => 'Legacy instructor salaries / installments (manual receiving accounts live under payments)',
         ],
     ],
 

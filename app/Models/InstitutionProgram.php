@@ -27,12 +27,14 @@ class InstitutionProgram extends Model
         'institution_id',
         'service_key',
         'program_kind',
+        'engagement_mode',
         'title_ar',
         'title_en',
         'summary_ar',
         'summary_en',
         'status',
         'planned_participants',
+        'seat_limit',
         'duration_hours',
         'delivery_mode',
         'price',
@@ -54,6 +56,7 @@ class InstitutionProgram extends Model
 
     protected $casts = [
         'planned_participants' => 'integer',
+        'seat_limit' => 'integer',
         'duration_hours' => 'integer',
         'price' => 'decimal:2',
         'progress_percent' => 'integer',
@@ -62,6 +65,31 @@ class InstitutionProgram extends Model
         'scheduled_at' => 'datetime',
         'completed_at' => 'datetime',
     ];
+
+    public function resolvedEngagementMode(): string
+    {
+        return \App\Services\InstitutionEngagementService::resolveMode($this);
+    }
+
+    public function engagementModeLabel(?string $locale = null): string
+    {
+        return \App\Services\InstitutionEngagementService::modeLabel($this->resolvedEngagementMode(), $locale);
+    }
+
+    public function isPlatformAccess(): bool
+    {
+        return \App\Services\InstitutionEngagementService::isPlatformAccess($this);
+    }
+
+    public function isDirectDelivery(): bool
+    {
+        return \App\Services\InstitutionEngagementService::isDirectDelivery($this);
+    }
+
+    public function seatsRemaining(): ?int
+    {
+        return \App\Services\InstitutionEngagementService::seatsRemaining($this);
+    }
 
     public static function statuses(): array
     {

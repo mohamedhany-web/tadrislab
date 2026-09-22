@@ -8,7 +8,6 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Services\ReferralService;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -63,22 +62,16 @@ class OrderController extends Controller
     {
         $request->validate([
             'payment_method' => 'required|in:bank_transfer,cash,other',
-            'wallet_id' => [
-                'nullable',
-                'required_if:payment_method,bank_transfer',
-                Rule::exists('wallets', 'id')->where('is_active', true)->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer']),
-            ],
-            'payment_proof' => 'required|image|mimes:jpeg,png,jpg|max:'.config('upload_limits.max_upload_kb'),
             'notes' => 'nullable|string|max:500',
-        ], [
+        ] + ($request->input('payment_method') === 'bank_transfer'
+            ? \App\Services\PlatformPaymentAccountService::manualPaymentRules(requireProof: true)
+            : [
+                'wallet_id' => ['nullable'],
+                'payment_proof' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
+            ]
+        ), array_merge(\App\Services\PlatformPaymentAccountService::manualPaymentMessages(), [
             'payment_method.required' => 'طريقة الدفع مطلوبة',
-            'wallet_id.required_if' => 'يجب اختيار حساب التحويل على المنصة حتى يُسجَّل المبلغ على المحفظة عند الموافقة.',
-            'wallet_id.exists' => 'المحفظة المختارة غير صالحة أو غير متاحة.',
-            'payment_proof.required' => 'صورة الإيصال مطلوبة',
-            'payment_proof.image' => 'يجب أن يكون الملف صورة',
-            'payment_proof.mimes' => 'يجب أن تكون الصورة بصيغة jpeg, png أو jpg',
-            'payment_proof.max' => 'حجم الصورة يجب ألا يتجاوز 2 ميجابايت',
-        ]);
+        ]));
 
         // التحقق من عدم وجود طلب مقبول مسبق
         $existingApprovedOrder = Order::where('user_id', auth()->id())

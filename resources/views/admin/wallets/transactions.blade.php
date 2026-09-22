@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'سجل معاملات المحفظة')
-@section('page_title', 'سجل معاملات المحفظة')
+@section('title', 'سجل معاملات الحساب')
+@section('page_title', 'سجل معاملات الحساب')
 
 @section('content')
 @php
     $fieldClass = 'h-11 w-full rounded-xl border border-line bg-surface px-4 text-sm text-ink transition placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20';
     $kpis = [
-        ['label' => 'رصيد المحفظة', 'value' => number_format($wallet->balance, 2), 'icon' => 'fa-coins', 'tone' => 'accent', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
+        ['label' => 'رصيد الحساب', 'value' => number_format($wallet->balance, 2), 'icon' => 'fa-coins', 'tone' => 'accent', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
         ['label' => 'الرصيد المعلّق', 'value' => number_format($wallet->pending_balance ?? 0, 2), 'icon' => 'fa-hourglass-half', 'tone' => 'metal', 'suffix' => ' ' . ($wallet->currency ?? platform_currency())],
         ['label' => 'عدد المعاملات', 'value' => $transactions->count(), 'icon' => 'fa-receipt', 'tone' => 'accent', 'suffix' => ''],
         ['label' => 'آخر عملية', 'value' => optional($transactions->first())->created_at?->format('Y-m-d H:i') ?? 'غير متوفر', 'icon' => 'fa-clock', 'tone' => 'muted', 'suffix' => '', 'small' => true],
@@ -22,8 +22,8 @@
 <div class="space-y-5">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">المالية · المحافظ · المعاملات</p>
-            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ $wallet->name ?? 'محفظة بدون اسم' }}</h2>
+            <p class="text-xs font-medium text-muted">المالية · الحسابات · المعاملات</p>
+            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">{{ $wallet->name ?? 'حساب بدون اسم' }}</h2>
             <p class="mt-1 text-sm text-muted">
                 <i class="fas fa-user-circle text-xs"></i>
                 {{ $wallet->user?->name ?? 'غير مرتبط بمستخدم' }}
@@ -53,7 +53,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-4 sm:px-5">
             <div>
                 <h3 class="text-base font-semibold text-ink">المعاملات الأخيرة</h3>
-                <p class="mt-0.5 text-xs text-muted">تابع حركة المحفظة مع توضيح نوع العملية والملاحظات المرتبطة بها</p>
+                <p class="mt-0.5 text-xs text-muted">تابع حركة الحساب مع توضيح نوع العملية والملاحظات المرتبطة بها</p>
             </div>
             <span class="inline-flex rounded-lg bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">{{ $transactions->count() }} معاملة</span>
         </div>

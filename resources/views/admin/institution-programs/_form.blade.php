@@ -27,6 +27,25 @@
             <option value="development" @selected(old('program_kind', $p->program_kind ?? ($d['program_kind'] ?? '')) === 'development')>تطوير مؤسسي</option>
         </select>
     </div>
+    <div class="sm:col-span-2 rounded-xl border border-accent/20 bg-accent-soft/15 p-4">
+        <p class="mb-2 text-xs font-semibold text-accent">مسار التعاقد لهذا البرنامج</p>
+        <div class="grid gap-3 sm:grid-cols-2">
+            <div>
+                <label class="mb-1.5 block text-xs font-medium text-muted">نوع التعاقد</label>
+                <select name="engagement_mode" class="{{ $field }}">
+                    <option value="">— وراثة من الجهة —</option>
+                    @foreach(\App\Services\InstitutionEngagementService::modes() as $key => $label)
+                        <option value="{{ $key }}" @selected(old('engagement_mode', $p->engagement_mode ?? '') === $key)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="mb-1.5 block text-xs font-medium text-muted">حد المقاعد (تعاقد منصة)</label>
+                <input type="number" name="seat_limit" min="1" value="{{ old('seat_limit', $p->seat_limit ?? '') }}" class="{{ $field }}" placeholder="فارغ = من الجهة / المخطط">
+            </div>
+        </div>
+        <p class="mt-2 text-[11px] text-muted">تعاقد مباشر: عيّن مدربًا أدناه — المنسق يتابع الحالة بدون تسجيل مقاعد. تعاقد منصة: المنسق يفعّل مشاركين ضمن الحد.</p>
+    </div>
     <div class="sm:col-span-2">
         <label class="mb-1.5 block text-xs font-medium text-muted">العنوان *</label>
         <input type="text" name="title_ar" required value="{{ old('title_ar', $p->title_ar ?? '') }}" class="{{ $field }}">

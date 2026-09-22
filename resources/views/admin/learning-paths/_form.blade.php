@@ -1,4 +1,8 @@
 @php $p = $path; @endphp
+<div class="mb-2">
+    <p class="text-xs font-semibold uppercase tracking-wide text-accent">التوصيف العام (ظاهر للمتعلم)</p>
+    <p class="mt-1 text-xs text-muted">عنوان، ملخص، وصف، مهارة، صورة — منفصل عن هيكل الوحدات والدروس.</p>
+</div>
 <div class="grid gap-4 sm:grid-cols-2">
     <div>
         <label class="mb-1.5 block text-xs font-medium text-muted">العنوان (عربي) *</label>
@@ -66,6 +70,7 @@
         <input type="number" name="access_days" min="1" value="{{ old('access_days', $p->access_days ?? '') }}" class="{{ $field }}" placeholder="فارغ = دائم">
     </div>
 </div>
+<p class="mt-4 text-xs font-semibold uppercase tracking-wide text-muted">إعدادات النشر والباقات</p>
 @if(isset($packages) && $packages->isNotEmpty())
 <div class="mt-4">
     <p class="mb-2 text-xs font-semibold text-muted">تضمين المسار داخل باقات</p>

@@ -1044,6 +1044,7 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
 
         Route::get('/institution', [\App\Http\Controllers\Institution\PortalController::class, 'index'])->name('institution.portal.index');
         Route::get('/institution/{institution}', [\App\Http\Controllers\Institution\PortalController::class, 'show'])->name('institution.portal.show');
+        Route::get('/institution/{institution}/report', [\App\Http\Controllers\Institution\PortalController::class, 'report'])->name('institution.portal.report');
         Route::post('/institution/{institution}/participants', [\App\Http\Controllers\Institution\PortalController::class, 'storeParticipant'])->name('institution.portal.participants.store');
         Route::get('/institution/{institution}/programs/{program}', [\App\Http\Controllers\Institution\PortalController::class, 'showProgram'])->name('institution.portal.program');
         Route::post('/institution/{institution}/programs/{program}/accept', [\App\Http\Controllers\Institution\PortalController::class, 'acceptProposal'])->name('institution.portal.program.accept');
@@ -2423,6 +2424,10 @@ Route::middleware(['auth', 'prevent-concurrent'])->group(function () {
     Route::prefix('instructor')->name('instructor.')->middleware(['auth', 'role:instructor|teacher', 'instructor.activated'])->group(function () {
         Route::get('/learning-paths', [\App\Http\Controllers\Instructor\LearningPathController::class, 'index'])->name('learning-paths.index');
         Route::get('/learning-paths/{learningPath}', [\App\Http\Controllers\Instructor\LearningPathController::class, 'show'])->name('learning-paths.show');
+        Route::put('/learning-paths/{learningPath}/description', [\App\Http\Controllers\Instructor\LearningPathController::class, 'updateDescription'])->name('learning-paths.description.update');
+        Route::get('/institution-delivery', [\App\Http\Controllers\Instructor\InstitutionDeliveryController::class, 'index'])->name('institution-delivery.index');
+        Route::get('/institution-delivery/{program}', [\App\Http\Controllers\Instructor\InstitutionDeliveryController::class, 'show'])->name('institution-delivery.show');
+        Route::put('/institution-delivery/{program}', [\App\Http\Controllers\Instructor\InstitutionDeliveryController::class, 'update'])->name('institution-delivery.update');
         Route::get('/calendar', [\App\Http\Controllers\Instructor\CalendarController::class, 'index'])->name('calendar');
         Route::get('/api/calendar/events', [\App\Http\Controllers\Instructor\CalendarController::class, 'getEvents'])->name('calendar.events');
         Route::get('/consultations', [\App\Http\Controllers\Instructor\ConsultationController::class, 'index'])->name('consultations.index');

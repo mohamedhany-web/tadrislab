@@ -253,7 +253,7 @@
               <select name="wallet_id" id="wallet_id" class="lasles-checkout-input" :required="paymentMethod === 'bank_transfer'">
                 <option value="">{{ __('landing.checkout.account_placeholder') }}</option>
                 @foreach(($wallets ?? []) as $wallet)
-                  <option value="{{ $wallet->id }}">{{ $wallet->name ?? __('landing.checkout.platform_account') }} — {{ $wallet->account_number ?? $wallet->phone ?? '—' }}</option>
+                  <option value="{{ $wallet->id }}">{{ $wallet->checkoutLabel() }}</option>
                 @endforeach
               </select>
             </div>

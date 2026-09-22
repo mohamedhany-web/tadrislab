@@ -20,13 +20,14 @@ class WalletController extends Controller
 {
     private function ownedWalletsQuery()
     {
-        return Wallet::query()->where('user_id', Auth::id());
+        // قسم «الحسابات»: حسابات استقبال التحويل اليدوي للمنصة
+        return \App\Services\PlatformPaymentAccountService::adminManageQuery();
     }
 
     private function ensureWalletOwnership(Wallet $wallet): void
     {
-        if ((int) $wallet->user_id !== (int) Auth::id()) {
-            abort(403, 'غير مصرح لك بالوصول إلى هذه المحفظة');
+        if (! \App\Services\PlatformPaymentAccountService::isPlatformAccount($wallet)) {
+            abort(403, 'هذا السجل ليس حساب تحويل للمنصة.');
         }
     }
 
@@ -321,12 +322,12 @@ class WalletController extends Controller
             'notes' => 'nullable|string|max:1000',
             'is_active' => 'nullable|boolean',
         ], [
-            'name.required' => 'اسم المحفظة مطلوب',
-            'type.required' => 'نوع المحفظة مطلوب',
+            'name.required' => 'اسم الحساب مطلوب',
+            'type.required' => 'نوع الحساب مطلوب',
         ]);
 
         Wallet::create([
-            'user_id' => Auth::id(),
+            'user_id' => null, // حساب منصة — يظهر في كل checkouts اليدوية
             'name' => $validated['name'],
             'type' => $validated['type'],
             'account_number' => $validated['account_number'] ?? null,
@@ -340,7 +341,7 @@ class WalletController extends Controller
         ]);
 
         return redirect()->route('admin.wallets.index')
-            ->with('success', 'تم إنشاء المحفظة بنجاح');
+            ->with('success', 'تم إنشاء الحساب بنجاح — سيظهر في صفحات الدفع اليدوي.');
     }
 
     public function edit(Wallet $wallet)
@@ -370,10 +371,11 @@ class WalletController extends Controller
             'account_holder' => $validated['account_holder'] ?? null,
             'notes' => $validated['notes'] ?? null,
             'is_active' => $request->boolean('is_active'),
+            'user_id' => null,
         ]);
 
         return redirect()->route('admin.wallets.show', $wallet)
-            ->with('success', 'تم تحديث المحفظة بنجاح');
+            ->with('success', 'تم تحديث الحساب بنجاح');
     }
 
     public function destroy(Wallet $wallet)

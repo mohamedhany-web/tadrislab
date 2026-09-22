@@ -205,9 +205,12 @@ class AcademyInstructorController extends Controller
         $selectedServices = collect($data['service_keys'] ?? [])->unique()->values()->all();
         $adminId = $request->user()?->id;
 
-        // Auto-include learning_paths service when paths are granted
+        // Auto-include learning_paths / courses services when items are granted
         if ($pathIds !== [] && ! in_array('learning_paths', $selectedServices, true)) {
             $selectedServices[] = 'learning_paths';
+        }
+        if ($courseIds !== [] && ! in_array('courses', $selectedServices, true)) {
+            $selectedServices[] = 'courses';
         }
 
         DB::transaction(function () use ($instructor, $enabled, $active, $courseIds, $pathIds, $selectedServices, $adminId, $serviceKeys) {
@@ -292,7 +295,12 @@ class AcademyInstructorController extends Controller
 
         return redirect()
             ->route('admin.academy-instructors.show', $instructor)
-            ->with('success', 'تم تحديث تفعيل المدرب وصلاحيات المسارات والكورسات والخدمات.');
+            ->with('success', sprintf(
+                'تم تحديث الصلاحيات: %d مسار مسند · %d كورس مسجّل مسند · %d خدمة. المدرب يرى توصيف المسارات ومنهج الكورسات المسندة فقط.',
+                count($pathIds),
+                count($courseIds),
+                count($selectedServices)
+            ));
     }
 
     public function storeAssignment(Request $request): RedirectResponse

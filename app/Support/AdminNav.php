@@ -80,6 +80,10 @@ final class AdminNav
                 if (! $routeName || ! Route::has($routeName)) {
                     continue;
                 }
+                $itemModule = $item['module'] ?? null;
+                if ($itemModule && PlatformModules::disabled($itemModule)) {
+                    continue;
+                }
                 $itemPerms = $item['permissions'] ?? ($section['permissions'] ?? []);
                 if (! $isFull && ! self::userHasAnyPermission($user, $itemPerms)) {
                     continue;
@@ -98,11 +102,19 @@ final class AdminNav
                 continue;
             }
 
+            $note = '';
+            if (app()->getLocale() === 'en') {
+                $note = trim((string) ($section['note_en'] ?? $section['note_ar'] ?? ''));
+            } else {
+                $note = trim((string) ($section['note_ar'] ?? $section['note_en'] ?? ''));
+            }
+
             $out[] = [
                 'key' => $key,
                 'hub' => $section['hub'] ?? null,
                 'label' => self::localizedLabel($section, $key),
                 'icon' => $section['icon'] ?? 'fas fa-circle',
+                'note' => $note,
                 'items' => $items,
                 'open' => collect($items)->contains(fn ($i) => $i['active']),
             ];

@@ -20,6 +20,7 @@
     .gl-tc label { display:block; font-size:.78rem; font-weight:700; color:#5B6577; margin:.75rem 0 .35rem; }
     .gl-tc select, .gl-tc input { width:100%; border:1.5px solid #D7DDE6; border-radius:12px; padding:.7rem .85rem; }
     .gl-tc-err { background:#FEF2F2; color:#991B1B; padding:.75rem; border-radius:12px; margin-bottom:1rem; font-size:.86rem; }
+    .gl-tc-hint { font-size:.75rem; color:#5B6577; margin:.35rem 0 0; }
   </style>
 </head>
 <body class="sana-home sana-courses-page">
@@ -48,7 +49,7 @@
       @endif
     </div>
 
-    <form method="POST" action="{{ route('public.groups.checkout.store', $group->slug) }}">
+    <form method="POST" action="{{ route('public.groups.checkout.store', $group->slug) }}" enctype="multipart/form-data" id="tutoring-checkout-form">
       @csrf
       @if($package)<input type="hidden" name="package_id" value="{{ $package->id }}">@endif
       @if($cohort)<input type="hidden" name="cohort_id" value="{{ $cohort->id }}">@endif
@@ -56,20 +57,25 @@
 
       <label for="payment_method">{{ $isRtl ? 'طريقة الدفع' : 'Payment method' }}</label>
       <select id="payment_method" name="payment_method" required>
-        <option value="online">{{ $isRtl ? 'دفع أونلاين / محفظة' : 'Online / wallet' }}</option>
-        <option value="wallet_transfer">{{ $isRtl ? 'تحويل محفظة' : 'Wallet transfer' }}</option>
-        <option value="admin_review">{{ $isRtl ? 'طلب مراجعة إدارية' : 'Admin review request' }}</option>
+        <option value="online">{{ $isRtl ? 'دفع أونلاين' : 'Online payment' }}</option>
+        <option value="bank_transfer" selected>{{ $isRtl ? 'تحويل على حساب المنصة' : 'Transfer to platform account' }}</option>
       </select>
 
-      @if($wallets->isNotEmpty())
-        <label for="wallet_id">{{ $isRtl ? 'المحفظة المستلمة (اختياري)' : 'Receiving wallet (optional)' }}</label>
+      <div data-manual-fields>
+        <label for="wallet_id">{{ $isRtl ? 'الحساب المحوَّل إليه' : 'Receiving account' }}</label>
         <select id="wallet_id" name="wallet_id">
-          <option value="">—</option>
-          @foreach($wallets as $w)
-            <option value="{{ $w->id }}">{{ $w->name ?: $w->type }} {{ $w->account_number ? '· '.$w->account_number : '' }}</option>
-          @endforeach
+          <option value="">{{ $isRtl ? 'اختر الحساب' : 'Select account' }}</option>
+          @forelse(($wallets ?? collect()) as $w)
+            <option value="{{ $w->id }}" @selected((string) old('wallet_id') === (string) $w->id)>{{ $w->checkoutLabel() }}</option>
+          @empty
+            <option value="" disabled>{{ $isRtl ? 'لا توجد حسابات نشطة' : 'No active accounts' }}</option>
+          @endforelse
         </select>
-      @endif
+        <p class="gl-tc-hint">{{ $isRtl ? 'حوّل على أحد حسابات المنصة ثم ارفع إثبات التحويل.' : 'Transfer to a platform account, then upload proof.' }}</p>
+
+        <label for="payment_proof">{{ $isRtl ? 'إثبات التحويل' : 'Transfer proof' }}</label>
+        <input id="payment_proof" type="file" name="payment_proof" accept=".jpg,.jpeg,.png,.pdf,image/*">
+      </div>
 
       <button type="submit" class="sana-btn sana-btn--yellow" style="width:100%;justify-content:center;margin-top:1.25rem">
         <i class="fas fa-lock"></i> {{ $isRtl ? 'تأكيد الطلب' : 'Confirm order' }}
@@ -81,5 +87,23 @@
   </div>
 </main>
 @include('partials.landing.footer')
+<script>
+(function () {
+  var form = document.getElementById('tutoring-checkout-form');
+  if (!form) return;
+  var fields = form.querySelector('[data-manual-fields]');
+  var wallet = form.querySelector('#wallet_id');
+  var proof = form.querySelector('#payment_proof');
+  var method = form.querySelector('#payment_method');
+  function sync() {
+    var isManual = method && method.value === 'bank_transfer';
+    if (fields) fields.hidden = !isManual;
+    if (wallet) wallet.required = !!isManual;
+    if (proof) proof.required = !!isManual;
+  }
+  if (method) method.addEventListener('change', sync);
+  sync();
+})();
+</script>
 </body>
 </html>

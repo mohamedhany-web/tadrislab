@@ -32,10 +32,17 @@
 
 <section class="st-join-hero" aria-label="{{ $programTitle }}">
     <div class="st-join-hero__copy">
-        <p class="st-join-hero__kicker">{{ $program->kindLabel() }}</p>
+        <p class="st-join-hero__kicker">{{ $program->kindLabel() }} · {{ $program->engagementModeLabel() }}</p>
         <h2 class="st-join-hero__title">{{ $programTitle }}</h2>
         <p class="st-join-hero__meta">
             {{ $program->statusLabel() }} · {{ $isRtl ? 'التقدّم' : 'Progress' }}: {{ $progress }}%
+            @if($program->instructor)
+                · {{ $isRtl ? 'المدرب' : 'Coach' }}: {{ $program->instructor->name }}
+            @endif
+            @if($isPlatform && $seatCap !== null)
+                · {{ $isRtl ? 'مقاعد' : 'Seats' }}: {{ $program->participants->count() }}/{{ $seatCap }}
+                @if($seatsRemaining !== null) ({{ $isRtl ? 'متبقي' : 'left' }} {{ $seatsRemaining }}) @endif
+            @endif
         </p>
     </div>
     <div class="st-join-hero__actions">
@@ -96,14 +103,30 @@
 
 <section class="st-msg-intro">
     <div>
-        <h2>{{ $isRtl ? 'المشاركون في البرنامج' : 'Program participants' }}</h2>
-        <p>{{ $isRtl ? 'تتبّع حالة وتقدّم كل مشارك.' : 'Track status and progress for each participant.' }}</p>
+        <h2>{{ $isDirect ? ($isRtl ? 'تنفيذ عبر المدرب' : 'Coach delivery') : ($isRtl ? 'المشاركون في البرنامج' : 'Program participants') }}</h2>
+        <p>
+            @if($isDirect)
+                {{ $isRtl ? 'تعاقد مباشر: المدرب المعيَّن ينفّذ الخدمة ويحدّث التقدّم — لا حاجة لمقاعد منصة.' : 'Direct contract: the assigned coach delivers and updates progress — no platform seats required.' }}
+            @else
+                {{ $isRtl ? 'تعاقد منصة: فعّل المشاركين ضمن المقاعد وتابع تقدّمهم.' : 'Platform contract: activate participants within seats and track progress.' }}
+            @endif
+        </p>
     </div>
 </section>
 
-@if($program->participants->isEmpty())
+@if($isDirect)
+    <section class="st-panel">
+        <p><strong>{{ $isRtl ? 'المدرب المنفّذ:' : 'Delivery coach:' }}</strong> {{ $program->instructor?->name ?? ($isRtl ? 'لم يُسند بعد — تواصل مع الإدارة' : 'Not assigned yet — contact admin') }}</p>
+        @if($program->result_notes)
+            <p style="margin-top:.75rem">{{ $program->result_notes }}</p>
+        @endif
+        @if($program->progress_percent)
+            <p style="margin-top:.5rem">{{ $isRtl ? 'تقدّم التنفيذ' : 'Delivery progress' }}: {{ (int) $program->progress_percent }}%</p>
+        @endif
+    </section>
+@elseif($program->participants->isEmpty())
     <section class="st-panel st-inst-empty">
-        <p>{{ $isRtl ? 'لا مشاركين مسجّلين بعد.' : 'No participants enrolled yet.' }}</p>
+        <p>{{ $isRtl ? 'لا مشاركين مفعّلين بعد.' : 'No participants activated yet.' }}</p>
     </section>
 @else
     <section class="st-inst-list">
@@ -132,12 +155,21 @@
     </section>
 @endif
 
-@if($isCoordinator && ($program->isDeliverable() || $program->status === \App\Models\InstitutionProgram::STATUS_APPROVED))
+@if($isPlatform && $isCoordinator && ($program->isDeliverable() || $program->status === \App\Models\InstitutionProgram::STATUS_APPROVED))
 <section class="st-panel st-inst-form-panel" style="margin-top:1.25rem">
     <div class="st-section-head">
-        <h2>{{ $isRtl ? 'تسجيل مشارك من أعضاء الجهة' : 'Enroll from institution members' }}</h2>
-        <p>{{ $isRtl ? 'اختر عضوًا موجودًا وأضفه لهذا البرنامج.' : 'Pick an existing member and add them to this program.' }}</p>
+        <h2>{{ $isRtl ? 'تفعيل مشارك على مقعد' : 'Activate participant seat' }}</h2>
+        <p>
+            @if($seatsRemaining === null)
+                {{ $isRtl ? 'اختر عضوًا من الجهة وفعّله في هذا البرنامج.' : 'Pick an org member and activate them on this program.' }}
+            @elseif($seatsRemaining > 0)
+                {{ $isRtl ? 'متبقي' : 'Remaining' }}: {{ $seatsRemaining }} {{ $isRtl ? 'مقعد' : 'seats' }}
+            @else
+                {{ $isRtl ? 'لا مقاعد متبقية.' : 'No seats left.' }}
+            @endif
+        </p>
     </div>
+    @if($seatsRemaining === null || $seatsRemaining > 0)
     <form method="POST" action="{{ route('institution.portal.program.enroll', [$institution, $program]) }}" class="st-inst-enroll-form">
         @csrf
         <label class="st-field st-field--full">
@@ -149,8 +181,9 @@
                 @endforeach
             </select>
         </label>
-        <button type="submit" class="st-pill st-pill--solid">{{ $isRtl ? 'تسجيل' : 'Enroll' }}</button>
+        <button type="submit" class="st-pill st-pill--solid">{{ $isRtl ? 'تفعيل المقعد' : 'Activate seat' }}</button>
     </form>
+    @endif
 </section>
 @endif
 @endsection

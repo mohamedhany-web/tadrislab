@@ -83,23 +83,18 @@ class ConsultationController extends Controller
         $walletRules = ['nullable', 'integer', 'exists:wallets,id'];
         if ($availableWallets->isNotEmpty()
             && in_array($request->input('payment_method'), ['bank_transfer', 'other'], true)) {
-            $walletRules = ['required', 'integer', 'exists:wallets,id'];
+            $walletRules = \App\Services\PlatformPaymentAccountService::manualPaymentRules(requireProof: false)['wallet_id'];
         }
 
         $data = $request->validate([
             'student_message' => ['nullable', 'string', 'max:5000'],
             'payment_method' => ['required', 'in:bank_transfer,cash,other'],
             'wallet_id' => $walletRules,
-            'payment_proof' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:'.config('upload_limits.max_upload_kb')],
+            'payment_proof' => ['required', 'file', 'mimes:jpeg,png,jpg,pdf', 'max:'.config('upload_limits.max_upload_kb')],
             'payment_reference' => ['nullable', 'string', 'max:500'],
-        ], [
+        ], array_merge(\App\Services\PlatformPaymentAccountService::manualPaymentMessages(), [
             'payment_method.required' => 'طريقة الدفع مطلوبة',
-            'wallet_id.required' => 'يرجى اختيار حساب التحويل (محفظة المنصة)',
-            'payment_proof.required' => 'صورة الإيصال مطلوبة',
-            'payment_proof.image' => 'يجب أن يكون الملف صورة',
-            'payment_proof.mimes' => 'يجب أن تكون الصورة بصيغة jpeg, png أو jpg',
-            'payment_proof.max' => 'حجم الصورة يجب ألا يتجاوز ' . round(config('upload_limits.max_upload_kb') / 1024) . ' ميجابايت',
-        ]);
+        ]));
 
         if (! empty($data['wallet_id'])) {
             if (! $this->platformWalletsQuery()->whereKey((int) $data['wallet_id'])->exists()) {
@@ -189,13 +184,12 @@ class ConsultationController extends Controller
     }
 
     /**
-     * محافظ المنصة (حسابات التحويل) — نفس منطق صفحة الكورسات.
+     * حسابات التحويل اليدوي للمنصة.
      */
     private function platformWalletsQuery()
     {
-        return Wallet::where('is_active', true)
-            ->whereNotNull('type')
-            ->whereIn('type', ['vodafone_cash', 'instapay', 'bank_transfer'])
+        return \App\Services\PlatformPaymentAccountService::query()
+            ->where('is_active', true)
             ->where(function ($query) {
                 $query->whereNotNull('account_number')
                     ->orWhereNotNull('name');

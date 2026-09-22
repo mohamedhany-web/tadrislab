@@ -30,7 +30,25 @@ class Wallet extends Model
     ];
 
     /**
-     * خريطة أنواع المحافظ
+     * أنواع حسابات التحويل اليدوي للمنصة.
+     */
+    public static function receivingTypes(): array
+    {
+        return \App\Services\PlatformPaymentAccountService::TYPES;
+    }
+
+    public function isPlatformReceivingAccount(): bool
+    {
+        return \App\Services\PlatformPaymentAccountService::isPlatformAccount($this);
+    }
+
+    public function checkoutLabel(): string
+    {
+        return \App\Services\PlatformPaymentAccountService::checkoutLabel($this);
+    }
+
+    /**
+     * خريطة أنواع المحافظ / الحسابات
      */
     public static function typeLabels(): array
     {

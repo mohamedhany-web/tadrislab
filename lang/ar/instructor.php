@@ -6,7 +6,7 @@ return [
     'overview' => 'نظرة عامة',
     'courses' => 'الكورسات',
     'students' => 'الطلاب',
-    'my_courses' => 'كورساتي',
+    'my_courses' => 'كورساتي المسندة',
     'course' => 'كورس',
     'my_offline_courses' => 'كورساتي الأوفلاين',
     'offline_course' => 'كورس أوفلاين',

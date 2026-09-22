@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Models\AdvancedCourse;
 use App\Models\Order;
+use App\Models\Package;
 use App\Models\StudentCourseEnrollment;
+use App\Models\User;
 use App\Services\InstructorCoursePercentageService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * اشتراك شهري في الكورسات (جماعي أو 1:1 مع معلم).
@@ -79,6 +82,66 @@ class CourseSubscriptionService
             'auto_renew' => false,
             'activated_at' => now(),
         ]);
+    }
+
+    /**
+     * تفعيل كورسات مربوطة بباقة (مدة الباقة أو وصول دائم إن لم تُحدد مدة).
+     *
+     * @return list<StudentCourseEnrollment>
+     */
+    public static function activatePackageCoursesForUser(
+        Package $package,
+        User $user,
+        ?Order $order = null,
+        ?User $activatedBy = null
+    ): array {
+        if (! Schema::hasTable('student_course_enrollments') || ! Schema::hasTable('package_course')) {
+            return [];
+        }
+
+        $package->loadMissing('courses');
+        if ($package->courses->isEmpty()) {
+            return [];
+        }
+
+        $expiresAt = null;
+        if ($package->duration_days) {
+            $expiresAt = Carbon::now()->addDays((int) $package->duration_days);
+        }
+
+        $created = [];
+
+        foreach ($package->courses as $course) {
+            $enrollment = StudentCourseEnrollment::query()->firstOrNew([
+                'user_id' => $user->id,
+                'advanced_course_id' => $course->id,
+            ]);
+
+            $enrollment->fill([
+                'status' => 'active',
+                'enrollment_type' => 'package',
+                'access_type' => $expiresAt ? 'limited' : 'lifetime',
+                'expires_at' => $expiresAt,
+                'auto_renew' => false,
+                'activated_at' => now(),
+                'activated_by' => $activatedBy?->id ?? $user->id,
+                'enrolled_at' => $enrollment->enrolled_at ?? now(),
+                'progress' => $enrollment->progress ?? 0,
+                'final_price' => $order?->amount,
+                'payment_method' => $order ? 'package' : 'admin',
+            ]);
+            $enrollment->save();
+
+            try {
+                InstructorCoursePercentageService::processEnrollmentActivation($enrollment->fresh());
+            } catch (\Throwable $e) {
+                report($e);
+            }
+
+            $created[] = $enrollment->fresh();
+        }
+
+        return $created;
     }
 
     /**

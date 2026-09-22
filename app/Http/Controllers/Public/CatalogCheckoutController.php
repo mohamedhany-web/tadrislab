@@ -11,6 +11,7 @@ use App\Services\KashierService;
 use App\Services\KashierSettings;
 use App\Services\PayPalSettings;
 use App\Services\PaymentGatewaySettings;
+use App\Services\PlatformPaymentAccountService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,10 @@ class CatalogCheckoutController extends Controller
         $package = Package::query()
             ->where('slug', $slug)
             ->where('is_active', true)
-            ->with(['learningPaths' => fn ($q) => $q->where('is_active', true)])
+            ->with([
+                'learningPaths' => fn ($q) => $q->where('is_active', true),
+                'courses' => fn ($q) => $q->where('is_active', true),
+            ])
             ->firstOrFail();
 
         $related = Package::query()
@@ -145,10 +149,15 @@ class CatalogCheckoutController extends Controller
             return redirect()->guest(route('login'));
         }
 
-        $data = $request->validate([
+        $data = $request->validate(array_merge([
             'payment_method' => ['required', 'in:online,bank_transfer,paypal,kashier'],
-            'payment_proof' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
-        ]);
+        ], $request->input('payment_method') === 'bank_transfer'
+            ? PlatformPaymentAccountService::manualPaymentRules(requireProof: true)
+            : [
+                'wallet_id' => ['nullable'],
+                'payment_proof' => ['nullable', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
+            ]
+        ), PlatformPaymentAccountService::manualPaymentMessages());
 
         $method = $data['payment_method'];
         if (in_array($method, ['paypal', 'kashier'], true)) {
@@ -162,12 +171,12 @@ class CatalogCheckoutController extends Controller
             return $this->activateFreeOrder($catalog);
         }
 
-        $order = $this->upsertPendingOrder($catalog, $method, $request);
+        $order = $this->upsertPendingOrder($catalog, $method, $request, $data);
 
         if ($method === 'bank_transfer') {
             return redirect()
                 ->route('orders.show', $order)
-                ->with('success', 'تم تسجيل الطلب. سنفعّل الوصول بعد مراجعة التحويل.');
+                ->with('success', 'تم تسجيل الطلب على الحساب المختار مع إثبات التحويل. سنفعّل الوصول بعد المراجعة.');
         }
 
         // online
@@ -225,7 +234,7 @@ class CatalogCheckoutController extends Controller
     /**
      * @param  array<string, mixed>  $catalog
      */
-    private function upsertPendingOrder(array $catalog, string $paymentMethod, Request $request): Order
+    private function upsertPendingOrder(array $catalog, string $paymentMethod, Request $request, array $data = []): Order
     {
         $query = Order::query()
             ->where('user_id', Auth::id())
@@ -250,8 +259,13 @@ class CatalogCheckoutController extends Controller
             'status' => Order::STATUS_PENDING,
         ];
 
-        if ($paymentMethod === 'bank_transfer' && $request->hasFile('payment_proof')) {
-            $payload['payment_proof'] = $request->file('payment_proof')->store('payment-proofs', 'public');
+        if ($paymentMethod === 'bank_transfer') {
+            $payload['wallet_id'] = (int) ($data['wallet_id'] ?? $request->input('wallet_id'));
+            if ($request->hasFile('payment_proof')) {
+                $payload['payment_proof'] = $request->file('payment_proof')->store('payment-proofs', 'public');
+            }
+        } else {
+            $payload['wallet_id'] = null;
         }
 
         $existing = $query->latest('id')->first();
@@ -323,6 +337,7 @@ class CatalogCheckoutController extends Controller
             'benefits' => $benefits,
             'paypalReady' => PayPalSettings::isReady(),
             'kashierReady' => KashierSettings::isReady(),
+            'platformAccounts' => PlatformPaymentAccountService::activeAccounts(),
             'laslesNavActive' => $kind === 'package' ? 'pricing' : 'teacher-paths',
             'pageTitle' => __('public.checkout_page_label').' — '.$title,
             'bodyClass' => 'lasles-checkout-page',

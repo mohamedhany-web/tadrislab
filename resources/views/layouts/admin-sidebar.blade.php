@@ -577,9 +577,9 @@
                     <li><a href="{{ route('admin.transactions.index') }}" class="sidebar-sub-link {{ request()->routeIs('admin.transactions.*') ? 'active' : '' }}"><i class="fas fa-exchange-alt"></i><span>المعاملات</span></a></li>
                     @endunless
                     @endif
-                                        @if($m('legacy_finance'))
-@if($isFull || $u->hasPermission('manage.wallets') || $u->hasPermission('view.wallets'))
-                    <li><a href="{{ route('admin.wallets.index') }}" class="sidebar-sub-link {{ request()->routeIs('admin.wallets.*') ? 'active' : '' }}"><i class="fas fa-wallet"></i><span>المحافظ</span></a></li>
+                    @if($m('payments'))
+                    @if($isFull || $u->hasPermission('manage.wallets') || $u->hasPermission('view.wallets'))
+                    <li><a href="{{ route('admin.wallets.index') }}" class="sidebar-sub-link {{ request()->routeIs('admin.wallets.*') ? 'active' : '' }}"><i class="fas fa-university"></i><span>الحسابات</span></a></li>
                     @endif
                     @endif
                                         @if($m('legacy_finance'))

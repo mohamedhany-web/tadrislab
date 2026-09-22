@@ -14,11 +14,17 @@ class Institution extends Model
 {
     public const ORG_TYPES = ['school', 'center', 'institution', 'other'];
 
+    public const ENGAGEMENT_DIRECT = 'direct_delivery';
+
+    public const ENGAGEMENT_PLATFORM = 'platform_access';
+
     protected $fillable = [
         'slug',
         'name_ar',
         'name_en',
         'org_type',
+        'default_engagement_mode',
+        'seat_limit',
         'country',
         'city',
         'contact_name',
@@ -31,7 +37,31 @@ class Institution extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'seat_limit' => 'integer',
     ];
+
+    public static function engagementModeLabels(?string $locale = null): array
+    {
+        return \App\Services\InstitutionEngagementService::modes();
+    }
+
+    public function engagementModeLabel(?string $locale = null): string
+    {
+        return \App\Services\InstitutionEngagementService::modeLabel(
+            $this->default_engagement_mode ?: self::ENGAGEMENT_PLATFORM,
+            $locale
+        );
+    }
+
+    public function isPlatformAccessDefault(): bool
+    {
+        return ($this->default_engagement_mode ?: self::ENGAGEMENT_PLATFORM) === self::ENGAGEMENT_PLATFORM;
+    }
+
+    public function isDirectDeliveryDefault(): bool
+    {
+        return ($this->default_engagement_mode ?: self::ENGAGEMENT_PLATFORM) === self::ENGAGEMENT_DIRECT;
+    }
 
     protected static function booted(): void
     {

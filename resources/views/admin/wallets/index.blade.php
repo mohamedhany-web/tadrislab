@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'المحافظ الذكية')
-@section('page_title', 'المحافظ الذكية')
+@section('title', 'الحسابات')
+@section('page_title', 'الحسابات')
 
 @section('content')
 @php
@@ -10,8 +10,8 @@
     $fieldClass = 'h-11 w-full rounded-xl border border-line bg-surface px-4 text-sm text-ink transition placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20';
     $labelClass = 'mb-1.5 block text-xs font-medium text-muted';
     $kpis = [
-        ['label' => 'إجمالي المحافظ', 'value' => $stats['total'] ?? 0, 'icon' => 'fa-wallet', 'tone' => 'accent', 'note' => 'يشمل كل المحافظ المربوطة بالطلاب'],
-        ['label' => 'الرصيد المتاح', 'value' => number_format($stats['total_balance'] ?? 0, 2), 'icon' => 'fa-coins', 'tone' => 'accent', 'note' => 'إجمالي الأرصدة الحالية بكل المحافظ', 'suffix' => ' $'],
+        ['label' => 'إجمالي الحسابات', 'value' => $stats['total'] ?? 0, 'icon' => 'fa-university', 'tone' => 'accent', 'note' => 'حسابات استقبال التحويل اليدوي للمنصة'],
+        ['label' => 'الرصيد المتاح', 'value' => number_format($stats['total_balance'] ?? 0, 2), 'icon' => 'fa-coins', 'tone' => 'accent', 'note' => 'إجمالي الأرصدة المسجّلة على الحسابات', 'suffix' => ' $'],
         ['label' => 'الرصيد المعلّق', 'value' => number_format($stats['pending_balance'] ?? 0, 2), 'icon' => 'fa-hourglass-half', 'tone' => 'metal', 'note' => 'المبالغ المعلّقة أو قيد المراجعة', 'suffix' => ' $'],
         ['label' => 'صافي تدفقات الشهر', 'value' => number_format($netMonth, 2), 'icon' => 'fa-wave-square', 'tone' => 'muted', 'note' => 'الإيداعات ناقص السحوبات خلال ' . \Carbon\Carbon::now()->translatedFormat('F'), 'suffix' => ' $'],
     ];
@@ -25,9 +25,9 @@
 <div class="space-y-5">
     <section class="flex flex-wrap items-end justify-between gap-4">
         <div class="min-w-0">
-            <p class="text-xs font-medium text-muted">المالية · المحافظ</p>
-            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">المحافظ الذكية</h2>
-            <p class="mt-1 text-sm text-muted">إدارة محافظ الدفع المربوطة بالطلاب مع متابعة الأرصدة، المعاملات، وأنواع القنوات المالية المختلفة.</p>
+            <p class="text-xs font-medium text-muted">المالية · الحسابات</p>
+            <h2 class="mt-1 text-2xl font-semibold tracking-tight text-ink md:text-[28px]">الحسابات</h2>
+            <p class="mt-1 text-sm text-muted">حسابات التحويل اليدوي (فودافون كاش، إنستا باي، تحويل بنكي) التي تظهر في صفحات الدفع ويرتبط بها إثبات التحويل على الطلب.</p>
         </div>
         <div class="admin-hero-actions flex flex-wrap gap-2">
             @if($recentWallet)
@@ -38,7 +38,7 @@
             @endif
             <a href="{{ route('admin.wallets.create') }}" class="btn-press inline-flex h-9 items-center gap-2 rounded-xl bg-accent px-4 text-sm font-medium text-white">
                 <i class="fas fa-plus text-xs"></i>
-                إضافة محفظة جديدة
+                إضافة حساب
             </a>
         </div>
     </section>
@@ -225,7 +225,7 @@
                 @forelse($recentWallets as $recent)
                     <div class="rounded-xl border border-line bg-canvas/40 p-4">
                         <div class="flex items-center justify-between gap-2">
-                            <p class="text-sm font-semibold text-ink">{{ $recent->name ?? 'محفظة بدون اسم' }}</p>
+                            <p class="text-sm font-semibold text-ink">{{ $recent->name ?? 'حساب بدون اسم' }}</p>
                             <span class="text-xs text-muted">{{ optional($recent->created_at)->diffForHumans() }}</span>
                         </div>
                         <p class="mt-1 text-xs text-accent">{{ $recent->type_name }}</p>
@@ -264,7 +264,7 @@
                         <div class="flex items-start justify-between gap-3">
                             <div class="min-w-0">
                                 <div class="flex flex-wrap items-center gap-2">
-                                    <h4 class="text-base font-semibold text-ink">{{ $wallet->name ?? 'محفظة بدون اسم' }}</h4>
+                                    <h4 class="text-base font-semibold text-ink">{{ $wallet->name ?? 'حساب بدون اسم' }}</h4>
                                     <span class="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium {{ $wallet->is_active ? 'bg-accent-soft text-accent' : 'bg-canvas-muted text-muted' }}">
                                         <span class="size-1.5 rounded-full {{ $wallet->is_active ? 'bg-accent' : 'bg-muted' }}"></span>
                                         {{ $wallet->is_active ? 'نشطة' : 'غير نشطة' }}
@@ -318,10 +318,10 @@
                             <a href="{{ route('admin.wallets.edit', $wallet) }}" class="btn-press inline-flex size-9 items-center justify-center rounded-xl border border-line text-ink transition hover:border-accent/30 hover:text-accent" title="تعديل">
                                 <i class="fas fa-edit text-xs"></i>
                             </a>
-                            <form action="{{ route('admin.wallets.destroy', $wallet) }}" method="POST" class="inline" onsubmit="return confirm('هل أنت متأكد من إزالة هذه المحفظة؟ سيتم حذف المحفظة نهائياً.');">
+                            <form action="{{ route('admin.wallets.destroy', $wallet) }}" method="POST" class="inline" onsubmit="return confirm('هل أنت متأكد من إزالة هذا الحساب؟ سيتم حذف المحفظة نهائياً.');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-press inline-flex size-9 items-center justify-center rounded-xl border border-line text-rose-600 transition hover:border-rose-300 hover:bg-rose-50" title="إزالة المحفظة">
+                                <button type="submit" class="btn-press inline-flex size-9 items-center justify-center rounded-xl border border-line text-rose-600 transition hover:border-rose-300 hover:bg-rose-50" title="إزالة الحساب">
                                     <i class="fas fa-trash text-xs"></i>
                                 </button>
                             </form>

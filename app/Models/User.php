@@ -1233,21 +1233,33 @@ class User extends Authenticatable
     }
 
     /**
-     * معرفات الكورسات العادية المعيَّنة للمدرب (مباشرة أو عبر المسار أو منح الأدمن).
+     * معرفات الكورسات المسجّلة المعيَّنة للمدرب (ملكية أو منح أدمن).
+     * تتطلب خدمة courses عند وجود جدول منح الخدمات — مثل المسارات.
      */
     public function teachingAdvancedCourseIds(): \Illuminate\Support\Collection
     {
+        if (! $this->instructorDeliveryEnabled()) {
+            return collect();
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('instructor_service_assignments')
+            && ! $this->canDeliverService('courses')) {
+            return collect();
+        }
+
         $direct = AdvancedCourse::where('instructor_id', $this->id)->pluck('id');
 
-        $fromPaths = $this->teachingLearningPaths()->get()->flatMap(function ($ay) {
-            $ids = json_decode($ay->pivot->assigned_courses ?? '[]', true);
+        $fromPaths = collect();
+        if (\Illuminate\Support\Facades\Schema::hasTable('academic_year_instructors')) {
+            $fromPaths = $this->teachingLearningPaths()->get()->flatMap(function ($ay) {
+                $ids = json_decode($ay->pivot->assigned_courses ?? '[]', true);
 
-            return is_array($ids) ? $ids : [];
-        });
+                return is_array($ids) ? $ids : [];
+            });
+        }
 
         $fromGrants = collect();
-        if ($this->instructorDeliveryEnabled()
-            && \Illuminate\Support\Facades\Schema::hasTable('instructor_course_assignments')) {
+        if (\Illuminate\Support\Facades\Schema::hasTable('instructor_course_assignments')) {
             $fromGrants = InstructorCourseAssignment::query()
                 ->where('user_id', $this->id)
                 ->where('is_active', true)
@@ -1255,6 +1267,13 @@ class User extends Authenticatable
         }
 
         return $direct->merge($fromPaths)->merge($fromGrants)->unique()->filter()->values();
+    }
+
+    public function canManageCourseCurriculum(AdvancedCourse|int $course): bool
+    {
+        $id = $course instanceof AdvancedCourse ? (int) $course->id : (int) $course;
+
+        return $this->teachingAdvancedCourseIds()->contains($id);
     }
 
     /**
